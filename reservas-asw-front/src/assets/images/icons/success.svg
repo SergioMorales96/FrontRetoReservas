@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="104.019" height="102.879" viewBox="0 0 104.019 102.879">
+    <g fill="none" stroke="#5ebc00" stroke-linecap="round">
+        <path stroke-linejoin="round" stroke-width="4px" d="M212-26.7l23.639 21.706L287-51.376" transform="translate(-754.56 -250.561) translate(568.756 319.341)"/>
+        <g stroke-dasharray="243 20" stroke-width="3px" transform="translate(-754.56 -250.561) matrix(0.259, 0.966, -0.966, 0.259, 835.698, 250.561)">
+            <circle cx="42" cy="42" r="42" stroke="none"/>
+            <circle cx="42" cy="42" r="40.5"/>
+        </g>
+    </g>
+</svg>

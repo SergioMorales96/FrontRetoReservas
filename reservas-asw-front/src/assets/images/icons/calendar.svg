@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38.004" height="36.82" viewBox="0 0 38.004 36.82">
+    <defs>
+        <style>
+            .cls-5,.cls-8{fill:none}.cls-2{fill:#000002}.cls-5{stroke:#000002;stroke-width:2.2px}.cls-6{stroke:none}
+        </style>
+    </defs>
+    <g id="Grupo_11" transform="translate(-199 77.564)">
+        <g id="Sustracción_1" fill="none">
+            <path d="M32 32.575H6a6.007 6.007 0 0 1-6-6V6a6.007 6.007 0 0 1 6-6h2v2.748a3 3 0 1 0 6 0V0h10v2.748a3 3 0 1 0 6 0V0h2a6.007 6.007 0 0 1 6 6v20.574a6.007 6.007 0 0 1-6 6.001z" class="cls-6" transform="translate(199 -73.319)"/>
+            <path fill="#000002" d="M32.004 30.375c2.095 0 3.8-1.705 3.8-3.8V6c0-2.028-1.598-3.69-3.6-3.795v.543c0 2.867-2.334 5.2-5.201 5.2-2.867 0-5.2-2.333-5.2-5.2V2.2h-5.602v.548c0 2.867-2.332 5.2-5.2 5.2-2.867 0-5.2-2.333-5.2-5.2v-.543C3.798 2.31 2.2 3.972 2.2 6v20.574c0 2.096 1.705 3.8 3.8 3.8h26.004m0 2.2H6c-3.308 0-6-2.691-6-6V6c0-3.308 2.692-6 6-6h2.001v2.748c0 1.654 1.346 3 3 3 1.655 0 3-1.346 3-3V0h10.002v2.748c0 1.654 1.346 3 3 3s3-1.346 3-3V0h2.001c3.309 0 6 2.692 6 6v20.574c0 3.309-2.691 6-6 6z" transform="translate(199 -73.319)"/>
+        </g>
+        <path id="Trazado_4" d="M2.275-.064c1.5 0 2.229 1.215 2.229 2.715v3.711c0 1.5-.729 2.715-2.229 2.715S.157 7.861.157 6.362V2.651c0-1.499.619-2.715 2.118-2.715z" class="cls-2" transform="translate(223.645 -77.5)"/>
+        <path id="Trazado_5" d="M2.334-.054c1.5 0 2.229 1.215 2.229 2.715v3.71c0 1.5-.729 2.715-2.229 2.715S.216 7.87.216 6.371V2.66c0-1.499.619-2.714 2.118-2.714z" class="cls-2" transform="translate(207.65 -77.349)"/>
+        <path id="Trazado_2" fill="#fff" stroke="#000002" stroke-width="2.2px" d="M199-60.356h36.058" transform="translate(0.974 -3.136)"/>
+        <path id="Trazado_3" fill="none" stroke="#000002" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2px" d="M212-49.685l1.621 1.488 3.521-3.18" transform="translate(-6.123 -7.344)"/>
+        <g id="Rectángulo_15" class="cls-5" transform="translate(224.699 -57.87)">
+            <rect width="5.429" height="2.715" class="cls-6" rx="1.357"/>
+            <rect width="3.229" height=".515" x="1.1" y="1.1" class="cls-8" rx=".257"/>
+        </g>
+        <g id="Rectángulo_18" class="cls-5" transform="translate(215.288 -57.87)">
+            <rect width="5.429" height="2.715" class="cls-6" rx="1.357"/>
+            <rect width="3.229" height=".515" x="1.1" y="1.1" class="cls-8" rx=".257"/>
+        </g>
+        <g id="Rectángulo_17" class="cls-5" transform="translate(224.699 -49.726)">
+            <rect width="5.429" height="2.715" class="cls-6" rx="1.357"/>
+            <rect width="3.229" height=".515" x="1.1" y="1.1" class="cls-8" rx=".257"/>
+        </g>
+        <g id="Rectángulo_19" class="cls-5" transform="translate(215.288 -49.533)">
+            <rect width="5.429" height="2.715" class="cls-6" rx="1.357"/>
+            <rect width="3.229" height=".515" x="1.1" y="1.1" class="cls-8" rx=".257"/>
+        </g>
+        <g id="Rectángulo_20" class="cls-5" transform="translate(205.151 -49.726)">
+            <rect width="5.429" height="2.715" class="cls-6" rx="1.357"/>
+            <rect width="3.229" height=".515" x="1.1" y="1.1" class="cls-8" rx=".257"/>
+        </g>
+    </g>
+</svg>

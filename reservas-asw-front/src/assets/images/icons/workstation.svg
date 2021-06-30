@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="57" height="42.973" viewBox="0 0 57 42.973">
+    <defs>
+        <style>
+            .cls-1{fill:none}.cls-2{fill:#fff}.cls-4,.cls-5{stroke:none}.cls-5{fill:#fff}
+        </style>
+    </defs>
+    <g id="Grupo_3588" transform="translate(-345 -234.408)">
+        <g id="Sustracción_3" class="cls-1">
+            <path d="M54 30H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3h1.851v2.6a1 1 0 0 0 1 1h4.063a1 1 0 0 0 1-1V0H54a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3z" class="cls-4" transform="translate(345 247.38)"/>
+            <path d="M54 29c1.103 0 2-.897 2-2V3c0-1.102-.897-2-2-2H11.914v1.6c0 1.103-.897 2-2 2H5.851c-1.103 0-2-.897-2-2V1H3c-1.103 0-2 .898-2 2v24c0 1.103.897 2 2 2h51m0 1H3c-1.654 0-3-1.345-3-3V3c0-1.653 1.346-3 3-3H4.85v2.6c0 .551.449 1 1 1h4.063c.552 0 1-.449 1-1V0H54c1.654 0 3 1.347 3 3v24c0 1.655-1.346 3-3 3z" class="cls-5" transform="translate(345 247.38)"/>
+        </g>
+        <g id="Trazado_21" class="cls-1">
+            <path d="M2.628-.364h23.1a2.432 2.432 0 0 1 2.432 2.432l-.99 11.391S.716 13.382.716 13.444L.2 2.068A2.432 2.432 0 0 1 2.628-.364z" class="cls-4" transform="translate(359.755 234.771)"/>
+            <path d="M2.628.636c-.783 0-1.421.632-1.432 1.412l.474 10.38.509-.003c.872-.003 2.146-.005 3.788-.005 6.466 0 17.113.028 20.286.037L27.16 2.03c-.02-.772-.654-1.394-1.431-1.394H2.628m0-1h23.1c1.344 0 2.433 1.09 2.433 2.432L27.17 13.46S.716 13.382.716 13.444L.196 2.068C.196.725 1.285-.364 2.628-.364z" class="cls-5" transform="translate(359.755 234.771)"/>
+        </g>
+        <path id="Trazado_22" d="M1.216 0h1.216a1.216 1.216 0 0 1 1.216 1.216l-.312 3.647A1.216 1.216 0 0 1 2.12 6.079h-.7A1.216 1.216 0 0 1 .2 4.863L0 1.216A1.216 1.216 0 0 1 1.216 0z" class="cls-2" transform="translate(351.202 243.361)"/>
+        <path id="Trazado_23" fill="none" stroke="#fff" stroke-width="0.5px" d="M-1074.543 218.594l-.543-1.787h-.813" transform="translate(1427.224 25.103)"/>
+        <path id="Rectángulo_27" d="M0 0H5V4H0z" class="cls-2" transform="translate(390 244.38)"/>
+    </g>
+</svg>
