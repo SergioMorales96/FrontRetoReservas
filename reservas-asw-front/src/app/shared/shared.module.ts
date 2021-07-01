@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 
 
 
@@ -10,12 +11,14 @@ import { ErrorPageComponent } from './error-page/error-page.component';
   declarations: [
     MenuComponent,
     SidebarComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    ReservationFormComponent
   ],
   exports: [
     MenuComponent,
     SidebarComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    ReservationFormComponent
   ],
   imports: [
     CommonModule
