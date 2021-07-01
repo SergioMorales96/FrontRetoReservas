@@ -7,6 +7,7 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { TablaSalaModule } from './reservations/pages/tabla-sala/tabla-sala.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
     PrimeNgModule,
     SharedModule,
+    TablaSalaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
