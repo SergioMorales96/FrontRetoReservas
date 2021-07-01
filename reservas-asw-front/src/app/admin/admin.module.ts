@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { AdminRoutingModule } from './admin-routing.module';
+import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
 import { AddComponent } from './components/add/add.component';
 import { AdminsComponent } from './pages/admins/admins.component';
@@ -17,7 +18,8 @@ import { WorkstationComponent } from './pages/workstation/workstation.component'
 
 @NgModule({
   imports: [
-    AdminRoutingModule
+    AdminRoutingModule,
+    PrimeNgModule
   ],
   declarations: [
     AddComponent,
