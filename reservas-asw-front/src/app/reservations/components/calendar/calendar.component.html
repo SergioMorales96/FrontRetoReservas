@@ -1,1 +1,19 @@
-<p>calendar works!</p>
+<p-calendar name="value" [(ngModel)]="value" [inline]="true"
+  [disabledDates]="invalidDates" (onMonthChange)="monthChange( $event.month )">
+    <ng-template pTemplate="date" let-date>
+
+      
+      <td><span [ngStyle]="{background: (afterNoonM(date.day))? 
+                            'linear-gradient(to bottom, white 50% , white 50%, rgba(247, 125, 230, 0.89)50% , 
+                            rgba(247, 125, 230, 0.89)30% )': morningM(date.day)? 
+                            'linear-gradient(to bottom, rgba(247, 125, 230, 0.89) 50% , rgba(247, 125, 230, 0.89) 50%, 
+                            white 50% , 
+                            white 30% )' : completeM(date.day)?
+                            'rgba(247, 125, 230, 0.89)' : '',
+                            'border-radius': '50px'
+                                                                }">{{date.day}}</span></td>
+    </ng-template>
+
+
+
+  </p-calendar>

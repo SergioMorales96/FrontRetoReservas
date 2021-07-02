@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MenuComponent } from './menu/menu.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
+import { ReservationsModule } from '../reservations/reservations.module';
 
 
 
@@ -15,10 +17,12 @@ import { ErrorPageComponent } from './error-page/error-page.component';
   exports: [
     MenuComponent,
     SidebarComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReservationsModule
   ]
 })
 export class SharedModule { }
