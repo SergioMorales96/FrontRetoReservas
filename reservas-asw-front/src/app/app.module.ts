@@ -7,7 +7,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { TablaSalaModule } from './reservations/pages/tabla-sala/tabla-sala.module';
 
 @NgModule({
   declarations: [
@@ -18,8 +17,7 @@ import { TablaSalaModule } from './reservations/pages/tabla-sala/tabla-sala.modu
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    SharedModule,
-    TablaSalaModule
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
