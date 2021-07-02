@@ -11,6 +11,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
 import { SceneComponent } from './components/scene/scene.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
+import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
 
 
@@ -27,6 +28,7 @@ import { TimeSelectorComponent } from './components/time-selector/time-selector.
     CommonModule,
     FormsModule,
     HttpClientModule,
+    PrimeNgModule,
     ReservationsRoutingModule
   ]
 })

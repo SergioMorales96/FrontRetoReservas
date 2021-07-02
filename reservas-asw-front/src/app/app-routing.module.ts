@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: () => import( './reservations/reservations.module' ).then( m => m.ReservationsModule )
   },
   {
+    path: 'admin',
+    loadChildren: () => import( './admin/admin.module' ).then( m => m.AdminModule )
+  },
+  {
     path: '404',
     component: ErrorPageComponent
   }, 

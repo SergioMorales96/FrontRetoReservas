@@ -1,24 +1,31 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuComponent } from './menu/menu.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { NgModule } from '@angular/core';
+
+import { PrimeNgModule } from '../prime-ng/prime-ng.module';
+
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { MenuComponent } from './menu/menu.component';
+import { ReservationFormComponent } from './reservation-form/reservation-form.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 
 @NgModule({
   declarations: [
+    ErrorPageComponent,
     MenuComponent,
+    ReservationFormComponent,
     SidebarComponent,
-    ErrorPageComponent
   ],
   exports: [
+    ErrorPageComponent,
     MenuComponent,
+    ReservationFormComponent,
     SidebarComponent,
-    ErrorPageComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    PrimeNgModule
   ]
 })
 export class SharedModule { }
