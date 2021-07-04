@@ -6,9 +6,11 @@ import {ListboxModule} from 'primeng/listbox';
 import {MegaMenuModule} from 'primeng/megamenu';
 import {SplitterModule} from 'primeng/splitter';
 import {ToastModule} from 'primeng/toast';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   exports: [
+    TableModule,
     ButtonModule,
     CalendarModule,
     ListboxModule,

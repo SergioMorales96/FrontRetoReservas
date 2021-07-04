@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { PrimeNgModule } from './prime-ng/prime-ng.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    PrimeNgModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
