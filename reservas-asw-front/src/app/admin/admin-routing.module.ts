@@ -36,6 +36,10 @@ const routes: Routes = [
             path: 'table',
             component: ListAdminComponent
           },
+          {
+            path: '**',
+            redirectTo: 'list'
+          },
         ]
       },
       {
