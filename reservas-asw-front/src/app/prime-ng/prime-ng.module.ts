@@ -1,20 +1,40 @@
 import { NgModule } from '@angular/core';
 
-import {ButtonModule} from 'primeng/button';
-import {CalendarModule} from 'primeng/calendar';
-import {ListboxModule} from 'primeng/listbox';
-import {MegaMenuModule} from 'primeng/megamenu';
-import {SplitterModule} from 'primeng/splitter';
-import {ToastModule} from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextModule } from 'primeng/inputtext';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { ListboxModule } from 'primeng/listbox';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { SplitterModule } from 'primeng/splitter';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   exports: [
     ButtonModule,
     CalendarModule,
+    CardModule,
+    DividerModule,
+    DropdownModule,
+    InputNumberModule,
+    InputMaskModule,
+    InputTextareaModule,
+    InputTextModule,
+    KeyFilterModule,
     ListboxModule,
     MegaMenuModule,
     SplitterModule,
+    TableModule,
     ToastModule,
+    TooltipModule,
   ],
 })
 export class PrimeNgModule { }
