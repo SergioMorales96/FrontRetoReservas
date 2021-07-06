@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminsComponent } from './pages/admins/admins.component';
@@ -8,6 +8,9 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+import { ListfloorComponent } from './pages/floors/table/list-floor.component';
+import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
+import { AddFloorComponent } from './pages/floors/add/add.floor.component';
 
 const routes: Routes = [
   {
@@ -27,7 +30,31 @@ const routes: Routes = [
       },
       {
         path: 'floors',
-        component: FloorsComponent
+        component: FloorsComponent,
+        children: [
+          {
+            path:'list',
+            component:ListfloorComponent
+          },
+          {
+            path:'view/:id',
+            component: ViewFloorComponent
+          },
+          {
+            path:'add',
+            component:AddFloorComponent
+          },
+          {
+            path:'edit/:id',
+            component: AddFloorComponent
+          },
+          {
+            path: '**',
+            redirectTo:'list'
+          }
+
+        ]
+
       },
       {
         path: 'rooms',
@@ -40,7 +67,12 @@ const routes: Routes = [
       {
         path: 'workstations',
         component: WorkstationComponent
+      },
+      {
+        path: '**',
+        redirectTo:'admins'
       }
+
     ]
   }
 ];
