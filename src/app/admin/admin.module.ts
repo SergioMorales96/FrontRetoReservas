@@ -1,7 +1,4 @@
-<<<<<<< HEAD:src/app/admin/admin.module.ts
-=======
 import { CommonModule } from '@angular/common';
->>>>>>> origin/team-0:reservas-asw-front/src/app/admin/admin.module.ts
 import { NgModule } from '@angular/core';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -22,13 +19,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-<<<<<<< HEAD:src/app/admin/admin.module.ts
-  imports: [
-    AdminRoutingModule,
-    PrimeNgModule
-  ],
-=======
->>>>>>> origin/team-0:reservas-asw-front/src/app/admin/admin.module.ts
   declarations: [
     AdminsComponent,
     BranchesComponent,
