@@ -1,5 +1,3 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AdminRoutingModule } from './admin-routing.module';
@@ -12,13 +10,14 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+import { ListAdminComponent } from './pages/admins/table/list-admin.component';
+import { AddAdminComponent } from './pages/admins/add/add-admin.component';
+import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
 
 
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
     AdminRoutingModule,
     PrimeNgModule
   ],
@@ -30,6 +29,9 @@ import { WorkstationComponent } from './pages/workstation/workstation.component'
     RoomsComponent,
     SchedulesComponent,
     WorkstationComponent,
+    ListAdminComponent,
+    AddAdminComponent,
+    ViewAdminComponent,
   ]
 })
 export class AdminModule { }

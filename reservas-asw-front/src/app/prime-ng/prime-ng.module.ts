@@ -5,6 +5,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {ListboxModule} from 'primeng/listbox';
 import {MegaMenuModule} from 'primeng/megamenu';
 import {SplitterModule} from 'primeng/splitter';
+import {TableModule} from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
 
 @NgModule({
@@ -14,6 +15,7 @@ import {ToastModule} from 'primeng/toast';
     ListboxModule,
     MegaMenuModule,
     SplitterModule,
+    TableModule,
     ToastModule,
   ],
 })

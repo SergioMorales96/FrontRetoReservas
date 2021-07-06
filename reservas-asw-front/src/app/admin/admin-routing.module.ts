@@ -8,6 +8,9 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+import { AddAdminComponent } from './pages/admins/add/add-admin.component';
+import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
+import { ListAdminComponent } from './pages/admins/table/list-admin.component';
 
 const routes: Routes = [
   {
@@ -15,7 +18,25 @@ const routes: Routes = [
     children: [
       {
         path: 'admins',
-        component: AdminsComponent
+        component: AdminsComponent,
+        children: [
+          {
+            path: 'add',
+            component: AddAdminComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewAdminComponent
+          },
+          {
+            path: 'edit/:id',
+            component: AddAdminComponent
+          },
+          {
+            path: 'table',
+            component: ListAdminComponent
+          },
+        ]
       },
       {
         path: 'branches',
@@ -50,7 +71,7 @@ const routes: Routes = [
     RouterModule
   ],
   imports: [
-    RouterModule.forChild( routes )
+    RouterModule.forChild(routes)
   ]
 })
 export class AdminRoutingModule { }
