@@ -57,6 +57,50 @@ constructor(){
 
   } );
 
+  loader.load( 'assets/models/19th_floor/19th_floor.gltf', function ( gltf ) {
+
+    const model = gltf.scene;
+    model.position.set( 1, 2, 0 );
+    model.scale.set( 1, 1, 1);
+    scene.add( model );
+
+    animate();
+
+  }, undefined, function ( e ) {
+
+    console.error( e );
+
+  } );
+
+  loader.load( 'assets/models/20th_floor/20th_floor.gltf', function ( gltf ) {
+
+    const model = gltf.scene;
+    model.position.set( 1, 3, 0 );
+    model.scale.set( 1, 1, 1);
+    scene.add( model );
+
+    animate();
+
+  }, undefined, function ( e ) {
+
+    console.error( e );
+
+  } );
+
+  loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
+
+    const model = gltf.scene;
+    model.position.set( 1, -1, 0 );
+    model.scale.set( 1, 1, 1);
+    scene.add( model );
+
+    animate();
+
+  }, undefined, function ( e ) {
+
+    console.error( e );
+
+  } );
 
   window.onresize = function () {
 
