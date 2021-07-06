@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -12,6 +12,11 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
   ]
 })
 export class SceneComponent implements OnInit {
+
+  @Input() idpiso: number = 0;
+
+  path3D : string = '';
+
   constructor(){} 
 
   ngOnInit(): void{
@@ -40,33 +45,25 @@ export class SceneComponent implements OnInit {
 
     loader.setDRACOLoader( dracoLoader );
 
-    loader.load( 'assets/models/18th_floor/18th_floor.gltf', function ( gltf ) {
+    if(this.idpiso==1){
+      console.log('Cargado piso 18');
 
-      const model1 = gltf.scene;
-      model1.position.set( 1, 1, 0 );
-      model1.scale.set( 1, 1, 1);
-      scene.add( model1 );
+      this.path3D = 'assets/models/18th_floor/18th_floor.gltf';
 
-    }, undefined, function ( e ) {
+    }else if(this.idpiso==2){
+      console.log('Cargado piso 19');
+      
+      this.path3D = 'assets/models/19th_floor/19th_floor.gltf';
 
-      console.error( e );
+    }else if(this.idpiso==3){
+      console.log('Cargado Piso 20');
 
-    } );
-
-    loader.load( 'assets/models/19th_floor/19th_floor.gltf', function ( gltf ) {
-
-      const model2 = gltf.scene;
-      model2.position.set( 1, 2, 0 );
-      model2.scale.set( 1, 1, 1);
-      scene.add( model2 );
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );
-
-    loader.load( 'assets/models/20th_floor/20th_floor.gltf', function ( gltf ) {
+      this.path3D = 'assets/models/20th_floor/20th_floor.gltf';
+      
+    }else{
+      console.log('No cargado ningun piso'); 
+    }
+    loader.load( this.path3D, function ( gltf ) {
 
       const model3 = gltf.scene;
       model3.position.set( 1, 3, 0 );
