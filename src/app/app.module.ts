@@ -1,3 +1,5 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
@@ -13,6 +15,8 @@ import { BrowserModule } from '@angular/platform-browser';
     AppComponent
   ],
   imports: [
+    BrowserAnimationsModule,
+    BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     SharedModule,

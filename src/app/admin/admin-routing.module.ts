@@ -8,6 +8,9 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+import { ListRoomComponent } from './pages/rooms/list/list-room.component';
+import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
+import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 
 const routes: Routes = [
   {
@@ -31,7 +34,29 @@ const routes: Routes = [
       },
       {
         path: 'rooms',
-        component: RoomsComponent
+        component: RoomsComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListRoomComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewRoomComponent
+          },
+          {
+            path: 'add',
+            component: FormRoomComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormRoomComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       {
         path: 'schedules',
@@ -40,6 +65,10 @@ const routes: Routes = [
       {
         path: 'workstations',
         component: WorkstationComponent
+      },
+      {
+        path: '**',
+        redirectTo: 'admins'
       }
     ]
   }

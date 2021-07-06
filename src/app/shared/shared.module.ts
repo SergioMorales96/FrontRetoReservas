@@ -1,7 +1,6 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
@@ -26,9 +25,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     SidebarComponent,
   ],
   imports: [
-    BrowserAnimationsModule,
-    BrowserModule,
     CommonModule,
+    RouterModule,
     PrimeNgModule
   ]
 })
