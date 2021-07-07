@@ -21,4 +21,7 @@ export class ListAdminComponent {
     }
   ]
 
+  selectedAdmin!:Administrador;
+
+  deleteAdmin():void {};
 }

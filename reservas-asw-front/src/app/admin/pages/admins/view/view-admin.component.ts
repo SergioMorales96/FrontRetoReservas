@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-view-admin',
@@ -6,11 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class ViewAdminComponent implements OnInit {
+export class ViewAdminComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor(
+    private activatedRoute:ActivatedRoute
+  ) {
+    this.activatedRoute.params.subscribe( ({ id }) => console.log( id ));    
+   }
 
 }

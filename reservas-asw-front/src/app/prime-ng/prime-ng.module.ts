@@ -7,7 +7,7 @@ import {MegaMenuModule} from 'primeng/megamenu';
 import {SplitterModule} from 'primeng/splitter';
 import {TableModule} from 'primeng/table';
 import {ToastModule} from 'primeng/toast';
-
+import {TooltipModule} from 'primeng/tooltip';
 @NgModule({
   exports: [
     ButtonModule,
@@ -17,6 +17,7 @@ import {ToastModule} from 'primeng/toast';
     SplitterModule,
     TableModule,
     ToastModule,
+    TooltipModule
   ],
 })
 export class PrimeNgModule { }
