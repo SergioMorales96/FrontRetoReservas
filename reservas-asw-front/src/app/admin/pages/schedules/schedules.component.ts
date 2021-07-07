@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouteName } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-schedules',
@@ -6,11 +7,6 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class SchedulesComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class SchedulesComponent  {
+  routeName = RouteName;
 }

@@ -15,7 +15,9 @@ import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { FormScheduleComponent } from './pages/schedules/form/form-schedule.component';
+import { ListScheduleComponent } from './pages/schedules/list/list-schedule.component';
+import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.component';
 
 
 @NgModule({
@@ -30,6 +32,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ListRoomComponent,
     FormRoomComponent,
     ViewRoomComponent,
+    FormScheduleComponent,
+    ListScheduleComponent,
+    ViewScheduleComponent
   ],
   imports: [
     CommonModule,
