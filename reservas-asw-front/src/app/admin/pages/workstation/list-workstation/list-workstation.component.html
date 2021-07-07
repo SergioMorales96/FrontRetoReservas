@@ -1,1 +1,98 @@
-<p>list-workstation works!</p>
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3>Listado de puestos de trabajo</h3>
+    <a 
+        pButton 
+        [routerLink]="routeName.RoomAdd" 
+        class="button-link p-button-success" 
+        icon="pi pi-plus"
+        pTooltip="Agregar" 
+        tooltipPosition="top">
+    </a>
+
+</div>
+
+<p-table
+    #dt
+    [value]="workstations" 
+    [resizableColumns]="true" 
+    styleClass="p-datatable-striped p-datatable-responsive-demo">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="idPuestoTrabajo">
+                <strong> No. </strong> <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="dominioEstado"> 
+                Estado <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="dominioTipo"> 
+                Tipo <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="idPiso"> 
+                N Piso <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="nombre"> 
+                Nombre <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="nombrePiso"> 
+                Piso <p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-workstations>
+        <tr [pSelectableRow]="workstations">
+            <td> 
+                <span class="p-column-title"><strong> No. </strong></span>
+                <strong> {{ workstations.idPuestoDeTrabajo }} </strong> 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> Estado </strong></span>
+                <strong> {{ workstations.dominioEstado }} </strong> 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> Tipo </strong></span>
+                <strong> {{ workstations.dominioTipo }} </strong> 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> No. Piso </strong></span>
+                <strong> {{ workstations.idPiso }} </strong> 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> Nombre </strong></span>
+                {{ workstations.nombre | titlecase }} 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> Nombre Piso </strong></span>
+                {{ workstations.nombrePiso } 
+            </td>
+            <td>
+                <a 
+                    pButton 
+                    [routerLink]="[routeName.RoomView, workstations.idPuestoDeTrabajo]" 
+                    class="button-link p-button-help p-mr-1" 
+                    icon="pi pi-eye" 
+                    pTooltip="Ver" 
+                    tooltipPosition="top">
+                </a>
+                <a 
+                    pButton 
+                    [routerLink]="[routeName.RoomEdit, workstations.idPuestoDeTrabajo]" 
+                    class="button-link p-button-info p-mr-1" 
+                    icon="pi pi-pencil" 
+                    pTooltip="Editar" 
+                    tooltipPosition="top">
+                </a>
+                <button 
+                    pButton 
+                    class="button-link p-button-danger" 
+                    type="button" 
+                    icon="pi pi-times" 
+                    pTooltip="Eliminar" 
+                    tooltipPosition="top" 
+                    (click)="deleteRoom( workstations.idPuestoDeTrabajo )">
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
