@@ -1,2 +1,79 @@
-<h1>floors</h1>
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
+    <h3> {{ formTitle }} </h3>
+
+</div>
+<form 
+[formGroup]="floorForm"
+(ngSubmit)="saveFloor()">
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <label for="name">Nombre</label>
+        <input 
+            id="name" 
+            type="text" 
+            formControlName="name" 
+            placeholder="Nombre" 
+            pInputText
+            required
+            minlength="3"
+            maxlength="100">
+    </div>
+    <div class="p-field p-col">
+        <label for="maxCapacity">Aforo máximo</label>
+        <p-inputNumber 
+            id="maxCapacity" 
+            [showButtons]="true" 
+            buttonLayout="horizontal" 
+            spinnerMode="horizontal"
+            decrementButtonClass="p-button-danger" 
+            incrementButtonClass="p-button-success" 
+            incrementButtonIcon="pi pi-plus" 
+            decrementButtonIcon="pi pi-minus"
+            formControlName="maxCapacity"
+            [min]="0"
+            [max]="100"
+            readonly
+            requried>
+        </p-inputNumber>
+    </div>
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <label for="numberFloor">numero de piso</label>
+        <input 
+            id="numberFloor" 
+            type="text" 
+            formControlName="numberFloor" 
+            placeholder="Numero de piso" 
+            pInputText
+            required>
+    </div>
+    <div class="p-field p-col">
+        <label for="floorId">Piso relacionado</label>
+        <p-dropdown 
+            [options]="sucursal"
+            optionLabel="nombre"
+            optionValue="idSucursal"
+            emptyMessage="No se encontraron resultados"
+            placeholder="sucursal relacionada"
+            formControlName="branchId"
+            requried>
+        </p-dropdown>
+    </div>
+</div>
+<div class="p-d-flex p-jc-end p-mt-4">
+    <div class="p-field p-col">
+        <button 
+            pButton 
+            type="submit" 
+            class="p-button-success" 
+            [label]="buttonLabel"
+            [disabled]="!floorForm.valid">
+        </button>
+    </div>
+</div>
+
+
+</form>
