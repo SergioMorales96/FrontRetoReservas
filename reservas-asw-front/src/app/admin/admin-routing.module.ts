@@ -11,6 +11,9 @@ import { WorkstationComponent } from './pages/workstation/workstation.component'
 import { AddAdminComponent } from './pages/admins/add/add-admin.component';
 import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
 import { ListAdminComponent } from './pages/admins/table/list-admin.component';
+import { ListRoomComponent } from './pages/rooms/list/list-room.component';
+import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
+import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 
 const routes: Routes = [
   {
@@ -56,7 +59,29 @@ const routes: Routes = [
       },
       {
         path: 'rooms',
-        component: RoomsComponent
+        component: RoomsComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListRoomComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewRoomComponent
+          },
+          {
+            path: 'add',
+            component: FormRoomComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormRoomComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       {
         path: 'schedules',
@@ -65,6 +90,10 @@ const routes: Routes = [
       {
         path: 'workstations',
         component: WorkstationComponent
+      },
+      {
+        path: '**',
+        redirectTo: 'admins'
       }
     ]
   }

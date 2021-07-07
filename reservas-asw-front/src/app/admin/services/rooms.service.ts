@@ -3,19 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Domain } from '../interfaces/admin.interfaces';
+import { Room } from '../interfaces/admin.interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DomainsService {
-  private apiUrl: string = `${ environment.apiUrl }...`;
+export class RoomsService {
+  private apiUrl: string = `${ environment.baseUrl }/piso`;
 
   constructor(
     private http: HttpClient
   ) { }
 
-  getDomains(): Observable<Domain[]> {
-    return this.http.get<Domain[]>( `${ this.apiUrl }` );
+  getDomains(): Observable<Room[]> {
+    return this.http.get<Room[]>( `${ this.apiUrl }/todos` );
   }
 }
