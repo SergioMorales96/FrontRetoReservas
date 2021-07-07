@@ -9,7 +9,7 @@ import { Room } from '../interfaces/admin.interfaces';
   providedIn: 'root'
 })
 export class RoomsService {
-  private apiUrl: string = `${ environment.apiUrl }/api/v1/piso`;
+  private apiUrl: string = `${ environment.baseUrl }/piso`;
 
   constructor(
     private http: HttpClient
