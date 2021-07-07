@@ -16,7 +16,7 @@
     #dt
     [value]="rooms" 
     [resizableColumns]="true" 
-    styleClass="p-datatable-striped">
+    styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idSala">
@@ -37,15 +37,19 @@
     <ng-template pTemplate="body" let-room>
         <tr [pSelectableRow]="room">
             <td> 
+                <span class="p-column-title"><strong> No. </strong></span>
                 <strong> {{room.idSala}} </strong> 
             </td>
             <td> 
+                <span class="p-column-title"><strong> Nombre </strong></span>
                 {{room.nombre | titlecase}} 
             </td>
             <td> 
+                <span class="p-column-title"><strong> Aforo Max. </strong></span>
                 {{room.aforoMax}} 
             </td>
             <td> 
+                <span class="p-column-title"><strong> Estado Dominio </strong></span>
                 {{room.dominioEstado}} 
             </td>
             <td>
