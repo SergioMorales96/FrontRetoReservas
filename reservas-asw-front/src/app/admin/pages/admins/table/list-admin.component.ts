@@ -25,5 +25,7 @@ export class ListAdminComponent {
 
   selectedAdmin!:Administrador;
 
-  deleteAdmin():void {};
+  deleteAdmin(idAdministrador: number ):void {
+    console.log(idAdministrador);
+  };
 }

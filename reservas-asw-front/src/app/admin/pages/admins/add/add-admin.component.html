@@ -1,1 +1,35 @@
-<p>add works!</p>
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3> {{ formTitle }} </h3>
+
+</div>
+
+
+<form [formGroup]="adminForm" (ngSubmit)="saveAdmin()">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="email">Email</label>
+            <input id="email" type="text" formControlName="email" placeholder="Email" pInputText required minlength="3"
+                maxlength="100">
+        </div>
+
+        <div class="p-field p-col">
+            <label for="floorId">Sucursal relacionada</label>
+            <p-dropdown [options]="branches" optionLabel="idSucursal" optionValue="idSucursal"
+                emptyMessage="No se encontraron resultados" placeholder="Sucursal relacionada"
+                formControlName="sucursalId" requried>
+            </p-dropdown>
+        </div>
+    </div>
+
+    <div class="p-d-flex p-jc-end p-mt-4">
+        <button 
+            pButton 
+            type="submit" 
+            class="p-button-success" 
+            [label]="buttonLabel"
+            [disabled]="!adminForm.valid">
+        </button>
+    </div>
+</form>

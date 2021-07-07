@@ -33,7 +33,7 @@ export interface Administrador {
     idAdministrador: number;
     email:           string;
     idSucursal:      number;
-    nombreSucursal:  string;
+    nombreSucursal: string;
 }
 export interface Floor {
     idPiso:      number;
@@ -41,4 +41,12 @@ export interface Floor {
     idSucursal:  number;
     nombre:      string;
     numeroPiso:  number;
+}
+
+export interface Branch {
+    idSucursal:  number;
+    nombre:      string;
+    direccion:   string;
+    nit:         string;
+    aforoMaximo: number;
 }
