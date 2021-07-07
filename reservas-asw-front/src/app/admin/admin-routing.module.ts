@@ -13,8 +13,7 @@ import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
-import { AddFloorComponent } from './pages/floors/form/form.floor.component';
-
+import { FormFloorComponent } from './pages/floors/form/form.floor.component';
 const routes: Routes = [
   {
     path: '',
@@ -45,11 +44,11 @@ const routes: Routes = [
           },
           {
             path:'add',
-            component:AddFloorComponent
+            component:FormFloorComponent 
           },
           {
             path:'edit/:id',
-            component: AddFloorComponent
+            component: FormFloorComponent 
           },
           {
             path: '**',
