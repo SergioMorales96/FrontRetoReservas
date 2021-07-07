@@ -12,13 +12,15 @@ export class ListAdminComponent {
     {
       "idAdministrador": 1,
       "email": "spinilla@asesoftware.com",
-      "idSucursal": 1
-    },
-    {
+      "idSucursal": 1,
+      "nombreSucursal": "TORRE SIGMA"
+  },
+  {
       "idAdministrador": 3,
       "email": "spinilla@asesoftware.com",
-      "idSucursal": 1
-    }
+      "idSucursal": 1,
+      "nombreSucursal": "TORRE SIGMA"
+  }
   ]
 
   selectedAdmin!:Administrador;

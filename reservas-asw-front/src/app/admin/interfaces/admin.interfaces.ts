@@ -29,4 +29,5 @@ export interface Administrador {
     idAdministrador: number;
     email:           string;
     idSucursal:      number;
+    nombreSucursal:  string;
 }
