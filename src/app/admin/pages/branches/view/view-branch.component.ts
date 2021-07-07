@@ -13,7 +13,7 @@ export class ViewBranchComponent implements OnInit {
   branch!: Branch;
 
   get viewTitle(): string {
-    return this.branch.nombre ? this.branch.nombre : 'Ver sucursal';
+    return this.branch.nit ? this.branch.nit : 'Ver sucursal';
   }
 
 
@@ -29,9 +29,9 @@ export class ViewBranchComponent implements OnInit {
 
           this.branch = {
             idSucursal:     1,
-            nombre:         "ASESOFTWARE",
+            nombre:         "Torre sigma 1",
             direccion:      "calle 93",
-            nit:            5555,
+            nit:            "ASESOFTWARE",
             aforoMaximoBranches:    23,
           }
         }

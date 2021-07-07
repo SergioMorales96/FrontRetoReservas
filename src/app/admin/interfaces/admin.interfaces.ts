@@ -43,6 +43,6 @@ export interface Branch{
     idSucursal:     number;
     nombre:         string;
     direccion:      string;
-    nit:            number;
+    nit:            string;
     aforoMaximoBranches:    number;
 }
