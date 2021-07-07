@@ -22,6 +22,30 @@
                 maxlength="100">
         </div>
         <div class="p-field p-col">
+            <label for="domainState">Hora de Inicio</label>
+            <input 
+                id="domainState" 
+                type="text" 
+                formControlName="domainState" 
+                placeholder="Hora Inicio (ej: 09:00)" 
+                pInputText
+                required>
+        </div>
+            <div class="p-field p-col">
+                <label for="domainState">Hora de Finalización</label>
+                <input 
+                    id="domainState" 
+                    type="text" 
+                    formControlName="domainState" 
+                    placeholder="Hora Fin (ej: 11:00)" 
+                    pInputText
+                    required>
+        </div>
+        
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
             <label for="maxCapacity">No. Horas</label>
             <p-inputNumber 
                 id="maxCapacity" 
@@ -34,33 +58,20 @@
                 decrementButtonIcon="pi pi-minus"
                 formControlName="maxCapacity"
                 [min]="0"
-                [max]="100"
+                [max]="8"
                 readonly
                 requried>
             </p-inputNumber>
             
         </div>
-    </div>
-
-    <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="domainState">Estado dominio</label>
-            <input 
-                id="domainState" 
-                type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
-                pInputText
-                required>
-        </div>
-        <div class="p-field p-col">
-            <label for="floorId">Piso relacionado</label>
+            <label for="floorId">Sucursal relacionada</label>
             <p-dropdown 
-                [options]="floors"
+                [options]="branches"
                 optionLabel="nombre"
-                optionValue="idPiso"
+                optionValue="idSucursal"
                 emptyMessage="No se encontraron resultados"
-                placeholder="Piso relacionado"
+                placeholder="Sucursal relacionada"
                 formControlName="floorId"
                 requried>
             </p-dropdown>

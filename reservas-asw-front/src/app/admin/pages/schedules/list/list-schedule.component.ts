@@ -5,8 +5,7 @@ import { RouteName } from '../../../../../utils/enums';
 @Component({
   selector: 'app-list',
   templateUrl: './list-schedule.component.html',
-  styles: [
-  ]
+  styleUrls: ['./list-schedule.component.scss']
 })
 export class ListScheduleComponent  {
   routeName = RouteName;

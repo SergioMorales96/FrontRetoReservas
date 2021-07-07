@@ -22,12 +22,6 @@
             <th pSortableColumn="idHorario">
                 <strong> No. </strong> <p-sortIcon field="code"></p-sortIcon> 
             </th>
-            <th pSortableColumn="idSucursal">
-                <strong> Id Sucursal </strong> <p-sortIcon field="code"></p-sortIcon> 
-            </th>
-            <th pSortableColumn="numeroHoras">
-                 No. Horas <p-sortIcon field="code"></p-sortIcon> 
-            </th>
             <th pSortableColumn="nombre"> 
                 Nombre <p-sortIcon field="code"></p-sortIcon> 
             </th>
@@ -36,6 +30,12 @@
             </th>
             <th pSortableColumn="horaFin"> 
                 Hora Fin<p-sortIcon field="code"></p-sortIcon> 
+            </th>
+            <th pSortableColumn="numeroHoras">
+                No. Horas <p-sortIcon field="code"></p-sortIcon> 
+           </th>
+            <th pSortableColumn="idSucursal">
+                <strong> Id Sucursal </strong> <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th pSortableColumn="nombreSucursal"> 
                 Nombre Sucursal<p-sortIcon field="code"></p-sortIcon> 
@@ -51,14 +51,6 @@
             </td>
             <td> 
                 <span class="p-column-title"></span>
-                {{schedule.idSucursal}} 
-            </td>
-            <td> 
-                <span class="p-column-title"></span>
-                {{schedule.numeroHoras}} 
-            </td>
-            <td> 
-                <span class="p-column-title"></span>
                 {{schedule.nombre}} 
             </td>
             <td> 
@@ -71,13 +63,21 @@
             </td>
             <td> 
                 <span class="p-column-title"></span>
+                {{schedule.numeroHoras}} 
+            </td>
+            <td> 
+                <span class="p-column-title"></span>
+                {{schedule.idSucursal}} 
+            </td>
+            <td> 
+                <span class="p-column-title"></span>
                 {{schedule.nombreSucursal}} 
             </td>
           
             <td>
                 <a 
                     pButton 
-                    [routerLink]="[routeName.ScheduleView]" 
+                    [routerLink]="[routeName.ScheduleView, schedule.idHorario]" 
                     class="button-link p-button-help p-mr-1" 
                     icon="pi pi-eye" 
                     pTooltip="Ver" 

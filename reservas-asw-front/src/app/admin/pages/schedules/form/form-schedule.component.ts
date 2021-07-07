@@ -1,7 +1,7 @@
 import { Component,OnInit} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Schedule, Floor, DominioEstado, NombreSucursal } from '../../../interfaces/admin.interfaces';
+import { Schedule, Branch, NombreSucursal } from '../../../interfaces/admin.interfaces';
 
 @Component({
   selector: 'app-form',
@@ -16,21 +16,15 @@ export class FormScheduleComponent implements OnInit{
     domainState: ['', [Validators.required]],
     floorId: ['', [Validators.required]],
   });
-  floors: Floor[] = [
+  branches: Branch[] = [
     {
-      idPiso: 1,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 1',
-      numeroPiso: 1
+      "idSucursal": 1,
+      "aforoMaximo": 300,
+      "direccion": "BOGOTA",
+      "nit": "9000001",
+      "nombre": "TORRE SIGMA",
+      "nombreEmpresa": "ASESOFTWARE"
     },
-    {
-      idPiso: 2,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 2',
-      numeroPiso: 1
-    }
   ];
   isEditing: boolean = false;
   schedule!: Schedule;
@@ -72,9 +66,12 @@ export class FormScheduleComponent implements OnInit{
 
   setschedule( schedule: Schedule ): void {
     this.scheduleForm.controls['name'].setValue( schedule.nombre );
-    this.scheduleForm.controls['maxCapacity'].setValue( schedule.numeroHoras);
-    this.scheduleForm.controls['domainState'].setValue( schedule.horaInicio );
-    this.scheduleForm.controls['floorId'].setValue( schedule.horaFin);
+    this.scheduleForm.controls['numHours'].setValue( schedule.numeroHoras);
+    this.scheduleForm.controls['initHour'].setValue( schedule.horaFin);
+    this.scheduleForm.controls['endHour'].setValue( schedule.horaFin);
+    this.scheduleForm.controls['initHour'].setValue( schedule.horaFin);
+    this.scheduleForm.controls['branch'].setValue( schedule.nombreSucursal);
+    this.scheduleForm.controls['idBranch'].setValue( schedule.idSucursal);
   }
 
   saveschedule(): void {
