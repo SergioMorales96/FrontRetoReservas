@@ -16,6 +16,10 @@ import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import {MenubarModule} from 'primeng/menubar';
+import {AvatarModule} from 'primeng/avatar';
+import {AvatarGroupModule} from 'primeng/avatargroup';
+import {BadgeModule} from 'primeng/badge';
 
 @NgModule({
   exports: [
@@ -35,6 +39,10 @@ import { TooltipModule } from 'primeng/tooltip';
     TableModule,
     ToastModule,
     TooltipModule,
+    MenubarModule,
+    AvatarModule,
+    AvatarGroupModule,
+    BadgeModule
   ],
 })
 export class PrimeNgModule { }
