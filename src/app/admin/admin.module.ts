@@ -15,9 +15,6 @@ import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormComponent } from './pages/branches/form/form-branch.component';
-import { ListComponent } from './pages/branches/list/list-branch.component';
-import { ViewComponent } from './pages/branches/view/view-branch.component';
 
 
 
@@ -33,9 +30,6 @@ import { ViewComponent } from './pages/branches/view/view-branch.component';
     ListRoomComponent,
     FormRoomComponent,
     ViewRoomComponent,
-    FormComponent,
-    ListComponent,
-    ViewComponent,
   ],
   imports: [
     CommonModule,
