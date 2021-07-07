@@ -19,16 +19,16 @@ export class ListBranchComponent implements OnInit {
   branches: Branch[] = [
     {
       "idSucursal" :1,
-      "nombre": "asesoftware",
+      "nombre": "torre sigma 1",
       "direccion":"lala",
-      "nit": 123,
+      "nit": "asesoftware",
       "aforoMaximoBranches":    23
     },
     {
       "idSucursal" :2,
-      "nombre": "asesoftware2",
+      "nombre": "torre sigma 2",
       "direccion":"lala2",
-      "nit": 123,
+      "nit": "asesoftware",
       "aforoMaximoBranches":    24
     }
   ];

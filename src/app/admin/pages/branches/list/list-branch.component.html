@@ -22,8 +22,11 @@
             <th pSortableColumn="idSucursal">
                 <strong> No. </strong> <p-sortIcon field="code"></p-sortIcon> 
             </th>
+            <th pSortableColumn="aforoMaximoBranches"> 
+                Nombre Empresa<p-sortIcon field="code"></p-sortIcon> 
+            </th>
             <th pSortableColumn="nombre"> 
-                Nombre <p-sortIcon field="code"></p-sortIcon> 
+                Nombre Sucursal <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th pSortableColumn="direccion"> 
                 Dirección <p-sortIcon field="code"></p-sortIcon> 
@@ -41,15 +44,19 @@
                 <strong> {{branch.idSucursal}} </strong> 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Nombre </strong></span>
+                <span class="p-column-title"><strong> Nombre Empresa </strong></span>
+                <strong> {{branch.nit | titlecase}} </strong> 
+            </td>
+            <td> 
+                <span class="p-column-title"><strong> Nombre Sucursal </strong></span>
                 {{branch.nombre | titlecase}} 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Aforo Max. </strong></span>
+                <span class="p-column-title"><strong> Dirección </strong></span>
                 {{branch.direccion}} 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Estado Dominio </strong></span>
+                <span class="p-column-title"><strong> Aforo Maximo Branches </strong></span>
                 {{branch.aforoMaximoBranches}} 
             </td>
             
