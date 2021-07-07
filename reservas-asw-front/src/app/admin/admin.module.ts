@@ -15,6 +15,9 @@ import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ViewWorkstationComponent } from './pages/workstation/view-workstation/view-workstation.component';
+import { ListWorkstationComponent } from './pages/workstation/list-workstation/list-workstation.component';
+import { FormWorkstationComponent } from './pages/workstation/form-workstation/form-workstation.component';
 
 
 
@@ -30,6 +33,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ListRoomComponent,
     FormRoomComponent,
     ViewRoomComponent,
+    ViewWorkstationComponent,
+    ListWorkstationComponent,
+    FormWorkstationComponent,
   ],
   imports: [
     CommonModule,
