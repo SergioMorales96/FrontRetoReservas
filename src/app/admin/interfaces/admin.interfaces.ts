@@ -41,8 +41,9 @@ export interface BranchesResponse{
 
 export interface Branch{
     idSucursal:     number;
-    nombre:         string;
+    aforoMaximo:    number;
     direccion:      string;
-    nit:            string;
-    aforoMaximoBranches:    number;
+    nit:            number;
+    nombre:         string;
+    nombreEmpresa:  string;
 }

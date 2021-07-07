@@ -11,19 +11,22 @@ export class ListBranchComponent {
   routeName = RouteName;
   branches: Branch[] = [
     {
-      "idSucursal" :1,
-      "nombre": "torre sigma 1",
-      "direccion":"lala",
-      "nit": "asesoftware",
-      "aforoMaximoBranches":    23
+      "idSucursal":     1,
+      "aforoMaximo":    23,
+      "direccion":      "lala",
+      "nit":            9000,
+      "nombre":         "torre",
+      "nombreEmpresa":  "asesoftware"
     },
     {
-      "idSucursal" :2,
-      "nombre": "torre sigma 2",
-      "direccion":"lala2",
-      "nit": "asesoftware",
-      "aforoMaximoBranches":    24
-    }
+      "idSucursal":     2,
+      "aforoMaximo":    24,
+      "direccion":      "lala",
+      "nit":            9000,
+      "nombre":         "torre",
+      "nombreEmpresa":  "asesoftware"
+    },
+
   ];
 
   constructor(

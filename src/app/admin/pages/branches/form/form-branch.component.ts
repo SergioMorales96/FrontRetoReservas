@@ -40,11 +40,13 @@ export class FormBranchComponent implements OnInit {
           console.log( 'room id', id );
 
           this.branch = {
-            idSucursal: 1,
-            aforoMaximoBranches: 23,
-            nit:"1234",
-            direccion: "123",
-            nombre: "ASESOFTWARE"
+            idSucursal:     1,
+            aforoMaximo:    23,
+            direccion:      "123",
+            nit:            123,
+            nombre:         "Torre sigma",
+            nombreEmpresa:  "ASESOFTWARE",
+
           }
 
           this.setBranch( this.branch );
@@ -54,7 +56,7 @@ export class FormBranchComponent implements OnInit {
 
   setBranch( branch: Branch ): void {
     this.branchForm.controls['name'].setValue( branch.nombre );
-    this.branchForm.controls['maxCapacity'].setValue( branch.aforoMaximoBranches );
+    this.branchForm.controls['maxCapacity'].setValue( branch.aforoMaximo );
     this.branchForm.controls['direccion'].setValue( branch.direccion);
     this.branchForm.controls['nit'].setValue( branch.nit);
   }
