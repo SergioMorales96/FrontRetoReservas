@@ -45,6 +45,22 @@ export class AddAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params
+      .subscribe(({ id }) => {
+        if ( id ) {
+          this.isEditing = true;
+          console.log( 'admin id', id );
+
+          this.admin = {
+            idAdministrador: 1,
+            email:          "spinillia@asesoftware.com",
+            idSucursal:      1,
+            nombreSucursal: "TORRE SIGMA"
+          }
+
+          this.setAdmin( this.admin );
+        }
+      });
 
 
 
