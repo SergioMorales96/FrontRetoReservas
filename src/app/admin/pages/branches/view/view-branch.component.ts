@@ -16,7 +16,6 @@ export class ViewBranchComponent implements OnInit {
     return this.branch.nombre ? this.branch.nombre : 'Ver sucursal';
   }
 
-  
 
   constructor(
     private activatedRoute: ActivatedRoute
