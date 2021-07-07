@@ -27,6 +27,16 @@ export class FormFloorComponent implements OnInit {
       nombreEmpresa: "ASESOFTWARE"
     }
   ];
+
+  piso: Floor[]=[
+    {
+    idPiso: 6,
+    aforoMaximo: 501,
+    idSucursal: 1,
+    nombre: "Piso pruebamodi",
+    numeroPiso: 22,
+  }
+  ]
   
   isEditing: boolean = false;
   floor!: Floor;
@@ -75,5 +85,5 @@ export class FormFloorComponent implements OnInit {
     console.log('save Floor', this.floorForm.value);
   }
 
-
+}
 

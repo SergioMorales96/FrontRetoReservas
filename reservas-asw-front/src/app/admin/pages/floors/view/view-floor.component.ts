@@ -31,7 +31,7 @@ export class ViewFloorComponent implements OnInit {
           idSucursal: 1,
           nombre:"Piso pruebamodi",
           numeroPiso: 22,
-          // nombreSucursal: "TORRE SIGMA"
+          
         }
       }
     });

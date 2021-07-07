@@ -41,23 +41,25 @@
 
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
-        <label for="numberFloor">numero de piso</label>
-        <input 
-            id="numberFloor" 
-            type="text" 
-            formControlName="numberFloor" 
-            placeholder="Numero de piso" 
-            pInputText
-            required>
+        <label for="numberFloor">Numero de Piso</label>
+        <p-dropdown 
+        [options]="piso"
+        optionLabel="numeroPiso"
+        optionValue="numeroPiso"
+        emptyMessage="No se encontraron resultados"
+        placeholder="Numero de piso"
+        formControlName="numberFloor"
+        requried>
+    </p-dropdown>
     </div>
     <div class="p-field p-col">
-        <label for="floorId">Piso relacionado</label>
+        <label for="floorId">Nombre Sucursal</label>
         <p-dropdown 
             [options]="sucursal"
             optionLabel="nombre"
             optionValue="idSucursal"
             emptyMessage="No se encontraron resultados"
-            placeholder="sucursal relacionada"
+            placeholder="Nombre sucursal"
             formControlName="branchId"
             requried>
         </p-dropdown>
