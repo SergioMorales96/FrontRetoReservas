@@ -53,7 +53,7 @@ export class FormRoomComponent implements OnInit {
       .subscribe(({ id }) => {
         if ( id ) {
           this.isEditing = true;
-          console.log( 'room id', id );
+          console.log( 'floor id', id );
 
           this.room = {
             idSala: 1,

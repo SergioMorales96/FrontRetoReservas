@@ -14,7 +14,6 @@ import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { FormFloorComponent } from './pages/floors/form/form.floor.component';
-
 const routes: Routes = [
   {
     path: '',

@@ -6,8 +6,8 @@ export enum RouteName {
 }
 
 export enum RouteFloor{
-    FloorList = '/admin/rooms/list',
-    FloorView = '/admin/rooms/view',
-    FloorAdd = '/admin/rooms/add',
-    FloorEdit = '/admin/rooms/edit',
+    FloorList = '/admin/floors/list',
+    FloorView = '/admin/floors/view',
+    FloorAdd = '/admin/floors/add',
+    FloorEdit = '/admin/floors/edit',
 }
