@@ -4,5 +4,10 @@ export enum RouteName {
     RoomAdd = '/admin/rooms/add',
     RoomEdit = '/admin/rooms/edit',   
 
-    WorkstationList = '/admin/workstation/list',
+    WorkstationList = '/admin/workstations/list',
+    WorkstationView = '/admin/workstations/view',
+    WorkstationAdd = '/admin/workstations/add',
+    WorkstationEdit = '/admin/workstations/edit',
+
+
 }
