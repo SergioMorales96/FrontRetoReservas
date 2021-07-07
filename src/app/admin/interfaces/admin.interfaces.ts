@@ -31,3 +31,18 @@ export interface Floor {
     nombre:      string;
     numeroPiso:  number;
 }
+
+export interface BranchesResponse{
+    data:    Branch[];
+    success: boolean;
+    message: string;
+    status:  string;
+}
+
+export interface Branch{
+    idSucursal:     number;
+    nombre:         string;
+    direccion:      string;
+    nit:            number;
+    aforoMaximoBranches:    number;
+}
