@@ -15,7 +15,7 @@ import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddFloorComponent } from './pages/floors/add/add.floor.component';
+import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 
@@ -26,7 +26,7 @@ import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
     BranchesComponent,
     DomainsComponent,
     FloorsComponent,
-    AddFloorComponent,
+    FormFloorComponent,
     ListfloorComponent,
     ViewFloorComponent,
     RoomsComponent,

@@ -6,11 +6,12 @@ export interface FloorResponse {
     status:  string;
 }
 
-export interface Floor{
+export interface Floor {
     idPiso:      number;
     aforoMaximo: number;
     idSucursal:  number;
     nombre:      string;
     numeroPiso:  number;
+    nombreSucursal: string;
 }
 

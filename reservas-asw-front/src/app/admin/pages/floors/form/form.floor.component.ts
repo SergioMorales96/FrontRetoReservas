@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-add',
-  templateUrl: './add.floor.component.html',
+  templateUrl: './form.floor.component.html',
   styles: [
   ]
 })
-export class AddFloorComponent implements OnInit {
+export class FormFloorComponent implements OnInit {
 
   constructor() { }
 
