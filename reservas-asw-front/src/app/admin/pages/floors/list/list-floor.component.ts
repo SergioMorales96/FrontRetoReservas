@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Floor } from '../../../interfaces/floors.interfaces';
+import { RouteFloor } from '../../../../../utils/enums';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-list-floor',
   templateUrl: './list-floor.component.html',
-  styles: [
-  ]
+  styleUrls: ['./list-floor.component.scss']
 })
 export class ListfloorComponent{
+  routeFloor=RouteFloor;
   floors: Floor[] = [
     {
       "idPiso": 6,
@@ -51,7 +52,16 @@ export class ListfloorComponent{
       "nombre": "Piso 20",
       "numeroPiso": 20
   }
-  ]
+  ];
+  constructor(
+    
+    ) {
+  
+    }
+  
+    deleteFloor( id: number ): void {
+      console.log( id );
+    }
 
   
 }

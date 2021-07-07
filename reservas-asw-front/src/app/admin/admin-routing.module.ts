@@ -11,7 +11,7 @@ import { WorkstationComponent } from './pages/workstation/workstation.component'
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
-import { ListfloorComponent } from './pages/floors/table/list-floor.component';
+import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { AddFloorComponent } from './pages/floors/add/add.floor.component';
 
