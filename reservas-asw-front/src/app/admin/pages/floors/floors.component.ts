@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteFloor } from '../../../../utils/enums';
+import { FloorsService } from '../../services/floors.service';
 
 @Component({
   selector: 'app-floors',
@@ -7,8 +8,19 @@ import { RouteFloor } from '../../../../utils/enums';
   styles: [
   ]
 })
-export class FloorsComponent  {
+export class FloorsComponent implements OnInit{
 routeFloor = RouteFloor;
- 
+
+constructor(
+  private floorsService: FloorsService
+){}
+
+ngOnInit(){
+  this.floorsService.getFloors().subscribe(
+    (result: any) => {
+      console.log(result);
+    }
+    
+  )}
 
 }
