@@ -3,7 +3,7 @@
     <h3>Listado de puestos de trabajo</h3>
     <a 
         pButton 
-        [routerLink]="routeName.RoomAdd" 
+        [routerLink]="routeName.WorkstationAdd" 
         class="button-link p-button-success" 
         icon="pi pi-plus"
         pTooltip="Agregar" 
@@ -29,7 +29,7 @@
                 Tipo <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th pSortableColumn="idPiso"> 
-                N Piso <p-sortIcon field="code"></p-sortIcon> 
+                No.Piso <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th pSortableColumn="nombre"> 
                 Nombre <p-sortIcon field="code"></p-sortIcon> 
@@ -43,33 +43,34 @@
     <ng-template pTemplate="body" let-workstations>
         <tr [pSelectableRow]="workstations">
             <td> 
-                <span class="p-column-title"><strong> No. </strong></span>
-                <strong> {{ workstations.idPuestoDeTrabajo }} </strong> 
+                <span class="p-column-title"><strong>  </strong></span>
+                <strong> {{ workstations.idPuestoTrabajo }} </strong> 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Estado </strong></span>
+                <span class="p-column-title"><strong>  </strong></span>
                 <strong> {{ workstations.dominioEstado }} </strong> 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Tipo </strong></span>
+                <span class="p-column-title"><strong>  </strong></span>
                 <strong> {{ workstations.dominioTipo }} </strong> 
             </td>
             <td> 
-                <span class="p-column-title"><strong> No. Piso </strong></span>
+                <span class="p-column-title"><strong>  </strong></span>
                 <strong> {{ workstations.idPiso }} </strong> 
             </td>
             <td> 
-                <span class="p-column-title"><strong> Nombre </strong></span>
-                {{ workstations.nombre | titlecase }} 
+                <span class="p-column-title"><strong>{{ workstations.nombre | titlecase }}   </strong></span>
+                
             </td>
             <td> 
-                <span class="p-column-title"><strong> Nombre Piso </strong></span>
-                {{ workstations.nombrePiso } 
+                <span class="p-column-title"><strong>{{ workstations.nombrePiso }}  </strong></span>
+                
             </td>
+
             <td>
                 <a 
                     pButton 
-                    [routerLink]="[routeName.RoomView, workstations.idPuestoDeTrabajo]" 
+                    [routerLink]="[routeName.WorkstationView, workstations.idPuestoTrabajo]" 
                     class="button-link p-button-help p-mr-1" 
                     icon="pi pi-eye" 
                     pTooltip="Ver" 
@@ -77,7 +78,7 @@
                 </a>
                 <a 
                     pButton 
-                    [routerLink]="[routeName.RoomEdit, workstations.idPuestoDeTrabajo]" 
+                    [routerLink]="[routeName.WorkstationEdit, workstations.idPuestoTrabajo]" 
                     class="button-link p-button-info p-mr-1" 
                     icon="pi pi-pencil" 
                     pTooltip="Editar" 
@@ -90,7 +91,7 @@
                     icon="pi pi-times" 
                     pTooltip="Eliminar" 
                     tooltipPosition="top" 
-                    (click)="deleteRoom( workstations.idPuestoDeTrabajo )">
+                    (click)="deleteWorkstation( workstations.idPuestoDeTrabajo )">
                 </button>
             </td>
         </tr>

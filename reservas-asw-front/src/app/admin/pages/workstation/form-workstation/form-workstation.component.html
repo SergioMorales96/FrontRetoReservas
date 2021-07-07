@@ -21,18 +21,7 @@
                 minlength="3"
                 maxlength="100">
         </div>
-        <div class="p-field p-col">
-            <label for="floorName">Nombre Piso</label>
-            <input 
-                id="name" 
-                type="text" 
-                formControlName="name" 
-                placeholder="Nombre" 
-                pInputText
-                required
-                minlength="3"
-                maxlength="100">
-        </div>
+    
     </div>
 
     <div class="p-fluid p-formgrid p-grid">
@@ -43,6 +32,16 @@
                 type="text" 
                 formControlName="domainState" 
                 placeholder="Estado dominio" 
+                pInputText
+                required>
+        </div>
+        <div class="p-field p-col">
+            <label for="domainTipe">Tipo dominio</label>
+            <input 
+                id="domainTipe" 
+                type="text" 
+                formControlName="domainTipe" 
+                placeholder="Tipo dominio" 
                 pInputText
                 required>
         </div>

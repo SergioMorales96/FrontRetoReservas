@@ -33,6 +33,7 @@ export class FormWorkstationComponent implements OnInit {
       numeroPiso: 1
     }
   ];
+  
   isEditing: boolean = false;
   workstation!: Workstation;
 
@@ -61,7 +62,7 @@ export class FormWorkstationComponent implements OnInit {
           dominioEstado: DominioEstado.A,
           dominioTipo: DominioTipo.G,
           idPiso: 1,
-          nombre: "SALA 1",
+          nombre: "Nombre_Puesto_Trabajo_prueba",
           nombrePiso: NombrePiso.Piso18,
         }
 
@@ -82,7 +83,5 @@ setWorkstation( workstation: Workstation ): void {
 saveWorkstation(): void {
   console.log('save Workstation', this.workstationForm.value);
 }
-
-  
 
 }

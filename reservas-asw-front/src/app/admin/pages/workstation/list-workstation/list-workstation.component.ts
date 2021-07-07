@@ -88,7 +88,7 @@ export class ListWorkstationComponent {
 
   constructor() { }
 
-  deleteRoom( id: number ): void {
+  deleteWorkstation( id: number ): void {
     console.log( id );
   }
 
