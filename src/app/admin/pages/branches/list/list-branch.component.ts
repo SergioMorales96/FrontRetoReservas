@@ -14,7 +14,7 @@ export class ListBranchComponent {
       "idSucursal":     1,
       "aforoMaximo":    23,
       "direccion":      "lala",
-      "nit":            9000,
+      "nit":            "9000",
       "nombre":         "torre",
       "nombreEmpresa":  "asesoftware"
     },
@@ -22,7 +22,7 @@ export class ListBranchComponent {
       "idSucursal":     2,
       "aforoMaximo":    24,
       "direccion":      "lala",
-      "nit":            9000,
+      "nit":            "9000",
       "nombre":         "torre",
       "nombreEmpresa":  "asesoftware"
     },

@@ -43,7 +43,7 @@ export class FormBranchComponent implements OnInit {
             idSucursal:     1,
             aforoMaximo:    23,
             direccion:      "123",
-            nit:            123,
+            nit:            "123",
             nombre:         "Torre sigma",
             nombreEmpresa:  "ASESOFTWARE",
 
