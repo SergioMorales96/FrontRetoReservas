@@ -19,17 +19,17 @@
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="idSala">
+            <th pSortableColumn="idSucursal">
                 <strong> No. </strong> <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th pSortableColumn="nombre"> 
                 Nombre <p-sortIcon field="code"></p-sortIcon> 
             </th>
-            <th pSortableColumn="aforoMax"> 
-                Aforo Max. <p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="direccion"> 
+                Dirección <p-sortIcon field="code"></p-sortIcon> 
             </th>
-            <th pSortableColumn="dominioEstado"> 
-                Direccion <p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="aforoMaximoBranches"> 
+                Aforo Maximo <p-sortIcon field="code"></p-sortIcon> 
             </th>
             <th></th>
         </tr>
@@ -46,11 +46,11 @@
             </td>
             <td> 
                 <span class="p-column-title"><strong> Aforo Max. </strong></span>
-                {{branch.aforoMaximoBranches}} 
+                {{branch.direccion}} 
             </td>
             <td> 
                 <span class="p-column-title"><strong> Estado Dominio </strong></span>
-                {{branch.direccion}} 
+                {{branch.aforoMaximoBranches}} 
             </td>
             
             <td>
