@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+<<<<<<< HEAD
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+=======
+import { RouterModule } from '@angular/router';
+>>>>>>> origin/team-0
 
 import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 
@@ -31,6 +35,7 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     RouterModule,
     CommonModule,
+    RouterModule,
     PrimeNgModule
   ]
 })

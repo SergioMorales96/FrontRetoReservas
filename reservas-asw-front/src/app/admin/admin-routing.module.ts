@@ -8,9 +8,15 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+<<<<<<< HEAD
 import { ListfloorComponent } from './pages/floors/table/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { AddFloorComponent } from './pages/floors/add/add.floor.component';
+=======
+import { ListRoomComponent } from './pages/rooms/list/list-room.component';
+import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
+import { FormRoomComponent } from './pages/rooms/form/form-room.component';
+>>>>>>> origin/team-0
 
 const routes: Routes = [
   {
@@ -58,7 +64,29 @@ const routes: Routes = [
       },
       {
         path: 'rooms',
-        component: RoomsComponent
+        component: RoomsComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListRoomComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewRoomComponent
+          },
+          {
+            path: 'add',
+            component: FormRoomComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormRoomComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       {
         path: 'schedules',
@@ -70,7 +98,11 @@ const routes: Routes = [
       },
       {
         path: '**',
+<<<<<<< HEAD
         redirectTo:'admins'
+=======
+        redirectTo: 'admins'
+>>>>>>> origin/team-0
       }
 
     ]
