@@ -7,7 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { FloorsComponent } from './admin/pages/floors/floors.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
 
 @NgModule({
   declarations: [
@@ -19,8 +21,9 @@ import { FloorsComponent } from './admin/pages/floors/floors.component';
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
+    ToastModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

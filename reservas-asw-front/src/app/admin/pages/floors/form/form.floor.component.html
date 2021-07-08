@@ -66,16 +66,15 @@
     </div>
 </div>
 <div class="p-d-flex p-jc-end p-mt-4">
-    <div class="p-field p-col">
+    <div class="p-field p-col" >
         <button 
             pButton 
             type="submit" 
             class="p-button-success" 
             [label]="buttonLabel"
-            [disabled]="!floorForm.valid">
+            [disabled]="!floorForm.valid" 
+            (click)="saveFloor()">
         </button>
     </div>
 </div>
-
-
 </form>
