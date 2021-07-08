@@ -21,7 +21,7 @@ export class FormBranchComponent implements OnInit {
   branch!: Branch;
 
   get formTitle(): string {
-    return this.isEditing ? ( this.branch.nombre ?? 'Editar sucursal' ) : 'Crear sucursal';
+    return this.isEditing ? (this.branch.nombre ?? 'Editar sucursal') : 'Crear sucursal';
   }
 
   get buttonLabel(): string {
@@ -32,51 +32,62 @@ export class FormBranchComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private api: BranchesService
-
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params
       .subscribe(({ id }) => {
-        if ( id ) {
+        if (id) {
           this.isEditing = true;
-          console.log( 'branch id', id );
+          console.log('branch id', id);
 
           this.branch = {
             idSucursal: 1,
-            aforoMaximo: 23,
-            nit:"1234",
-            direccion: "123",
-            nombre: "ASESOFTWARE",
+            nombre: this.branchForm.controls['name'].value,
+            direccion: this.branchForm.controls['direccion'].value,
+            nit:this.branchForm.controls['nit'].value,
+            aforoMaximo: this.branchForm.controls['maxCapacity'].value,
             nombreEmpresa: "ASESOFTWARE",
           }
 
-          this.setBranch( this.branch );
+          this.setBranch(this.branch);
         }
       });
   }
 
-  setBranch( branch: Branch ): void {
-    this.branchForm.controls['name'].setValue( branch.nombre );
-    this.branchForm.controls['maxCapacity'].setValue( branch.aforoMaximo );
-    this.branchForm.controls['direccion'].setValue( branch.direccion);
-    this.branchForm.controls['nit'].setValue( branch.nit);
+  setBranch(branch: Branch): void {
+    this.branchForm.controls['name'].setValue(branch.nombre);
+    this.branchForm.controls['maxCapacity'].setValue(branch.aforoMaximo);
+    this.branchForm.controls['direccion'].setValue(branch.direccion);
+    this.branchForm.controls['nit'].setValue(branch.nit);
   }
 
   saveBranch(): void {
     console.log('save branch', this.branchForm.value);
   }
 
-  crearSucursal(){
+  createBranch() {
     const body = {
       aforoMaximo: this.branchForm.controls['maxCapacity'].value,
       direccion: this.branchForm.controls['direccion'].value,
       nit: this.branchForm.controls['nit'].value,
       nombre: this.branchForm.controls['name'].value,
-  }
-    this.api.crearSucursal(body).subscribe((respuesta)=>{
-      console.log("respuestaaaaaaaaaaaaaaa",respuesta);
+    }
+    this.api.createBranch(body).subscribe((respuesta) => {
+      console.log(respuesta);
     })
   }
+
+  // updateBranch() {
+  //   const body = {
+  //     aforoMaximo: this.branchForm.controls['maxCapacity'].value,
+  //     direccion: this.branchForm.controls['direccion'].value,
+  //     nit: this.branchForm.controls['nit'].value,
+  //     nombre: this.branchForm.controls['name'].value,
+  //   }
+  //   this.api.updateBranch(body).subscribe((respuesta) => {
+  //     console.log(respuesta);
+  //   })
+  // }
 
 }

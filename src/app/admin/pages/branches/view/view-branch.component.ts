@@ -30,11 +30,11 @@ export class ViewBranchComponent implements OnInit {
 
           this.branch = {
             idSucursal:     1,
-            aforoMaximo:    23,
-            direccion:      "calle 93",
-            nit:            "9000001",
-            aforoMaximo:    23,
-            nombreEmpresa: "ASESOFTWARE"
+            nombre:         "X",
+            direccion:      "X",
+            nit:            "X",
+            aforoMaximo:    1,
+            nombreEmpresa: "X"
           }
         }
       });

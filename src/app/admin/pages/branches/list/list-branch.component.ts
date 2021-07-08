@@ -22,11 +22,15 @@ export class ListBranchComponent implements OnInit {
   ) { }
 
   deleteBranch(id: number): void {
-    console.log(id);
+    this.api.deleteBranch(id).subscribe(
+      resultado => {
+        console.log(resultado);
+        this.getAll();
+      })
   }
 
   getAll() {
-    this.api.listarTodo().subscribe(
+    this.api.listAll().subscribe(
       resultado => {
         console.log(resultado);
         this.branches = resultado.data;
