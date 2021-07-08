@@ -1,28 +1,26 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-
     <h3> {{ formTitle }} </h3>
-
 </div>
 <form 
 [formGroup]="floorForm"
 (ngSubmit)="saveFloor()">
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
-        <label for="name">Nombre</label>
+        <label for="nombre">Nombre</label>
         <input 
-            id="name" 
+            id="nombre" 
             type="text" 
-            formControlName="name" 
-            placeholder="Nombre" 
+            formControlName="nombre" 
+            placeholder="nombre" 
             pInputText
             required
             minlength="3"
             maxlength="100">
     </div>
     <div class="p-field p-col">
-        <label for="maxCapacity">Aforo máximo</label>
+        <label for="aforoMaximo">Aforo máximo</label>
         <p-inputNumber 
-            id="maxCapacity" 
+            id="aforoMaximo" 
             [showButtons]="true" 
             buttonLayout="horizontal" 
             spinnerMode="horizontal"
@@ -30,7 +28,7 @@
             incrementButtonClass="p-button-success" 
             incrementButtonIcon="pi pi-plus" 
             decrementButtonIcon="pi pi-minus"
-            formControlName="maxCapacity"
+            formControlName="aforoMaximo"
             [min]="0"
             [max]="100"
             readonly
@@ -41,28 +39,45 @@
 
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
-        <label for="numberFloor">Numero de Piso</label>
-        <p-dropdown 
-        [options]="piso"
+        <label for="numeroPiso">Numero de Piso</label>
+        <p-inputNumber
         optionLabel="numeroPiso"
         optionValue="numeroPiso"
         emptyMessage="No se encontraron resultados"
         placeholder="Numero de piso"
-        formControlName="numberFloor"
+        formControlName="numeroPiso"
         requried>
-    </p-dropdown>
+        </p-inputNumber>
     </div>
     <div class="p-field p-col">
-        <label for="floorId">Nombre Sucursal</label>
+        <label for="idSucursal">Nombre Sucursal</label>
         <p-dropdown 
             [options]="sucursal"
             optionLabel="nombre"
             optionValue="idSucursal"
             emptyMessage="No se encontraron resultados"
             placeholder="Nombre sucursal"
-            formControlName="branchId"
+            formControlName="idSucursal"
             requried>
         </p-dropdown>
+    </div>
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <label for="idPiso">Numero de Piso</label>
+        <p-inputNumber 
+            id="idPiso" 
+            decrementButtonClass="p-button-danger" 
+            incrementButtonClass="p-button-success" 
+            incrementButtonIcon="pi pi-plus" 
+            decrementButtonIcon="pi pi-minus"
+            formControlName="idPiso"
+            readonly
+            requried>
+        </p-inputNumber>
+    </div>
+    <div class="p-field p-col">
     </div>
 </div>
 <div class="p-d-flex p-jc-end p-mt-4">
@@ -72,7 +87,7 @@
             type="submit" 
             class="p-button-success" 
             [label]="buttonLabel"
-            [disabled]="!floorForm.valid" 
+            [disabled]="!floorForm.valid"
             (click)="saveFloor()">
         </button>
     </div>

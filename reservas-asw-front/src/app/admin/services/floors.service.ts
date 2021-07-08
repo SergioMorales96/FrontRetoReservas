@@ -19,10 +19,8 @@ import { Floor } from '../interfaces/admin.interfaces';
       getFloors(): Observable<Floor[]>{
           return this.http.get<Floor[]>(`${ this.apiUrl}/todos`);
       }
-    
-      createFloor(floor: Floor): Observable<Floor[]>{
-          let headers = new HttpHeaders();
-          headers = headers.set('Content-Type', 'application/json');
-          return this.http.post<Floor[]>(`${this.apiUrl}/crear`,JSON.stringify(floor),{headers: headers});
-      }
+
+      addNewFloor(floor:Floor): Observable<Floor>{
+        return this.http.post<Floor>(`${ this.apiUrl}/crear`,floor);
+    }
   }

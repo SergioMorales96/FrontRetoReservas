@@ -18,25 +18,11 @@ constructor(
   private messageService: MessageService
 ){}
 
-// getFloor(): void {
-// this.floorsService.getFloors().subscribe(
-//   (result: any) => {
-//    let floor = result as Floor;
-//    floors.push(floor);
-//    }  
-//   )
-// }
-
-// createFloor(): void {
-//   this.floorsService.createFloor( floor ).subscribe(
-//     (result: any) => {
-//       let floor = result as Floor;
-//       this.floors.push(floor);
-//       this.messageService.add({severity: 'Success',summary: 'Message', detail: 'Se guardo informacion correctamnet'});
-//     }
-//   )
-// }
-
 ngOnInit(){
-}
+  this.floorsService.getFloors().subscribe(
+    (result: any) => {
+      console.log(result);
+    } 
+  )}
+  
 }
