@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Room, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { Room, DominioEstado, RoomResponse } from '../../../interfaces/admin.interfaces';
 import { RouteName } from '../../../../../utils/enums';
+import { RoomsService } from '../../../services/rooms.service';
 
 @Component({
   selector: 'app-list-room',
@@ -90,12 +91,15 @@ export class ListRoomComponent {
   ];
 
   constructor(
-    
+    private roomsService: RoomsService
   ) {
 
   }
 
   deleteRoom( id: number ): void {
-    console.log( id );
+    this.roomsService.deleteRoom(id)
+        .subscribe(
+          (roomResponse: RoomResponse) => this.rooms = this.rooms.filter((room: Room) => room.idSala !== id)
+        );
   }
 }

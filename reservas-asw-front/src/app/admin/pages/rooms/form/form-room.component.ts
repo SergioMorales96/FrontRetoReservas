@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Room, Floor, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Room, Floor, DominioEstado, RoomResponse, RoomClass } from '../../../interfaces/admin.interfaces';
+import { RoomsService } from '../../../services/rooms.service';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-form',
@@ -36,7 +38,7 @@ export class FormRoomComponent implements OnInit {
   room!: Room;
 
   get formTitle(): string {
-    return this.isEditing ? ( this.room.nombre ?? 'Editar sala' ) : 'Crear sala';
+    return this.isEditing ? ( this.room?.nombre ?? 'Editar sala' ) : 'Crear sala';
   }
 
   get buttonLabel(): string {
@@ -45,7 +47,9 @@ export class FormRoomComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private roomsService: RoomsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -53,19 +57,21 @@ export class FormRoomComponent implements OnInit {
       .subscribe(({ id }) => {
         if ( id ) {
           this.isEditing = true;
-          console.log( 'room id', id );
-
-          this.room = {
-            idSala: 1,
-            aforoMax: 6,
-            dominioEstado: DominioEstado.A,
-            idPiso: 1,
-            nombre: "SALA 1"
-          }
-
-          this.setRoom( this.room );
+          this.getRoom(id);
+        }else{
+          this.room = new RoomClass();
         }
       });
+  }
+
+  getRoom(id: Number): void{
+    this.roomsService.getRoom(id)
+      .subscribe(
+        (roomResponse: RoomResponse) => {
+          this.room = roomResponse.data;
+          this.setRoom(this.room);
+        }
+      );
   }
 
   setRoom( room: Room ): void {
@@ -75,8 +81,25 @@ export class FormRoomComponent implements OnInit {
     this.roomForm.controls['floorId'].setValue( room.idPiso );
   }
 
-  saveRoom(): void {
-    console.log('save room', this.roomForm.value);
+  getRoomFormValue(): Room {
+    return {
+      nombre: this.roomForm.controls['name'].value,
+      aforoMax: this.roomForm.controls['maxCapacity'].value,
+      dominioEstado: this.roomForm.controls['domainState'].value,
+      idPiso: this.roomForm.controls['floorId'].value,
+    }
+  }
+
+  save(): void {
+    if(this.isEditing){
+      this.roomsService.updateRoom({
+        ...this.getRoomFormValue(),
+        idSala: this.room.idSala
+      })
+        .subscribe(
+          (roomResponce: RoomResponse) => this.router.navigateByUrl(RouteName.RoomsList)
+        );
+    }
   }
 
 }
