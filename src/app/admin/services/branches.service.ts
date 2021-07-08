@@ -21,22 +21,26 @@ export class BranchesService {
   // }
 
   listAll(): Observable<any> {
-    const url = 'http://localhost:8089/api/v1/sucursales/all';
+    // const url = 'http://localhost:8089/api/v1/sucursales/all';
+    const url = `${environment.baseUrl}/sucursales/all`;
     return this.http.get(url);
   }
 
   createBranch(body: any): Observable<any> {
-    const url = 'http://localhost:8089/api/v1/sucursales/crear';
+    // const url = 'http://localhost:8089/api/v1/sucursales/crear';
+    const url = `${environment.baseUrl}/sucursales/crear`;
     return this.http.post<any>(url, body);
   }
 
   updateBranch(body: any): Observable<any> {
-    const url = 'http://localhost:8089/api/v1/sucursales/editar';
+    // const url = 'http://localhost:8089/api/v1/sucursales/editar';
+    const url = `${environment.baseUrl}/sucursales/editar`;
     return this.http.post<any>(url, body);
   }
 
   deleteBranch(id: number): Observable<any> {
-    const url = `http://localhost:8089/api/v1/sucursales/delete/` +`${id}`;
+    // const url = `http://localhost:8089/api/v1/sucursales/delete/` +`${id}`;
+    const url = `${environment.baseUrl}/sucursales/delete/` + `${id}`;
     return this.http.get(url);
   }
 

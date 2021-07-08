@@ -32,7 +32,7 @@ export class ListBranchComponent implements OnInit {
   getAll() {
     this.api.listAll().subscribe(
       resultado => {
-        console.log(resultado);
+        // console.log(resultado);
         this.branches = resultado.data;
       })
   }
