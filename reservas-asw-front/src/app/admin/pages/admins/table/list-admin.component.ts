@@ -1,4 +1,5 @@
-import { Component, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AdminsService } from 'src/app/admin/services/admins.service';
 import { Administrador } from '../../../interfaces/admin.interfaces';
 
 @Component({
@@ -7,25 +8,25 @@ import { Administrador } from '../../../interfaces/admin.interfaces';
   styles: [
   ]
 })
-export class ListAdminComponent {
-  admins: Administrador[] = [
-    {
-      "idAdministrador": 1,
-      "email": "spinilla@asesoftware.com",
-      "idSucursal": 1,
-      "nombreSucursal": "TORRE SIGMA"
-  },
-  {
-      "idAdministrador": 3,
-      "email": "spinilla@asesoftware.com",
-      "idSucursal": 1,
-      "nombreSucursal": "TORRE SIGMA"
+export class ListAdminComponent implements OnInit {
+  admins: Administrador[] = [];
+
+  term: string = '';
+
+  constructor(
+    private adminService: AdminsService
+  ) { }
+  ngOnInit(): void {
+    this.adminService.getAdmins();
   }
-  ]
 
-  selectedAdmin!:Administrador;
+  get results():Administrador[] {
+    return this.adminService.result;
+  }
 
-  deleteAdmin(idAdministrador: number ):void {
+  selectedAdmin!: Administrador;
+
+  deleteAdmin(idAdministrador: number): void {
     console.log(idAdministrador);
   };
 }
