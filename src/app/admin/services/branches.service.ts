@@ -25,5 +25,11 @@ export class BranchesService {
     return this.http.get(url);
   }
 
+  crearSucursal(body:any):Observable<any>
+{  
+  const url = 'http://localhost:8089/api/v1/sucursales/crear';
+  return this.http.post<any>(url, body);
+}
+
 
 }

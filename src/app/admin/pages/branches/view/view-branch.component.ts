@@ -13,13 +13,14 @@ export class ViewBranchComponent implements OnInit {
   branch!: Branch;
 
   get viewTitle(): string {
-    return this.branch.nit ? this.branch.nit : 'Ver sucursal';
+    return this.branch.nombre ? this.branch.nombre : 'Ver sucursal';
   }
 
 
   constructor(
     private activatedRoute: ActivatedRoute
   ) { }
+  
 
   ngOnInit(): void {
     this.activatedRoute.params
@@ -31,8 +32,9 @@ export class ViewBranchComponent implements OnInit {
             idSucursal:     1,
             nombre:         "Torre sigma 1",
             direccion:      "calle 93",
-            nit:            "ASESOFTWARE",
-            aforoMaximoBranches:    23,
+            nit:            "9000001",
+            aforoMaximo:    23,
+            nombreEmpresa: "ASESOFTWARE"
           }
         }
       });

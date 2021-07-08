@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Branch } from 'src/app/admin/interfaces/admin.interfaces';
+import { BranchesService } from '../../../services/branches.service';
 
 @Component({
   selector: 'app-form-branch',
@@ -29,7 +30,9 @@ export class FormBranchComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private api: BranchesService
+
   ) { }
 
   ngOnInit(): void {
@@ -37,14 +40,15 @@ export class FormBranchComponent implements OnInit {
       .subscribe(({ id }) => {
         if ( id ) {
           this.isEditing = true;
-          console.log( 'room id', id );
+          console.log( 'branch id', id );
 
           this.branch = {
             idSucursal: 1,
-            aforoMaximoBranches: 23,
+            aforoMaximo: 23,
             nit:"1234",
             direccion: "123",
-            nombre: "ASESOFTWARE"
+            nombre: "ASESOFTWARE",
+            nombreEmpresa: "ASESOFTWARE",
           }
 
           this.setBranch( this.branch );
@@ -54,13 +58,25 @@ export class FormBranchComponent implements OnInit {
 
   setBranch( branch: Branch ): void {
     this.branchForm.controls['name'].setValue( branch.nombre );
-    this.branchForm.controls['maxCapacity'].setValue( branch.aforoMaximoBranches );
+    this.branchForm.controls['maxCapacity'].setValue( branch.aforoMaximo );
     this.branchForm.controls['direccion'].setValue( branch.direccion);
     this.branchForm.controls['nit'].setValue( branch.nit);
   }
 
-  saveRoom(): void {
+  saveBranch(): void {
     console.log('save branch', this.branchForm.value);
+  }
+
+  crearSucursal(){
+    const body = {
+      aforoMaximo: this.branchForm.controls['maxCapacity'].value,
+      direccion: this.branchForm.controls['direccion'].value,
+      nit: this.branchForm.controls['nit'].value,
+      nombre: this.branchForm.controls['name'].value,
+  }
+    this.api.crearSucursal(body).subscribe((respuesta)=>{
+      console.log("respuestaaaaaaaaaaaaaaa",respuesta);
+    })
   }
 
 }

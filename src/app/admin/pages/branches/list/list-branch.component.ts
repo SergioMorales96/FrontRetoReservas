@@ -10,43 +10,27 @@ import { BranchesService } from '../../../services/branches.service';
 })
 export class ListBranchComponent implements OnInit {
 
-  ngOnInit(){
+  ngOnInit() {
     this.getAll();
   }
 
-
   routeName = RouteName;
-  branches: Branch[] = [
-    {
-      "idSucursal" :1,
-      "nombre": "torre sigma 1",
-      "direccion":"lala",
-      "nit": "asesoftware",
-      "aforoMaximoBranches":    23
-    },
-    {
-      "idSucursal" :2,
-      "nombre": "torre sigma 2",
-      "direccion":"lala2",
-      "nit": "asesoftware",
-      "aforoMaximoBranches":    24
-    }
-  ];
-
+  branches: Branch[] = [];
 
   constructor(
     private api: BranchesService,
-  ) {
+  ) { }
 
+  deleteBranch(id: number): void {
+    console.log(id);
   }
 
-  deleteBranch( id: number ): void {
-    console.log( id );
-  }
-
-  getAll(){
-    this.api.listarTodo().subscribe(resultado => {console.log(resultado);
-    }) 
+  getAll() {
+    this.api.listarTodo().subscribe(
+      resultado => {
+        console.log(resultado);
+        this.branches = resultado.data;
+      })
   }
 
 }

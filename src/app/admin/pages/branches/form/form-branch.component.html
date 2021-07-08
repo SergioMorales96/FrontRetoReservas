@@ -6,7 +6,7 @@
 
 <form 
     [formGroup]="branchForm" 
-    (ngSubmit)="saveRoom()">
+    (ngSubmit)="saveBranch()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
@@ -70,6 +70,7 @@
             pButton 
             type="submit" 
             class="p-button-success" 
+            (click)="crearSucursal()"
             [label]="buttonLabel"
             [disabled]="!branchForm.valid">
         </button>
