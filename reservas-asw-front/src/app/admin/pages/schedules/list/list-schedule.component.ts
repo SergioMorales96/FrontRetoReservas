@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
-import { Schedule, DominioEstado, NombreSucursal } from '../../../interfaces/admin.interfaces';
+import { Schedule, NombreSucursal } from '../../../interfaces/admin.interfaces';
 import { RouteName } from '../../../../../utils/enums';
-
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import {Message} from 'primeng/api';
+import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-list',
   templateUrl: './list-schedule.component.html',
-  styleUrls: ['./list-schedule.component.scss']
+  styleUrls: ['./list-schedule.component.scss'],
+  providers:[MessageService,ConfirmationService]
 })
 export class ListScheduleComponent  {
   routeName = RouteName;
+  
+  msgs: Message[] = [];
+  position: string="";
   schedules: Schedule[] = [
     {
       "idHorario": 1,
@@ -111,14 +118,44 @@ export class ListScheduleComponent  {
     }
   ];
 
-  constructor(
+  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig
     
   ) {
 
   }
 
-  deleteSchedule( id: number ): void {
-    console.log( id );
+  ngOnInit() {
+    this.primengConfig.ripple = true;
   }
+
+  deleteSchedule( id: number ) {
+    console.log( id );
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de eliminar el Horario '+id+'?',
+      header: 'Confirmación de Eliminado',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+      this.schedules = this.schedules.filter(val => val.idHorario !== this.schedules[0].idHorario);
+      this.messageService.add({severity:'success', summary: 'Exitoso!', detail: 'Horario Eliminado', life: 3000});
+      }
+  });
+  
+  }
+
+  confirmPosition(position: string) {
+    this.position = position;
+    this.confirmationService.confirm({
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            this.msgs = [{severity:'info', summary:'Confirmado', detail:'Horario eliminado', life: 3000}];
+        },
+        reject: () => {
+            this.msgs = [{severity:'info', summary:'Rechazado', detail:'Lo acabaste de rechazar', life: 3000}];
+        },
+        key: "positionDialog"
+    });
+}
 
 }

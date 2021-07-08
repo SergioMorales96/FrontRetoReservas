@@ -1,6 +1,7 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3>Listado Horarios</h3>
+    <p-messages [value]="msgs" ></p-messages>
     <a 
         pButton 
         [routerLink]="routeName.ScheduleAdd" 
@@ -9,7 +10,7 @@
         pTooltip="Agregar" 
         tooltipPosition="top">
     </a>
-
+    
 </div>
 
 <p-table
@@ -43,6 +44,7 @@
             <th></th>
         </tr>
     </ng-template>
+    
     <ng-template pTemplate="body" let-schedule>
         <tr [pSelectableRow]="schedule">
             <td> 
@@ -73,7 +75,7 @@
                 <span class="p-column-title"></span>
                 {{schedule.nombreSucursal}} 
             </td>
-          
+            
             <td>
                 <a 
                     pButton 
@@ -90,17 +92,22 @@
                     icon="pi pi-pencil" 
                     pTooltip="Editar" 
                     tooltipPosition="top">
-                </a>
+                </a>  
+                
                 <button 
-                    pButton 
+                    pButton pRipple
                     class="button-link p-button-danger" 
                     type="button" 
                     icon="pi pi-times" 
                     pTooltip="Eliminar" 
                     tooltipPosition="top" 
-                    (click)="deleteSchedule( schedule.idHorario)">
+                    (click)="deleteSchedule(schedule.idHorario)">
+                    
                 </button>
+                
+           
             </td>
         </tr>
     </ng-template>
 </p-table>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

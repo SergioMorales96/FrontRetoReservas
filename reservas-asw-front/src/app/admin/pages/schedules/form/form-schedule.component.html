@@ -22,21 +22,21 @@
                 maxlength="100">
         </div>
         <div class="p-field p-col">
-            <label for="domainState">Hora de Inicio</label>
+            <label for="initHour">Hora de Inicio</label>
             <input 
-                id="domainState" 
+                id="initHour" 
                 type="text" 
-                formControlName="domainState" 
+                formControlName="initHour" 
                 placeholder="Hora Inicio (ej: 09:00)" 
                 pInputText
                 required>
         </div>
             <div class="p-field p-col">
-                <label for="domainState">Hora de Finalización</label>
+                <label for="endHour">Hora de Finalización</label>
                 <input 
-                    id="domainState" 
+                    id="endHour" 
                     type="text" 
-                    formControlName="domainState" 
+                    formControlName="endHour" 
                     placeholder="Hora Fin (ej: 11:00)" 
                     pInputText
                     required>
@@ -46,9 +46,9 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="maxCapacity">No. Horas</label>
+            <label for="numHours">No. Horas</label>
             <p-inputNumber 
-                id="maxCapacity" 
+                id="numHours" 
                 [showButtons]="true" 
                 buttonLayout="horizontal" 
                 spinnerMode="horizontal"
@@ -56,7 +56,7 @@
                 incrementButtonClass="p-button-success" 
                 incrementButtonIcon="pi pi-plus" 
                 decrementButtonIcon="pi pi-minus"
-                formControlName="maxCapacity"
+                formControlName="numHours"
                 [min]="0"
                 [max]="8"
                 readonly
@@ -65,14 +65,14 @@
             
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Sucursal relacionada</label>
+            <label for="branch">Sucursal relacionada</label>
             <p-dropdown 
                 [options]="branches"
                 optionLabel="nombre"
                 optionValue="idSucursal"
                 emptyMessage="No se encontraron resultados"
                 placeholder="Sucursal relacionada"
-                formControlName="floorId"
+                formControlName="branch"
                 requried>
             </p-dropdown>
         </div>

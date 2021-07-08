@@ -12,9 +12,10 @@ import { Schedule, Branch, NombreSucursal } from '../../../interfaces/admin.inte
 export class FormScheduleComponent implements OnInit{
   scheduleForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    maxCapacity: ['', [Validators.required]],
-    domainState: ['', [Validators.required]],
-    floorId: ['', [Validators.required]],
+    numHours: ['', [Validators.required]],
+    initHour: ['', [Validators.required]],
+    endHour: ['', [Validators.required]],
+    branch: ['', [Validators.required]],
   });
   branches: Branch[] = [
     {
@@ -52,7 +53,7 @@ export class FormScheduleComponent implements OnInit{
           this.schedule = {
           idHorario: 1,
           idSucursal:1,
-          numeroHoras: 5,
+          numeroHoras: 8,
           horaInicio: "15:00",
           horaFin: "18:00",
           nombre: "HORARIO 1",
@@ -69,9 +70,7 @@ export class FormScheduleComponent implements OnInit{
     this.scheduleForm.controls['numHours'].setValue( schedule.numeroHoras);
     this.scheduleForm.controls['initHour'].setValue( schedule.horaFin);
     this.scheduleForm.controls['endHour'].setValue( schedule.horaFin);
-    this.scheduleForm.controls['initHour'].setValue( schedule.horaFin);
     this.scheduleForm.controls['branch'].setValue( schedule.nombreSucursal);
-    this.scheduleForm.controls['idBranch'].setValue( schedule.idSucursal);
   }
 
   saveschedule(): void {
