@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteName } from 'src/utils/enums';
-import { Branch } from '../../../interfaces/admin.interfaces';
+import { Branch, BranchesResponse, BranchResponse } from '../../../interfaces/admin.interfaces';
 import { BranchesService } from '../../../services/branches.service';
 
 @Component({
@@ -10,31 +10,31 @@ import { BranchesService } from '../../../services/branches.service';
 })
 export class ListBranchComponent implements OnInit {
 
-  ngOnInit() {
-    this.getAll();
-  }
-
   routeName = RouteName;
   branches: Branch[] = [];
 
   constructor(
-    private api: BranchesService,
+    private branchesService: BranchesService,
   ) { }
 
-  deleteBranch(id: number): void {
-    this.api.deleteBranch(id).subscribe(
-      resultado => {
-        console.log(resultado);
-        this.getAll();
-      })
+  ngOnInit(): void {
+    this.getBranches();
   }
 
-  getAll() {
-    this.api.listAll().subscribe(
-      resultado => {
-        // console.log(resultado);
-        this.branches = resultado.data;
-      })
+  getBranches() {
+    this.branchesService.getBranches()
+      .subscribe(
+        (branchesRespose: BranchesResponse) => this.branches = branchesRespose.data
+      );
   }
+
+  deleteBranch(id: number): void {
+    this.branchesService.deleteBranch(id)
+      .subscribe(
+        (branchResponse: BranchResponse) => this.branches = this.branches.filter((branch: Branch) => branch.idSucursal !== id)
+        );
+  }
+
+
 
 }

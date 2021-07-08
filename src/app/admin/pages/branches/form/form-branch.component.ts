@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Branch } from 'src/app/admin/interfaces/admin.interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Branch, BranchClass, BranchResponse } from 'src/app/admin/interfaces/admin.interfaces';
 import { BranchesService } from '../../../services/branches.service';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-form-branch',
@@ -11,17 +12,19 @@ import { BranchesService } from '../../../services/branches.service';
   ]
 })
 export class FormBranchComponent implements OnInit {
+
   branchForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     maxCapacity: ['', [Validators.required]],
     direccion: ['', [Validators.required]],
     nit: ['', [Validators.required]],
   });
+
   isEditing: boolean = false;
   branch!: Branch;
 
   get formTitle(): string {
-    return this.isEditing ? (this.branch.nombre ?? 'Editar sucursal') : 'Crear sucursal';
+    return this.isEditing ? (this.branch?.nombre ?? 'Editar sucursal') : 'Crear sucursal';
   }
 
   get buttonLabel(): string {
@@ -31,7 +34,8 @@ export class FormBranchComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private api: BranchesService
+    private branchesService: BranchesService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -39,20 +43,21 @@ export class FormBranchComponent implements OnInit {
       .subscribe(({ id }) => {
         if (id) {
           this.isEditing = true;
-          console.log('branch id', id);
-
-          this.branch = {
-            idSucursal: 1,
-            nombre: this.branchForm.controls['name'].value,
-            direccion: this.branchForm.controls['direccion'].value,
-            nit:this.branchForm.controls['nit'].value,
-            aforoMaximo: this.branchForm.controls['maxCapacity'].value,
-            nombreEmpresa: "ASESOFTWARE",
-          }
-
-          this.setBranch(this.branch);
+          this.getBranch(id);
+        } else {
+          this.branch = new BranchClass();
         }
       });
+  }
+
+  getBranch(id: number): void {
+    this.branchesService.getBranch(id)
+      .subscribe(
+        (branchResponse: BranchResponse) => {
+          this.branch = branchResponse.data;
+          this.setBranch(this.branch);
+        }
+      )
   }
 
   setBranch(branch: Branch): void {
@@ -62,32 +67,29 @@ export class FormBranchComponent implements OnInit {
     this.branchForm.controls['nit'].setValue(branch.nit);
   }
 
-  saveBranch(): void {
-    console.log('save branch', this.branchForm.value);
-  }
-
-  createBranch() {
-    const body = {
+  getBranchFormValue(): Branch {
+    return {
       aforoMaximo: this.branchForm.controls['maxCapacity'].value,
       direccion: this.branchForm.controls['direccion'].value,
       nit: this.branchForm.controls['nit'].value,
       nombre: this.branchForm.controls['name'].value,
     }
-    this.api.createBranch(body).subscribe((respuesta) => {
-      console.log(respuesta);
-    })
   }
 
-  // updateBranch() {
-  //   const body = {
-  //     aforoMaximo: this.branchForm.controls['maxCapacity'].value,
-  //     direccion: this.branchForm.controls['direccion'].value,
-  //     nit: this.branchForm.controls['nit'].value,
-  //     nombre: this.branchForm.controls['name'].value,
-  //   }
-  //   this.api.updateBranch(body).subscribe((respuesta) => {
-  //     console.log(respuesta);
-  //   })
-  // }
-
+  save(): void {
+    if (this.isEditing) {
+      this.branchesService.updateBranch({
+        ...this.getBranchFormValue(),
+        idSucursal: this.branch.idSucursal
+      })
+        .subscribe(
+          (branchResponse: BranchResponse) => this.router.navigateByUrl(RouteName.BranchesList)
+        );
+    } else {
+      this.branchesService.createBranch(this.getBranchFormValue())
+        .subscribe(
+          (branchResponse: BranchResponse) => this.router.navigateByUrl(RouteName.BranchesList)
+        );
+    }
+  }
 }
