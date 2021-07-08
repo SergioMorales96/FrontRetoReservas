@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { Dominio } from '../../../interfaces/admin.interfaces';
+import {  Domain } from '../../../interfaces/admin.interfaces';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styles: [
-  ]
+  selector: 'app-list-domain',
+  templateUrl: './list-domain.component.html',
+  styleUrls: ['./list-domain.component.scss' ]
 })
-export class TableComponent {
-  dominios:Dominio[]=[
+export class ListDomainComponent {
+    routeName =RouteName;
+  domains: Domain[]=[
           {
               "codigoDominio": "ESTADO_RESERVA",
               "valorDominio": "R",
@@ -105,7 +106,10 @@ export class TableComponent {
               "descripcion": "PUESTO TRABAJO"
           }
   ];
-
-  
-
+  constructor() { 
+    }
+      
+    deleteDomain(cDomain: string): void{
+        console.log(cDomain);
+    }
 }

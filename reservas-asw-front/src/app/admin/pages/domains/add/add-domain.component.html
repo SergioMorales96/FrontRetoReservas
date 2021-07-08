@@ -1,0 +1,21 @@
+
+<form  [formGroup]="domainForm" class="p-fluid">
+
+    <div class="p-field">
+        <label for="firstname1">Codigo Dominio</label>
+        <input type="text" formControlCodigoDomain="codigoDominio" placeholder="Codigo Dominio">
+    </div>
+    <div class="p-field">
+        <label for="lastname1">Valor Dominio</label>
+        <input type="text" formControlValorDomain="valorDominio" placeholder="Valor Dominio">     
+    </div>
+    <div class="p-field">
+        <label for="lastname1">Descripcion</label>
+        <input type="text" formControlDescripcion="descripcion" placeholder="Descripcion"> 
+    </div>
+    <div class="p-field">
+        <button pButton type="submit" class="p-button-success" label="guardar"></button>
+    </div> 
+    
+</form>
+

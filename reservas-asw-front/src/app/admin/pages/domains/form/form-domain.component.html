@@ -1,0 +1,62 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3> {{ formTitle }} </h3>
+
+</div>
+
+<form 
+    [formGroup]="domainForm" 
+    (ngSubmit)="saveDomain()">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="codigoDominio">Codigo Dominio</label>
+            <input 
+                id="codigoDominio" 
+                type="text" 
+                formControlName="codigoDominio" 
+                placeholder="CodigoDominio" 
+                pInputText
+                required
+                minlength="3"
+                maxlength="100">
+        </div>
+        <div class="p-field p-col">
+            <label for="valorDominio">Valor Dominio</label>
+            <input
+                id="valorDominio" 
+                type="text"
+                formControlName="valorDominio"
+                placeholder="ValorDominio" 
+                pInputText
+                required
+                minlength="1"
+                maxlength="100">
+        </div>
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="descripcion">Descripcion</label>
+            <input 
+                id="descripcion" 
+                type="text" 
+                formControlName="descripcion" 
+                placeholder="Descripcion" 
+                pInputText
+                required>
+        </div>
+        
+    </div>
+
+    <div class="p-d-flex p-jc-end p-mt-4">
+        <button 
+            pButton 
+            type="submit" 
+            class="p-button-success" 
+            [label]="buttonLabel"
+            [disabled]="!domainForm.valid">
+        </button>
+    </div>
+
+</form>

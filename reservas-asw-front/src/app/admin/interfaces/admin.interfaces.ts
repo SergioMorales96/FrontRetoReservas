@@ -24,12 +24,24 @@ export interface FloorResponse {
 
 }
 
-
-
 export interface Floor {
     idPiso:      number;
     aforoMaximo: number;
     idSucursal:  number;
     nombre:      string;
     numeroPiso:  number;
+}
+
+///DOMINIO
+export interface DomainsResponse {
+    data:    Domain[];
+    success: boolean;
+    message: string;
+    status:  string;
+}
+
+export interface Domain {
+    codigoDominio: string;
+    valorDominio:  string;
+    descripcion:   string;
 }
