@@ -27,7 +27,7 @@ import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
       }
       
       getFloor(id: number): Observable<FloorResponse>{
-        const url = `${ this.apiUrl}/${id}`;
+        const url = `${ this.apiUrl}/consultar/${id}`;
         return this.http.get<FloorResponse>(url)
         .pipe(
           catchError(err => of ({data: new FloorClass() }))

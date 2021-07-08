@@ -51,7 +51,8 @@
     </div>
     <div class="p-field p-col">
         <label for="idSucursal">Nombre Sucursal</label>
-        <p-dropdown          
+        <p-dropdown   
+            [options]="sucursal"    
             optionLabel="nombreSucursal"
             optionValue="idSucursal"
             emptyMessage="No se encontraron resultados"

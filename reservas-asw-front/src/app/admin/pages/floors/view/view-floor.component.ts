@@ -16,6 +16,7 @@ export class ViewFloorComponent implements OnInit {
 
   get viewTitle(): string{
     return this.floor?.nombre ? this.floor.nombre: 'Ver piso'
+
   }
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,8 +35,6 @@ export class ViewFloorComponent implements OnInit {
   getFloor(id: number): void {
     this.floorsService.getFloor(id)
     .subscribe(
-      (floorResponse: FloorResponse) =>  this.floor = floorResponse.data
-    )
-    
+      (floorResponse: FloorResponse) =>  this.floor = floorResponse.data)     
   }
 }
