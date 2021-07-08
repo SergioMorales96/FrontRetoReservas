@@ -4,15 +4,18 @@
     box-shadow: 1px 1px 8px gray;
     width: 100%;
     };
-    .ui-buttonNoti{
-        background-color: transparent;
-        width: 1px;
-        height: 1px;
-    };
+
   }
   .logoDis{
       padding: 1px;
       margin: 10px;
       right: 10px;
       width: 150px;
+  }
+  .num{
+      left: 15px;
+      bottom: 7px;
+  }
+  .p-button-secondary{
+      right: 20px;
   }
