@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Schedule, NombreSucursal, ScheduleResponse } from '../../../interfaces/admin.interfaces';
+import { Schedule, NombreSucursal, ScheduleResponse, SchedulesResponse } from '../../../interfaces/admin.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { SchedulesService } from '../../../services/schedules.service';
 import { ConfirmationService } from 'primeng/api';
@@ -17,7 +17,9 @@ export class ListScheduleComponent {
   routeName = RouteName;
   msgs: Message[] = [];
   position: string = "";
+  schedules: Schedule[] = [];
 
+  /*
   schedules: Schedule[] = [
     {
       "idHorario": 1,
@@ -119,6 +121,7 @@ export class ListScheduleComponent {
       "nombreSucursal": NombreSucursal.TorreSigma
     }
   ];
+  */
 
   constructor(
     private messageService: MessageService,
@@ -129,6 +132,7 @@ export class ListScheduleComponent {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
+    this.getSchedules();
   }
 
   deleteSchedule(id: number) {
@@ -161,7 +165,10 @@ export class ListScheduleComponent {
   }
 
   getSchedules() {
-
+    this.schedulesService.getSchedules()
+      .subscribe(
+        (schedulesResponse: SchedulesResponse) =>this.schedules = schedulesResponse.data
+      );
   }
   
   eraseSchedule() {
