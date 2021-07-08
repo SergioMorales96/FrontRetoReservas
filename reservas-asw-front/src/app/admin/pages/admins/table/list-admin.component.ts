@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from 'src/app/admin/services/admins.service';
 import { Administrador } from '../../../interfaces/admin.interfaces';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-list-admin',
@@ -9,18 +10,20 @@ import { Administrador } from '../../../interfaces/admin.interfaces';
   ]
 })
 export class ListAdminComponent implements OnInit {
-  admins: Administrador[] = [];
 
-  term: string = '';
-
-  constructor(
-    private adminService: AdminsService
-  ) { }
   ngOnInit(): void {
     this.adminService.getAdmins();
   }
 
-  get results():Administrador[] {
+  routeName = RouteName;
+  admins: Administrador[] = [];
+
+  constructor(
+    private adminService: AdminsService
+  ) { }
+
+
+  get results(): Administrador[] {
     return this.adminService.result;
   }
 

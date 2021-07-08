@@ -25,6 +25,13 @@ export interface AdminsResponse {
     status:  string;
 }
 
+export interface AdminResponse {
+    data:    Administrador;    
+    success: boolean;
+    message: string;
+    status:  string;
+}
+
 export interface FloorResponse {
     data:    Floor[];
     success: boolean;

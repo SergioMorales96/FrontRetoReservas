@@ -23,6 +23,7 @@ export class AdminsService {
             .subscribe(
                 (response: AdminsResponse) => {
                     this.result = response.data;
+                    console.log(this.result);
                 })
         return this.result;
 
