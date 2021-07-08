@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteFloor } from '../../../../utils/enums';
 import { FloorsService } from '../../services/floors.service';
+import { AddComponent } from '../../../reservations/pages/add/add.component';
 
 @Component({
   selector: 'app-floors',
@@ -19,8 +20,7 @@ ngOnInit(){
   this.floorsService.getFloors().subscribe(
     (result: any) => {
       console.log(result);
-    }
-    
+    } 
   )}
-
+  
 }

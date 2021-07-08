@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Floor } from '../../../interfaces/floors.interfaces';
 import { RouteFloor } from '../../../../../utils/enums';
+import { FloorsService } from '../../../services/floors.service';
 
 @Component({
   selector: 'app-list-floor',
@@ -61,9 +62,10 @@ export class ListfloorComponent{
   ];
   constructor(
     
-    ) {
-  
-    }
+    ) {}
+
+
+    
   
     deleteFloor( id: number ): void {
       console.log( id );

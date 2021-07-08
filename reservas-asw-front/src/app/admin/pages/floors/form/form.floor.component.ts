@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Floor, Sucursal } from '../../../interfaces/admin.interfaces';
+import { FloorsService } from '../../../services/floors.service';
 
 @Component({
   selector: 'app-floor-form',
@@ -11,11 +12,11 @@ import { Floor, Sucursal } from '../../../interfaces/admin.interfaces';
 })
 export class FormFloorComponent implements OnInit {
   floorForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    maxCapacity: ['', [Validators.required]],
-    numberFloor:['',[Validators.required]],
-    branchId: ['', [Validators.required]],
-    floorId: ['', [Validators.required]],
+    nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    aforoMaximo: ['', [Validators.required]],
+    numeroPiso:['',[Validators.required]],
+    idSucursal: ['', [Validators.required]],
+    idPiso: [''],
   });
   sucursal: Sucursal[] = [
     {
@@ -50,7 +51,9 @@ export class FormFloorComponent implements OnInit {
   }
   constructor(
     private ActivatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private floorService: FloorsService,
+    
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +72,7 @@ export class FormFloorComponent implements OnInit {
             
           }
           this.setFloor(this.floor);
+          console.log(this.floor);
         }
       });
   }
@@ -79,9 +83,15 @@ export class FormFloorComponent implements OnInit {
     this.floorForm.controls['branchId'].setValue(floor.idSucursal);
     this.floorForm.controls['floorId'].setValue(floor.idPiso);
     this.floorForm.controls['name'].setValue(floor.nombre);
+
   }
 
   saveFloor(): void {
+
+    console.log(this.floorForm.value);
+    this.floorService.addNewFloor(this.floorForm.value).subscribe(
+      (response: Floor)=>console.log(response)
+    );
     console.log('save Floor', this.floorForm.value);
   }
 
