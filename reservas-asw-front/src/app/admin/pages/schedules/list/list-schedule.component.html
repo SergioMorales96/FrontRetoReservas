@@ -1,5 +1,4 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-
     <h3>Listado Horarios</h3>
     <p-messages [value]="msgs" ></p-messages>
     <a 
@@ -10,7 +9,6 @@
         pTooltip="Agregar" 
         tooltipPosition="top">
     </a>
-    
 </div>
 
 <p-table
@@ -75,7 +73,6 @@
                 <span class="p-column-title"></span>
                 {{schedule.nombreSucursal}} 
             </td>
-            
             <td>
                 <a 
                     pButton 
@@ -93,7 +90,6 @@
                     pTooltip="Editar" 
                     tooltipPosition="top">
                 </a>  
-                
                 <button 
                     pButton pRipple
                     class="button-link p-button-danger" 
@@ -101,11 +97,8 @@
                     icon="pi pi-times" 
                     pTooltip="Eliminar" 
                     tooltipPosition="top" 
-                    (click)="deleteSchedule(schedule.idHorario)">
-                    
+                    (click)="eraseSchedule(schedule.idHorario)">   
                 </button>
-                
-           
             </td>
         </tr>
     </ng-template>

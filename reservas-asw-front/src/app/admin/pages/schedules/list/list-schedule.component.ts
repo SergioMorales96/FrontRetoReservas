@@ -167,11 +167,14 @@ export class ListScheduleComponent {
   getSchedules() {
     this.schedulesService.getSchedules()
       .subscribe(
-        (schedulesResponse: SchedulesResponse) =>this.schedules = schedulesResponse.data
+        (schedulesResponse: SchedulesResponse) => this.schedules = schedulesResponse.data
       );
   }
   
-  eraseSchedule() {
-
+  eraseSchedule(id: number): void {
+    this.schedulesService.deleteSchedule(id)
+    .subscribe(
+      (scheduleResponse: ScheduleResponse) => this.schedules = this.schedules.filter((schedule: Schedule) => schedule.idHorario !== id)
+    );
   }
 }
