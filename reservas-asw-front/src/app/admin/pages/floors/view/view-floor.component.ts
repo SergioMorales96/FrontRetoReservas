@@ -15,7 +15,7 @@ export class ViewFloorComponent implements OnInit {
   floor!: Floor;
 
   get viewTitle(): string{
-    return this.floor?.nombre ? this.floor.nombre: 'Ver piso'
+    return this.floor?.nombre ? this.floor.nombre : 'Ver piso'
 
   }
   constructor(

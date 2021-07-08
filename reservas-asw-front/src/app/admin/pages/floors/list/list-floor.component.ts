@@ -12,7 +12,7 @@ import { FloorResponse } from '../../../interfaces/admin.interfaces';
 })
 export class ListfloorComponent implements OnInit{
   routeFloor=RouteFloor;
-  floor: Floor[] = [];
+  floors: Floor[] = [];
 
   constructor(
      private floorsService: FloorsService
@@ -23,14 +23,14 @@ export class ListfloorComponent implements OnInit{
   getFloors(){
     this.floorsService.getFloors()
     .subscribe(
-      (floorsResponse: FloorsResponse )=> this.floor = floorsResponse.data)
+      (floorsResponse: FloorsResponse )=> this.floors = floorsResponse.data)
   
   }
   
     deleteFloor( id: number ): void {
       this.floorsService.deleteFloor(id)
       .subscribe (
-        (floorResponse: FloorResponse) => this.floor = this.floor.filter((floor: Floor) => floor.idPiso !== id)
+        (floorResponse: FloorResponse) => this.floors = this.floors.filter((floor: Floor) => floor.idPiso !== id)
       );
     }
 
