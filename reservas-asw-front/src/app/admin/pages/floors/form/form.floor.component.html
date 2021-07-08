@@ -3,7 +3,7 @@
 </div>
 <form 
 [formGroup]="floorForm"
-(ngSubmit)="saveFloor()">
+(ngSubmit)="save()">
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
         <label for="nombre">Nombre</label>
@@ -51,33 +51,14 @@
     </div>
     <div class="p-field p-col">
         <label for="idSucursal">Nombre Sucursal</label>
-        <p-dropdown 
-            [options]="sucursal"
-            optionLabel="nombre"
+        <p-dropdown          
+            optionLabel="nombreSucursal"
             optionValue="idSucursal"
             emptyMessage="No se encontraron resultados"
             placeholder="Nombre sucursal"
             formControlName="idSucursal"
             requried>
         </p-dropdown>
-    </div>
-</div>
-
-<div class="p-fluid p-formgrid p-grid">
-    <div class="p-field p-col">
-        <label for="idPiso">Numero de Piso</label>
-        <p-inputNumber 
-            id="idPiso" 
-            decrementButtonClass="p-button-danger" 
-            incrementButtonClass="p-button-success" 
-            incrementButtonIcon="pi pi-plus" 
-            decrementButtonIcon="pi pi-minus"
-            formControlName="idPiso"
-            readonly
-            requried>
-        </p-inputNumber>
-    </div>
-    <div class="p-field p-col">
     </div>
 </div>
 <div class="p-d-flex p-jc-end p-mt-4">
@@ -87,9 +68,23 @@
             type="submit" 
             class="p-button-success" 
             [label]="buttonLabel"
-            [disabled]="!floorForm.valid"
-            (click)="saveFloor()">
+            [disabled]="!floorForm.valid">
         </button>
     </div>
 </div>
 </form>
+
+
+  <!-- [options]="floor" -->
+<!-- <div class="p-field p-col">
+    <label for="floorId">Piso relacionado</label>
+    <p-dropdown 
+        [options]="floors"
+        optionLabel="nombre"
+        optionValue="idPiso"
+        emptyMessage="No se encontraron resultados"
+        placeholder="Piso relacionado"
+        formControlName="floorId"
+        requried>
+    </p-dropdown>
+</div> -->

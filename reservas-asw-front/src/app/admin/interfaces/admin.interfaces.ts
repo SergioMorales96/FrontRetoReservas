@@ -17,21 +17,39 @@ export enum DominioEstado {
     A = "A",
 }
 
-export interface FloorResponse {
+export interface FloorsResponse {
     data:    Floor[];
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
+}
+export interface FloorResponse {
+    data:    Floor;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface Floor {
-    idPiso:         number;
-    aforoMaximo:    number;
-    idSucursal:     number;
-    nombre:         string;
-    numeroPiso:     number;
-    
+    idPiso:      number;
+    aforoMaximo: number;
+    idSucursal:  number;
+    nombre:      string;
+    numeroPiso:  number;
+    nombreSucursal: string;
+   
 }
+  export class FloorClass {
+    idPiso!:      number;
+    aforoMaximo!: number;
+    idSucursal!:  number;
+    nombre!:      string;
+    numeroPiso!:  number;
+    nombreSucursal!: string;
+    
+
+    constructor(){}
+  }
 
 export interface SucursalResponse {
     data:    Sucursal[];

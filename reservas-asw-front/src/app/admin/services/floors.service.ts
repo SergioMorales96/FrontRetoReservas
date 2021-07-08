@@ -1,9 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Floor } from '../interfaces/admin.interfaces';
+import { Floor, FloorClass, FloorResponse } from '../interfaces/admin.interfaces';
+import { catchError } from 'rxjs/operators'
+import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +18,41 @@ import { Floor } from '../interfaces/admin.interfaces';
           private http: HttpClient
       ){}
 
-      getFloors(): Observable<Floor[]>{
-          return this.http.get<Floor[]>(`${ this.apiUrl}/todos`);
+      getFloors(): Observable<FloorsResponse>{
+        const url = `${ this.apiUrl}/todos`;
+        return this.http.get<FloorsResponse>(url)
+          .pipe(
+          catchError(err => of ({data: [] }))
+          );    
+      }
+      
+      getFloor(id: number): Observable<FloorResponse>{
+        const url = `${ this.apiUrl}/${id}`;
+        return this.http.get<FloorResponse>(url)
+        .pipe(
+          catchError(err => of ({data: new FloorClass() }))
+          );   
       }
 
-      addNewFloor(floor:Floor): Observable<Floor>{
-        return this.http.post<Floor>(`${ this.apiUrl}/crear`,floor);
+      createFloor(floor: Floor): Observable<FloorResponse>{
+        const url = `${ this.apiUrl}/crear`;
+        return this.http.post<FloorResponse>(url,floor)
+        .pipe(
+          catchError(err => of ({data: new FloorClass}))
+          ); 
+    }
+      updateFloor(floor: Floor): Observable<FloorResponse>{
+        const url = `${ this.apiUrl}/actualizar`;
+        return this.http.post<FloorResponse>(url,floor)
+        .pipe(
+          catchError(err => of ({data: new FloorClass}))
+          ); 
+    }
+      deleteFloor(id: number): Observable<FloorResponse>{
+        const url = `${ this.apiUrl}/eliminar/${id}`;
+        return this.http.post<FloorResponse>(url,id)
+        .pipe(
+          catchError(err => of ({data: new FloorClass}))
+          ); 
     }
   }

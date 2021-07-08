@@ -17,20 +17,7 @@ export class FormRoomComponent implements OnInit {
     floorId: ['', [Validators.required]],
   });
   floors: Floor[] = [
-    {
-      idPiso: 1,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 1',
-      numeroPiso: 1
-    },
-    {
-      idPiso: 2,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 2',
-      numeroPiso: 1
-    }
+  
   ];
   isEditing: boolean = false;
   room!: Room;
