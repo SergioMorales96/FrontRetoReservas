@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DominioEstado, DominioTipo, NombrePiso, Workstation } from 'src/app/admin/interfaces/admin.interfaces';
+import { DominioEstado, DominioTipo, NombrePiso, Workstation, WorkstationResponse } from 'src/app/admin/interfaces/admin.interfaces';
+import { WorkstationsService } from '../../../services/workstations.service';
 
 @Component({
   selector: 'app-view-workstation',
@@ -14,7 +15,9 @@ export class ViewWorkstationComponent implements OnInit {
     return this.workstation.nombre ? this.workstation.nombre : 'Ver puesto de trabajo';
   }
 
-  constructor(   private activatedRoute: ActivatedRoute) { }
+  constructor(   
+    private activatedRoute: ActivatedRoute,
+    private workstationsService: WorkstationsService) { }
 
   ngOnInit(): void {
 
@@ -36,9 +39,12 @@ export class ViewWorkstationComponent implements OnInit {
         
       }
     });
-
-
-
+  }
+  getWorkstation (id:number): void{
+    this.workstationsService.getWorkstation(id)
+    .subscribe(
+      (workstationResponse: WorkstationResponse) => this.workstation = workstationResponse.data
+    );
   }
 
 }

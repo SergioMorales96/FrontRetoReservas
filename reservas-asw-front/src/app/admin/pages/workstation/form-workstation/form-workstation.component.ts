@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { DominioEstado, DominioTipo, Floor, NombrePiso, Workstation} from 'src/app/admin/interfaces/admin.interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Workstation, WorkstationClass, WorkstationResponse} from 'src/app/admin/interfaces/admin.interfaces';
+import { WorkstationsService } from 'src/app/admin/services/workstations.service';
+import { RouteName } from '../../../../../utils/enums';
+import { NombrePiso } from '../../../interfaces/admin.interfaces';
 
 @Component({
   selector: 'app-form-workstation',
@@ -10,6 +13,7 @@ import { DominioEstado, DominioTipo, Floor, NombrePiso, Workstation} from 'src/a
   ]
 })
 export class FormWorkstationComponent implements OnInit {
+  
   workstationForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     floorName: ['', [Validators.required]],
@@ -17,22 +21,6 @@ export class FormWorkstationComponent implements OnInit {
     domainState: ['', [Validators.required]],
     floorId: ['', [Validators.required]],
   });
-  floors: Floor[] = [
-    {
-      idPiso: 1,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 1',
-      numeroPiso: 1
-    },
-    {
-      idPiso: 2,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 2',
-      numeroPiso: 1
-    }
-  ];
   
   isEditing: boolean = false;
   workstation!: Workstation;
@@ -46,29 +34,34 @@ export class FormWorkstationComponent implements OnInit {
   }
 
 
-  constructor( private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder) { }
+  constructor( 
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private workstationsService: WorkstationsService,
+    private router: Router,
+    ) { }
 
   ngOnInit(): void {
 
     this.activatedRoute.params
     .subscribe(({ id }) => {
-      if ( id ) {
+      if (id) {
         this.isEditing = true;
-        console.log( 'puesto id', id );
-
-        this.workstation = {
-          idPuestoTrabajo: 1,
-          dominioEstado: DominioEstado.A,
-          dominioTipo: DominioTipo.G,
-          idPiso: 1,
-          nombre: "Nombre_Puesto_Trabajo_prueba",
-          nombrePiso: NombrePiso.Piso18,
-        }
-
-        this.setWorkstation( this.workstation );
+        this.getWorkstation(id);
+      } else {
+        this.workstation = new WorkstationClass();
       }
     });
+}
+
+getWorkstation(id: number): void {
+  this.workstationsService.getWorkstation(id)
+    .subscribe(
+      (workstationResponse: WorkstationResponse) => {
+        this.workstation = workstationResponse.data;
+        this.setWorkstation(this.workstation);
+      }
+    )
 }
 
 setWorkstation( workstation: Workstation ): void {
@@ -80,8 +73,33 @@ setWorkstation( workstation: Workstation ): void {
 
 }
 
-saveWorkstation(): void {
-  console.log('save Workstation', this.workstationForm.value);
+getWorkstationFormValue(): Workstation {
+  return {    
+    nombre: this.workstationForm.controls['name'].value,
+    dominioEstado: this.workstationForm.controls['domainState'].value,
+    nombrePiso: this.workstationForm.controls['floorName'].value,
+    dominioTipo: this.workstationForm.controls['domainTipe'].value,
+    idPiso: this.workstationForm.controls['floorId'].value, 
+  }
 }
 
+saveWorkstation(): void {
+
+  if (this.isEditing) {
+    this.workstationsService.updateWorkstation({
+      ...this.getWorkstationFormValue(),
+      idPuestoTrabajo: this.workstation.idPuestoTrabajo
+    })
+      .subscribe(
+        (workstationResponse: WorkstationResponse) => this.router.navigateByUrl(RouteName.WorkstationList)
+      );
+  } else {
+    this.workstationsService.createWorkstation(this.getWorkstationFormValue())
+      .subscribe(
+        (workstationResponse: WorkstationResponse) => this.router.navigateByUrl(RouteName.WorkstationList)
+      );
+  }
 }
+  
+}
+
