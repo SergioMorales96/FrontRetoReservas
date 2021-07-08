@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Schedule } from '../interfaces/admin.interfaces';
+import { Schedule, ScheduleClass, ScheduleResponse, SchedulesResponse } from '../interfaces/admin.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class SchedulesService {
   private apiUrl: string = `${environment.baseUrl}/HorarioPuestoTrabajo`;
 
   httpOptions = {
-    headers:{
-      'Content-Type':'application/json'
+    headers: {
+      'Content-Type': 'application/json'
     }
   };
 
@@ -27,35 +28,55 @@ export class SchedulesService {
   /**
    * Check all the schedules, using the endpoint todos
    */
-  getSchedules(): Observable<Schedule[]>{
-    return this.http.get<Schedule[]>( `${this.apiUrl}/todos` );
+  getSchedules(): Observable<SchedulesResponse> {
+    const urlLink = `${this.apiUrl}/todos`;
+    return this.http.get<SchedulesResponse>(urlLink)
+    .pipe(
+      catchError(err => of({ data: [] }))
+    );;
   }
 
   /**
    * Query a schedule, using the endpoint /horario/id
    */
-  getSchedule(id: number): Observable<Schedule>{
-    return this.http.get<Schedule>( `${this.apiUrl}/horario/${id}`);
+  getSchedule(id: number): Observable<ScheduleResponse> {
+    const urlLink = `${this.apiUrl}/horario/${id}`;
+    return this.http.get<ScheduleResponse>(urlLink)
+      .pipe(
+        catchError(err => of({ data: new ScheduleClass() }))
+      );
   }
 
   /**
    * Delete a schedule, using the endpoint eliminar
    */
-  deleteSchedule(schedule: Schedule): Observable<Schedule>{
-    return this.http.get<Schedule>( `${this.apiUrl}/eliminar/${schedule.idHorario}`);
+  deleteSchedule(id: number): Observable<ScheduleResponse> {
+    const urlLink = `${this.apiUrl}/eliminar/${id}`;
+    return this.http.get<ScheduleResponse>(urlLink)
+      .pipe(
+        catchError(err => of({ data: new ScheduleClass() }))
+      );
   }
 
   /**
    * Add a schedule, using the endpoint crear
    */
-  addSchedule(schedule: Schedule): Observable<Schedule>{
-    return this.http.post<Schedule>( `${this.apiUrl}/crear`, schedule, this.httpOptions);
+  addSchedule(schedule: Schedule): Observable<ScheduleResponse> {
+    const urlLink = `${this.apiUrl}/crear`;
+    return this.http.post<ScheduleResponse>(urlLink, schedule, this.httpOptions)
+      .pipe(
+        catchError(err => of({ data: new ScheduleClass() }))
+      );
   }
 
   /**
    * Modify a schedule, using the endpoint editar
    */
-  updateSchedule(schedule: Schedule): Observable<Schedule>{
-    return this.http.post<Schedule>( `${this.apiUrl}/editar/${schedule.idHorario}`, schedule, this.httpOptions);
+  updateSchedule(schedule: Schedule): Observable<ScheduleResponse> {
+    const urlLink = `${this.apiUrl}/editar/${schedule.idHorario}`;
+    return this.http.post<ScheduleResponse>(urlLink, schedule, this.httpOptions)
+      .pipe(
+        catchError(err => of({ data: new ScheduleClass() }))
+      );
   }
 }

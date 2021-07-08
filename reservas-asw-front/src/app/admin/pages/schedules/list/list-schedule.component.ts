@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Schedule, NombreSucursal } from '../../../interfaces/admin.interfaces';
+import { Schedule, NombreSucursal, ScheduleResponse } from '../../../interfaces/admin.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { SchedulesService } from '../../../services/schedules.service';
 import { ConfirmationService } from 'primeng/api';
@@ -17,8 +17,7 @@ export class ListScheduleComponent {
   routeName = RouteName;
   msgs: Message[] = [];
   position: string = "";
-  //schedules: Schedule[] = [];
-  
+
   schedules: Schedule[] = [
     {
       "idHorario": 1,
@@ -130,7 +129,6 @@ export class ListScheduleComponent {
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    //this.getSchedules();
   }
 
   deleteSchedule(id: number) {
@@ -163,22 +161,10 @@ export class ListScheduleComponent {
   }
 
   getSchedules() {
-    this.schedulesService.getSchedules().subscribe(data => {
-      this.schedules = data;
-      this.schedules.forEach(schedule => schedule.nombreSucursal = NombreSucursal.TorreSigma);
-      console.log(`Nombre del primer registro de la tabla: ${this.schedules[0]. nombre}`);
-    })
-  }
-  getSchedule() {
 
   }
+  
   eraseSchedule() {
-
-  }
-  addSchedule() {
-
-  }
-  updateSchedule() {
 
   }
 }
