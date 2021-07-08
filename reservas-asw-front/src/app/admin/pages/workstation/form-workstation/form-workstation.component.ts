@@ -26,7 +26,7 @@ export class FormWorkstationComponent implements OnInit {
   workstation!: Workstation;
 
   get formTitle(): string {
-    return this.isEditing ? ( this.workstation.nombre ?? 'Editar puesto de trabajo' ) : 'Crear puesto de trabajo';
+    return this.isEditing ? ( this.workstation?.nombre ?? 'Editar puesto de trabajo' ) : 'Crear puesto de trabajo';
   }
 
   get buttonLabel(): string {

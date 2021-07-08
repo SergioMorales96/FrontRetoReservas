@@ -12,7 +12,7 @@ import { WorkstationsService } from '../../../services/workstations.service';
 export class ViewWorkstationComponent implements OnInit {
   workstation!: Workstation;
   get viewTitle(): string {
-    return this.workstation.nombre ? this.workstation.nombre : 'Ver puesto de trabajo';
+    return this.workstation?.nombre ? this.workstation.nombre : 'Ver puesto de trabajo';
   }
 
   constructor(   
@@ -25,18 +25,8 @@ export class ViewWorkstationComponent implements OnInit {
     .subscribe(({ id }) => {
       if ( id ) {
         
-        console.log( 'puesto id', id );
-
-        this.workstation = {
-          idPuestoTrabajo: 1,
-          dominioEstado: DominioEstado.A,
-          dominioTipo: DominioTipo.G,
-          idPiso: 1,
-          nombre: "Nombre_Puesto_Trabajo_prueba",
-          nombrePiso: NombrePiso.Piso18,
-        }
-
-        
+        this.getWorkstation(id);
+                 
       }
     });
   }

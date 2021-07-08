@@ -11,9 +11,7 @@ import { WorkstationsService } from '../../../services/workstations.service';
 export class ListWorkstationComponent implements OnInit{
 
   routeName = RouteName;
-  workstations: Workstation[] = [
-
-  ]
+  workstations: Workstation[] = [];
 
   constructor(
       private workstationsService: WorkstationsService

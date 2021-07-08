@@ -28,9 +28,9 @@
             <th pSortableColumn="dominioTipo"> 
                 Tipo <p-sortIcon field="code"></p-sortIcon> 
             </th>
-            <th pSortableColumn="idPiso"> 
+            <!-- <th pSortableColumn="idPiso"> 
                 No.Piso <p-sortIcon field="code"></p-sortIcon> 
-            </th>
+            </th> -->
             <th pSortableColumn="nombre"> 
                 Nombre <p-sortIcon field="code"></p-sortIcon> 
             </th>
@@ -54,16 +54,18 @@
                 <span class="p-column-title"><strong>  </strong></span>
                 <strong> {{ workstations.dominioTipo }} </strong> 
             </td>
-            <td> 
+            <!-- <td> 
                 <span class="p-column-title"><strong>  </strong></span>
                 <strong> {{ workstations.idPiso }} </strong> 
-            </td>
+            </td> -->
             <td> 
-                <span class="p-column-title"><strong>{{ workstations.nombre | titlecase }}   </strong></span>
+                <span class="p-column-title"><strong>   </strong></span>
+                {{ workstations.nombre | titlecase }}
                 
             </td>
             <td> 
-                <span class="p-column-title"><strong>{{ workstations.nombrePiso }}  </strong></span>
+                <span class="p-column-title"><strong> </strong></span>
+                {{ workstations.nombrePiso }} 
                 
             </td>
 
@@ -91,7 +93,7 @@
                     icon="pi pi-times" 
                     pTooltip="Eliminar" 
                     tooltipPosition="top" 
-                    (click)="deleteWorkstation( workstations.idPuestoDeTrabajo )">
+                    (click)="deleteWorkstation( workstations.idPuestoTrabajo )">
                 </button>
             </td>
         </tr>
