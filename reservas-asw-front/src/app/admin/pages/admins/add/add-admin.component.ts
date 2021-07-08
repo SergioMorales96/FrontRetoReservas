@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Administrador, Branch } from '../../../interfaces/admin.interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Administrador, AdminResponse, Branch, AdminClass } from '../../../interfaces/admin.interfaces';
+import { AdminsService } from '../../../services/admins.service';
+import { RouteName } from '../../../../../utils/enums';
 @Component({
   selector: 'app-add-admin',
   templateUrl: './add-admin.component.html',
@@ -11,10 +13,8 @@ import { Administrador, Branch } from '../../../interfaces/admin.interfaces';
 
 export class AddAdminComponent implements OnInit {
   adminForm = this.fb.group({
-    email: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     sucursalId: ['', [Validators.required]],
-
-
   });
 
   branches: Branch[] = [
@@ -31,7 +31,7 @@ export class AddAdminComponent implements OnInit {
   admin!: Administrador;
 
   get formTitle(): string {
-    return this.isEditing ? (this.admin.email ?? 'Editar admin') : 'Crear administrador';
+    return this.isEditing ? (this.admin?.email ?? 'Editar administrador') : 'Crear administrador';
   }
 
   get buttonLabel(): string {
@@ -39,7 +39,9 @@ export class AddAdminComponent implements OnInit {
   }
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private adminsService: AdminsService,
+    private router: Router
   ) {
 
   }
@@ -48,22 +50,22 @@ export class AddAdminComponent implements OnInit {
     this.activatedRoute.params
       .subscribe(({ id }) => {
         if ( id ) {
-          this.isEditing = true;
-          console.log( 'admin id', id );
-
-          this.admin = {
-            idAdministrador: 1,
-            email:          "spinillia@asesoftware.com",
-            idSucursal:      1,
-            nombreSucursal: "TORRE SIGMA"
-          }
-
-          this.setAdmin( this.admin );
+         this.isEditing =true;
+         this.getAdmin(id);
+        }else{
+        this.admin = new AdminClass();
         }
       });
+}
 
-
-
+getAdmin(id : number): void{
+  this.adminsService.getAdmin(id)
+    .subscribe(
+      (adminResponse:AdminResponse) => {
+        this.admin = adminResponse.data;
+        this.setAdmin(this.admin);
+      }
+    )
 }
 
 setAdmin( admin: Administrador ): void {
@@ -71,10 +73,29 @@ setAdmin( admin: Administrador ): void {
   this.adminForm.controls['sucursalId'].setValue( admin.idSucursal );
 }
 
+getAdminFormValue():Administrador {
+  return {
+    email:  this.adminForm.controls['email'].value,        
+    idSucursal:   this.adminForm.controls['sucursalId'].value
+  }
 
 
-saveAdmin(): void {
-  console.log('save admin', this.adminForm.value);
+}
+save(): void {
+  if (this.isEditing) {
+    this.adminsService.updateAdmin({
+      ...this.getAdminFormValue(),
+      idAdministrador: this.admin.idAdministrador
+    })
+    .subscribe(
+      (adminResponse : AdminResponse) => this.router.navigateByUrl(RouteName.AdminsList)
+    );
+  } else {
+    this.adminsService.createAdmin(this.getAdminFormValue())
+    .subscribe(
+      (adminResponse : AdminResponse) => this.router.navigateByUrl(RouteName.AdminsList)
+    );
+  }
 }
 
 }

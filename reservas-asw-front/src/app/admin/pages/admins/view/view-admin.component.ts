@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Administrador } from 'src/app/admin/interfaces/admin.interfaces';
+import { AdminsService } from '../../../services/admins.service';
+import { AdminResponse } from '../../../interfaces/admin.interfaces';
 
 @Component({
   selector: 'app-view-admin',
@@ -12,11 +14,12 @@ export class ViewAdminComponent implements OnInit{
   admin!: Administrador;
 
   get viewTitle(): string {
-    return this.admin.email ? this.admin.email : 'Ver administrador';
+    return this.admin?.email ? this.admin?.email : 'Ver administrador';
   }
 
   constructor(
-    private activatedRoute:ActivatedRoute
+    private activatedRoute:ActivatedRoute,
+    private adminsService: AdminsService
   ) {
     
    }
@@ -24,19 +27,18 @@ export class ViewAdminComponent implements OnInit{
     this.activatedRoute.params
       .subscribe(({ id }) => {
         if (id) {
-          console.log('admin id', id);
-
-          this.admin = {
-            idAdministrador: 1,
-            email: 'spinilla@asesoftware.com',
-            idSucursal: 1,
-            nombreSucursal: 'TORRE SIGMA',
+          this.getAdmin(id);
           }
         }
-
-
-      }
       );
+  }
+
+
+  getAdmin(id : number): void{
+    this.adminsService.getAdmin(id)
+      .subscribe(
+        (adminResponse:AdminResponse) => this.admin = adminResponse.data
+      )
   }
 
 }

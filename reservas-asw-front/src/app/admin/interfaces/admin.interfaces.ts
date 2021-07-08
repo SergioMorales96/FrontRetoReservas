@@ -20,16 +20,16 @@ export enum DominioEstado {
 
 export interface AdminsResponse {
     data:    Administrador[];    
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface AdminResponse {
     data:    Administrador;    
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface FloorResponse {
@@ -40,10 +40,18 @@ export interface FloorResponse {
 }
 
 export interface Administrador {
-    idAdministrador: number;
+    idAdministrador?: number;
     email:           string;
     idSucursal:      number;
-    nombreSucursal: string;
+    nombreSucursal?: string;
+}
+export class AdminClass{
+    idAdministrador!: number;
+    email!:           string;
+    idSucursal!:      number;
+    nombreSucursal!: string;
+
+    constructor(){}
 }
 export interface Floor {
     idPiso:      number;
