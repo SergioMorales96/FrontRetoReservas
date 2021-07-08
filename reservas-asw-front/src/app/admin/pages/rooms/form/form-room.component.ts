@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Room, Floor, DominioEstado, RoomResponse, RoomClass } from '../../../interfaces/admin.interfaces';
+import { Room, Floor, DominioEstado, RoomResponse, RoomClass, FloorsResponse } from '../../../interfaces/admin.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 import { RouteName } from '../../../../../utils/enums';
 
@@ -18,22 +18,7 @@ export class FormRoomComponent implements OnInit {
     domainState: ['', [Validators.required]],
     floorId: ['', [Validators.required]],
   });
-  floors: Floor[] = [
-    {
-      idPiso: 1,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 1',
-      numeroPiso: 1
-    },
-    {
-      idPiso: 2,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 2',
-      numeroPiso: 1
-    }
-  ];
+  floors: Floor[] = [];
   isEditing: boolean = false;
   room!: Room;
 
@@ -53,6 +38,7 @@ export class FormRoomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getFloors();
     this.activatedRoute.params
       .subscribe(({ id }) => {
         if ( id ) {
@@ -62,6 +48,13 @@ export class FormRoomComponent implements OnInit {
           this.room = new RoomClass();
         }
       });
+  }
+
+  getFloors(): void {
+    this.roomsService.getFloors()
+      .subscribe(
+        (floorsResponse: FloorsResponse) => this.floors = floorsResponse.data
+      );
   }
 
   getRoom(id: Number): void{
@@ -96,6 +89,12 @@ export class FormRoomComponent implements OnInit {
         ...this.getRoomFormValue(),
         idSala: this.room.idSala
       })
+        .subscribe(
+          (roomResponce: RoomResponse) => this.router.navigateByUrl(RouteName.RoomsList)
+        );
+    }
+    else{
+      this.roomsService.createRoom(this.getRoomFormValue())
         .subscribe(
           (roomResponce: RoomResponse) => this.router.navigateByUrl(RouteName.RoomsList)
         );

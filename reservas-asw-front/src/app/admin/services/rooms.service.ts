@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable , of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Room, RoomResponse, RoomClass, Floor } from '../interfaces/admin.interfaces';
+import { Room, RoomResponse, RoomClass, RoomsResponse, FloorsResponse } from '../interfaces/admin.interfaces';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -17,8 +17,20 @@ export class RoomsService {
     private http: HttpClient
   ) { }
 
-  getDomains(): Observable<Room[]> {
-    return this.http.get<Room[]>( `${ this.apiUrl }/todos` );
+  getRooms(): Observable<RoomsResponse>{
+    const url = `${this.apiUrl}/todas`;
+    return this.http.get<RoomsResponse>(url)
+      .pipe(
+        catchError(err => of({data: []}))
+      );
+  }
+
+  getFloors(): Observable<FloorsResponse>{
+    const url = `${this.apiUrlP}/todos`;
+    return this.http.get<FloorsResponse>(url)
+      .pipe(
+        catchError(err => of({data: []}))
+      );
   }
 
   getRoom(id: Number): Observable<RoomResponse>{
@@ -27,6 +39,14 @@ export class RoomsService {
       .pipe(
         catchError(err => of({data: new RoomClass()}))
       ); 
+  }
+
+  createRoom(room: Room): Observable<RoomResponse>{
+    const url = `${this.apiUrl}/crear`;
+    return this.http.post<RoomResponse>(url, room)
+      .pipe(
+        catchError(err => of({data: new RoomClass()}))
+      );
   }
 
   updateRoom(room: Room): Observable<RoomResponse>{

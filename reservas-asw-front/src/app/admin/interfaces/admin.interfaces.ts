@@ -36,9 +36,9 @@ export class RoomClass {
 
 export interface FloorsResponse {
     data:    Floor[];
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface Floor {
