@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DominioEstado, DominioTipo, NombrePiso, Workstation, WorkstationResponse } from 'src/app/admin/interfaces/admin.interfaces';
+import { Workstation, WorkstationResponse } from 'src/app/admin/interfaces/admin.interfaces';
 import { WorkstationsService } from '../../../services/workstations.service';
 
 @Component({
