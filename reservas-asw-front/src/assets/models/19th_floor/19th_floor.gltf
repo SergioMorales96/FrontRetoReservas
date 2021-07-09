@@ -1,0 +1,110 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.5.17",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Cube.010",
+            "scale" : [
+                0.23376819491386414,
+                0.13604754209518433,
+                -0.027899757027626038
+            ],
+            "translation" : [
+                0.8850650787353516,
+                0.12056300044059753,
+                -1.3240457773208618
+            ]
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Cube.019",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 229991,
+            "max" : [
+                6.815800666809082,
+                1.0032154321670532,
+                7.08099365234375
+            ],
+            "min" : [
+                -14.363282203674316,
+                -1.0036379098892212,
+                -102.15057373046875
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 229991,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 229991,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5125,
+            "count" : 458871,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 2759892,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2759892,
+            "byteOffset" : 2759892
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1839928,
+            "byteOffset" : 5519784
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1835484,
+            "byteOffset" : 7359712
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 9195196,
+            "uri" : "19th_floor.bin"
+        }
+    ]
+}

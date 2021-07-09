@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
+import { PrimeNgModule } from '../prime-ng/prime-ng.module';
 import { ReservationsRoutingModule } from './reservations-routing.module';
 
 import { AddComponent } from './pages/add/add.component';
