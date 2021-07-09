@@ -60,7 +60,7 @@ export class FormFloorComponent implements OnInit {
             .subscribe(
               (floorResponse: FloorResponse) => {
                 this.floor = floorResponse.data;
-                // this.setFloor(this.floor);
+                 this.setFloor(this.floor);
               }
             )
         }
