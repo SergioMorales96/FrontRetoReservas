@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Floor, FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
 import { RouteFloor } from '../../../../../utils/enums';
 import { FloorsService } from '../../../services/floors.service';
-import { FloorResponse } from '../../../interfaces/admin.interfaces';
+import { Floor, FloorsResponse, FloorResponse } from '../../../interfaces/floors.interfaces';
 
 
 @Component({

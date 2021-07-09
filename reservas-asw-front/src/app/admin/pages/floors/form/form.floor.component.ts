@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Floor, Sucursal, FloorClass, FloorResponse, FloorsResponse, BranchesResponse, Branch } from '../../../interfaces/admin.interfaces';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
+import { Branch } from 'src/app/admin/interfaces/branches,interfaces';
+import { BranchesResponse } from '../../../interfaces/branches,interfaces';
+import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../interfaces/floors.interfaces';
 
 @Component({
   selector: 'app-floor-form',
@@ -59,6 +61,7 @@ export class FormFloorComponent implements OnInit {
           this.floorsService.getFloor(id)
             .subscribe(
               (floorResponse: FloorResponse) => {
+                this.floor 
                 this.floor = floorResponse.data;
                  this.setFloor(this.floor);
               }

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Floor, FloorClass, FloorResponse, BranchesResponse } from '../interfaces/admin.interfaces';
 import { catchError } from 'rxjs/operators'
-import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
+import { FloorsResponse, FloorResponse, FloorClass, Floor } from '../interfaces/floors.interfaces';
+import { BranchesResponse } from '../interfaces/branches,interfaces';
 
 @Injectable({
     providedIn: 'root'
