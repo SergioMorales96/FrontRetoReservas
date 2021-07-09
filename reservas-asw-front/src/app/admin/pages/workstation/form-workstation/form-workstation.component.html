@@ -25,30 +25,40 @@
     </div>
 
     <div class="p-fluid p-formgrid p-grid">
+       
         <div class="p-field p-col">
-            <label for="domainState">Estado dominio</label>
-            <input 
-                id="domainState" 
-                type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
-                pInputText
-                required>
+            <label for="codigoDominio">Estado dominio</label>
+            <p-dropdown 
+                id="codigoDominio" 
+                [options] = "domains"
+                optionLabel="valorDominio"
+                optionValue="valorDominio"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Estado dominio"
+                formControlName="domainState"
+                requried>
+            </p-dropdown>
         </div>
+      
         <div class="p-field p-col">
-            <label for="domainTipe">Tipo dominio</label>
-            <input 
-                id="domainTipe" 
-                type="text" 
-                formControlName="domainTipe" 
-                placeholder="Tipo dominio" 
-                pInputText
-                required>
+            <label for="codigoDominio">Tipo dominio</label>
+            <p-dropdown 
+                id="codigoDominio" 
+                [options] = "domains"
+                optionLabel="valorDominio"
+                optionValue="valorDominio"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Tipo dominio"
+                formControlName="domainType"
+                requried>
+            </p-dropdown>
         </div>
+
         <div class="p-field p-col">
             <label for="floorId">Piso relacionado</label>
             <p-dropdown 
-                
+                id="floorId"
+                [options] = "[]"
                 optionLabel="nombre"
                 optionValue="idPiso"
                 emptyMessage="No se encontraron resultados"
