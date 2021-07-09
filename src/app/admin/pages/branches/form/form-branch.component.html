@@ -2,6 +2,15 @@
 
     <h3> {{ formTitle }} </h3>
 
+    <a
+        pButton
+        [routerLink]="[routeName.BranchView, branch?.idSucursal]"
+        class="button-link p-button-help p-m-1"
+        icon="pi pi-eye"
+        pTooltip="Ver"
+        tooltipPosition="top">
+    </a>
+
 </div>
 
 <form 

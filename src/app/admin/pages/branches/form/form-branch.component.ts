@@ -23,6 +23,7 @@ export class FormBranchComponent implements OnInit {
 
   isEditing: boolean = false;
   branch!: Branch;
+  routeName = RouteName;
 
   get formTitle(): string {
     return this.isEditing ? (this.branch?.nombre ?? 'Editar sucursal') : 'Crear sucursal';

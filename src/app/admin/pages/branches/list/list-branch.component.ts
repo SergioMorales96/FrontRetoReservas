@@ -34,8 +34,8 @@ export class ListBranchComponent implements OnInit {
 
   deleteBranch(id: number): void {
     this.alertsService.showConfirmDialog({
-      message: '¿Desea eliminar el dominio, esta acción no se podrá revertir?',
-      header: 'Eliminar dominio',
+      message: '¿Desea eliminar la sucursal, esta acción no se podrá revertir?',
+      header: 'Eliminar sucursal',
     })
       .then(resp => {
         if (resp) {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Branch, BranchResponse } from '../../../interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-view-branch',
@@ -12,6 +13,7 @@ import { BranchesService } from '../../../services/branches.service';
 export class ViewBranchComponent implements OnInit {
 
   branch!: Branch;
+  routeName = RouteName;
 
   get viewTitle(): string {
     return this.branch?.nombre ? this.branch.nombre : 'Ver sucursal';
