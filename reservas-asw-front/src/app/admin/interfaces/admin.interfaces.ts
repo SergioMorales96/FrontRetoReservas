@@ -34,9 +34,8 @@ export interface AdminResponse {
 
 export interface FloorResponse {
     data:    Floor[];
-    success: boolean;
-    message: string;
-    status:  string;
+
+
 }
 
 export interface Administrador {

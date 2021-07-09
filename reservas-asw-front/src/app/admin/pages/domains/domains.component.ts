@@ -1,16 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouteName } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-domains',
   templateUrl: './domains.component.html',
-  styles: [
-  ]
+  styleUrls: ['./domains.component.scss' ]
 })
-export class DomainsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class DomainsComponent  {
+  routeName=RouteName;
 }

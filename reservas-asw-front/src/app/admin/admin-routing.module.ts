@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminsComponent } from './pages/admins/admins.component';
@@ -14,6 +14,10 @@ import { ListAdminComponent } from './pages/admins/table/list-admin.component';
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
+import { ListDomainComponent } from './pages/domains/list/list-domain.component';
+import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
+import { FormDomainComponent } from './pages/domains/form/form-domain.component';
+
 
 const routes: Routes = [
   {
@@ -49,9 +53,36 @@ const routes: Routes = [
         path: 'branches',
         component: BranchesComponent
       },
+      //DOMAIN
       {
         path: 'domains',
-        component: DomainsComponent
+        component: DomainsComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListDomainComponent,
+
+          },
+          {
+            path: 'add',
+            component: FormDomainComponent,
+          },
+          {
+            path: 'view/:codigoDominio/:valorDominio/:descripcion',
+            component: ViewDomainComponent,
+          },
+          {
+            path: 'edit/:codigoDominio/:valorDominio/:descripcion',
+            component: FormDomainComponent
+
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+
+        ]
+
       },
       {
         path: 'floors',

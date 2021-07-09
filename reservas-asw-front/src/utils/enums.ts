@@ -7,4 +7,9 @@ export enum RouteName {
     AdminView = '/admin/admins/view',
     AdminAdd = '/admin/admins/add',
     AdminEdit = '/admin/admins/edit',
+    DomainsList = "/admin/domains/list",
+    DomainAdd = "/admin/domains/add",
+    DomainEdit = "/admin/domains/edit",
+    DomainView = "/admin/domains/view",
+
 }
