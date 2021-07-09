@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Workstation, WorkstationResponse } from 'src/app/admin/interfaces/admin.interfaces';
+import { Workstation, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from '../../../services/workstations.service';
 
 @Component({

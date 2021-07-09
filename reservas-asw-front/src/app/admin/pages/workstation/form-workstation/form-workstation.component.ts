@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Workstation, WorkstationClass, WorkstationResponse} from 'src/app/admin/interfaces/admin.interfaces';
+import { Workstation, WorkstationClass, WorkstationResponse} from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from 'src/app/admin/services/workstations.service';
 import { RouteName } from '../../../../../utils/enums';
-import { NombrePiso } from '../../../interfaces/admin.interfaces';
+import { NombrePiso } from '../../../interfaces/workstation.interfaces';
 
 @Component({
   selector: 'app-form-workstation',

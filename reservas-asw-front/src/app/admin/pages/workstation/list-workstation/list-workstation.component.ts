@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteName } from '../../../../../utils/enums';
-import { Workstation, WorkstationResponse, WorkstationsResponse } from '../../../interfaces/admin.interfaces';
+import { Workstation, WorkstationResponse, WorkstationsResponse } from '../../../interfaces/workstation.interfaces';
 import { WorkstationsService } from '../../../services/workstations.service';
 
 @Component({
