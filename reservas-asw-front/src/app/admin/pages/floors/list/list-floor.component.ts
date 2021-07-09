@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Floor, FloorsResponse, FloorResponse } from '../../../interfaces/floor.interfaces';
+import { Floor, FloorsResponse, FloorResponse } from '../../../interfaces/floors.interfaces';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';

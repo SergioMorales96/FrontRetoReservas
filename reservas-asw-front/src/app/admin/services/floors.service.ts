@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { BranchesResponse } from '../interfaces/branches.interfaces';
 import { catchError } from 'rxjs/operators'
 import { environment } from '../../../environments/environment';
-import { FloorsResponse, FloorResponse, FloorClass, Floor } from '../interfaces/floor.interfaces';
+import { FloorsResponse, FloorResponse, FloorClass, Floor } from '../interfaces/floors.interfaces';
 import { ToastsService } from '../../services/toasts.service';
 import { throwError } from 'rxjs';
+import { BranchesResponse } from '../interfaces/branches,interfaces';
 
 
 @Injectable({
