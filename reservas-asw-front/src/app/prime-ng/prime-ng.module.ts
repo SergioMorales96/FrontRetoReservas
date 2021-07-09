@@ -22,6 +22,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { MessagesModule } from 'primeng/messages';
 
 
 @NgModule({
@@ -50,6 +51,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ToastModule,
     ToggleButtonModule,
     TooltipModule,
+    ConfirmDialogModule,
+    MessagesModule,   
   ],
 })
 export class PrimeNgModule { }

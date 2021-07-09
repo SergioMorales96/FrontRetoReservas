@@ -1,0 +1,57 @@
+<div
+  class="
+    p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4
+  "
+>
+  <h3>{{ viewTitle }}</h3>
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+  <div class="p-field p-col">
+    <p>No.</p>
+    <p>
+      <strong> {{ schedule.idHorario }} </strong>
+    </p>
+  </div>
+  <div class="p-field p-col">
+    <p>Nombre</p>
+    <p>
+      <strong> {{ schedule.nombre }} </strong>
+    </p>
+  </div>
+  <div class="p-field p-col">
+    <p>Hora de Inicio</p>
+    <p>
+      <strong> {{ schedule.horaInicio }} </strong>
+    </p>
+  </div>
+  <div class="p-field p-col">
+    <p>Hora de Finalización</p>
+    <p>
+      <strong> {{ schedule.horaFin }} </strong>
+    </p>
+  </div>
+  <div class="p-field p-col">
+    <p>No. Horas</p>
+    <p>
+      <strong> {{ schedule.numeroHoras }} </strong>
+    </p>
+  </div>
+</div>
+
+<p-divider></p-divider>
+
+<div class="p-fluid p-formgrid p-grid">
+  <div class="p-field p-col">
+    <p>Sucursal relacionada</p>
+    <p>
+      <strong> {{ schedule.idSucursal }} </strong>
+    </p>
+  </div>
+  <div class="p-field p-col">
+    <p>Nombre Sucursal</p>
+    <p>
+      <strong> {{ schedule.nombreSucursal }} </strong>
+    </p>
+  </div>
+</div>
