@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouteName } from 'src/utils/enums';
-import { Branch, BranchesResponse, BranchResponse } from '../../../interfaces/admin.interfaces';
+import { Branch, BranchesResponse, BranchResponse } from '../../../interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
 
 @Component({

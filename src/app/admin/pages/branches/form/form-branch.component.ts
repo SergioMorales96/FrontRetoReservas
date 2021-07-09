@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Branch, BranchClass, BranchResponse } from 'src/app/admin/interfaces/admin.interfaces';
+import { Branch, BranchClass, BranchResponse } from 'src/app/admin/interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
 import { RouteName } from '../../../../../utils/enums';
 

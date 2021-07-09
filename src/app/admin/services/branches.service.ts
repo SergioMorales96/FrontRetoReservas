@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Branch, BranchClass, BranchesResponse, BranchResponse } from '../interfaces/admin.interfaces';
+import { Branch, BranchClass, BranchesResponse, BranchResponse } from '../interfaces/branches.interfaces';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({

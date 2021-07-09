@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Branch, BranchResponse } from '../../../interfaces/admin.interfaces';
+import { Branch, BranchResponse } from '../../../interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
 
 @Component({
