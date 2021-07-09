@@ -5,8 +5,9 @@ import { FloorsService } from '../../../services/floors.service';
 import { Floor } from 'src/app/admin/interfaces/floor.interfaces';
 import { FloorClass, FloorResponse, FloorsResponse } from '../../../interfaces/floor.interfaces';
 import { RouteFloor } from '../../../../../utils/enums';
-import { ToastsService } from '../../../../services/toasts.service';
-import { Branch, BranchesResponse } from '../../../interfaces/branches,interfaces';
+import { Branch } from 'src/app/admin/interfaces/branches,interfaces';
+import { BranchesResponse } from '../../../interfaces/branches,interfaces';
+import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../interfaces/floors.interfaces';
 
 @Component({
   selector: 'app-floor-form',
