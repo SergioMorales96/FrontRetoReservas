@@ -13,7 +13,7 @@
 
 <p-table
     #dt
-    [value]="branches" 
+    [value]="branches | sort:'idSucursal'" 
     [resizableColumns]="true" 
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">
