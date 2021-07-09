@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Schedule, NombreSucursal, ScheduleResponse, SchedulesResponse } from '../../../interfaces/admin.interfaces';
+import { Schedule, NombreSucursal, ScheduleResponse, SchedulesResponse } from '../../../interfaces/schedule.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { SchedulesService } from '../../../services/schedules.service';
 import { ConfirmationService } from 'primeng/api';

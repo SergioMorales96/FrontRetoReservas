@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Schedule, ScheduleClass, ScheduleResponse, SchedulesResponse } from '../interfaces/admin.interfaces';
+import { Schedule, ScheduleClass, ScheduleResponse, SchedulesResponse } from '../interfaces/schedule.interfaces';
 
 @Injectable({
   providedIn: 'root'

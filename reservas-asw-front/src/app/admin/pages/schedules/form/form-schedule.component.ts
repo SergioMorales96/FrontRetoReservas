@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SchedulesService } from 'src/app/admin/services/schedules.service';
-import { Schedule, ScheduleResponse, ScheduleClass, Branch } from '../../../interfaces/admin.interfaces';
+import { Schedule, ScheduleResponse, ScheduleClass } from '../../../interfaces/schedule.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 
 @Component({
