@@ -1,5 +1,5 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-    <h3>Listado Dominios</h3>  
+    <h3> Listado Dominios </h3>  
     <a 
         pButton 
         [routerLink]="routeName.DomainAdd" 
@@ -11,7 +11,7 @@
 </div>
 
 <p-table 
-    [value]="domains"
+    [value]="domains | sort:'codigoDominio'"
     [resizableColumns]="true" 
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">

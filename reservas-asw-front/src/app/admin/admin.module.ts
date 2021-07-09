@@ -18,6 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
+import { SortPipe } from './pipes/sort.pipe';
+
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
     FormRoomComponent,
     ViewRoomComponent,
     ListDomainComponent,
-    FormDomainComponent
+    FormDomainComponent,
+    SortPipe
   ],
   imports: [
     CommonModule,
