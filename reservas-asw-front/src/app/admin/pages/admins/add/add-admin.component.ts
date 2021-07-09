@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Administrador, AdminResponse, Branch, AdminClass } from '../../../interfaces/admin.interfaces';
 import { AdminsService } from '../../../services/admins.service';
 import { RouteName } from '../../../../../utils/enums';
+import { ToastsService } from '../../../../services/toasts.service';
 @Component({
   selector: 'app-add-admin',
   templateUrl: './add-admin.component.html',
@@ -41,7 +42,8 @@ export class AddAdminComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private adminsService: AdminsService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastsService
   ) {
 
   }
@@ -49,53 +51,61 @@ export class AddAdminComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params
       .subscribe(({ id }) => {
-        if ( id ) {
-         this.isEditing =true;
-         this.getAdmin(id);
-        }else{
-        this.admin = new AdminClass();
+        if (id) {
+          this.isEditing = true;
+          this.getAdmin(id);
+        } else {
+          this.admin = new AdminClass();
         }
       });
-}
-
-getAdmin(id : number): void{
-  this.adminsService.getAdmin(id)
-    .subscribe(
-      (adminResponse:AdminResponse) => {
-        this.admin = adminResponse.data;
-        this.setAdmin(this.admin);
-      }
-    )
-}
-
-setAdmin( admin: Administrador ): void {
-  this.adminForm.controls['email'].setValue( admin.email );
-  this.adminForm.controls['sucursalId'].setValue( admin.idSucursal );
-}
-
-getAdminFormValue():Administrador {
-  return {
-    email:  this.adminForm.controls['email'].value,        
-    idSucursal:   this.adminForm.controls['sucursalId'].value
   }
 
-
-}
-save(): void {
-  if (this.isEditing) {
-    this.adminsService.updateAdmin({
-      ...this.getAdminFormValue(),
-      idAdministrador: this.admin.idAdministrador
-    })
-    .subscribe(
-      (adminResponse : AdminResponse) => this.router.navigateByUrl(RouteName.AdminsList)
-    );
-  } else {
-    this.adminsService.createAdmin(this.getAdminFormValue())
-    .subscribe(
-      (adminResponse : AdminResponse) => this.router.navigateByUrl(RouteName.AdminsList)
-    );
+  getAdmin(id: number): void {
+    this.adminsService.getAdmin(id)
+      .subscribe(
+        (adminResponse: AdminResponse) => {
+          this.admin = adminResponse.data;
+          this.setAdmin(this.admin);
+        }
+      )
   }
-}
+
+  setAdmin(admin: Administrador): void {
+    this.adminForm.controls['email'].setValue(admin.email);
+    this.adminForm.controls['sucursalId'].setValue(admin.idSucursal);
+  }
+
+  getAdminFormValue(): Administrador {
+    return {
+      email: this.adminForm.controls['email'].value,
+      idSucursal: this.adminForm.controls['sucursalId'].value
+    }
+
+
+  }
+  save(): void {
+    if (this.isEditing) {
+      this.adminsService.updateAdmin({
+        ...this.getAdminFormValue(),
+        idAdministrador: this.admin.idAdministrador
+      })
+        .subscribe(
+          (adminResponse: AdminResponse) => {
+            this.router.navigateByUrl(RouteName.AdminsList);
+            this.toastService.showToastSuccess({ summary: 'Administrador editado', detail: 'El administrador ha sido editado correctamente' });
+          },
+          (() => this.admin = new AdminClass())
+        );
+    } else {
+      this.adminsService.createAdmin(this.getAdminFormValue())
+        .subscribe(
+          (adminResponse: AdminResponse) => {
+            this.router.navigateByUrl(RouteName.AdminsList);
+            this.toastService.showToastSuccess({ summary: 'Administrador creado', detail: 'El administrador ha sido creado correctamente' })
+          },
+          (() => this.admin = new AdminClass())
+        )
+    }
+  }
 
 }

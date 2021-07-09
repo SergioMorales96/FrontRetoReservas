@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Administrador, AdminsResponse, AdminResponse, Branch, AdminClass } from '../interfaces/admin.interfaces';
 import { catchError} from 'rxjs/operators';
+import { ToastsService } from '../../services/toasts.service';
+import { throwError } from 'rxjs/internal/observable/throwError';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +17,8 @@ export class AdminsService {
     admin: Administrador[] = [];
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private toastService: ToastsService
     ) { }
 
     getAdmins(): Observable<AdminsResponse> {
@@ -42,8 +45,10 @@ export class AdminsService {
         const url = `${this.apiUrl}/crear`;
         return this.http.post<AdminResponse>(url, admin) 
         .pipe(
-            catchError(err => of({data: new AdminClass()})
-         )
+            catchError(err => {
+                this.toastService.showToastDanger({ summary:'Error al crear', detail:err?.message ? err.message : err });
+                return throwError(err);
+            })
         );
     }
 
@@ -51,8 +56,10 @@ export class AdminsService {
         const url = `${this.apiUrl}/editar`;
         return this.http.post<AdminResponse>(url, admin) 
         .pipe(
-            catchError(err => of({data: new AdminClass()})
-         )
+            catchError(err => {
+                this.toastService.showToastDanger({ summary:'Error al editar', detail:err?.message ? err.message : err });
+                return throwError(err);
+            })
         );
     }
     
@@ -60,8 +67,10 @@ export class AdminsService {
         const url = `${this.apiUrl}/eliminar/${id}`;
         return this.http.get<AdminResponse>(url) 
         .pipe(
-            catchError(err => of({data: new AdminClass()})
-         )
+            catchError(err => {
+                this.toastService.showToastDanger({ summary:'Error al eliminar', detail:err?.message ? err.message : err });
+                return throwError(err);
+            })
         );
     }
 }
