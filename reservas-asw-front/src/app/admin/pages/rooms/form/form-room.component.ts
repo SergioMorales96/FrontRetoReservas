@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Room, Floor, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { Room, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { Floor } from '../../../interfaces/floors.interfaces';
 
 @Component({
   selector: 'app-form',
@@ -17,20 +18,7 @@ export class FormRoomComponent implements OnInit {
     floorId: ['', [Validators.required]],
   });
   floors: Floor[] = [
-    {
-      idPiso: 1,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 1',
-      numeroPiso: 1
-    },
-    {
-      idPiso: 2,
-      aforoMaximo: 10,
-      idSucursal: 1,     
-      nombre: 'Piso 2',
-      numeroPiso: 1
-    }
+  
   ];
   isEditing: boolean = false;
   room!: Room;
@@ -53,7 +41,7 @@ export class FormRoomComponent implements OnInit {
       .subscribe(({ id }) => {
         if ( id ) {
           this.isEditing = true;
-          console.log( 'room id', id );
+          console.log( 'floor id', id );
 
           this.room = {
             idSala: 1,

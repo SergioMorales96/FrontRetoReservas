@@ -20,8 +20,12 @@ import { ListWorkstationComponent } from './pages/workstation/list-workstation/l
 import { FormWorkstationComponent } from './pages/workstation/form-workstation/form-workstation.component';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
-import { SortPipe } from './pipes/sort.pipe';
 
+
+import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
+import { ListfloorComponent } from './pages/floors/list/list-floor.component';
+import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
+import { SortPipe } from './pipes/sort.pipe';
 
 
 @NgModule({
@@ -30,6 +34,9 @@ import { SortPipe } from './pipes/sort.pipe';
     BranchesComponent,
     DomainsComponent,
     FloorsComponent,
+    FormFloorComponent,
+    ListfloorComponent,
+    ViewFloorComponent,
     RoomsComponent,
     SchedulesComponent,
     WorkstationComponent,
@@ -41,7 +48,7 @@ import { SortPipe } from './pipes/sort.pipe';
     FormWorkstationComponent,
     ListDomainComponent,
     FormDomainComponent,
-    SortPipe
+    SortPipe,
   ],
   imports: [
     CommonModule,

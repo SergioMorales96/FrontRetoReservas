@@ -15,4 +15,12 @@ export enum RouteName {
     DomainView = "/admin/domains/view",
 
 
+    
+}
+
+export enum RouteFloor{
+    FloorList = '/admin/floors/list',
+    FloorView = '/admin/floors/view',
+    FloorAdd = '/admin/floors/add',
+    FloorEdit = '/admin/floors/edit',
 }

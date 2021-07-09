@@ -18,6 +18,9 @@ import { ListDomainComponent } from './pages/domains/list/list-domain.component'
 import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
+import { ListfloorComponent } from './pages/floors/list/list-floor.component';
+import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
+import { FormFloorComponent } from './pages/floors/form/form.floor.component';
 const routes: Routes = [
   {
     path: '',
@@ -63,7 +66,31 @@ const routes: Routes = [
       },
       {
         path: 'floors',
-        component: FloorsComponent
+        component: FloorsComponent,
+        children: [
+          {
+            path:'list',
+            component:ListfloorComponent
+          },
+          {
+            path:'view/:id',
+            component: ViewFloorComponent
+          },
+          {
+            path:'add',
+            component:FormFloorComponent 
+          },
+          {
+            path:'edit/:id',
+            component: FormFloorComponent 
+          },
+          {
+            path: '**',
+            redirectTo:'list'
+          }
+
+        ]
+
       },
       {
         path: 'rooms',
@@ -125,6 +152,7 @@ const routes: Routes = [
         path: '**',
         redirectTo: 'admins'
       }
+
     ]
   }
 ];

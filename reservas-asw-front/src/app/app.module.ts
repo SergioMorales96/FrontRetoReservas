@@ -11,6 +11,9 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
 
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+
 
 @NgModule({
   declarations: [
@@ -22,12 +25,14 @@ import { MessageService } from 'primeng/api';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    PrimeNgModule,
     SharedModule,
+    ToastModule
   ],
   providers: [
     ConfirmationService,
-    MessageService,
-  ],
+    MessageService
+  ], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
