@@ -93,6 +93,7 @@
           pTooltip="Eliminar"
           tooltipPosition="top"
           (click)="deleteSchedule(schedule.idHorario)"
+         
         ></button>
       </td>
     </tr>
@@ -101,4 +102,6 @@
 <p-confirmDialog
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
+  acceptLabel ="Si"
+  rejectLabel ="No"
 ></p-confirmDialog>

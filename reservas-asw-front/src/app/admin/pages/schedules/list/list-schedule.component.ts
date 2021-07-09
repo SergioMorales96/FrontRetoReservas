@@ -7,6 +7,8 @@ import { MessageService } from 'primeng/api';
 import { Message } from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 
+import { AlertsService } from '../../../../services/alerts.service';
+
 @Component({
   selector: 'app-list',
   templateUrl: './list-schedule.component.html',
@@ -23,7 +25,8 @@ export class ListScheduleComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
-    private schedulesService: SchedulesService
+    private schedulesService: SchedulesService,
+    private alertsService: AlertsService
   ) { }
 
   ngOnInit(): void {
@@ -43,11 +46,22 @@ export class ListScheduleComponent {
   }
 
   eraseSchedule(id: number): void {
-    this.schedulesService.deleteSchedule(id)
-      .subscribe(
-        (scheduleResponse: ScheduleResponse) =>
-          this.schedules = this.schedules.filter((schedule: Schedule) =>
-            schedule.idHorario !== id)
-      );
+    this.alertsService.showConfirmDialog({
+      message: `¿Desea eliminar el horario No. ${id}? ¡Esta acción no se podrá revertir!`,
+      header: 'Eliminar horario',
+    })
+    .then(resp => {
+      if(resp){
+        this.schedulesService.deleteSchedule(id)
+        .subscribe(
+          (scheduleResponse: ScheduleResponse) =>
+            this.schedules = this.schedules.filter((schedule: Schedule) =>
+              schedule.idHorario !== id)
+        );
+      } else{
+        return;
+      }
+    })
+    .catch(console.log);
   }
 }
