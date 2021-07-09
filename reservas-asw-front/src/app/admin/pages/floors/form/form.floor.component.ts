@@ -66,13 +66,12 @@ export class FormFloorComponent implements OnInit {
         }
 
        setFloor( floor: Floor ): void {
-           this.floorForm.controls['maxCapacity'].setValue(floor.aforoMaximo);
-           this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
-          this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
-           this.floorForm.controls['branchId'].setValue(floor.idSucursal);
-           this.floorForm.controls['floorId'].setValue(floor.idPiso);
-           this.floorForm.controls['name'].setValue(floor.nombre);
-      
+           this.floorForm.controls['nombre'].setValue(floor.nombre);
+           this.floorForm.controls['aforoMaximo'].setValue(floor.aforoMaximo);
+           this.floorForm.controls['numeroPiso'].setValue(floor.numeroPiso);
+          this.floorForm.controls['idSucursal'].setValue(floor.nombreSucursal);
+           this.floorForm.controls['idPiso'].setValue(floor.idSucursal);
+           this.floorForm.controls['idPiso'].setValue(floor.idPiso);
          }
 
     getFloorFormValue(): Floor {
