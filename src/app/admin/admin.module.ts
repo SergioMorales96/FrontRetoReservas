@@ -19,7 +19,7 @@ import { ViewBranchComponent } from './pages/branches/view/view-branch.component
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SortPipe } from './sort.pipe';
+import { SortPipe } from './pipes/sort.pipe';
 
 
 
