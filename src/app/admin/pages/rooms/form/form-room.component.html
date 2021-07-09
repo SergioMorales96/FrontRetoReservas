@@ -1,16 +1,22 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ formTitle }} </h3>
+    <a  
+        pButton
+        [routerLink]="[routeName.RoomView, room?.idSala]"
+        class="button-link p-button-info p-m-1"
+        label="Ver">
+    </a>
 
 </div>
 
 <form 
     [formGroup]="roomForm" 
-    (ngSubmit)="saveRoom()">
+    (ngSubmit)="save()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre</label>
+            <label for="name">Nombre Sala</label>
             <input 
                 id="name" 
                 type="text" 
@@ -35,7 +41,6 @@
                 formControlName="maxCapacity"
                 [min]="0"
                 [max]="100"
-                readonly
                 requried>
             </p-inputNumber>
         </div>
