@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Branch, BranchClass, BranchResponse } from 'src/app/admin/interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
 import { RouteName } from '../../../../../utils/enums';
+import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
   selector: 'app-form-branch',
@@ -36,6 +37,7 @@ export class FormBranchComponent implements OnInit {
     private fb: FormBuilder,
     private branchesService: BranchesService,
     private router: Router,
+    private toastService: ToastsService
   ) { }
 
   ngOnInit(): void {
@@ -83,12 +85,20 @@ export class FormBranchComponent implements OnInit {
         idSucursal: this.branch.idSucursal
       })
         .subscribe(
-          (branchResponse: BranchResponse) => this.router.navigateByUrl(RouteName.BranchesList)
+          (branchResponse: BranchResponse) => {
+            this.router.navigateByUrl(RouteName.BranchesList);
+            this.toastService.showToastSuccess({ summary: 'Sucursal actualizada', detail: 'La Sucursal ha sido actualizada correctamente.' });
+          },
+          (() => this.branch = new BranchClass())
         );
     } else {
       this.branchesService.createBranch(this.getBranchFormValue())
         .subscribe(
-          (branchResponse: BranchResponse) => this.router.navigateByUrl(RouteName.BranchesList)
+          (branchResponse: BranchResponse) => {
+            this.router.navigateByUrl(RouteName.BranchesList);
+            this.toastService.showToastSuccess({ summary: 'Sucursal creado', detail: 'La Sucursal ha sido creado correctamente.' });
+          },
+          (() => this.branch = new BranchClass())
         );
     }
   }

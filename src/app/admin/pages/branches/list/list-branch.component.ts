@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouteName } from 'src/utils/enums';
 import { Branch, BranchesResponse, BranchResponse } from '../../../interfaces/branches.interfaces';
 import { BranchesService } from '../../../services/branches.service';
+import { ToastsService } from '../../../../services/toasts.service';
+import { AlertsService } from '../../../../services/alerts.service';
 
 @Component({
   selector: 'app-list-branch',
@@ -15,6 +17,8 @@ export class ListBranchComponent implements OnInit {
 
   constructor(
     private branchesService: BranchesService,
+    private toastService: ToastsService,
+    private alertsService: AlertsService
   ) { }
 
   ngOnInit(): void {
@@ -29,12 +33,24 @@ export class ListBranchComponent implements OnInit {
   }
 
   deleteBranch(id: number): void {
-    this.branchesService.deleteBranch(id)
-      .subscribe(
-        (branchResponse: BranchResponse) => this.branches = this.branches.filter((branch: Branch) => branch.idSucursal !== id)
-      );
+    this.alertsService.showConfirmDialog({
+      message: '¿Desea eliminar el dominio, esta acción no se podrá revertir?',
+      header: 'Eliminar dominio',
+    })
+      .then(resp => {
+        if (resp) {
+          this.branchesService.deleteBranch(id)
+            .subscribe(
+              (branchResponse: BranchResponse) => {
+                this.branches = this.branches.filter((branch: Branch) => branch.idSucursal !== id);
+                this.toastService.showToastSuccess({ summary: 'Sucursal eliminada', detail: 'La Sucursal ha sido eliminado correctamente.' });
+              }
+            );
+        } else {
+          return;
+        }
+      })
+      .catch(console.log);
   }
-
-
 
 }
