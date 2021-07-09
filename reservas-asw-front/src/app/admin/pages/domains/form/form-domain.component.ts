@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Domain, DomainClass, DomainResponse } from '../../../interfaces/domains.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { DomainsService } from '../../../services/domains.service';
+import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
   selector: 'app-form-domain',
@@ -35,6 +36,7 @@ export class FormDomainComponent implements OnInit {
     private fb: FormBuilder,
     private domainsService: DomainsService,
     private router: Router,
+    private toastService: ToastsService
   ) { }
 
   ngOnInit(): void {
@@ -80,12 +82,20 @@ export class FormDomainComponent implements OnInit {
         codigoDominio: this.domain.codigoDominio
       })
         .subscribe(
-          (domainResponse: DomainResponse) => this.router.navigateByUrl(RouteName.DomainsList)
+          (domainResponse: DomainResponse) => {
+            this.router.navigateByUrl(RouteName.DomainsList);
+            this.toastService.showToastSuccess({ summary: 'Dominio actualizado', detail: 'El dominio ha sido actualizado correctamente.' });
+          },
+          (() => this.domain = new DomainClass())
         );
     } else {
       this.domainsService.createDomain(this.getDomainFormValue())
         .subscribe(
-          (domainResponse: DomainResponse) => this.router.navigateByUrl(RouteName.DomainsList)
+          (domainResponse: DomainResponse) => {
+            this.router.navigateByUrl(RouteName.DomainsList);
+            this.toastService.showToastSuccess({ summary: 'Dominio creado', detail: 'El dominio ha sido creado correctamente.' });
+          },
+          (() => this.domain = new DomainClass())
         )
 
     }
