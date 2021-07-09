@@ -9,5 +9,10 @@ export enum RouteName {
     WorkstationAdd = '/admin/workstations/add',
     WorkstationEdit = '/admin/workstations/edit',
 
+    DomainsList = "/admin/domains/list",
+    DomainAdd = "/admin/domains/add",
+    DomainEdit = "/admin/domains/edit",
+    DomainView = "/admin/domains/view",
+
 
 }

@@ -7,19 +7,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
+import { PrimeNgModule } from './prime-ng/prime-ng.module';
+
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    PrimeNgModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    ConfirmationService,
+    MessageService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

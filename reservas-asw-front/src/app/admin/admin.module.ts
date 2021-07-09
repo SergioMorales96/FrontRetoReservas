@@ -18,6 +18,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewWorkstationComponent } from './pages/workstation/view-workstation/view-workstation.component';
 import { ListWorkstationComponent } from './pages/workstation/list-workstation/list-workstation.component';
 import { FormWorkstationComponent } from './pages/workstation/form-workstation/form-workstation.component';
+import { ListDomainComponent } from './pages/domains/list/list-domain.component';
+import { FormDomainComponent } from './pages/domains/form/form-domain.component';
+import { SortPipe } from './pipes/sort.pipe';
 
 
 
@@ -36,6 +39,9 @@ import { FormWorkstationComponent } from './pages/workstation/form-workstation/f
     ViewWorkstationComponent,
     ListWorkstationComponent,
     FormWorkstationComponent,
+    ListDomainComponent,
+    FormDomainComponent,
+    SortPipe
   ],
   imports: [
     CommonModule,
