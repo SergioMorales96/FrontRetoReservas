@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SchedulesService } from 'src/app/admin/services/schedules.service';
-import { Schedule, ScheduleResponse, ScheduleClass } from '../../../interfaces/schedule.interfaces';
+import { Schedule, ScheduleResponse, ScheduleClass, NombreSucursal } from '../../../interfaces/schedule.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
+import { Branch } from '../../../interfaces/branch.interfaces';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-form',
@@ -18,13 +20,17 @@ export class FormScheduleComponent implements OnInit {
     numHours: ['', [Validators.required]],
     initHour: ['', [Validators.required]],
     endHour: ['', [Validators.required]],
-    iSucursal: ['', [Validators.required]],
+    idSucursal: ['', [Validators.required]],
   });
 
-  opciones: any[] = [
+  branches: Branch[] = [
     {
-      idSucursal: 1,
-      nombre: "TORRE SIGMA",
+      idSucursal : 1,
+      aforoMaximo : 300,
+      direccion :  "BOGOTA"  ,
+      nit : "9000001"  ,
+      nombre: "TORRE SIGMA"   ,
+      nombreEmpresa: "ASESOFTWARE"
     },
   ];
 
@@ -32,7 +38,7 @@ export class FormScheduleComponent implements OnInit {
   schedule!: Schedule;
 
   get formTitle(): string {
-    return this.isEditing ? (this.schedule.nombre ?? 'Editar Horario') : 'Crear Horario';
+    return this.isEditing ? (this.schedule?.nombre ?? 'Editar Horario') : 'Crear Horario';
   }
 
   get buttonLabel(): string {
@@ -65,7 +71,7 @@ export class FormScheduleComponent implements OnInit {
       nombre: this.scheduleForm.controls['name'].value,
       horaFin: this.scheduleForm.controls['endHour'].value,
       horaInicio: this.scheduleForm.controls['initHour'].value,
-      idSucursal: this.scheduleForm.controls['iSucursal'].value,
+      idSucursal: this.scheduleForm.controls['idSucursal'].value,
     }
   }
 
@@ -74,10 +80,21 @@ export class FormScheduleComponent implements OnInit {
     this.scheduleForm.controls['numHours'].setValue(schedule.numeroHoras);
     this.scheduleForm.controls['initHour'].setValue(schedule.horaInicio);
     this.scheduleForm.controls['endHour'].setValue(schedule.horaFin);
-    this.scheduleForm.controls['iSucursal'].setValue(schedule.idSucursal);
+    this.scheduleForm.controls['idSucursal'].setValue(schedule.idSucursal);
+  }
+
+  validateDates(): boolean {
+    const date = moment(`${new Date()}`).format('YYYY-MM-DD');
+    const startDate = moment(`${date} ${this.scheduleForm.controls['initHour'].value}`);
+    const endDate = moment(`${date} ${this.scheduleForm.controls['endHour'].value}`);
+    return endDate.isAfter(startDate);
   }
 
   saveSchedule(): void {
+    if (!this.validateDates()) {
+      this.toastService.showToastWarning({ summary: 'Advertencia', detail: 'La fecha final debe ser posterior a la fecha inicial.' });
+      return;
+    }
     if (this.isEditing) {
       this.updateSchedule();
     } else {

@@ -23,25 +23,26 @@
     </div>
     <div class="p-field p-col">
       <label for="initHour">Hora de Inicio</label>
-      <input
-        id="initHour"
-        type="text"
+      <p-calendar 
+        id='initHour'
         formControlName="initHour"
-        placeholder="Hora Inicio (ej: 09:00)"
-        pInputText
-        required
-      />
+        [timeOnly]="true" 
+        inputId="timeonly"
+        [required]="true"
+        dateFormat="hh:mm">
+      </p-calendar>
     </div>
     <div class="p-field p-col">
       <label for="endHour">Hora de Finalización</label>
-      <input
-        id="endHour"
-        type="text"
+      <p-calendar 
+        id='endHour'
         formControlName="endHour"
-        placeholder="Hora Fin (ej: 11:00)"
-        pInputText
-        required
-      />
+        [timeOnly]="true" 
+        inputId="timeonly"
+        [required]="true"
+        dateFormat="hh:mm"
+        >
+    </p-calendar>
     </div>
   </div>
 
@@ -67,14 +68,14 @@
       </p-inputNumber>
     </div>
     <div class="p-field p-col">
-      <label for="iSucursal">Sucursal relacionada</label>
+      <label for="idSucursal">Sucursal relacionada</label>
       <p-dropdown
-        [options]="opciones"
-        optionLabel="idSucursal"
+        [options]="branches"
+        optionLabel="nombre"
         optionValue="idSucursal"
         emptyMessage="No se encontraron resultados"
         placeholder="Sucursal relacionada"
-        formControlName="iSucursal"
+        formControlName="idSucursal"
         requried
       >
       </p-dropdown>
