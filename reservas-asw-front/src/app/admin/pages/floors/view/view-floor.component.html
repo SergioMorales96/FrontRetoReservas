@@ -7,12 +7,12 @@
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
         <p> Nombre </p>
-        <p><strong> {{ floor.nombre }} </strong></p>
+        <p><strong> {{ floor?.nombre }} </strong></p>
     </div>
 
     <div class="p-field p-col">
         <p> Numero de piso </p>
-        <p><strong> {{ floor.numeroPiso }} </strong></p>
+        <p><strong> {{ floor?.numeroPiso }} </strong></p>
     </div>
 </div>
 <p-divider></p-divider>
@@ -20,11 +20,11 @@
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
         <p> Aforo Maximo </p>
-        <p><strong> {{ floor.aforoMaximo }} </strong></p>
+        <p><strong> {{ floor?.aforoMaximo }} </strong></p>
     </div>
      <div class="p-field p-col">
-        <p> Nombre Sucursal </p>
-        <p><strong> {{ floor.nombreSucursal }} </strong></p>
+        <p> Sucursal Relacionada </p>
+        <p><strong> {{floor?.sucursalEntity?.nombre}}  </strong></p>
     </div>
-   
 </div>
+

@@ -28,6 +28,7 @@ export class ViewFloorComponent implements OnInit {
     .subscribe(({ id }) => {
       if ( id ){
        this.getFloor(id);
+
       }
     });
   }
@@ -35,6 +36,8 @@ export class ViewFloorComponent implements OnInit {
   getFloor(id: number): void {
     this.floorsService.getFloor(id)
     .subscribe(
-      (floorResponse: FloorResponse) =>  this.floor = floorResponse.data)     
+      (floorResponse: FloorResponse) =>  this.floor = floorResponse.data
+      )  
   }
+
 }

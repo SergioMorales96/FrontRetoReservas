@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Floor, FloorClass, FloorResponse, FloorsResponse } from '../interfaces/admin.interfaces';
+import { Floor, FloorClass, FloorResponse, BranchesResponse, FloorsResponse } from '../interfaces/admin.interfaces';
 import { catchError } from 'rxjs/operators'
 
 
@@ -13,7 +13,7 @@ import { catchError } from 'rxjs/operators'
 
   export class FloorsService {
       private apiUrl: string = `${ environment.baseUrl }/piso`;
-    
+      private apiUrl2: string = `${ environment.baseUrl }/sucursales`;
       constructor(
           private http: HttpClient
       ){}
@@ -55,6 +55,16 @@ import { catchError } from 'rxjs/operators'
         return this.http.get<FloorResponse>(url)
         .pipe(
           catchError(err => of ({data: new FloorClass() }))
-          ); 
+          );   
     }
+    getBranches(): Observable<BranchesResponse> {
+        const url = `${this.apiUrl2}/all`;
+        return this.http.get<BranchesResponse>(url)
+          .pipe(
+            catchError(err => of({ data: [] }))
+          );
+      }
+
   }
+
+  

@@ -36,7 +36,8 @@ export interface Floor {
     idSucursal:  number;
     nombre:      string;
     numeroPiso:  number;
-    nombreSucursal: string;
+    sucursalEntity?:Sucursal; 
+    nombreSucursal?: string;
    
 }
   export class FloorClass {
@@ -63,5 +64,38 @@ export interface Sucursal {
     direccion:     string;
     nit:           string;
     nombre:        string;
-    nombreEmpresa: string;
+    nombreEmpresa?: string;
+}
+
+export interface Branch {
+    idSucursal?:    number;
+    aforoMaximo:   number;
+    direccion:     string;
+    nit:           string;
+    nombre:        string;
+    nombreEmpresa?: string;
+}
+
+export class BranchClass {
+    idSucursal!:    number;
+    aforoMaximo!:   number;
+    direccion!:     string;
+    nit!:           string;
+    nombre!:        string;
+    nombreEmpresa!: string;
+
+    constructor(){}
+}
+export interface BranchesResponse {
+    data:    Branch[];
+    success?: boolean;
+    message?: string;
+    status?:  string;
+}
+
+export interface BranchResponse {
+    data:    Branch;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }

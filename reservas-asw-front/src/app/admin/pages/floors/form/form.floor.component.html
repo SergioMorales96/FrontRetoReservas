@@ -50,11 +50,11 @@
         </p-inputNumber>
     </div>
     <div class="p-field p-col">
-        <label for="nombreSucursal">Nombre Sucursal</label>
-        <p-dropdown   
-               
-            optionLabel="nombreSucursal"
-            optionValue="nombreSucursal"
+        <label for="idSucursal">Nombre Sucursal</label>
+        <p-dropdown 
+            [options]="branches"
+            optionLabel="nombre"
+            optionValue="idSucursal"
             emptyMessage="No se encontraron resultados"
             placeholder="Nombre sucursal"
             formControlName="nombreSucursal"

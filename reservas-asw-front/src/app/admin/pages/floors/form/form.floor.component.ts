@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Floor, Sucursal, FloorClass, FloorResponse, FloorsResponse } from '../../../interfaces/admin.interfaces';
+import { Floor, Sucursal, FloorClass, FloorResponse, FloorsResponse, BranchesResponse, Branch } from '../../../interfaces/admin.interfaces';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
 
@@ -17,23 +17,14 @@ export class FormFloorComponent implements OnInit {
     aforoMaximo: ['', [Validators.required]],
     numeroPiso:['',[Validators.required]],
     idSucursal: ['', [Validators.required]],
-    nombreSucursal: ['', [Validators.required]],
+    nombreSucursal: [''],
     idPiso: [''],
   });
   isEditing: boolean = false;
   floor!: Floor;
+  floor2: Floor[] = [];
+  branches: Branch[] = [];
   
-  // sucursal: Sucursal[] = [
-  //   {
-  //     idSucursal: 1,
-  //     aforoMaximo: 300,
-  //     direccion: "BOGOTA",
-  //     nit: "9000001",
-  //     nombre: "TORRE SIGMA",
-  //     nombreEmpresa: "ASESOFTWARE"
-
-  //   }
-  // ]
 
   get formTitle(): string {
     return this.isEditing ? ( this.floor?.nombre ?? 'Editar piso' ) : 'Crear piso';
@@ -48,7 +39,8 @@ export class FormFloorComponent implements OnInit {
     private floorsService: FloorsService,
     private router: Router  
     ) {
-      
+      this.getBranches();
+      this.getFloors();
      }
 
   ngOnInit(): void {
@@ -72,28 +64,29 @@ export class FormFloorComponent implements OnInit {
             )
         }
 
-      // setFloor( floor: Floor ): void {
-      //   this.floorForm.controls['name'].setValue(floor.nombre);
-      //   this.floorForm.controls['floorId'].setValue(floor.idPiso);
-      //    this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
-      //    this.floorForm.controls['maxCapacity'].setValue(floor.aforoMaximo);
-      //    this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
-      //    this.floorForm.controls['branchId'].setValue(floor.idSucursal);
+       setFloor( floor: Floor ): void {
+           this.floorForm.controls['maxCapacity'].setValue(floor.aforoMaximo);
+           this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
+          this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
+           this.floorForm.controls['branchId'].setValue(floor.idSucursal);
+           this.floorForm.controls['floorId'].setValue(floor.idPiso);
+           this.floorForm.controls['name'].setValue(floor.nombre);
       
-      //   }
+         }
 
     getFloorFormValue(): Floor {
       return {
-        nombreSucursal: this.floorForm.controls['nameBranch'].value,
-        aforoMaximo: this.floorForm.controls['maxCapacity'].value,
-        numeroPiso: this.floorForm.controls['numberFloor'].value,
-        idSucursal: this.floorForm.controls['branchId'].value,
-        idPiso: this.floorForm.controls['floorId'].value,
-        nombre: this.floorForm.controls['name'].value,
+        nombreSucursal: this.floorForm.controls['nombreSucursal'].value,
+        aforoMaximo: this.floorForm.controls['aforoMaximo'].value,
+        numeroPiso: this.floorForm.controls['numeroPiso'].value,
+        idSucursal: this.floorForm.controls['idSucursal'].value,
+        idPiso: this.floorForm.controls['idPiso'].value,
+        nombre: this.floorForm.controls['nombre'].value,
       }
     }
 
   save(): void {
+    console.log('save Floor', this.floorForm.value);
     if (this.isEditing) {
       this.floorsService.updateFloor({
         ...this.getFloorFormValue(),
@@ -102,12 +95,26 @@ export class FormFloorComponent implements OnInit {
       .subscribe(
         (floorResponse: FloorResponse) => this.router.navigateByUrl(RouteFloor.FloorList)
       );
+
     } else {
       this.floorsService.createFloor(this.getFloorFormValue())
       .subscribe(
         (floorResponse: FloorResponse) => this.router.navigateByUrl(RouteFloor.FloorList)
       );
+      
     }
   }
+  getBranches() {
+    this.floorsService.getBranches()
+      .subscribe(
+        (branchesRespose: BranchesResponse) => this.branches = branchesRespose.data
+      );
+  }
+  getFloors(){
+    this.floorsService.getFloors()
+    .subscribe(
+      (floorsResponse: FloorsResponse )=> this.floor2 = floorsResponse.data)   
+  }
+
 }
 
