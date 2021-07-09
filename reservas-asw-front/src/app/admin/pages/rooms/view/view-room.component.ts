@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Room, RoomResponse } from '../../../interfaces/admin.interfaces';
+import { Room, RoomResponse } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 
 @Component({

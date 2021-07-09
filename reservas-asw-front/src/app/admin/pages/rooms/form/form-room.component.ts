@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Room, Floor, DominioEstado, RoomResponse, RoomClass, FloorsResponse } from '../../../interfaces/admin.interfaces';
+import { Floor, FloorsResponse } from '../../../interfaces/admin.interfaces';
+import { Room, RoomResponse, RoomClass } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 import { RouteName } from '../../../../../utils/enums';
 

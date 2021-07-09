@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable , of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Room, RoomResponse, RoomClass, RoomsResponse, FloorsResponse } from '../interfaces/admin.interfaces';
+import { FloorsResponse } from '../interfaces/admin.interfaces';
+import { Room, RoomResponse, RoomClass, RoomsResponse } from '../interfaces/rooms.interfaces';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({

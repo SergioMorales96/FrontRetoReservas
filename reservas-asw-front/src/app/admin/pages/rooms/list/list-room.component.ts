@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Room, DominioEstado, RoomResponse, RoomsResponse } from '../../../interfaces/admin.interfaces';
+import { Room, RoomResponse , RoomsResponse } from '../../../interfaces/rooms.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { RoomsService } from '../../../services/rooms.service';
 
