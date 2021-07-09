@@ -31,12 +31,15 @@
     <ng-template pTemplate="body" let-domain>
         <tr [pSelectableRow]="domain">
            <td>
+               <span class="p-column-title"><strong>Codigo Dominio</strong></span>
                <strong>{{domain.codigoDominio | titlecase}}</strong>
             </td>
             <td>
+                <span class="p-column-title"><strong>Valor Dominio</strong></span>
                 <strong>{{domain.valorDominio | titlecase}}</strong>
             </td>
             <td>
+                <span class="p-column-title"><strong>Descripcion</strong></span>
                 <strong>{{domain.descripcion | titlecase}}</strong>
             </td>
             <td>

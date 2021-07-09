@@ -12,7 +12,6 @@ import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
-import { AddDomainComponent } from './pages/domains/add/add-domain.component';
 import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
@@ -41,7 +40,7 @@ const routes: Routes = [
           },
           {
             path: 'add',
-            component: AddDomainComponent,
+            component: FormDomainComponent,
           },
           {
             path: 'view/:codigoDominio/:valorDominio/:descripcion',

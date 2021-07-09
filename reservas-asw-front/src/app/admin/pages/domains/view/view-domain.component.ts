@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Domain, DomainsResponse, DomainResponse } from '../../../interfaces/admin.interfaces';
+import { Domain, DomainsResponse, DomainResponse } from '../../../interfaces/domains.interfaces';
 import { DomainsService } from '../../../services/domains.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { DomainsService } from '../../../services/domains.service';
   styles: [
   ]
 })
-export class ViewDomainComponent implements OnInit{
+export class ViewDomainComponent implements OnInit {
   domain!: Domain;
 
   get viewTitle(): string {
@@ -19,21 +19,21 @@ export class ViewDomainComponent implements OnInit{
     private activateRoute: ActivatedRoute,
     private domainsService: DomainsService
 
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.activateRoute.params
-      .subscribe(({ codigo }) => {
-        if ( codigo ) {
-          this.getDomain( codigo); 
+      .subscribe(({ codigoDominio, valorDominio, descripcion }) => {
+        if (codigoDominio && valorDominio && descripcion) {
+          this.getDomain(codigoDominio, valorDominio, descripcion);
         }
       });
-    }
-    getDomain(codigo: string):void{
-      this.domainsService.getDomain(codigo)
-        .subscribe(
-          (DomainResponse: DomainResponse)=>this.domain= DomainResponse.data
-        )
+  }
+  getDomain(codigoDominio: string, valorDominio: string, descripcion: string): void {
+    this.domainsService.getDomain(codigoDominio, valorDominio, descripcion)
+      .subscribe(
+        (DomainResponse: DomainResponse) => this.domain = DomainResponse.data
+      )
 
-    }
+  }
 
 }

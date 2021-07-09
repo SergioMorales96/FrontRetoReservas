@@ -17,8 +17,8 @@
                 formControlName="codigoDominio" 
                 placeholder="CodigoDominio" 
                 pInputText
+                [readonly]="isEditing"
                 required
-                readonly
                 minlength="3"
                 maxlength="100">
         </div>
@@ -46,7 +46,7 @@
                 placeholder="Descripcion" 
                 pInputText
                 required
-                readonly
+                [readonly]="isEditing"
                 minlength="1"
                 maxlength="100">
         </div>

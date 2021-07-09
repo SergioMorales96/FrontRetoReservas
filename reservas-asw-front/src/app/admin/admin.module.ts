@@ -16,7 +16,6 @@ import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
-import { AddDomainComponent } from './pages/domains/add/add-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
 
@@ -34,7 +33,6 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
     FormRoomComponent,
     ViewRoomComponent,
     ListDomainComponent,
-    AddDomainComponent,
     FormDomainComponent
   ],
   imports: [
