@@ -22,7 +22,7 @@ import { MessageService } from 'primeng/api';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    SharedModule,
+    SharedModule
   ],
   providers: [
     ConfirmationService,

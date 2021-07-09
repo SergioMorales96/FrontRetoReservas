@@ -19,6 +19,9 @@ import { ViewBranchComponent } from './pages/branches/view/view-branch.component
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListDomainComponent } from './pages/domains/list/list-domain.component';
+import { FormDomainComponent } from './pages/domains/form/form-domain.component';
+
 import { SortPipe } from './pipes/sort.pipe';
 
 
@@ -38,6 +41,8 @@ import { SortPipe } from './pipes/sort.pipe';
     ListBranchComponent,
     ViewBranchComponent,
     FormBranchComponent,
+    ListDomainComponent,
+    FormDomainComponent,
     SortPipe
   ],
   imports: [
