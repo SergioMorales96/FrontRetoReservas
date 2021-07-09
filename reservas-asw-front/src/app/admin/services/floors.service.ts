@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Floor, FloorClass, FloorResponse } from '../interfaces/admin.interfaces';
+import { Floor, FloorClass, FloorResponse, BranchesResponse } from '../interfaces/admin.interfaces';
 import { catchError } from 'rxjs/operators'
 import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
 
@@ -13,7 +13,7 @@ import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
 
   export class FloorsService {
       private apiUrl: string = `${ environment.baseUrl }/piso`;
-    
+      private apiUrl2: string = `${ environment.baseUrl }/sucursales`;
       constructor(
           private http: HttpClient
       ){}
@@ -50,9 +50,19 @@ import { FloorsResponse } from 'src/app/admin/interfaces/admin.interfaces';
     }
       deleteFloor(id: number): Observable<FloorResponse>{
         const url = `${ this.apiUrl}/eliminar/${id}`;
-        return this.http.post<FloorResponse>(url,id)
+        return this.http.get<FloorResponse>(url)
         .pipe(
-          catchError(err => of ({data: new FloorClass}))
-          ); 
+          catchError(err => of ({data: new FloorClass() }))
+          );   
     }
+    getBranches(): Observable<BranchesResponse> {
+        const url = `${this.apiUrl2}/all`;
+        return this.http.get<BranchesResponse>(url)
+          .pipe(
+            catchError(err => of({ data: [] }))
+          );
+      }
+
   }
+
+  

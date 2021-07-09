@@ -24,7 +24,7 @@ export class ListfloorComponent implements OnInit{
     this.floorsService.getFloors()
     .subscribe(
       (floorsResponse: FloorsResponse )=> this.floor = floorsResponse.data)
-  
+      
   }
   
     deleteFloor( id: number ): void {
