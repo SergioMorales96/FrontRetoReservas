@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouteName } from 'src/utils/enums';
 import { Room, RoomResponse } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 
@@ -11,6 +12,7 @@ import { RoomsService } from '../../../services/rooms.service';
 })
 export class ViewRoomComponent implements OnInit {
   room!: Room;
+  routeName = RouteName;
 
   get viewTitle(): string {
     return this.room?.nombre ? this.room.nombre : 'Ver sala';

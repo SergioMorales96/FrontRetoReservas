@@ -5,6 +5,7 @@ import { Floor, FloorResponse } from '../../../interfaces/interface.schedule';
 import { Room, RoomResponse, RoomClass } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 import { RouteName } from '../../../../../utils/enums';
+import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-form',
@@ -22,6 +23,7 @@ export class FormRoomComponent implements OnInit {
   floors: Floor[] = [];
   isEditing: boolean = false;
   room!: Room;
+  routeName = RouteName;
 
   get formTitle(): string {
     return this.isEditing ? ( this.room?.nombre ?? 'Editar sala' ) : 'Crear sala';
@@ -35,7 +37,8 @@ export class FormRoomComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private roomsService: RoomsService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastsService
   ) { }
 
   ngOnInit(): void {
@@ -91,13 +94,21 @@ export class FormRoomComponent implements OnInit {
         idSala: this.room.idSala
       })
         .subscribe(
-          (roomResponce: RoomResponse) => this.router.navigateByUrl(RouteName.RoomsList)
+          (roomResponce: RoomResponse) => {
+            this.router.navigateByUrl(RouteName.RoomsList);
+            this.toastService.showToastSuccess({ summary: 'Sala actualizada', detail: 'La sala ha sido actualizada correctamente.' });
+          },
+          (() => this.room = new RoomClass())
         );
     }
     else{
       this.roomsService.createRoom(this.getRoomFormValue())
         .subscribe(
-          (roomResponce: RoomResponse) => this.router.navigateByUrl(RouteName.RoomsList)
+          (roomResponce: RoomResponse) => {
+            this.router.navigateByUrl(RouteName.RoomsList);
+            this.toastService.showToastSuccess({ summary: 'Sala creada', detail: 'La sala ha sido creada correctamente.' });
+          },
+          (() => this.room = new RoomClass())
         );
     }
   }

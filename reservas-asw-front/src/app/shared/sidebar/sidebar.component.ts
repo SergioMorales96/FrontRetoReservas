@@ -34,6 +34,8 @@ export class SidebarComponent implements OnInit {
           },
           {
             label: 'Lista de Dominios',
+            routerLink:'/admin/domains/list',
+            command: () => this.display = false
           },
           {
             label: 'Lista de Empresas',
@@ -53,6 +55,7 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Lista de Salas',
             routerLink:'/admin/rooms/list',
+            command: () => this.display = false
           },
           {
             label: 'Lista de Sucursales',

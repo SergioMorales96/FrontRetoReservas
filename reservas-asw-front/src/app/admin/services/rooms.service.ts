@@ -6,6 +6,9 @@ import { environment } from '../../../environments/environment';
 import { FloorResponse } from '../interfaces/interface.schedule';
 import { Room, RoomResponse, RoomClass, RoomsResponse } from '../interfaces/rooms.interfaces';
 import { catchError } from 'rxjs/operators';
+import { ToastsService } from '../../services/toasts.service';
+
+import { throwError } from 'rxjs/internal/observable/throwError';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,8 @@ export class RoomsService {
   private apiUrlP: string = `${ environment.baseUrl }/piso`;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private toastService: ToastsService
   ) { }
 
   getRooms(): Observable<RoomsResponse>{
@@ -46,7 +50,10 @@ export class RoomsService {
     const url = `${this.apiUrl}/crear`;
     return this.http.post<RoomResponse>(url, room)
       .pipe(
-        catchError(err => of({data: new RoomClass()}))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error al crear', detail: err?.message ? err.message : err });
+          return throwError(err);
+        })
       );
   }
 
@@ -54,7 +61,10 @@ export class RoomsService {
     const url = `${this.apiUrl}/actualizar`;
     return this.http.post<RoomResponse>(url, room)
       .pipe(
-        catchError(err => of({data: new RoomClass()}))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error al actualizar', detail: err?.message ? err.message : err });
+          return throwError(err);
+        })
       );
   }
 
@@ -62,7 +72,10 @@ export class RoomsService {
     const url = `${this.apiUrl}/eliminar/${id}`;
     return this.http.get<RoomResponse>(url)
       .pipe(
-        catchError(err => of({data: new RoomClass()}))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error al eliminar', detail: err?.message ? err.message : err });
+          return throwError(err);
+        })
       );
   }
 
