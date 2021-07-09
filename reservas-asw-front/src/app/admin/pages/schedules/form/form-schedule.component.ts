@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SchedulesService } from 'src/app/admin/services/schedules.service';
 import { Schedule, ScheduleResponse, ScheduleClass } from '../../../interfaces/schedule.interfaces';
 import { RouteName } from '../../../../../utils/enums';
+import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-form',
@@ -42,7 +43,8 @@ export class FormScheduleComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private schedulesService: SchedulesService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastsService
   ) { }
 
   ngOnInit(): void {
@@ -96,8 +98,10 @@ export class FormScheduleComponent implements OnInit {
   addSchedule() {
     this.schedulesService.addSchedule(this.getScheduleFormValue())
       .subscribe(
-        (scheduleResponse: ScheduleResponse) => this.router.navigateByUrl(RouteName.SchedulesList)
-      );
+        (scheduleResponse: ScheduleResponse) => {
+          this.router.navigateByUrl(RouteName.SchedulesList);
+          this.toastService.showToastSuccess({ summary: 'Horario creado', detail: 'El horario ha sido creado correctamente.' });
+        });
   }
 
   updateSchedule() {
@@ -106,8 +110,10 @@ export class FormScheduleComponent implements OnInit {
       idHorario: this.schedule.idHorario
     })
       .subscribe(
-        (scheduleResponse: ScheduleResponse) => this.router.navigateByUrl(RouteName.SchedulesList)
-      );
+        (scheduleResponse: ScheduleResponse) => {
+          this.router.navigateByUrl(RouteName.SchedulesList);
+          this.toastService.showToastSuccess({ summary: 'Horario actualizado', detail: 'El horario ha sido actualizado correctamente.' });
+        });
   }
 
 }

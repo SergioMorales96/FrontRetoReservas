@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
 import { Schedule, ScheduleClass, ScheduleResponse, SchedulesResponse } from '../interfaces/schedule.interfaces';
 
@@ -23,7 +24,7 @@ export class SchedulesService {
     }
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastService: ToastsService) { }
 
   /**
    * Check all the schedules, using the endpoint todos
@@ -54,7 +55,10 @@ export class SchedulesService {
     const urlLink = `${this.apiUrl}/eliminar/${id}`;
     return this.http.get<ScheduleResponse>(urlLink)
       .pipe(
-        catchError(err => of({ data: new ScheduleClass() }))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error de eliminar', detail: err?.message ? err.message : err });
+          return of({ data: new ScheduleClass() });
+        })
       );
   }
 
@@ -65,7 +69,10 @@ export class SchedulesService {
     const urlLink = `${this.apiUrl}/crear`;
     return this.http.post<ScheduleResponse>(urlLink, schedule)
       .pipe(
-        catchError(err => of({ data: new ScheduleClass() }))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error de crear', detail: err?.message ? err.message : err });
+          return of({ data: new ScheduleClass() });
+        })
       );
   }
 
@@ -76,7 +83,10 @@ export class SchedulesService {
     const urlLink = `${this.apiUrl}/editar`;
     return this.http.post<ScheduleResponse>(urlLink, schedule)
       .pipe(
-        catchError(err => of({ data: new ScheduleClass() }))
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error de actualizar', detail: err?.message ? err.message : err });
+          return of({ data: new ScheduleClass() });
+        })
       );
   }
 }

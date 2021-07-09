@@ -8,6 +8,7 @@ import { Message } from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 
 import { AlertsService } from '../../../../services/alerts.service';
+import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-list',
@@ -26,7 +27,8 @@ export class ListScheduleComponent {
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
     private schedulesService: SchedulesService,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    private toastService: ToastsService
   ) { }
 
   ngOnInit(): void {
@@ -50,18 +52,20 @@ export class ListScheduleComponent {
       message: `¿Desea eliminar el horario No. ${id}? ¡Esta acción no se podrá revertir!`,
       header: 'Eliminar horario',
     })
-    .then(resp => {
-      if(resp){
-        this.schedulesService.deleteSchedule(id)
-        .subscribe(
-          (scheduleResponse: ScheduleResponse) =>
-            this.schedules = this.schedules.filter((schedule: Schedule) =>
-              schedule.idHorario !== id)
-        );
-      } else{
-        return;
-      }
-    })
-    .catch(console.log);
+      .then(resp => {
+        if (resp) {
+          this.schedulesService.deleteSchedule(id)
+            .subscribe(
+              (scheduleResponse: ScheduleResponse) => {
+                this.schedules = this.schedules.filter((schedule: Schedule) =>
+                  schedule.idHorario !== id);
+                this.toastService.showToastSuccess({ summary: 'Horario eliminado', detail: 'El horario ha sido eliminado correctamente.' });
+              }
+            );
+        } else {
+          return;
+        }
+      })
+      .catch(console.log);
   }
 }
