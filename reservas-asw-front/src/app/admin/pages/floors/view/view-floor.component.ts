@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Floor } from 'src/app/admin/interfaces/floor.interfaces';
-import { FloorResponse } from '../../../interfaces/floor.interfaces';
 import { FloorsService } from '../../../services/floors.service';
+import { FloorResponse } from 'src/app/admin/interfaces/floors.interfaces';
+
 
 
 @Component({

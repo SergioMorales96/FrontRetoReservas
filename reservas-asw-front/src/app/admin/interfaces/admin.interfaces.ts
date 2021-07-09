@@ -16,21 +16,3 @@ export interface Room {
 export enum DominioEstado {
     A = "A",
 }
-
-
-export interface SucursalResponse {
-    data:    Sucursal[];
-    success: boolean;
-    message: string;
-    status:  string;
-}
-
-export interface Sucursal {
-    idSucursal:    number;
-    aforoMaximo:   number;
-    direccion:     string;
-    nit:           string;
-    nombre:        string;
-    nombreEmpresa?: string;
-}
-

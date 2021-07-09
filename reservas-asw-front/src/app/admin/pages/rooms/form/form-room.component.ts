@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Room, DominioEstado } from '../../../interfaces/admin.interfaces';
-import { Floor } from '../../../interfaces/floor.interfaces';
+import { Floor } from '../../../interfaces/floors.interfaces';
 
 @Component({
   selector: 'app-form',
