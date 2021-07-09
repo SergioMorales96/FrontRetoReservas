@@ -8,6 +8,6 @@ import { RouteFloor } from '../../../../utils/enums';
   ]
 })
 export class FloorsComponent {
-routeFloor = RouteFloor;
-  
+  routeFloor = RouteFloor;
+
 }

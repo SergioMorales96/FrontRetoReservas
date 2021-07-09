@@ -13,7 +13,7 @@
 </div>  
     <p-table 
              #dt
-             [value]="floors" 
+             [value]="floors | sort: 'numeroPiso' " 
              [resizableColumns]="true" 
              styleClass="p-datatable-striped p-datatable-responsive-demo">
         <ng-template pTemplate="header">

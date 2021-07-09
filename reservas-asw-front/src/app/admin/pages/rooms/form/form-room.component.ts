@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Room, Floor, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { Room, DominioEstado } from '../../../interfaces/admin.interfaces';
+import { Floor } from '../../../interfaces/floor.interfaces';
 
 @Component({
   selector: 'app-form',

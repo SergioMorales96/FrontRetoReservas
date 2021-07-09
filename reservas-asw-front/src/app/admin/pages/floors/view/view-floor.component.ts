@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Floor, FloorResponse } from '../../../interfaces/admin.interfaces';
 import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Floor } from 'src/app/admin/interfaces/floor.interfaces';
+import { FloorResponse } from '../../../interfaces/floor.interfaces';
 import { FloorsService } from '../../../services/floors.service';
 
 
@@ -14,7 +15,7 @@ export class ViewFloorComponent implements OnInit {
 
   floor!: Floor;
 
-  get viewTitle(): string{
+  get viewTitle(): string {
     return this.floor?.nombre ? this.floor.nombre : 'Ver piso'
 
   }
@@ -25,19 +26,19 @@ export class ViewFloorComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params
-    .subscribe(({ id }) => {
-      if ( id ){
-       this.getFloor(id);
+      .subscribe(({ id }) => {
+        if (id) {
+          this.getFloor(id);
 
-      }
-    });
+        }
+      });
   }
 
   getFloor(id: number): void {
     this.floorsService.getFloor(id)
-    .subscribe(
-      (floorResponse: FloorResponse) =>  this.floor = floorResponse.data
-      )  
+      .subscribe(
+        (floorResponse: FloorResponse) => this.floor = floorResponse.data
+      )
   }
 
 }

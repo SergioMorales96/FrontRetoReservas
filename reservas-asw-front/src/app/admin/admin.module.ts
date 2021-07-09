@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
+import { SortPipe } from './pipes/sort.pipe';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
     ListRoomComponent,
     FormRoomComponent,
     ViewRoomComponent,
+    SortPipe,
   ],
   imports: [
     CommonModule,

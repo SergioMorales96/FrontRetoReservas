@@ -4,6 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -24,6 +26,8 @@ import { TooltipModule } from 'primeng/tooltip';
     CalendarModule,
     CardModule,
     DividerModule,
+    DialogModule,
+    ConfirmDialogModule,
     DropdownModule,
     InputNumberModule,
     InputMaskModule,
