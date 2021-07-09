@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable , of } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { FloorsResponse } from '../interfaces/admin.interfaces';
+import { FloorResponse } from '../interfaces/interface.schedule';
 import { Room, RoomResponse, RoomClass, RoomsResponse } from '../interfaces/rooms.interfaces';
 import { catchError } from 'rxjs/operators';
 
@@ -26,9 +26,9 @@ export class RoomsService {
       );
   }
 
-  getFloors(): Observable<FloorsResponse>{
+  getFloors(): Observable<FloorResponse>{
     const url = `${this.apiUrlP}/todos`;
-    return this.http.get<FloorsResponse>(url)
+    return this.http.get<FloorResponse>(url)
       .pipe(
         catchError(err => of({data: []}))
       );

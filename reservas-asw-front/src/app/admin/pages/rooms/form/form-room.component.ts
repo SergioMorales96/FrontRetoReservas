@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Floor, FloorsResponse } from '../../../interfaces/admin.interfaces';
+import { Floor, FloorResponse } from '../../../interfaces/interface.schedule';
 import { Room, RoomResponse, RoomClass } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
 import { RouteName } from '../../../../../utils/enums';
@@ -54,7 +54,7 @@ export class FormRoomComponent implements OnInit {
   getFloors(): void {
     this.roomsService.getFloors()
       .subscribe(
-        (floorsResponse: FloorsResponse) => this.floors = floorsResponse.data
+        (floorsResponse: FloorResponse) => this.floors = floorsResponse.data
       );
   }
 
