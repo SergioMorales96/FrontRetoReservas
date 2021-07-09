@@ -17,7 +17,6 @@ import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmDialogModule} from 'primeng/confirmdialog';
 import { MessagesModule } from 'primeng/messages';
 
 
