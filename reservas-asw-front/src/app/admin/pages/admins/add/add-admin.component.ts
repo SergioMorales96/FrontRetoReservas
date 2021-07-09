@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Administrador, AdminResponse, Branch, AdminClass } from '../../../interfaces/admin.interfaces';
+import { Administrador, AdminResponse, AdminClass } from '../../../interfaces/admins.interfaces';
 import { AdminsService } from '../../../services/admins.service';
 import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';
+import { BranchesService } from '../../../services/branches.service';
+import { BranchesResponse, Branch } from 'src/app/admin/interfaces/branches.interfaces';
 @Component({
   selector: 'app-add-admin',
   templateUrl: './add-admin.component.html',
@@ -18,15 +20,15 @@ export class AddAdminComponent implements OnInit {
     sucursalId: ['', [Validators.required]],
   });
 
-  branches: Branch[] = [
-    {
-      idSucursal: 1,
-      nombre: 'TORRE SIGMA',
-      direccion: 'BOGOTA',
-      nit: '900001',
-      aforoMaximo: 300,
-    }
-  ];
+  branches: Branch[] = [];
+  //   {
+  //     idSucursal: 1,
+  //     nombre: 'TORRE SIGMA',
+  //     direccion: 'BOGOTA',
+  //     nit: '900001',
+  //     aforoMaximo: 300,
+  //   }
+  // ];
 
   isEditing: boolean = false;
   admin!: Administrador;
@@ -43,9 +45,10 @@ export class AddAdminComponent implements OnInit {
     private fb: FormBuilder,
     private adminsService: AdminsService,
     private router: Router,
-    private toastService: ToastsService
+    private toastService: ToastsService,
+    private branchesService: BranchesService
   ) {
-
+    this.getBranches();
   }
 
   ngOnInit(): void {
@@ -68,6 +71,15 @@ export class AddAdminComponent implements OnInit {
           this.setAdmin(this.admin);
         }
       )
+  }
+
+  getBranches(): void {
+    this.branchesService.getBranches()
+      .subscribe(
+        (branchesRespose: BranchesResponse) => {
+          this.branches = branchesRespose.data;
+          console.log(branchesRespose.data)
+        });
   }
 
   setAdmin(admin: Administrador): void {

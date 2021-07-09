@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminsService } from 'src/app/admin/services/admins.service';
-import { Administrador, AdminsResponse, AdminResponse } from '../../../interfaces/admin.interfaces';
+import { Administrador, AdminsResponse, AdminResponse } from '../../../interfaces/admins.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';
 import { AlertsService } from '../../../../services/alerts.service';

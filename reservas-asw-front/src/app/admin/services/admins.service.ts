@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Administrador, AdminsResponse, AdminResponse, Branch, AdminClass } from '../interfaces/admin.interfaces';
+import { Administrador, AdminsResponse, AdminResponse, AdminClass } from '../interfaces/admins.interfaces';
 import { catchError} from 'rxjs/operators';
 import { ToastsService } from '../../services/toasts.service';
 import { throwError } from 'rxjs/internal/observable/throwError';
