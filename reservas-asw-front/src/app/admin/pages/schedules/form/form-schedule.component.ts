@@ -1,7 +1,9 @@
-import { Component,OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Schedule, Branch, NombreSucursal } from '../../../interfaces/admin.interfaces';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SchedulesService } from 'src/app/admin/services/schedules.service';
+import { Schedule, ScheduleResponse, ScheduleClass, Branch } from '../../../interfaces/admin.interfaces';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-form',
@@ -9,29 +11,27 @@ import { Schedule, Branch, NombreSucursal } from '../../../interfaces/admin.inte
   styles: [
   ]
 })
-export class FormScheduleComponent implements OnInit{
+export class FormScheduleComponent implements OnInit {
   scheduleForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     numHours: ['', [Validators.required]],
     initHour: ['', [Validators.required]],
     endHour: ['', [Validators.required]],
-    branch: ['', [Validators.required]],
+    iSucursal: ['', [Validators.required]],
   });
-  branches: Branch[] = [
+
+  opciones: any[] = [
     {
-      "idSucursal": 1,
-      "aforoMaximo": 300,
-      "direccion": "BOGOTA",
-      "nit": "9000001",
-      "nombre": "TORRE SIGMA",
-      "nombreEmpresa": "ASESOFTWARE"
+      idSucursal: 1,
+      nombre: "TORRE SIGMA",
     },
   ];
+
   isEditing: boolean = false;
   schedule!: Schedule;
 
   get formTitle(): string {
-    return this.isEditing ? ( this.schedule.nombre ?? 'Editar Horario' ) : 'Crear Horario';
+    return this.isEditing ? (this.schedule.nombre ?? 'Editar Horario') : 'Crear Horario';
   }
 
   get buttonLabel(): string {
@@ -40,43 +40,74 @@ export class FormScheduleComponent implements OnInit{
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private schedulesService: SchedulesService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params
       .subscribe(({ id }) => {
-        if ( id ) {
+        if (id) {
           this.isEditing = true;
-          console.log( 'Schedule id', id );
-
-          this.schedule = {
-          idHorario: 1,
-          idSucursal:1,
-          numeroHoras: 8,
-          horaInicio: "15:00",
-          horaFin: "18:00",
-          nombre: "HORARIO 1",
-          nombreSucursal:NombreSucursal.TorreSigma
-          }
-
-          this.setschedule( this.schedule );
+          this.getSchedule(id);
+        } else {
+          this.schedule = new ScheduleClass();
         }
       });
   }
 
-  setschedule( schedule: Schedule ): void {
-    this.scheduleForm.controls['name'].setValue( schedule.nombre );
-    this.scheduleForm.controls['numHours'].setValue( schedule.numeroHoras);
-    this.scheduleForm.controls['initHour'].setValue( schedule.horaFin);
-    this.scheduleForm.controls['endHour'].setValue( schedule.horaFin);
-    this.scheduleForm.controls['branch'].setValue( schedule.nombreSucursal);
+  getScheduleFormValue(): Schedule {
+    return {
+      numeroHoras: this.scheduleForm.controls['numHours'].value,
+      nombre: this.scheduleForm.controls['name'].value,
+      horaFin: this.scheduleForm.controls['endHour'].value,
+      horaInicio: this.scheduleForm.controls['initHour'].value,
+      idSucursal: this.scheduleForm.controls['iSucursal'].value,
+    }
   }
 
-  saveschedule(): void {
-    console.log('save schedule', this.scheduleForm.value);
+  setschedule(schedule: Schedule): void {
+    this.scheduleForm.controls['name'].setValue(schedule.nombre);
+    this.scheduleForm.controls['numHours'].setValue(schedule.numeroHoras);
+    this.scheduleForm.controls['initHour'].setValue(schedule.horaInicio);
+    this.scheduleForm.controls['endHour'].setValue(schedule.horaFin);
+    this.scheduleForm.controls['iSucursal'].setValue(schedule.idSucursal);
   }
 
+  saveSchedule(): void {
+    if (this.isEditing) {
+      this.updateSchedule();
+    } else {
+      this.addSchedule();
+    }
+  }
 
+  getSchedule(id: number): void {
+    this.schedulesService.getSchedule(id)
+      .subscribe(
+        (scheduleResponse: ScheduleResponse) => {
+          this.schedule = scheduleResponse.data;
+          this.setschedule(this.schedule);
+        }
+      )
+  }
+
+  addSchedule() {
+    this.schedulesService.addSchedule(this.getScheduleFormValue())
+      .subscribe(
+        (scheduleResponse: ScheduleResponse) => this.router.navigateByUrl(RouteName.SchedulesList)
+      );
+  }
+
+  updateSchedule() {
+    this.schedulesService.updateSchedule({
+      ...this.getScheduleFormValue(),
+      idHorario: this.schedule.idHorario
+    })
+      .subscribe(
+        (scheduleResponse: ScheduleResponse) => this.router.navigateByUrl(RouteName.SchedulesList)
+      );
+  }
 
 }

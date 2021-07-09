@@ -48,7 +48,7 @@ export interface ScheduleResponse {
 
 export interface Schedule {
     idHorario?:      number;
-    idSucursal:     number;
+    idSucursal?:     number;
     numeroHoras:    number;
     nombre:         string;
     horaFin:        string;

@@ -1,91 +1,93 @@
-<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-
-    <h3> {{ formTitle }} </h3>
-
+<div
+  class="
+    p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4
+  "
+>
+  <h3>{{ formTitle }}</h3>
 </div>
 
-<form 
-    [formGroup]="scheduleForm" 
-    (ngSubmit)="saveschedule()">
-
-    <div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="name">Nombre</label>
-            <input 
-                id="name" 
-                type="text" 
-                formControlName="name" 
-                placeholder="Nombre" 
-                pInputText
-                required
-                minlength="3"
-                maxlength="100">
-        </div>
-        <div class="p-field p-col">
-            <label for="initHour">Hora de Inicio</label>
-            <input 
-                id="initHour" 
-                type="text" 
-                formControlName="initHour" 
-                placeholder="Hora Inicio (ej: 09:00)" 
-                pInputText
-                required>
-        </div>
-            <div class="p-field p-col">
-                <label for="endHour">Hora de Finalización</label>
-                <input 
-                    id="endHour" 
-                    type="text" 
-                    formControlName="endHour" 
-                    placeholder="Hora Fin (ej: 11:00)" 
-                    pInputText
-                    required>
-        </div>
-        
+<form [formGroup]="scheduleForm" (ngSubmit)="saveSchedule()">
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="name">Nombre</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        placeholder="Nombre"
+        pInputText
+        required
+        minlength="3"
+        maxlength="100"
+      />
     </div>
-
-    <div class="p-fluid p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="numHours">No. Horas</label>
-            <p-inputNumber 
-                id="numHours" 
-                [showButtons]="true" 
-                buttonLayout="horizontal" 
-                spinnerMode="horizontal"
-                decrementButtonClass="p-button-danger" 
-                incrementButtonClass="p-button-success" 
-                incrementButtonIcon="pi pi-plus" 
-                decrementButtonIcon="pi pi-minus"
-                formControlName="numHours"
-                [min]="0"
-                [max]="8"
-                readonly
-                requried>
-            </p-inputNumber>
-            
-        </div>
-        <div class="p-field p-col">
-            <label for="branch">Sucursal relacionada</label>
-            <p-dropdown 
-                [options]="branches"
-                optionLabel="nombre"
-                optionValue="idSucursal"
-                emptyMessage="No se encontraron resultados"
-                placeholder="Sucursal relacionada"
-                formControlName="branch"
-                requried>
-            </p-dropdown>
-        </div>
+    <div class="p-field p-col">
+      <label for="initHour">Hora de Inicio</label>
+      <input
+        id="initHour"
+        type="text"
+        formControlName="initHour"
+        placeholder="Hora Inicio (ej: 09:00)"
+        pInputText
+        required
+      />
     </div>
-
-    <div class="p-d-flex p-jc-end p-mt-4">
-        <button 
-            pButton 
-            type="submit" 
-            class="p-button-success" 
-            [label]="buttonLabel"
-            [disabled]="!scheduleForm.valid">
-        </button>
+    <div class="p-field p-col">
+      <label for="endHour">Hora de Finalización</label>
+      <input
+        id="endHour"
+        type="text"
+        formControlName="endHour"
+        placeholder="Hora Fin (ej: 11:00)"
+        pInputText
+        required
+      />
     </div>
+  </div>
 
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+      <label for="numHours">No. Horas</label>
+      <p-inputNumber
+        id="numHours"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        spinnerMode="horizontal"
+        decrementButtonClass="p-button-danger"
+        incrementButtonClass="p-button-success"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        formControlName="numHours"
+        placeholder="Numero Horas"
+        [min]="0"
+        [max]="8"
+        readonly
+        requried
+      >
+      </p-inputNumber>
+    </div>
+    <div class="p-field p-col">
+      <label for="iSucursal">Sucursal relacionada</label>
+      <p-dropdown
+        [options]="opciones"
+        optionLabel="idSucursal"
+        optionValue="idSucursal"
+        emptyMessage="No se encontraron resultados"
+        placeholder="Sucursal relacionada"
+        formControlName="iSucursal"
+        requried
+      >
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="p-d-flex p-jc-end p-mt-4">
+    <button
+      pButton
+      type="submit"
+      class="p-button-success"
+      [label]="buttonLabel"
+      [disabled]="!scheduleForm.valid"
+    ></button>
+  </div>
 </form>

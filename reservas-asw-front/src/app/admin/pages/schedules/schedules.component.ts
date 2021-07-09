@@ -7,6 +7,6 @@ import { RouteName } from '../../../../utils/enums';
   styles: [
   ]
 })
-export class SchedulesComponent  {
+export class SchedulesComponent {
   routeName = RouteName;
 }

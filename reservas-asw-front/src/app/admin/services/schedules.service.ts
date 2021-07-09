@@ -31,9 +31,9 @@ export class SchedulesService {
   getSchedules(): Observable<SchedulesResponse> {
     const urlLink = `${this.apiUrl}/todos`;
     return this.http.get<SchedulesResponse>(urlLink)
-    .pipe(
-      catchError(err => of({ data: [] }))
-    );;
+      .pipe(
+        catchError(err => of({ data: [] }))
+      );;
   }
 
   /**
@@ -63,7 +63,7 @@ export class SchedulesService {
    */
   addSchedule(schedule: Schedule): Observable<ScheduleResponse> {
     const urlLink = `${this.apiUrl}/crear`;
-    return this.http.post<ScheduleResponse>(urlLink, schedule, this.httpOptions)
+    return this.http.post<ScheduleResponse>(urlLink, schedule)
       .pipe(
         catchError(err => of({ data: new ScheduleClass() }))
       );
@@ -73,8 +73,8 @@ export class SchedulesService {
    * Modify a schedule, using the endpoint editar
    */
   updateSchedule(schedule: Schedule): Observable<ScheduleResponse> {
-    const urlLink = `${this.apiUrl}/editar/${schedule.idHorario}`;
-    return this.http.post<ScheduleResponse>(urlLink, schedule, this.httpOptions)
+    const urlLink = `${this.apiUrl}/editar`;
+    return this.http.post<ScheduleResponse>(urlLink, schedule)
       .pipe(
         catchError(err => of({ data: new ScheduleClass() }))
       );

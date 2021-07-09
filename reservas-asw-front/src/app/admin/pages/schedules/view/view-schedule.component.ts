@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {Schedule, NombreSucursal } from '../../../interfaces/admin.interfaces';
+import { SchedulesService } from 'src/app/admin/services/schedules.service';
+import { Schedule, ScheduleResponse } from '../../../interfaces/admin.interfaces';
+
 @Component({
   selector: 'app-schedules',
   templateUrl: './view-schedule.component.html',
@@ -11,30 +13,27 @@ export class ViewScheduleComponent implements OnInit {
   schedule!: Schedule;
 
   get viewTitle(): string {
-    return this.schedule.nombre ? this.schedule.nombre : 'Ver Horario';
+    return `Detalles del horario: ${this.schedule.nombre}`;
   }
 
   constructor(
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private schedulesService: SchedulesService
   ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params
       .subscribe(({ id }) => {
-        if ( id ) {
-          console.log( 'Horario id', id );
-
-          this.schedule = {
-            idHorario: 1,
-            idSucursal:1,
-            numeroHoras:2,
-            nombre: "Media noche",
-            horaFin: "02:00",
-            horaInicio: "00:00",
-            nombreSucursal:NombreSucursal.TorreSigma
-          }
+        if (id) {
+          this.getSchedule(id);
         }
       });
   }
 
+  getSchedule(id: number): void {
+    this.schedulesService.getSchedule(id)
+      .subscribe(
+        (scheduleResponse: ScheduleResponse) => this.schedule = scheduleResponse.data
+      )
+  }
 }
