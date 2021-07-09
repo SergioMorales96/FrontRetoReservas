@@ -38,15 +38,17 @@ import { BranchesResponse } from '../interfaces/branches,interfaces';
         const url = `${ this.apiUrl}/crear`;
         return this.http.post<FloorResponse>(url,floor)
         .pipe(
-          catchError(err => of ({data: new FloorClass}))
+          catchError(err => of ({data: new FloorClass() }))
           ); 
     }
       updateFloor(floor: Floor): Observable<FloorResponse>{
         const url = `${ this.apiUrl}/actualizar`;
         return this.http.post<FloorResponse>(url,floor)
         .pipe(
-          catchError(err => of ({data: new FloorClass}))
-          ); 
+          catchError(err => {
+            return of ({data: new FloorClass() })
+          })
+        ); 
     }
       deleteFloor(id: number): Observable<FloorResponse>{
         const url = `${ this.apiUrl}/eliminar/${id}`;

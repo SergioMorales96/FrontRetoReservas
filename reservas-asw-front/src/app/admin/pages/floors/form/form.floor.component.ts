@@ -14,7 +14,7 @@ import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../inter
   ]
 })
 export class FormFloorComponent implements OnInit {
-  floorForm = this.fb.group({
+    floorForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     aforoMaximo: ['', [Validators.required]],
     numeroPiso:['',[Validators.required]],
@@ -39,8 +39,7 @@ export class FormFloorComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private floorsService: FloorsService,
-    private router: Router
-    
+    private router: Router  
     ) {
       this.getBranches();
       this.getFloors();
