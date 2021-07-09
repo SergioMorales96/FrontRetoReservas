@@ -42,7 +42,7 @@ export class ListWorkstationComponent implements OnInit {
         .subscribe(
           (workstationResponse: WorkstationResponse) => {
             this.workstations = this.workstations.filter((workstation: Workstation) => workstation.idPuestoTrabajo !== id);
-            this.toastService.showToastSuccess({ summary: 'Dominio eliminado', detail: 'El dominio ha sido eliminado correctamente.' });
+            this.toastService.showToastSuccess({ summary: 'Puesto de trabajo eliminado', detail: 'El puesto de trabajo eliminado  ha sido eliminado correctamente.' });
           }
         );
 
