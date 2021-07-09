@@ -17,14 +17,14 @@ export class ListfloorComponent implements OnInit{
   constructor(
      private floorsService: FloorsService
     ) {}
+
   ngOnInit(): void {
     this.getFloors();
   }
   getFloors(){
     this.floorsService.getFloors()
     .subscribe(
-      (floorsResponse: FloorsResponse )=> this.floors = floorsResponse.data)
-  
+      (floorsResponse: FloorsResponse ) => this.floors = floorsResponse.data); 
   }
   
     deleteFloor( id: number ): void {

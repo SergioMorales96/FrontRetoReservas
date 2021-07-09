@@ -47,7 +47,6 @@ export interface Floor {
     numeroPiso!:  number;
     nombreSucursal!: string;
     
-
     constructor(){}
   }
 

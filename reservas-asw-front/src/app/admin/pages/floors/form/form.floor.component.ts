@@ -12,7 +12,7 @@ import { RouteFloor } from '../../../../../utils/enums';
   ]
 })
 export class FormFloorComponent implements OnInit {
-  floorForm = this.fb.group({
+    floorForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     aforoMaximo: ['', [Validators.required]],
     numeroPiso:['',[Validators.required]],
@@ -23,17 +23,17 @@ export class FormFloorComponent implements OnInit {
   isEditing: boolean = false;
   floor!: Floor;
   
-  sucursal: Sucursal[] = [
-    {
-      idSucursal: 1,
-      aforoMaximo: 300,
-      direccion: "BOGOTA",
-      nit: "9000001",
-      nombre: "TORRE SIGMA",
-      nombreEmpresa: "ASESOFTWARE"
+  // sucursal: Sucursal[] = [
+  //   {
+  //     idSucursal: 1,
+  //     aforoMaximo: 300,
+  //     direccion: "BOGOTA",
+  //     nit: "9000001",
+  //     nombre: "TORRE SIGMA",
+  //     nombreEmpresa: "ASESOFTWARE"
 
-    }
-  ]
+  //   }
+  // ]
 
   get formTitle(): string {
     return this.isEditing ? ( this.floor?.nombre ?? 'Editar piso' ) : 'Crear piso';
@@ -46,10 +46,9 @@ export class FormFloorComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private floorsService: FloorsService,
-    private router: Router
-    
+    private router: Router  
     ) {
-      console.log(this.getFloor(1));
+      
      }
 
   ngOnInit(): void {
@@ -68,20 +67,20 @@ export class FormFloorComponent implements OnInit {
             .subscribe(
               (floorResponse: FloorResponse) => {
                 this.floor = floorResponse.data;
-                 this.setFloor(this.floor);
+                //  this.setFloor(this.floor);
               }
             )
         }
 
-      setFloor( floor: Floor ): void {
-          this.floorForm.controls['maxCapacity'].setValue(floor.aforoMaximo);
-          this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
-         this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
-          this.floorForm.controls['branchId'].setValue(floor.idSucursal);
-          this.floorForm.controls['floorId'].setValue(floor.idPiso);
-          this.floorForm.controls['name'].setValue(floor.nombre);
+      // setFloor( floor: Floor ): void {
+      //   this.floorForm.controls['name'].setValue(floor.nombre);
+      //   this.floorForm.controls['floorId'].setValue(floor.idPiso);
+      //    this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
+      //    this.floorForm.controls['maxCapacity'].setValue(floor.aforoMaximo);
+      //    this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
+      //    this.floorForm.controls['branchId'].setValue(floor.idSucursal);
       
-        }
+      //   }
 
     getFloorFormValue(): Floor {
       return {
