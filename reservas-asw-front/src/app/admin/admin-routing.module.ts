@@ -19,6 +19,11 @@ import { ViewDomainComponent } from './pages/domains/view/view-domain.component'
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
 
+import { ListBranchComponent } from './pages/branches/list/list-branch.component';
+import { FormBranchComponent } from './pages/branches/form/form-branch.component';
+import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -51,7 +56,29 @@ const routes: Routes = [
       },
       {
         path: 'branches',
-        component: BranchesComponent
+        component: BranchesComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListBranchComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewBranchComponent
+          },
+          {
+            path: 'add',
+            component: FormBranchComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormBranchComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       //DOMAIN
       {

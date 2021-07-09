@@ -1,1 +1,25 @@
-<p>sidebar works!</p>
+<p-toggleButton 
+    [(ngModel)]="display" 
+    offIcon="pi pi-chevron-right"
+    [onIcon]="'pi pi-times'"
+    styleClass="p-my-2">
+</p-toggleButton>
+
+<p-sidebar 
+    [visible]='display' 
+    [showCloseIcon]="false">
+
+    <p-toggleButton 
+        [(ngModel)]="display"
+        offIcon="pi pi-chevron-right" 
+        [onIcon]="'pi pi-times'">
+    </p-toggleButton>
+
+    <hr>
+    <p-panelMenu 
+        [model]="items"
+        [style]="{ width: '100%' }">
+    </p-panelMenu>
+
+</p-sidebar>    
+

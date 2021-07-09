@@ -1,27 +1,31 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ formTitle }} </h3>
-    <a  
+
+    <a
         pButton
-        [routerLink]="[routeName.RoomView, room?.idSala]"
-        class="button-link p-button-info p-m-1"
-        label="Ver">
+        *ngIf="isEditing"
+        [routerLink]="[routeName.BranchView, branch?.idSucursal]"
+        class="button-link p-button-help p-m-1"
+        icon="pi pi-eye"
+        pTooltip="Ver"
+        tooltipPosition="top">
     </a>
 
 </div>
 
 <form 
-    [formGroup]="roomForm" 
+    [formGroup]="branchForm" 
     (ngSubmit)="save()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre Sala</label>
+            <label for="name">Nombre Sucursal</label>
             <input 
                 id="name" 
                 type="text" 
                 formControlName="name" 
-                placeholder="Nombre" 
+                placeholder="Nombre Sucursal" 
                 pInputText
                 required
                 minlength="3"
@@ -41,6 +45,7 @@
                 formControlName="maxCapacity"
                 [min]="0"
                 [max]="100"
+                readonly
                 requried>
             </p-inputNumber>
         </div>
@@ -48,27 +53,26 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="domainState">Estado dominio</label>
+            <label for="direccion">Dirección</label>
             <input 
-                id="domainState" 
+                id="direccion" 
                 type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
+                formControlName="direccion" 
+                placeholder="Dirección" 
                 pInputText
                 required>
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Piso relacionado</label>
-            <p-dropdown 
-                [options]="floors"
-                optionLabel="nombre"
-                optionValue="idPiso"
-                emptyMessage="No se encontraron resultados"
-                placeholder="Piso relacionado"
-                formControlName="floorId"
-                requried>
-            </p-dropdown>
+            <label for="floorId">Nit</label>
+            <input 
+                id="nit" 
+                type="text" 
+                formControlName="nit" 
+                placeholder="Nit" 
+                pInputText
+                required>
         </div>
+
     </div>
 
     <div class="p-d-flex p-jc-end p-mt-4">
@@ -77,7 +81,7 @@
             type="submit" 
             class="p-button-success" 
             [label]="buttonLabel"
-            [disabled]="!roomForm.valid">
+            [disabled]="!branchForm.valid">
         </button>
     </div>
 

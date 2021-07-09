@@ -17,6 +17,10 @@ import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
+import { ListBranchComponent } from './pages/branches/list/list-branch.component';
+import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+import { FormBranchComponent } from './pages/branches/form/form-branch.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
@@ -49,6 +53,9 @@ import { SortPipe } from './pipes/sort.pipe';
     ListRoomComponent,
     FormRoomComponent,
     ViewRoomComponent,
+    ListBranchComponent,
+    ViewBranchComponent,
+    FormBranchComponent,
     ListDomainComponent,
     FormDomainComponent,
     SortPipe

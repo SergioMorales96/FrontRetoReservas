@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouteName } from 'src/utils/enums';
 
 @Component({
   selector: 'app-branches',
@@ -6,11 +7,6 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class BranchesComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class BranchesComponent{
+  routeName = RouteName;
 }
