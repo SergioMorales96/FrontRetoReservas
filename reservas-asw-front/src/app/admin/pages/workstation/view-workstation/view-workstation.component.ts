@@ -15,26 +15,26 @@ export class ViewWorkstationComponent implements OnInit {
     return this.workstation?.nombre ? this.workstation.nombre : 'Ver puesto de trabajo';
   }
 
-  constructor(   
+  constructor(
     private activatedRoute: ActivatedRoute,
     private workstationsService: WorkstationsService) { }
 
   ngOnInit(): void {
 
     this.activatedRoute.params
-    .subscribe(({ id }) => {
-      if ( id ) {
-        
-        this.getWorkstation(id);
-                 
-      }
-    });
+      .subscribe(({ id }) => {
+        if (id) {
+
+          this.getWorkstation(id);
+
+        }
+      });
   }
-  getWorkstation (id:number): void{
+  getWorkstation(id: number): void {
     this.workstationsService.getWorkstation(id)
-    .subscribe(
-      (workstationResponse: WorkstationResponse) => this.workstation = workstationResponse.data
-    );
+      .subscribe(
+        (workstationResponse: WorkstationResponse) => this.workstation = workstationResponse.data
+      );
   }
 
 }

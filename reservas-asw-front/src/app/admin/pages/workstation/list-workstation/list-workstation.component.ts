@@ -8,30 +8,30 @@ import { WorkstationsService } from '../../../services/workstations.service';
   templateUrl: './list-workstation.component.html',
   styleUrls: ['./list-workstation.component.scss']
 })
-export class ListWorkstationComponent implements OnInit{
+export class ListWorkstationComponent implements OnInit {
 
   routeName = RouteName;
   workstations: Workstation[] = [];
 
   constructor(
-      private workstationsService: WorkstationsService
+    private workstationsService: WorkstationsService
   ) { }
 
-  ngOnInit(): void{
-      this.getWorkstations();  
+  ngOnInit(): void {
+    this.getWorkstations();
   }
 
-  getWorkstations(){
+  getWorkstations() {
     this.workstationsService.getWorkstations()
-    .subscribe(
+      .subscribe(
         (workstationsResponse: WorkstationsResponse) => this.workstations = workstationsResponse.data
-    );
+      );
   }
-  deleteWorkstation( id: number ): void {
+  deleteWorkstation(id: number): void {
     this.workstationsService.deleteWorkstation(id)
-    .subscribe(
-        (workstationResponse: WorkstationResponse) => this.workstations = this.workstations.filter((workstation: Workstation) => workstation.idPuestoTrabajo !== id )
-    );
+      .subscribe(
+        (workstationResponse: WorkstationResponse) => this.workstations = this.workstations.filter((workstation: Workstation) => workstation.idPuestoTrabajo !== id)
+      );
   }
 
 }

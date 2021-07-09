@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouteName } from 'src/utils/enums';
 
 @Component({
@@ -7,7 +7,7 @@ import { RouteName } from 'src/utils/enums';
   styles: [
   ]
 })
-export class WorkstationComponent  {
+export class WorkstationComponent {
 
   routeName = RouteName;
 
