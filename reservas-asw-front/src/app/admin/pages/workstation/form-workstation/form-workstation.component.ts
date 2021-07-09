@@ -7,6 +7,10 @@ import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { DomainsService } from 'src/app/admin/services/domains.service';
 import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interfaces';
+import { Floor } from 'src/app/admin/interfaces/floors.interfaces';
+import { FloorsService } from 'src/app/admin/services/floors.service';
+import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
+
 
 @Component({
   selector: 'app-form-workstation',
@@ -18,7 +22,6 @@ export class FormWorkstationComponent implements OnInit {
 
   workstationForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    floorName: ['', [Validators.required]],
     domainType: ['', [Validators.required]],
     domainState: ['', [Validators.required]],
     floorId: ['', [Validators.required]],
@@ -27,6 +30,7 @@ export class FormWorkstationComponent implements OnInit {
   isEditing: boolean = false;
   workstation!: Workstation;
   domains: Domain[] = [];
+  floors: Floor[] = [];
 
   get formTitle(): string {
     return this.isEditing ? (this.workstation?.nombre ?? 'Editar puesto de trabajo') : 'Crear puesto de trabajo';
@@ -44,6 +48,7 @@ export class FormWorkstationComponent implements OnInit {
     private router: Router,
     private toastService: ToastsService,
     private domainsService : DomainsService,
+    private foorService : FloorsService,
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +56,7 @@ export class FormWorkstationComponent implements OnInit {
     this.activatedRoute.params
       .subscribe(({ id }) => {
         this.getDomains();
-        ////pisos
+        this.getFloors();
         if (id) {
           this.isEditing = true;
           this.getWorkstation(id);
@@ -77,10 +82,15 @@ export class FormWorkstationComponent implements OnInit {
         (domainsResponse: DomainsResponse) => this.domains = domainsResponse.data
       );
   }
+  getFloors(): void {
+    this.foorService.getFloors()
+      .subscribe(
+        (floorsResponse: FloorsResponse) => this.floors = floorsResponse.data
+      );
+  }
 
   setWorkstation(workstation: Workstation): void {
     this.workstationForm.controls['name'].setValue(workstation.nombre);
-    this.workstationForm.controls['floorName'].setValue(workstation.nombrePiso);
     this.workstationForm.controls['domainState'].setValue(workstation.dominioEstado);
     this.workstationForm.controls['floorId'].setValue(workstation.idPiso);
     this.workstationForm.controls['domainType'].setValue(workstation.dominioTipo);
@@ -91,7 +101,6 @@ export class FormWorkstationComponent implements OnInit {
     return {
       nombre: this.workstationForm.controls['name'].value,
       dominioEstado: this.workstationForm.controls['domainState'].value,
-      nombrePiso: this.workstationForm.controls['floorName'].value,
       dominioTipo: this.workstationForm.controls['domainType'].value,
       idPiso: this.workstationForm.controls['floorId'].value,
     }
