@@ -47,7 +47,7 @@ export class BranchesService {
       .pipe(
         catchError(err => {
           console.log(err);
-          
+
           return of({ data: new BranchClass() })
         })
       );

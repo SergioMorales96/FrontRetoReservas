@@ -32,7 +32,7 @@ export class ListBranchComponent implements OnInit {
     this.branchesService.deleteBranch(id)
       .subscribe(
         (branchResponse: BranchResponse) => this.branches = this.branches.filter((branch: Branch) => branch.idSucursal !== id)
-        );
+      );
   }
 
 
