@@ -13,7 +13,7 @@ import { RouteName } from '../../../../../utils/enums';
 
 export class AddAdminComponent implements OnInit {
   adminForm = this.fb.group({
-    email: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100), Validators.email]],
     sucursalId: ['', [Validators.required]],
   });
 
