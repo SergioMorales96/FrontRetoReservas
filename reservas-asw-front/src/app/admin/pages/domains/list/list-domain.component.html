@@ -42,7 +42,7 @@
             <td>
                 <a 
                     pButton
-                    [routerLink]="[routeName.DomainView, domain.codigoDominio]"
+                    [routerLink]="[routeName.DomainView, domain.codigoDominio, domain.valorDominio, domain.descripcion]"
                     class="button-link p-button-help p-mr-1" 
                     icon="pi pi-eye"
                     pTooltip="Ver"
@@ -50,7 +50,7 @@
                 </a>
                 <a 
                     pButton
-                    [routerLink]="[routeName.DomainEdit, domain.codigoDominio]"
+                    [routerLink]="[routeName.DomainEdit, domain.codigoDominio, domain.valorDominio, domain.descripcion]"
                     class="button-link p-button-info p-mr-1" 
                     icon="pi pi-pencil"
                     pTooltip="Editar"
@@ -58,12 +58,12 @@
                 </a>
                 <button 
                     pButton
-                    class="button-link p-button-danger"
+                    class="button-link p-button-danger" 
                     type="button" 
                     icon="pi pi-times"
                     pTooltip="Eliminar"
                     tooltipPosition="top"
-                    (click)="deleteDomain( domain.codigoDominio)">
+                    (click)="deleteDomain( domain)">
                 </button>
             </td>            
         </tr>

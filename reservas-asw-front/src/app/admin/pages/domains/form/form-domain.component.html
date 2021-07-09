@@ -6,7 +6,7 @@
 
 <form 
     [formGroup]="domainForm" 
-    (ngSubmit)="saveDomain()">
+    (ngSubmit)="save()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
@@ -18,6 +18,7 @@
                 placeholder="CodigoDominio" 
                 pInputText
                 required
+                readonly
                 minlength="3"
                 maxlength="100">
         </div>
@@ -44,7 +45,10 @@
                 formControlName="descripcion" 
                 placeholder="Descripcion" 
                 pInputText
-                required>
+                required
+                readonly
+                minlength="1"
+                maxlength="100">
         </div>
         
     </div>

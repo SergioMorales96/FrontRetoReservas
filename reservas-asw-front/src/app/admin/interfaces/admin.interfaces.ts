@@ -1,4 +1,3 @@
-
 export interface RoomsResponse {
     data:    Room[];
     success: boolean;
@@ -35,9 +34,16 @@ export interface Floor {
 ///DOMINIO
 export interface DomainsResponse {
     data:    Domain[];
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
+}
+
+export interface DomainResponse {
+    data:    Domain;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface Domain {
@@ -45,3 +51,13 @@ export interface Domain {
     valorDominio:  string;
     descripcion:   string;
 }
+
+export class DomainClass{
+    codigoDominio!: string;
+    valorDominio!:  string;
+    descripcion!:   string;
+
+    constructor(){ }
+}
+
+

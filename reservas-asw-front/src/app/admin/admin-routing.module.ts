@@ -29,6 +29,7 @@ const routes: Routes = [
         path: 'branches',
         component: BranchesComponent
       },
+      //DOMAIN
       {
         path: 'domains',
         component: DomainsComponent,
@@ -43,11 +44,11 @@ const routes: Routes = [
             component: AddDomainComponent,
           },
           {
-            path: 'view/:id',
+            path: 'view/:codigoDominio/:valorDominio/:descripcion',
             component: ViewDomainComponent,
           },
           {
-            path: 'edit/:id',
+            path: 'edit/:codigoDominio/:valorDominio/:descripcion',
             component: FormDomainComponent
 
           },
