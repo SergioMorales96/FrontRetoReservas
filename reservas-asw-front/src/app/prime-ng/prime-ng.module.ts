@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -21,11 +22,15 @@ import {AvatarModule} from 'primeng/avatar';
 import {AvatarGroupModule} from 'primeng/avatargroup';
 import {BadgeModule} from 'primeng/badge';
 
+
 @NgModule({
   exports: [
+    TableModule,
     ButtonModule,
     CalendarModule,
     CardModule,
+    ConfirmDialogModule,
+    DialogModule,
     DividerModule,
     DropdownModule,
     InputNumberModule,

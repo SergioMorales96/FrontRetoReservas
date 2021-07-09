@@ -19,9 +19,8 @@ export enum DominioEstado {
 
 export interface FloorResponse {
     data:    Floor[];
-    success: boolean;
-    message: string;
-    status:  string;
+
+
 }
 
 export interface Floor {
@@ -31,3 +30,4 @@ export interface Floor {
     nombre:      string;
     numeroPiso:  number;
 }
+
