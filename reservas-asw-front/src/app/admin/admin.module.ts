@@ -18,6 +18,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormScheduleComponent } from './pages/schedules/form/form-schedule.component';
 import { ListScheduleComponent } from './pages/schedules/list/list-schedule.component';
 import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.component';
+import { ListDomainComponent } from './pages/domains/list/list-domain.component';
+import { FormDomainComponent } from './pages/domains/form/form-domain.component';
+
+import { SortPipe } from './pipes/sort.pipe';
+
 
 
 @NgModule({
@@ -34,7 +39,10 @@ import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.comp
     ViewRoomComponent,
     FormScheduleComponent,
     ListScheduleComponent,
-    ViewScheduleComponent
+    ViewScheduleComponent,
+    ListDomainComponent,
+    FormDomainComponent,
+    SortPipe
   ],
   imports: [
     CommonModule,
