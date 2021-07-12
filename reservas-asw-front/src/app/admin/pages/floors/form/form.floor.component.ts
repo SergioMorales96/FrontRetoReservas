@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
-import { Branch } from 'src/app/admin/interfaces/branches,interfaces';
-import { BranchesResponse } from '../../../interfaces/branches,interfaces';
 import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../interfaces/floors.interfaces';
 import { ToastsService } from '../../../../services/toasts.service';
+import { Branch, BranchesResponse } from 'src/app/admin/interfaces/branches.interfaces';
 
 @Component({
   selector: 'app-floor-form',
