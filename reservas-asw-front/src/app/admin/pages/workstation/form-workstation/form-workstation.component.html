@@ -1,6 +1,15 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ formTitle }} </h3>
+    <a 
+        pButton 
+        [routerLink]="[routeName.WorkstationView, workstation?.idPuestoTrabajo]" 
+        class="button-link p-button-info p-m-1" 
+        icon="pi pi-eye" 
+        pTooltip="Ver" 
+        tooltipPosition="top"
+        *ngIf="isEditing">
+    </a>
 
 </div>
 
@@ -30,9 +39,9 @@
             <label for="codigoDominio">Estado dominio</label>
             <p-dropdown 
                 id="codigoDominio" 
-                [options] = "domains"
-                optionLabel="valorDominio"
-                optionValue="valorDominio"
+                [options] = "workstationStates"
+                optionLabel="label"
+                optionValue="value"
                 emptyMessage="No se encontraron resultados"
                 placeholder="Estado dominio"
                 formControlName="domainState"

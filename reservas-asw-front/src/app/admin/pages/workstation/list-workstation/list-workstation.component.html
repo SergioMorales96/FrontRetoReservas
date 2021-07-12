@@ -14,7 +14,7 @@
 
 <p-table
     #dt
-    [value]="workstations" 
+    [value]="workstations | sort:'idPuestoTrabajo'" 
     [resizableColumns]="true" 
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Workstation, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from '../../../services/workstations.service';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-view-workstation',
@@ -10,7 +11,10 @@ import { WorkstationsService } from '../../../services/workstations.service';
   ]
 })
 export class ViewWorkstationComponent implements OnInit {
+
   workstation!: Workstation;
+  routeName = RouteName;
+
   get viewTitle(): string {
     return this.workstation?.nombre ? this.workstation.nombre : 'Ver puesto de trabajo';
   }
@@ -30,6 +34,7 @@ export class ViewWorkstationComponent implements OnInit {
         }
       });
   }
+
   getWorkstation(id: number): void {
     this.workstationsService.getWorkstation(id)
       .subscribe(

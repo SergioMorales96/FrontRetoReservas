@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workstation, WorkstationClass, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from 'src/app/admin/services/workstations.service';
-import { RouteName } from '../../../../../utils/enums';
+import { RouteName, WorkStationState } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { DomainsService } from 'src/app/admin/services/domains.service';
 import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interfaces';
@@ -31,6 +31,17 @@ export class FormWorkstationComponent implements OnInit {
   workstation!: Workstation;
   domains: Domain[] = [];
   floors: Floor[] = [];
+  routeName = RouteName;
+  workstationStates = [
+    {
+      label: 'Activo',
+      value: WorkStationState.Active,
+    },
+    {
+      label: 'Inactivo',
+      value: WorkStationState.Inactive,
+    }
+  ];
 
   get formTitle(): string {
     return this.isEditing ? (this.workstation?.nombre ?? 'Editar puesto de trabajo') : 'Crear puesto de trabajo';
@@ -47,8 +58,8 @@ export class FormWorkstationComponent implements OnInit {
     private workstationsService: WorkstationsService,
     private router: Router,
     private toastService: ToastsService,
-    private domainsService : DomainsService,
-    private foorService : FloorsService,
+    private domainsService: DomainsService,
+    private foorService: FloorsService,
   ) { }
 
   ngOnInit(): void {
@@ -119,16 +130,14 @@ export class FormWorkstationComponent implements OnInit {
             this.toastService.showToastSuccess({ summary: 'Puesto de trabajo actualizado', detail: 'El puesto de trabajo ha sido actualizado correctamente.' });
 
           }
-           
+
         );
     } else {
       this.workstationsService.createWorkstation(this.getWorkstationFormValue())
         .subscribe(
-          (workstationResponse: WorkstationResponse) =>{
+          (workstationResponse: WorkstationResponse) => {
             this.router.navigateByUrl(RouteName.WorkstationList);
             this.toastService.showToastSuccess({ summary: 'Puesto de trabajo creado', detail: 'El puesto de trabajo ha sido creado correctamente.' });
-
-
           }
         );
     }

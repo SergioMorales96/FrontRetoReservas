@@ -24,3 +24,8 @@ export enum RouteFloor{
     FloorAdd = '/admin/floors/add',
     FloorEdit = '/admin/floors/edit',
 }
+
+export enum WorkStationState {
+    Active = 'A',
+    Inactive = 'I'
+}
