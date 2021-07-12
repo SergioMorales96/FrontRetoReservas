@@ -24,25 +24,25 @@
     <div class="p-field p-col">
       <label for="initHour">Hora de Inicio</label>
       <p-calendar 
-        id='initHour'
+        id="initHour"
         formControlName="initHour"
         [timeOnly]="true" 
         inputId="timeonly"
         [required]="true"
-        dateFormat="hh:mm">
+        dataType="string">
       </p-calendar>
     </div>
     <div class="p-field p-col">
       <label for="endHour">Hora de Finalización</label>
       <p-calendar 
-        id='endHour'
+        id="endHour" 
         formControlName="endHour"
-        [timeOnly]="true" 
+        [timeOnly]="true"
         inputId="timeonly"
         [required]="true"
-        dateFormat="hh:mm"
+        dataType="string"
         >
-    </p-calendar>
+      </p-calendar>
     </div>
   </div>
 

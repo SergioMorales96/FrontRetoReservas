@@ -13,7 +13,7 @@ export class ViewScheduleComponent implements OnInit {
   schedule!: Schedule;
 
   get viewTitle(): string {
-    return `Detalles del horario: ${this.schedule.nombre}`;
+    return `Detalles del horario: ${this.schedule?.nombre}`;
   }
 
   constructor(
