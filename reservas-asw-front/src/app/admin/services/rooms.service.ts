@@ -8,7 +8,7 @@ import { Room, RoomResponse, RoomClass, RoomsResponse } from '../interfaces/room
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from '../../services/toasts.service';
 
-import { throwError } from 'rxjs/internal/observable/throwError';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
