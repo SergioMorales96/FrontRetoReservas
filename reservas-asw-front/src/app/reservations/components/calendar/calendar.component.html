@@ -1,19 +1,17 @@
-<p-calendar name="value" [(ngModel)]="value" [inline]="true"
-  [disabledDates]="invalidDates" (onMonthChange)="monthChange( $event.month )">
-    <ng-template pTemplate="date" let-date>
+<p>calendar works!</p>
 
-      
-      <td><span [ngStyle]="{background: (afterNoonM(date.day))? 
-                            'linear-gradient(to bottom, white 50% , white 50%, rgba(247, 125, 230, 0.89)50% , 
-                            rgba(247, 125, 230, 0.89)30% )': morningM(date.day)? 
-                            'linear-gradient(to bottom, rgba(247, 125, 230, 0.89) 50% , rgba(247, 125, 230, 0.89) 50%, 
-                            white 50% , 
-                            white 30% )' : completeM(date.day)?
-                            'rgba(247, 125, 230, 0.89)' : '',
-                            'border-radius': '50px'
-                                                                }">{{date.day}}</span></td>
-    </ng-template>
+<!-- <p-calendar name="value" [(ngModel)]="value" [inline]="true"></p-calendar> -->
 
-
-
-  </p-calendar>
+<p-calendar name="dateValue" [(ngModel)]="dateValue" [inline]="true" [firstDayOfWeek]="1" [disabledDates]="invalidDates"
+  (onMonthChange)="monthChange( $event.month )">
+  <ng-template pTemplate="header">
+    <div class="p-datepicker-header ng-tns-c58-1">
+      <div class="p-datepicker-title1 ng-tns-c58-1">
+        <span>fecha</span>
+      </div>
+    </div>
+  </ng-template>
+  <!-- <ng-template pTemplate="date" let-date>
+    <span [ngStyle]="{}">{{date.day}}</span>
+  </ng-template> -->
+</p-calendar>
