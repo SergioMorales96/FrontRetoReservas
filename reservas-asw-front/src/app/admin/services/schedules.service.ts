@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
@@ -54,12 +54,12 @@ export class SchedulesService {
   deleteSchedule(id: number): Observable<ScheduleResponse> {
     const urlLink = `${this.apiUrl}/eliminar/${id}`;
     return this.http.get<ScheduleResponse>(urlLink)
-      .pipe(
-        catchError(err => {
-          this.toastService.showToastDanger({ summary: 'Error de eliminar', detail: err?.message ? err.message : err });
-          return of({ data: new ScheduleClass() });
-        })
-      );
+    .pipe(
+      catchError(err => {
+        this.toastService.showToastDanger({ summary: 'Error al eliminar', detail: err?.message ? err.message : err });
+        return throwError(err);
+      })
+    );
   }
 
   /**
@@ -70,8 +70,8 @@ export class SchedulesService {
     return this.http.post<ScheduleResponse>(urlLink, schedule)
       .pipe(
         catchError(err => {
-          this.toastService.showToastDanger({ summary: 'Error de crear', detail: err?.message ? err.message : err });
-          return of({ data: new ScheduleClass() });
+          this.toastService.showToastDanger({ summary: 'Error al crear', detail: err?.message ? err.message : err });
+          return throwError(err);
         })
       );
   }
@@ -82,11 +82,11 @@ export class SchedulesService {
   updateSchedule(schedule: Schedule): Observable<ScheduleResponse> {
     const urlLink = `${this.apiUrl}/editar`;
     return this.http.post<ScheduleResponse>(urlLink, schedule)
-      .pipe(
-        catchError(err => {
-          this.toastService.showToastDanger({ summary: 'Error de actualizar', detail: err?.message ? err.message : err });
-          return of({ data: new ScheduleClass() });
-        })
-      );
+    .pipe(
+      catchError(err => {
+        this.toastService.showToastDanger({ summary: 'Error al actualizar', detail: err?.message ? err.message : err });
+        return throwError(err);
+      })
+    );
   }
 }
