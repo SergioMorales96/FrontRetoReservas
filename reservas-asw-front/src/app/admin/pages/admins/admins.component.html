@@ -1,1 +1,24 @@
-<p>admins works!</p>
+<p-card 
+    header="Administradores"
+    subheader="Administración">
+    
+    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-start p-ai-center">
+        <a 
+            pButton 
+            [routerLink]="routeName.AdminsList" 
+            class="button-link p-button-primary p-m-1" 
+            label="Listado">
+        </a>
+        <a 
+            pButton 
+            [routerLink]="routeName.AdminAdd" 
+            class="button-link p-button-success p-m-1" 
+            label="Agregar">
+        </a>
+    </div>
+
+    <p-divider></p-divider>
+
+    <router-outlet></router-outlet>
+
+</p-card>

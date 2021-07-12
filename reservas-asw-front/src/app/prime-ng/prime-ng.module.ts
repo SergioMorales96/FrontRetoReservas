@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -14,10 +15,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
+import { MenubarModule } from 'primeng/menubar';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { SidebarModule } from 'primeng/sidebar';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { MessagesModule } from 'primeng/messages';
+
 
 @NgModule({
   exports: [
@@ -25,6 +33,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     CalendarModule,
     CardModule,
+    ConfirmDialogModule,
+    DialogModule,
     DividerModule,
     DialogModule,
     ConfirmDialogModule,
@@ -36,10 +46,17 @@ import { TooltipModule } from 'primeng/tooltip';
     KeyFilterModule,
     ListboxModule,
     MegaMenuModule,
+    MenubarModule,
+    PanelMenuModule,
+    SidebarModule,
     SplitterModule,
     TableModule,
+    TieredMenuModule,
     ToastModule,
+    ToggleButtonModule,
     TooltipModule,
+    ConfirmDialogModule,
+    MessagesModule,   
   ],
 })
 export class PrimeNgModule { }

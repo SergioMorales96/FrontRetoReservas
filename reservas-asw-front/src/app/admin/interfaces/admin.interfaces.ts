@@ -16,3 +16,21 @@ export interface Room {
 export enum DominioEstado {
     A = "A",
 }
+
+export interface FloorResponse {
+    data:    Floor[];
+
+
+}
+
+export interface Floor {
+    idPiso:      number;
+    aforoMaximo: number;
+    idSucursal:  number;
+    nombre:      string;
+    numeroPiso:  number;
+}
+
+
+
+

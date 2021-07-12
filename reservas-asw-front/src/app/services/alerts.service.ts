@@ -15,7 +15,7 @@ export class AlertsService {
       this.confirmationService.confirm({
         message: prop.message,
         header: prop.header,
-        icon: 'pi pi-exclamation-circle',     
+        icon: 'pi pi-exclamation-triangle',
         accept: () => {
           resolve(true);
         },
@@ -27,4 +27,3 @@ export class AlertsService {
 
   }
 }
-

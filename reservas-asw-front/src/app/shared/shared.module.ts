@@ -8,6 +8,7 @@ import { MenuComponent } from './menu/menu.component';
 import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -27,6 +28,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule,
     CommonModule,
+    FormsModule,
     RouterModule,
     PrimeNgModule
   ]

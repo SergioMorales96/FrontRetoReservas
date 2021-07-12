@@ -7,9 +7,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
-import { ToastModule } from 'primeng/toast';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import { PrimeNgModule } from './prime-ng/prime-ng.module';
+
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -17,17 +18,19 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
     AppComponent
   ],
   imports: [
+    PrimeNgModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     PrimeNgModule,
     SharedModule,
-    ToastModule
+    BrowserAnimationsModule,
+    BrowserModule,
   ],
   providers: [
     ConfirmationService,
-    MessageService
+    MessageService,
   ],
   bootstrap: [AppComponent]
 })

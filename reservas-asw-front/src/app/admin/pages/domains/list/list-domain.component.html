@@ -1,0 +1,74 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+    <h3> Listado Dominios </h3>  
+    <a 
+        pButton 
+        [routerLink]="routeName.DomainAdd" 
+        class="button-link p-button-success" 
+        icon="pi pi-plus"
+        pTooltip="Agregar"  
+        tooltipPosition="top" >
+    </a>       
+</div>
+
+<p-table 
+    [value]="domains | sort:'codigoDominio'"
+    [resizableColumns]="true" 
+    styleClass="p-datatable-striped p-datatable-responsive-demo">
+    <ng-template pTemplate="header">
+        <tr >
+            <th pSortableColumn="codigoDominio">
+                <strong>Codigo Dominio</strong><p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th pSortableColumn="valorDominio">
+                Valor Dominio<p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th pSortableColumn="descripcion">
+                Descripcion<p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>   
+    <ng-template pTemplate="body" let-domain>
+        <tr [pSelectableRow]="domain">
+           <td>
+               <span class="p-column-title"><strong>Codigo Dominio</strong></span>
+               <strong>{{domain.codigoDominio | titlecase}}</strong>
+            </td>
+            <td>
+                <span class="p-column-title"><strong>Valor Dominio</strong></span>
+                <strong>{{domain.valorDominio | titlecase}}</strong>
+            </td>
+            <td>
+                <span class="p-column-title"><strong>Descripcion</strong></span>
+                <strong>{{domain.descripcion | titlecase}}</strong>
+            </td>
+            <td>
+                <a 
+                    pButton
+                    [routerLink]="[routeName.DomainView, domain.codigoDominio, domain.valorDominio, domain.descripcion]"
+                    class="button-link p-button-help p-mr-1" 
+                    icon="pi pi-eye"
+                    pTooltip="Ver"
+                    tooltipPosition="top">
+                </a>
+                <a 
+                    pButton
+                    [routerLink]="[routeName.DomainEdit, domain.codigoDominio, domain.valorDominio, domain.descripcion]"
+                    class="button-link p-button-info p-mr-1" 
+                    icon="pi pi-pencil"
+                    pTooltip="Editar"
+                    tooltipPosition="top">
+                </a>
+                <a 
+                    pButton
+                    class="button-link p-button-danger" 
+                    type="button" 
+                    icon="pi pi-times"
+                    pTooltip="Eliminar"
+                    tooltipPosition="top"
+                    (click)="deleteDomain( domain)">
+                </a>
+            </td>            
+        </tr>
+    </ng-template>
+</p-table>
