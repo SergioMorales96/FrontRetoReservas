@@ -2,6 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FloorsService } from '../../../services/floors.service';
 import { Floor, FloorResponse } from '../../../interfaces/floors.interfaces';
+import { RouteFloor } from '../../../../../utils/enums';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { Floor, FloorResponse } from '../../../interfaces/floors.interfaces';
 export class ViewFloorComponent implements OnInit {
 
   floor!: Floor;
+  routeName = RouteFloor;
 
   get viewTitle(): string {
     return this.floor?.nombre ? this.floor.nombre : 'Ver piso'

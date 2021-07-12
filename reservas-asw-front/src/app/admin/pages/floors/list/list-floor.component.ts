@@ -31,22 +31,22 @@ export class ListfloorComponent implements OnInit {
 
   deleteFloor(id: number): void {
     this.alertsService.showConfirmDialog({
-          message: '¿Desea eliminar el piso, esta acción no se podrá revertir?',
-          header: 'Eliminar piso',
-        })
-        .then(resp => {
+      message: '¿Desea eliminar el piso, esta acción no se podrá revertir?',
+      header: 'Eliminar piso',
+    })
+      .then(resp => {
         if (resp) {
-         this.floorsService.deleteFloor(id)
-          .subscribe(
-             (floorResponse: FloorResponse) => {
-               this.floors = this.floors.filter((floor: Floor) => floor.idPiso !== id);
-               this.toastService.showToastSuccess({ summary: 'Piso Eliminado', detail: 'El piso ha sido eliminado correctamente'});
-          }
-       );
-   }else {
-   return;
+          this.floorsService.deleteFloor(id)
+            .subscribe(
+              (floorResponse: FloorResponse) => {
+                this.floors = this.floors.filter((floor: Floor) => floor.idPiso !== id);
+                this.toastService.showToastSuccess({ summary: 'Piso Eliminado', detail: 'El piso ha sido eliminado correctamente' });
+              }
+            );
+        } else {
+          return;
+        }
+      })
+      .catch(console.log);
   }
- })
-    .catch(console.log);
- }
 }
