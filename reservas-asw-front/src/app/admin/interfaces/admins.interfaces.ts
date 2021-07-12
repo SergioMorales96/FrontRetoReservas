@@ -17,7 +17,7 @@ export interface Administrador {
     idSucursal:      number;
     nombreSucursal?: string;
 }
-export class AdminClass{
+export class AdminClass {
     idAdministrador!: number;
     email!:           string;
     idSucursal!:      number;

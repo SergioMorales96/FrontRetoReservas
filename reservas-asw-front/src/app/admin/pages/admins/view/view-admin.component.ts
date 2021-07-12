@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Administrador } from 'src/app/admin/interfaces/admin.interfaces';
 import { AdminsService } from '../../../services/admins.service';
-import { AdminResponse } from '../../../interfaces/admin.interfaces';
 import { RouteName } from '../../../../../utils/enums';
+import { Administrador, AdminResponse } from '../../../interfaces/admins.interfaces';
 
 @Component({
   selector: 'app-view-admin',
