@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Administrador } from 'src/app/admin/interfaces/admin.interfaces';
 import { AdminsService } from '../../../services/admins.service';
 import { AdminResponse } from '../../../interfaces/admin.interfaces';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-view-admin',
@@ -11,7 +12,9 @@ import { AdminResponse } from '../../../interfaces/admin.interfaces';
   ]
 })
 export class ViewAdminComponent implements OnInit{
+
   admin!: Administrador;
+  routeName = RouteName;
 
   get viewTitle(): string {
     return this.admin?.email ? this.admin?.email : 'Ver administrador';

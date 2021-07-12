@@ -21,17 +21,10 @@ export class AddAdminComponent implements OnInit {
   });
 
   branches: Branch[] = [];
-  //   {
-  //     idSucursal: 1,
-  //     nombre: 'TORRE SIGMA',
-  //     direccion: 'BOGOTA',
-  //     nit: '900001',
-  //     aforoMaximo: 300,
-  //   }
-  // ];
 
   isEditing: boolean = false;
   admin!: Administrador;
+  routeName = RouteName;
 
   get formTitle(): string {
     return this.isEditing ? (this.admin?.email ?? 'Editar administrador') : 'Crear administrador';

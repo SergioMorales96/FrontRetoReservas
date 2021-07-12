@@ -45,7 +45,7 @@ const routes: Routes = [
             component: AddAdminComponent
           },
           {
-            path: 'table',
+            path: 'list',
             component: ListAdminComponent
           },
           {
