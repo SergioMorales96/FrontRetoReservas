@@ -14,7 +14,7 @@
 
 <p-table
     #dt
-    [value]="rooms" 
+    [value]="rooms | sort:'idSala'" 
     [resizableColumns]="true" 
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">
