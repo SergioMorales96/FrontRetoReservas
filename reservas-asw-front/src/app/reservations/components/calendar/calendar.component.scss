@@ -43,6 +43,12 @@
     margin: 100rem;
 }
 
+:host ::ng-deep .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
+    // background: #e9ecef;
+    background: #007bff;
+    color: #ffffff;
+}
+
 /* :host ::ng-deep .p-datepicker-header .p-datepicker-title {
     display: none;
 } */
