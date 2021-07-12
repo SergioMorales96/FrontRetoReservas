@@ -28,7 +28,7 @@ export enum RouteName {
     
     }
 
-export enum RouteFloor{
+export enum RouteFloor {
     FloorList = '/admin/floors/list',
     FloorView = '/admin/floors/view',
     FloorAdd = '/admin/floors/add',
