@@ -26,6 +26,7 @@ import { ListDomainComponent } from './pages/domains/list/list-domain.component'
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
 import { SortPipe } from './pipes/sort.pipe';
+import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
 
 
 
@@ -49,6 +50,7 @@ import { SortPipe } from './pipes/sort.pipe';
     ViewScheduleComponent,
     ListDomainComponent,
     FormDomainComponent,
+    ViewDomainComponent,
     SortPipe
   ],
   imports: [
