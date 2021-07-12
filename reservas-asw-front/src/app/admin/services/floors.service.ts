@@ -1,13 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { BranchesResponse } from '../interfaces/branches.interfaces';
-import { catchError } from 'rxjs/operators'
+import { catchError, switchMap } from 'rxjs/operators'
 import { environment } from '../../../environments/environment';
-import { FloorsResponse, FloorResponse, FloorClass, Floor } from '../interfaces/floor.interfaces';
+import { FloorsResponse, FloorResponse, FloorClass, Floor } from '../interfaces/floors.interfaces';
 import { ToastsService } from '../../services/toasts.service';
 import { throwError } from 'rxjs';
+import { BranchesResponse } from '../interfaces/branches.interfaces';
 
 
 @Injectable({
@@ -48,7 +48,7 @@ export class FloorsService {
     const url = `${this.apiUrl}/crear`;
     return this.http.post<FloorResponse>(url, floor)
       .pipe(
-        catchError(err =>  {
+        catchError(err => {
           this.toastService.showToastDanger({ summary: 'Error al crear', detail: err?.message ? err.message : err });
           return throwError(err);
         })
@@ -68,10 +68,17 @@ export class FloorsService {
     const url = `${this.apiUrl}/eliminar/${id}`;
     return this.http.get<FloorResponse>(url)
       .pipe(
+        switchMap(resp => {
+          if (resp.success) {
+            return of(resp);
+          } else {
+            return throwError(new Error());
+          }
+        }),
         catchError(err => {
-           this.toastService.showToastDanger({ summary: 'Error al eliminar', detail: err?.message ? err.message : err });
+          this.toastService.showToastDanger({ summary: 'Error al eliminar', detail: err?.message ? err.message : err });
           return throwError(err);
-        })     
+        })
       );
   }
   getBranches(): Observable<BranchesResponse> {

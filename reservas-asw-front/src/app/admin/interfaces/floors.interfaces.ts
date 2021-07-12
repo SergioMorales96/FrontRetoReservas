@@ -1,4 +1,5 @@
-import { Branch } from './branches,interfaces';
+import { Branch } from "./branches.interfaces";
+
 export interface FloorsResponse {
     data:    Floor[];
     success?: boolean;

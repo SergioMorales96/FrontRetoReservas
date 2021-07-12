@@ -1,6 +1,14 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ viewTitle }} </h3>
+    <a 
+        pButton 
+        [routerLink]="[routeName.FloorEdit, floor?.idPiso]" 
+        class="button-link p-button-info p-m-1" 
+        icon="pi pi-pencil" 
+        pTooltip="Editar" 
+        tooltipPosition="top">
+    </a>
 
 </div>
 

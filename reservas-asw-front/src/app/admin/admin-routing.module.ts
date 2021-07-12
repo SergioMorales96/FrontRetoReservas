@@ -8,30 +8,84 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
+import { AddAdminComponent } from './pages/admins/add/add-admin.component';
+import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
+import { ListAdminComponent } from './pages/admins/table/list-admin.component';
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
 import { ListWorkstationComponent } from './pages/workstation/list-workstation/list-workstation.component';
 import { ViewWorkstationComponent } from './pages/workstation/view-workstation/view-workstation.component';
 import { FormWorkstationComponent } from './pages/workstation/form-workstation/form-workstation.component';
-import { ListDomainComponent } from './pages/domains/list/list-domain.component';
-import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
-import { FormDomainComponent } from './pages/domains/form/form-domain.component';
-
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { FormFloorComponent } from './pages/floors/form/form.floor.component';
+import { ListScheduleComponent } from './pages/schedules/list/list-schedule.component';
+import { FormScheduleComponent } from './pages/schedules/form/form-schedule.component';
+import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.component';
+import { ListDomainComponent } from './pages/domains/list/list-domain.component';
+import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
+import { FormDomainComponent } from './pages/domains/form/form-domain.component';
+import { ListBranchComponent } from './pages/branches/list/list-branch.component';
+import { FormBranchComponent } from './pages/branches/form/form-branch.component';
+import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+
+
 const routes: Routes = [
   {
     path: '',
     children: [
       {
         path: 'admins',
-        component: AdminsComponent
+        component: AdminsComponent,
+        children: [
+          {
+            path: 'add',
+            component: AddAdminComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewAdminComponent
+          },
+          {
+            path: 'edit/:id',
+            component: AddAdminComponent
+          },
+          {
+            path: 'list',
+            component: ListAdminComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          },
+        ]
       },
       {
         path: 'branches',
-        component: BranchesComponent
+        component: BranchesComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListBranchComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewBranchComponent
+          },
+          {
+            path: 'add',
+            component: FormBranchComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormBranchComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       //DOMAIN
       {
@@ -120,7 +174,29 @@ const routes: Routes = [
       },
       {
         path: 'schedules',
-        component: SchedulesComponent
+        component: SchedulesComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListScheduleComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewScheduleComponent
+          },
+          {
+            path: 'add',
+            component: FormScheduleComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormScheduleComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       {
         path: 'workstations',
@@ -162,7 +238,7 @@ const routes: Routes = [
     RouterModule
   ],
   imports: [
-    RouterModule.forChild( routes )
+    RouterModule.forChild(routes)
   ]
 })
 export class AdminRoutingModule { }

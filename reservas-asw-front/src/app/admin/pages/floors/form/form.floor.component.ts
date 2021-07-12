@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
-import { Branch } from 'src/app/admin/interfaces/branches,interfaces';
-import { BranchesResponse } from '../../../interfaces/branches,interfaces';
 import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../interfaces/floors.interfaces';
 import { ToastsService } from '../../../../services/toasts.service';
+import { Branch, BranchesResponse } from 'src/app/admin/interfaces/branches.interfaces';
 
 @Component({
   selector: 'app-floor-form',
@@ -15,6 +14,7 @@ import { ToastsService } from '../../../../services/toasts.service';
   ]
 })
 export class FormFloorComponent implements OnInit {
+
   floorForm = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     aforoMaximo: ['', [Validators.required]],
@@ -27,6 +27,7 @@ export class FormFloorComponent implements OnInit {
   floor!: Floor;
   floor2: Floor[] = [];
   branches: Branch[] = [];
+  routeName = RouteFloor;
 
 
   get formTitle(): string {
@@ -36,6 +37,7 @@ export class FormFloorComponent implements OnInit {
   get buttonLabel(): string {
     return this.isEditing ? 'Actualizar' : 'Crear';
   }
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private fb: FormBuilder,
@@ -58,11 +60,13 @@ export class FormFloorComponent implements OnInit {
         }
       });
   }
+
   getFloor(id: number): void {
     this.floorsService.getFloor(id)
       .subscribe(
         (floorResponse: FloorResponse) => {
           this.floor = floorResponse.data;
+          console.log( this.floor );
           this.setFloor(this.floor);
         }
       )
@@ -73,7 +77,7 @@ export class FormFloorComponent implements OnInit {
     this.floorForm.controls['aforoMaximo'].setValue(floor.aforoMaximo);
     this.floorForm.controls['numeroPiso'].setValue(floor.numeroPiso);
     this.floorForm.controls['nombreSucursal'].setValue(floor.nombreSucursal);
-    this.floorForm.controls['idSucursal'].setValue(floor.idSucursal);
+    this.floorForm.controls['idSucursal'].setValue(floor.sucursalEntity?.idSucursal);
     this.floorForm.controls['idPiso'].setValue(floor.idPiso);
   }
 
@@ -99,8 +103,8 @@ export class FormFloorComponent implements OnInit {
           (floorResponse: FloorResponse) => {
             this.router.navigateByUrl(RouteFloor.FloorList);
             this.toastService.showToastSuccess({ summary: 'Piso actualizado', detail: 'El piso ha sido actualizado correctamente.' });
-         },
-         (() => this.floor = new FloorClass())
+          },
+          (() => this.floor = new FloorClass())
         );
 
     } else {
@@ -115,12 +119,14 @@ export class FormFloorComponent implements OnInit {
 
     }
   }
+
   getBranches() {
     this.floorsService.getBranches()
       .subscribe(
         (branchesRespose: BranchesResponse) => this.branches = branchesRespose.data
       );
   }
+
   getFloors() {
     this.floorsService.getFloors()
       .subscribe(

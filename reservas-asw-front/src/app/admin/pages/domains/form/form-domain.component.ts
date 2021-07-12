@@ -22,6 +22,7 @@ export class FormDomainComponent implements OnInit {
 
   isEditing: boolean = false;
   domain!: Domain;
+  routeName = RouteName;
 
   get formTitle(): string {
     return this.isEditing ? (this.domain?.codigoDominio ?? 'Editar dominio') : 'Crear dominio';

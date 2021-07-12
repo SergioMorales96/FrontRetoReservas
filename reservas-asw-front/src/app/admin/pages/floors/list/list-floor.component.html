@@ -9,11 +9,10 @@
         pTooltip="Agregar" 
         tooltipPosition="top">
     </a>
-
 </div>  
     <p-table 
              #dt
-             [value]="floors | sort: 'numeroPiso' " 
+             [value]="floors | sort: 'idPiso'" 
              [resizableColumns]="true" 
              styleClass="p-datatable-striped p-datatable-responsive-demo">
         <ng-template pTemplate="header">
@@ -25,7 +24,7 @@
                 <th  pSortableColumn="nombre">
                      Nombre<p-sortIcon field="code"></p-sortIcon>
                 </th>
-                <th pSortableColumn="numeropiso">
+                <th pSortableColumn="numeroPiso">
                     Numero de piso<p-sortIcon field="code"></p-sortIcon>
                 </th>
                 <th pSortableColumn="aforomaximo">
