@@ -18,15 +18,15 @@
   </ng-template>
   <ng-template pTemplate="date" let-date>
     <td>
-      <span [ngStyle]="{background: 
-                    afterNoonM(date.day)? 'linear-gradient(to bottom, rgb(230, 230, 250, 0.7) 50%, rgba(247, 125, 230)50%':
-                    morningM(date.day)?   'linear-gradient(to bottom, rgba(247, 125, 230) 50%, rgb(230, 230, 250, 0.7) 50%':
-                    completeM(date.day)?  'rgba(247, 125, 230)' : ''}">
+      <span [ngClass]="{
+        'tarde': afterNoonM(date.day),
+        'mañana':morningM(date.day),
+        'dia':completeM(date.day)
+      }">
         {{date.day}}</span>
     </td>
   </ng-template>
 </p-calendar>
-
 
 <!-- <p-calendar name="dateValue" [(ngModel)]="dateValue" [inline]="true" [firstDayOfWeek]="1" [disabledDates]="invalidDates"
   (onMonthChange)="monthChange( $event.month )">

@@ -46,9 +46,20 @@
 :host ::ng-deep .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
     // background: #e9ecef;
     background: #007bff;
-    color: #ffffff;
+    color: white;
 }
 
 /* :host ::ng-deep .p-datepicker-header .p-datepicker-title {
     display: none;
 } */
+
+:host ::ng-deep .tarde{
+    background: linear-gradient(to bottom, rgb(230, 230, 250, 0.7) 50%, rgba(247, 125, 230)50%);
+}
+:host ::ng-deep .mañana{
+    background: linear-gradient(to bottom, rgba(247, 125, 230) 50%, rgb(230, 230, 250, 0.7) 50%);
+}
+:host ::ng-deep .dia{
+    background: rgba(247, 125, 230);
+    color: white;
+}
