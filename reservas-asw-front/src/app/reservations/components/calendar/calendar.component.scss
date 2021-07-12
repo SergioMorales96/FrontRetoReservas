@@ -26,11 +26,8 @@
 }
 
 :host ::ng-deep .p-datepicker table td > span {
-    /* margin-inline-start: 0%;
-    margin-inline-end: 0%;
-    margin-block-start: 0%;
-    margin-block-end: 0%; */
     margin: 0.2rem;
+    border: 0;
 }
 
 :host ::ng-deep .p-datepicker .p-datepicker-header {
@@ -41,7 +38,7 @@
 }
 
 :host ::ng-deep .p-datepicker td>span, .p-monthpicker-month {
-    background: rgba(247, 125, 230, 0.89)50%;
+    // background: rgba(247, 125, 230, 0.89)50%;
     border-radius: 100%;
     margin: 100rem;
 }
