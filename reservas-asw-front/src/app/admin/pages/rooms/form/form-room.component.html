@@ -5,7 +5,10 @@
         pButton
         [routerLink]="[routeName.RoomView, room?.idSala]"
         class="button-link p-button-info p-m-1"
-        label="Ver">
+        icon="pi pi-eye" 
+        pTooltip="Ver" 
+        tooltipPosition="top"
+        *ngIf="isEditing">
     </a>
 
 </div>
@@ -49,13 +52,16 @@
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
             <label for="domainState">Estado dominio</label>
-            <input 
+            <p-dropdown 
                 id="domainState" 
-                type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
-                pInputText
-                required>
+                [options] = "workstationStates"
+                optionLabel="label"
+                optionValue="value"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Estado dominio"
+                formControlName="domainState"
+                requried>
+            </p-dropdown>
         </div>
         <div class="p-field p-col">
             <label for="floorId">Piso relacionado</label>

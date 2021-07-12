@@ -10,7 +10,6 @@ export class AlertsService {
   constructor(
     private confirmationService: ConfirmationService
   ) { }
-
   showConfirmDialog(prop: ConfirmDialogProperty): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.confirmationService.confirm({

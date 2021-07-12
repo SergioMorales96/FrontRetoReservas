@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { DomainResponse, DomainsResponse, Domain, DomainClass } from '../interfaces/domains.interfaces';
 import { ToastsService } from '../../services/toasts.service';
-import { throwError } from 'rxjs/internal/observable/throwError';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

@@ -12,7 +12,6 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 
-
 @NgModule({
   declarations: [
     AppComponent
@@ -23,7 +22,10 @@ import { MessageService } from 'primeng/api';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    SharedModule
+    PrimeNgModule,
+    SharedModule,
+    BrowserAnimationsModule,
+    BrowserModule,
   ],
   providers: [
     ConfirmationService,

@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { RouteFloor } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-floors',
-  templateUrl: './floors.component.html',
+  templateUrl: './Floors.component.html',
   styles: [
   ]
 })
-export class FloorsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class FloorsComponent {
+  routeFloor = RouteFloor;
 
 }
