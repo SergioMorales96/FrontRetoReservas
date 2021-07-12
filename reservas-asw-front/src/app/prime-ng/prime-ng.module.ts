@@ -34,6 +34,8 @@ import { MessagesModule } from 'primeng/messages';
     ConfirmDialogModule,
     DialogModule,
     DividerModule,
+    DialogModule,
+    ConfirmDialogModule,
     DropdownModule,
     InputNumberModule,
     InputMaskModule,

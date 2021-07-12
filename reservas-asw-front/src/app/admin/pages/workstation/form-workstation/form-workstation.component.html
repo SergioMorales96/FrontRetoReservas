@@ -1,10 +1,10 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ formTitle }} </h3>
-    <a  
-        pButton
-        [routerLink]="[routeName.RoomView, room?.idSala]"
-        class="button-link p-button-info p-m-1"
+    <a 
+        pButton 
+        [routerLink]="[routeName.WorkstationView, workstation?.idPuestoTrabajo]" 
+        class="button-link p-button-info p-m-1" 
         icon="pi pi-eye" 
         pTooltip="Ver" 
         tooltipPosition="top"
@@ -14,12 +14,12 @@
 </div>
 
 <form 
-    [formGroup]="roomForm" 
-    (ngSubmit)="save()">
+    [formGroup]="workstationForm" 
+    (ngSubmit)="saveWorkstation()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre Sala</label>
+            <label for="name">Nombre</label>
             <input 
                 id="name" 
                 type="text" 
@@ -30,40 +30,44 @@
                 minlength="3"
                 maxlength="100">
         </div>
-        <div class="p-field p-col">
-            <label for="maxCapacity">Aforo máximo</label>
-            <p-inputNumber 
-                id="maxCapacity" 
-                [showButtons]="true" 
-                buttonLayout="horizontal" 
-                spinnerMode="horizontal"
-                decrementButtonClass="p-button-danger" 
-                incrementButtonClass="p-button-success" 
-                incrementButtonIcon="pi pi-plus" 
-                decrementButtonIcon="pi pi-minus"
-                formControlName="maxCapacity"
-                [min]="0"
-                [max]="100"
-                requried>
-            </p-inputNumber>
-        </div>
+    
     </div>
 
     <div class="p-fluid p-formgrid p-grid">
+       
         <div class="p-field p-col">
-            <label for="numeroPiso">Numero de</label>
-            <input 
-                id="domainState" 
-                type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
-                pInputText
-                required>
+            <label for="codigoDominio">Estado dominio</label>
+            <p-dropdown 
+                id="codigoDominio" 
+                [options] = "workstationStates"
+                optionLabel="label"
+                optionValue="value"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Estado dominio"
+                formControlName="domainState"
+                requried>
+            </p-dropdown>
         </div>
+      
+        <div class="p-field p-col">
+            <label for="codigoDominio">Tipo dominio</label>
+            <p-dropdown 
+                id="codigoDominio" 
+                [options] = "domains"
+                optionLabel="valorDominio"
+                optionValue="valorDominio"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Tipo dominio"
+                formControlName="domainType"
+                requried>
+            </p-dropdown>
+        </div>
+
         <div class="p-field p-col">
             <label for="floorId">Piso relacionado</label>
             <p-dropdown 
-                [options]="floors"
+                id="floorId"
+                [options] = "floors"
                 optionLabel="nombre"
                 optionValue="idPiso"
                 emptyMessage="No se encontraron resultados"
@@ -80,7 +84,7 @@
             type="submit" 
             class="p-button-success" 
             [label]="buttonLabel"
-            [disabled]="!roomForm.valid">
+            [disabled]="!workstationForm.valid">
         </button>
     </div>
 

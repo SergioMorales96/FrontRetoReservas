@@ -4,6 +4,7 @@
 
     <a
         pButton
+        *ngIf="isEditing"
         [routerLink]="[routeName.BranchView, branch?.idSucursal]"
         class="button-link p-button-help p-m-1"
         icon="pi pi-eye"
