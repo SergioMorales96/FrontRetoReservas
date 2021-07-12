@@ -3,10 +3,10 @@
     <h3> {{ formTitle }} </h3>
     <a 
         pButton type="button" 
-        class="button-link p-button-help p-mr-1" 
+        class="button-link p-button-help p-m-1" 
         icon="pi pi-eye" iconPos="left"
         [routerLink]="[ routeName.AdminView , admin?.idAdministrador]" 
-        pTooltip="Ver Administrador"
+        pTooltip="Ver"
         tooltipPosition="top"
         *ngIf="isEditing">
     </a>

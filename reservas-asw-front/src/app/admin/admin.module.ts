@@ -11,8 +11,8 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
-import { ListAdminComponent } from './pages/admins/table/list-admin.component';
-import { AddAdminComponent } from './pages/admins/add/add-admin.component';
+import { ListAdminComponent } from './pages/admins/list/list-admin.component';
+import { FormAdminComponent } from './pages/admins/form/form-admin.component';
 import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
@@ -38,6 +38,7 @@ import { ViewDomainComponent } from './pages/domains/view/view-domain.component'
 import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 
 @NgModule({
@@ -62,7 +63,7 @@ import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
     SchedulesComponent,
     WorkstationComponent,
     ListAdminComponent,
-    AddAdminComponent,
+    FormAdminComponent,
     ViewAdminComponent,
     ListRoomComponent,
     FormRoomComponent,
@@ -79,7 +80,8 @@ import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
     ViewWorkstationComponent,
     ListWorkstationComponent,
     FormWorkstationComponent,
-    SortPipe
+    SortPipe,
+    FilterPipe
   ],
 })
 export class AdminModule { }
