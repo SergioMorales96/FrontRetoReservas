@@ -1,16 +1,8 @@
-<button 
-    pButton 
-    pRipple 
-    type="button" 
-    icon="pi pi-bars"
-    class="p-button-rounded p-button-secondary p-my-2"
-    (click)="display = true">
-</button>
-
 <p-sidebar 
     [(visible)]="display"
     styleClass="p-sidebar-sm"
-    [transitionOptions]="'0ms'">
+    [transitionOptions]="'0ms'"
+    (onHide)="hide()">
 
     <p-divider></p-divider>
 

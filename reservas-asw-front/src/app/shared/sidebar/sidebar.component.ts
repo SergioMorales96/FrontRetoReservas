@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { RouteName, RouteFloor } from '../../../utils/enums';
 
@@ -10,9 +10,10 @@ import { RouteName, RouteFloor } from '../../../utils/enums';
 })
 export class SidebarComponent implements OnInit {
 
-  items: MenuItem[] = [];
+  @Input() display: boolean = false;
+  @Output() onHide = new EventEmitter<boolean>();
 
-  display: boolean = true;
+  items: MenuItem[] = [];
 
   ngOnInit(): void {
     this.items = [
@@ -76,8 +77,8 @@ export class SidebarComponent implements OnInit {
     ]
   }
 
-  hide( event: any ): void {
-    console.log( event );
+  hide( ): void {
+    this.onHide.emit(true);
   }
 
 }
