@@ -4,8 +4,8 @@ import { RouteName } from '../../../../utils/enums';
 @Component({
   selector: 'app-domains',
   templateUrl: './domains.component.html',
-  styleUrls: ['./domains.component.scss' ]
+  styleUrls: ['./domains.component.scss']
 })
-export class DomainsComponent  {
-  routeName=RouteName;
+export class DomainsComponent {
+  routeName = RouteName;
 }

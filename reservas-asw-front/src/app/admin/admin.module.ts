@@ -22,10 +22,14 @@ import { ViewBranchComponent } from './pages/branches/view/view-branch.component
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormScheduleComponent } from './pages/schedules/form/form-schedule.component';
+import { ListScheduleComponent } from './pages/schedules/list/list-schedule.component';
+import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.component';
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
 
 import { SortPipe } from './pipes/sort.pipe';
+import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
 
 
 
@@ -56,8 +60,12 @@ import { SortPipe } from './pipes/sort.pipe';
     ListBranchComponent,
     ViewBranchComponent,
     FormBranchComponent,
+    FormScheduleComponent,
+    ListScheduleComponent,
+    ViewScheduleComponent,
     ListDomainComponent,
     FormDomainComponent,
+    ViewDomainComponent,
     SortPipe
   ],
 })

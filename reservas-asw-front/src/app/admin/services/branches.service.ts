@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Branch, BranchClass, BranchesResponse, BranchResponse } from '../interfaces/branches.interfaces';
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from '../../services/toasts.service';
-import { throwError } from 'rxjs/internal/observable/throwError';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
