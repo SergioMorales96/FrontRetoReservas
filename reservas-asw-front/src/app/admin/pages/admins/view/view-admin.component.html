@@ -1,0 +1,32 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3> {{ viewTitle }} </h3>
+    <a 
+        pButton type="button" 
+        class="button-link p-button-help p-mr-1" 
+        icon="pi pi-pencil" iconPos="left"
+        [routerLink]="[ routeName.AdminEdit , admin?.idAdministrador]" 
+        pTooltip="Editar Administrador"
+        tooltipPosition="top">
+    </a>
+    
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <p> Email </p>
+        <p><strong> {{ admin?.email }} </strong></p>
+    </div>
+    <div class="p-field p-col">
+        <p> Sucursal Relacionada </p>
+        <p><strong> {{ admin?.idSucursal }} </strong></p>
+    </div>
+</div>
+
+<p-divider></p-divider>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <p> Nombre Sucursal </p>
+        <p><strong> {{ admin?.nombreSucursal }} </strong></p>
+    </div>

@@ -1,16 +1,25 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ formTitle }} </h3>
+    <a  
+        pButton
+        [routerLink]="[routeName.RoomView, room?.idSala]"
+        class="button-link p-button-info p-m-1"
+        icon="pi pi-eye" 
+        pTooltip="Ver" 
+        tooltipPosition="top"
+        *ngIf="isEditing">
+    </a>
 
 </div>
 
 <form 
     [formGroup]="roomForm" 
-    (ngSubmit)="saveRoom()">
+    (ngSubmit)="save()">
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre</label>
+            <label for="name">Nombre Sala</label>
             <input 
                 id="name" 
                 type="text" 
@@ -35,7 +44,6 @@
                 formControlName="maxCapacity"
                 [min]="0"
                 [max]="100"
-                readonly
                 requried>
             </p-inputNumber>
         </div>
@@ -44,13 +52,16 @@
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
             <label for="domainState">Estado dominio</label>
-            <input 
+            <p-dropdown 
                 id="domainState" 
-                type="text" 
-                formControlName="domainState" 
-                placeholder="Estado dominio" 
-                pInputText
-                required>
+                [options] = "workstationStates"
+                optionLabel="label"
+                optionValue="value"
+                emptyMessage="No se encontraron resultados"
+                placeholder="Estado dominio"
+                formControlName="domainState"
+                requried>
+            </p-dropdown>
         </div>
         <div class="p-field p-col">
             <label for="floorId">Piso relacionado</label>

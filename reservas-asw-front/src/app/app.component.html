@@ -1,9 +1,16 @@
+<p-toast></p-toast>
+
+<p-confirmDialog 
+[style]="{width: '50vw'}" 
+[baseZIndex]="10000" 
+acceptLabel="Aceptar"
+rejectLabel="Cancelar"
+acceptButtonStyleClass="p-button-success"
+rejectButtonStyleClass="p-button-danger">
+</p-confirmDialog>
+
 <app-menu></app-menu>
 
-<p-toast></p-toast>
-<p-confirmDialog 
-    [style]="{width: '50vw'}" 
-    [baseZIndex]="10000" 
-    rejectButtonStyleClass="p-button-text">
-</p-confirmDialog>
+<app-sidebar></app-sidebar>
+
 <router-outlet></router-outlet>

@@ -1,0 +1,88 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3> {{ formTitle }} </h3>
+
+    <a
+        pButton
+        *ngIf="isEditing"
+        [routerLink]="[routeName.BranchView, branch?.idSucursal]"
+        class="button-link p-button-help p-m-1"
+        icon="pi pi-eye"
+        pTooltip="Ver"
+        tooltipPosition="top">
+    </a>
+
+</div>
+
+<form 
+    [formGroup]="branchForm" 
+    (ngSubmit)="save()">
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="name">Nombre Sucursal</label>
+            <input 
+                id="name" 
+                type="text" 
+                formControlName="name" 
+                placeholder="Nombre Sucursal" 
+                pInputText
+                required
+                minlength="3"
+                maxlength="100">
+        </div>
+        <div class="p-field p-col">
+            <label for="maxCapacity">Aforo máximo</label>
+            <p-inputNumber 
+                id="maxCapacity" 
+                [showButtons]="true" 
+                buttonLayout="horizontal" 
+                spinnerMode="horizontal"
+                decrementButtonClass="p-button-danger" 
+                incrementButtonClass="p-button-success" 
+                incrementButtonIcon="pi pi-plus" 
+                decrementButtonIcon="pi pi-minus"
+                formControlName="maxCapacity"
+                [min]="0"
+                [max]="100"
+                readonly
+                requried>
+            </p-inputNumber>
+        </div>
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="direccion">Dirección</label>
+            <input 
+                id="direccion" 
+                type="text" 
+                formControlName="direccion" 
+                placeholder="Dirección" 
+                pInputText
+                required>
+        </div>
+        <div class="p-field p-col">
+            <label for="floorId">Nit</label>
+            <input 
+                id="nit" 
+                type="text" 
+                formControlName="nit" 
+                placeholder="Nit" 
+                pInputText
+                required>
+        </div>
+
+    </div>
+
+    <div class="p-d-flex p-jc-end p-mt-4">
+        <button 
+            pButton 
+            type="submit" 
+            class="p-button-success" 
+            [label]="buttonLabel"
+            [disabled]="!branchForm.valid">
+        </button>
+    </div>
+
+</form>

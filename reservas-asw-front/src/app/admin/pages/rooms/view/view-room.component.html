@@ -1,17 +1,25 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
     <h3> {{ viewTitle }} </h3>
+    <a  
+        pButton
+        [routerLink]="[routeName.RoomEdit, room?.idSala]"
+        class="button-link p-button-info p-m-1"
+        icon="pi pi-pencil" 
+        pTooltip="Editar" 
+        tooltipPosition="top">
+    </a>
 
 </div>
 
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
         <p> Nombre </p>
-        <p><strong> {{ room.nombre }} </strong></p>
+        <p><strong> {{ room?.nombre }} </strong></p>
     </div>
     <div class="p-field p-col">
         <p> Aforo máximo </p>
-        <p><strong> {{ room.aforoMax }} </strong></p>
+        <p><strong> {{ room?.aforoMax }} </strong></p>
     </div>
 </div>
 
@@ -20,10 +28,10 @@
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
         <p> Estado dominio </p>
-        <p><strong> {{ room.dominioEstado }} </strong></p>
+        <p><strong> {{ room?.dominioEstado }} </strong></p>
     </div>
     <div class="p-field p-col">
         <p> Piso relacionado </p>
-        <p><strong> {{ room.idPiso }} </strong></p>
+        <p><strong> {{ room?.idPiso }} </strong></p>
     </div>
 </div>

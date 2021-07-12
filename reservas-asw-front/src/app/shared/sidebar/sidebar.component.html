@@ -1,1 +1,23 @@
-<p>sidebar works!</p>
+<button 
+    pButton 
+    pRipple 
+    type="button" 
+    icon="pi pi-bars"
+    class="p-button-rounded p-button-secondary p-my-2"
+    (click)="display = true">
+</button>
+
+<p-sidebar 
+    [(visible)]="display"
+    styleClass="p-sidebar-sm"
+    [transitionOptions]="'0ms'">
+
+    <p-divider></p-divider>
+
+    <p-panelMenu 
+        [model]="items"
+        [style]="{ width: '100%' }">
+    </p-panelMenu>
+
+</p-sidebar>    
+

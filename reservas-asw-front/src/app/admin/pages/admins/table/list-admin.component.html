@@ -1,0 +1,60 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3>Listado Administradores</h3>
+    <a pButton [routerLink]="routeName.AdminAdd" class="button-link p-button-success" icon="pi pi-plus"
+        pTooltip="Agregar" tooltipPosition="top">
+    </a>
+</div>
+
+<p>Selected Row {{ selectedAdmin }}</p>
+<p-table 
+    [value]="admins" 
+    [resizableColumns]="true" 
+    selectionMode="single" 
+    [(selection)]="selectedAdmin"
+    dataKey="idAdministrador" 
+    styleClass="p-datatable-striped">
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="idAdministrador"># <p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th pSortableColumn="email">Email <p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th pSortableColumn="idSucursal">Sucursal <p-sortIcon field="code"></p-sortIcon>
+            </th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-admin>
+        <tr [pSelectableRow]="admin">
+            <td>{{admin.idAdministrador}}</td>
+            <td>{{admin.email}}</td>
+            <td>{{admin.nombreSucursal}}</td>
+            <td>
+                <a 
+                    pButton type="button" 
+                    class="button-link p-button-secondary p-mr-1" 
+                    icon="pi pi-eye" iconPos="left"
+                    [routerLink]="[ routeName.AdminView , admin.idAdministrador ]" 
+                    pTooltip="Ver Administrador"
+                    tooltipPosition="top">
+                </a>
+                <a 
+                    pButton type="button" 
+                    class="button-link p-button-help p-mr-1" 
+                    icon="pi pi-pencil" iconPos="left"
+                    [routerLink]="[ routeName.AdminEdit , admin.idAdministrador]" 
+                    pTooltip="Editar Administrador"
+                    tooltipPosition="top">
+                </a>
+                <a 
+                    pButton type="button" 
+                    class="button-link p-button-danger p-mr-1" 
+                    icon="pi pi-times" iconPos="left"
+                    (click)="deleteAdmin( admin.idAdministrador)" 
+                    pTooltip="Eliminar Administrador"
+                    tooltipPosition="top">
+                </a>
+        </tr>
+    </ng-template>
+</p-table>
