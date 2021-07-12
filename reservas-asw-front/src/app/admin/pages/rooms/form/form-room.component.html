@@ -5,7 +5,10 @@
         pButton
         [routerLink]="[routeName.RoomView, room?.idSala]"
         class="button-link p-button-info p-m-1"
-        label="Ver">
+        icon="pi pi-eye" 
+        pTooltip="Ver" 
+        tooltipPosition="top"
+        *ngIf="isEditing">
     </a>
 
 </div>
