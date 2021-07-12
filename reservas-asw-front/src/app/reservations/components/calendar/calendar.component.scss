@@ -6,16 +6,27 @@
     padding: 8%;
 }
 
-:host ::ng-deep .p-datepicker table td.p-datepicker-today > span.p-highlight {
-    color: #ffffff;
-    background: #007bff;
-    border-radius: 100%;
+:host ::ng-deep .p-datepicker .p-datepicker-header {
+    background: none;
+    border-bottom:none;
+    display: inline-flex;
+    float: left;
+}
+
+:host ::ng-deep .p-datepicker table td > span {
+    margin: 0.2rem;
+    border: 0;
 }
 
 :host ::ng-deep  .p-datepicker table td > span.p-highlight {
     color: #ffffff;
     background: #007bff;
     border-radius: 100%;
+}
+
+:host ::ng-deep .p-datepicker td>span, .p-monthpicker-month {
+    border-radius: 100%;
+    margin: 100rem;
 }
 
 :host ::ng-deep .p-datepicker table td.p-datepicker-today > span {
@@ -25,22 +36,10 @@
     border-radius: 100%;
 }
 
-:host ::ng-deep .p-datepicker table td > span {
-    margin: 0.2rem;
-    border: 0;
-}
-
-:host ::ng-deep .p-datepicker .p-datepicker-header {
-    background: none;
-    border-bottom:none;
-    display: inline-flex;
-    float: left;
-}
-
-:host ::ng-deep .p-datepicker td>span, .p-monthpicker-month {
-    // background: rgba(247, 125, 230, 0.89)50%;
+:host ::ng-deep .p-datepicker table td.p-datepicker-today > span.p-highlight {
+    color: #ffffff;
+    background: #007bff;
     border-radius: 100%;
-    margin: 100rem;
 }
 
 :host ::ng-deep .p-datepicker:not(.p-disabled) table td span:not(.p-highlight):not(.p-disabled):hover {
