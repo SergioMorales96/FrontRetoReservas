@@ -1,5 +1,5 @@
 <p>calendar works!</p>
-
+<button (click)="consultReservations">Consultar</button>
 <!-- <p-calendar name="value" [(ngModel)]="value" [inline]="true"></p-calendar> -->
 
 <p-calendar name="dateValue" [(ngModel)]="dateValue" [inline]="true" [firstDayOfWeek]="1" [disabledDates]="invalidDates"
@@ -15,3 +15,4 @@
     <span [ngStyle]="{}">{{date.day}}</span>
   </ng-template> -->
 </p-calendar>
+

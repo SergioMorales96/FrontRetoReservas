@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { RoomReservationsResponse } from '../../interfaces/reservations.interface';
+
+import { ReservationsService } from '../../services/reservations.service';
 
 @Component({
   selector: 'app-calendar',
@@ -9,7 +13,7 @@ export class CalendarComponent implements OnInit {
 
   dateValue: Date = new Date;
 
-  constructor() { }
+  constructor(private reservationsService: ReservationsService) { }
 
   ngOnInit(): void {
   }
@@ -42,6 +46,19 @@ export class CalendarComponent implements OnInit {
       this.afterNoon = [];
   
       console.log(month);
+    }
+
+    get consultReservations(): boolean{
+
+
+      this.reservationsService.sendRequest('reservas/reservas_sala', '1/01-01-2021/31-07-2021')
+      .subscribe(
+        (answ: RoomReservationsResponse ) => console.log(answ.data)
+        
+        
+      );
+      
+      return true;
     }
 
 }
