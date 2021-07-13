@@ -5,17 +5,16 @@
   [(ngModel)]="dateValue" 
   [inline]="true" 
   [disabledDates]="invalidDates"
-  (onMonthChange)="monthChange( $event.month )" 
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1">
 
-  <ng-template pTemplate="header">
+  <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">
       <div class="p-datepicker-title1 ng-tns-c58-1">
         <span>Fecha</span>
       </div>
     </div>
-  </ng-template>
+  </ng-template> -->
   <ng-template pTemplate="date" let-date>
     <td>
       <span [ngClass]="{
@@ -27,17 +26,3 @@
     </td>
   </ng-template>
 </p-calendar>
-
-<!-- <p-calendar name="dateValue" [(ngModel)]="dateValue" [inline]="true" [firstDayOfWeek]="1" [disabledDates]="invalidDates"
-  (onMonthChange)="monthChange( $event.month )">
-  <ng-template pTemplate="header">
-    <div class="p-datepicker-header ng-tns-c58-1">
-      <div class="p-datepicker-title1 ng-tns-c58-1">
-        <span>fecha</span>
-      </div>
-    </div>
-  </ng-template>
-  <ng-template pTemplate="date" let-date>
-    <span [ngStyle]="{}">{{date.day}}</span>
-  </ng-template>
-</p-calendar> -->
