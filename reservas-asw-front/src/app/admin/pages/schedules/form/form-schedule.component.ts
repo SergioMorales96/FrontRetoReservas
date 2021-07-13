@@ -5,9 +5,9 @@ import { SchedulesService } from 'src/app/admin/services/schedules.service';
 import { Schedule, ScheduleResponse, ScheduleClass, NombreSucursal } from '../../../interfaces/schedule.interfaces';
 import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
-import { Branch } from '../../../interfaces/branch.interfaces';
+import { Branch, BranchesResponse} from '../../../interfaces/branches.interfaces';
 import * as moment from 'moment';
-
+import { BranchesService } from '../../../services/branches.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form-schedule.component.html',
@@ -24,20 +24,12 @@ export class FormScheduleComponent implements OnInit {
     idSucursal: ['', [Validators.required]],
   });
 
-  branches: Branch[] = [
-    {
-      idSucursal : 1,
-      aforoMaximo : 300,
-      direccion :  "BOGOTA"  ,
-      nit : "9000001"  ,
-      nombre: "TORRE SIGMA"   ,
-      nombreEmpresa: "ASESOFTWARE"
-    },
-  ];
+  
 
   isEditing: boolean = false;
   schedule!: Schedule;
   routeName = RouteName;
+  branches: Branch[]=[];
 
   get formTitle(): string {
     return this.isEditing ? (this.schedule?.nombre ?? 'Editar Horario') : 'Crear Horario';
@@ -52,9 +44,9 @@ export class FormScheduleComponent implements OnInit {
     private fb: FormBuilder,
     private schedulesService: SchedulesService,
     private router: Router,
-    private toastService: ToastsService
+    private toastService: ToastsService,
+    private branchesService:BranchesService
   ) { }
-
   ngOnInit(): void {
     this.activatedRoute.params
       .subscribe(({ id }) => {
@@ -64,7 +56,8 @@ export class FormScheduleComponent implements OnInit {
         } else {
           this.schedule = new ScheduleClass();
         }
-      });
+      });  
+      this.getBranches();  
   }
 
   getScheduleFormValue(): Schedule {
@@ -134,5 +127,10 @@ export class FormScheduleComponent implements OnInit {
           this.toastService.showToastSuccess({ summary: 'Horario actualizado', detail: 'El horario ha sido actualizado correctamente.' });
         });
   }
-
+  getBranches() {
+    this.branchesService.getBranches()
+      .subscribe(
+        (branchesRespose: BranchesResponse) => this.branches = branchesRespose.data
+      );
+  }
 }
