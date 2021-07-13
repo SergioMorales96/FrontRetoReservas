@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RouteName } from 'src/utils/enums';
 import { Domain, DomainsResponse, DomainResponse } from '../../../interfaces/domains.interfaces';
 import { DomainsService } from '../../../services/domains.service';
 
@@ -10,16 +11,20 @@ import { DomainsService } from '../../../services/domains.service';
   ]
 })
 export class ViewDomainComponent implements OnInit {
+
   domain!: Domain;
+  routeName = RouteName;
 
   get viewTitle(): string {
     return this.domain?.codigoDominio ? this.domain.codigoDominio : 'Ver Dominio';
   }
+
   constructor(
     private activateRoute: ActivatedRoute,
     private domainsService: DomainsService
 
   ) { }
+
   ngOnInit(): void {
     this.activateRoute.params
       .subscribe(({ codigoDominio, valorDominio, descripcion }) => {
@@ -28,6 +33,7 @@ export class ViewDomainComponent implements OnInit {
         }
       });
   }
+
   getDomain(codigoDominio: string, valorDominio: string, descripcion: string): void {
     this.domainsService.getDomain(codigoDominio, valorDominio, descripcion)
       .subscribe(

@@ -1,18 +1,34 @@
 <p>calendar works!</p>
+
 <button (click)="consultReservations">Consultar</button>
 <!-- <p-calendar name="value" [(ngModel)]="value" [inline]="true"></p-calendar> -->
 
-<p-calendar name="dateValue" [(ngModel)]="dateValue" [inline]="true" [firstDayOfWeek]="1" [disabledDates]="invalidDates"
-  (onMonthChange)="monthChange( $event.month )">
-  <ng-template pTemplate="header">
+
+<p-calendar 
+  name="dateValue" 
+  [(ngModel)]="dateValue" 
+  [inline]="true" 
+  [disabledDates]="invalidDates"
+  [showOtherMonths]="false" 
+  [firstDayOfWeek]="1">
+
+
+  <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">
       <div class="p-datepicker-title1 ng-tns-c58-1">
-        <span>fecha</span>
+        <span>Fecha</span>
       </div>
     </div>
-  </ng-template>
-  <!-- <ng-template pTemplate="date" let-date>
-    <span [ngStyle]="{}">{{date.day}}</span>
   </ng-template> -->
+  <ng-template pTemplate="date" let-date>
+    <td>
+      <span [ngClass]="{
+        'tarde': afterNoonM(date.day),
+        'mañana':morningM(date.day),
+        'dia':completeM(date.day)
+      }">
+        {{date.day}}</span>
+    </td>
+  </ng-template>
 </p-calendar>
 
