@@ -11,6 +11,7 @@ import { ToastsService } from 'src/app/services/toasts.service';
   styleUrls: ['./list-room.component.scss']
 })
 export class ListRoomComponent {
+  
   routeName = RouteName;
   rooms: Room[] = [];
 

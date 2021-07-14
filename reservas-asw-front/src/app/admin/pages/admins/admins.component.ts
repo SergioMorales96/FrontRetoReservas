@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouteName } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-admins',
@@ -6,11 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class AdminsComponent implements OnInit {
+export class AdminsComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  routeName = RouteName;
 }
