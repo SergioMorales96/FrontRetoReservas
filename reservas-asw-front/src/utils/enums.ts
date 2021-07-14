@@ -44,3 +44,10 @@ export enum WorkStationType {
     Gerente = 'G',
     PuestoTrabajo = 'PT'
 }
+
+export enum DateValidationType {
+    DayCapacity,
+    ParkingAvailabilityPerMotorcycle,
+    ParkingAvailabilityPerCar,
+    ParkingAvailabilityPerBicycle,
+}

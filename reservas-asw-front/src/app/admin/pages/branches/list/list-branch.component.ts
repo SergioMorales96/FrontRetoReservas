@@ -43,7 +43,7 @@ export class ListBranchComponent implements OnInit {
             .subscribe(
               (branchResponse: BranchResponse) => {
                 this.branches = this.branches.filter((branch: Branch) => branch.idSucursal !== id);
-                this.toastService.showToastSuccess({ summary: 'Sucursal eliminada', detail: 'La Sucursal ha sido eliminado correctamente.' });
+                this.toastService.showToastSuccess({ summary: 'Sucursal eliminada', detail: 'La Sucursal ha sido eliminada correctamente.' });
               }
             );
         } else {
