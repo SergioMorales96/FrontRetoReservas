@@ -10,6 +10,7 @@ import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interf
 import { Floor } from 'src/app/admin/interfaces/floors.interfaces';
 import { FloorsService } from 'src/app/admin/services/floors.service';
 import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -20,6 +21,9 @@ import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
 })
 export class FormWorkstationComponent implements OnInit {
 
+  private DOMAIN_STATE_CONDITION: string = 'ESTADO_PUESTO_TRABAJO';
+  private DOMAIN_TYPE_CONDITION: string = 'TIPO_PUESTO_TRABAJO';
+
   workstationForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     domainType: ['', [Validators.required]],
@@ -29,29 +33,14 @@ export class FormWorkstationComponent implements OnInit {
 
   isEditing: boolean = false;
   workstation!: Workstation;
-  domains: Domain[] = [];
+  domainTypes: Domain[] = [];
+  domainStates: Domain[] = [];
+  
+
+
   floors: Floor[] = [];
   routeName = RouteName;
-  workstationStates = [
-    {
-      label: 'Activo',
-      value: WorkStationState.Active,
-    },
-    {
-      label: 'Inactivo',
-      value: WorkStationState.Inactive,
-    }
-  ];
-  WorkStationType = [
-    {
-      label: 'Gerente',
-      value: WorkStationType.Gerente,
-    },
-    {
-      label: 'Puesto de trabajo',
-      value: WorkStationType.PuestoTrabajo,
-    }
-  ];
+  
 
   get formTitle(): string {
     return this.isEditing ? (this.workstation?.nombre ?? 'Editar puesto de trabajo') : 'Crear puesto de trabajo';
@@ -97,12 +86,22 @@ export class FormWorkstationComponent implements OnInit {
       )
   }
 
+
+
   getDomains(): void {
     this.domainsService.getDomains()
       .subscribe(
-        (domainsResponse: DomainsResponse) => this.domains = domainsResponse.data
+        (domainsResponse: DomainsResponse) => { 
+          const domains = domainsResponse.data;
+
+          this.domainTypes = domains.filter(d => d.codigoDominio === this.DOMAIN_TYPE_CONDITION );
+          console.log(this.domainTypes);
+          this.domainStates = domains.filter(d => d.codigoDominio === this.DOMAIN_STATE_CONDITION );
+
+        }
       );
   }
+
   getFloors(): void {
     this.foorService.getFloors()
       .subscribe(

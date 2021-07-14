@@ -39,9 +39,9 @@
             <label for="codigoDominio">Estado dominio</label>
             <p-dropdown 
                 id="codigoDominio" 
-                [options] = "workstationStates"
-                optionLabel="label"
-                optionValue="value"
+                [options] = "domainStates"
+                optionLabel="descripcion"
+                optionValue="valorDominio"
                 emptyMessage="No se encontraron resultados"
                 placeholder="Estado dominio"
                 formControlName="domainState"
@@ -53,9 +53,9 @@
             <label for="codigoDominio">Tipo dominio</label>
             <p-dropdown 
                 id="codigoDominio" 
-                [options] = "WorkStationType"
-                optionLabel="label"
-                optionValue="value"
+                [options] = "domainTypes"
+                optionLabel="descripcion"
+                optionValue="valorDominio"
                 emptyMessage="No se encontraron resultados"
                 placeholder="Tipo dominio"
                 formControlName="domainType"
