@@ -3,12 +3,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
-import { HomeComponent } from './shared/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'reservations',
     pathMatch: 'full'
   },
   {
