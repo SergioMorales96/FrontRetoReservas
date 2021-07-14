@@ -56,7 +56,7 @@ export class FormWorkstationComponent implements OnInit {
     private fb: FormBuilder,
     private workstationsService: WorkstationsService,
     private router: Router,
-    private toastService: ToastsService,
+    private toastService: ToastsService, 
     private domainsService: DomainsService,
     private foorService: FloorsService,
   ) { }

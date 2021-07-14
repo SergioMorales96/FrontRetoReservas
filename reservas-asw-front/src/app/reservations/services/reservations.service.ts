@@ -11,6 +11,8 @@ import { catchError } from 'rxjs/operators';
 export class ReservationsService {
 
   private apiUrl: string = `${environment.baseUrl}/reservas`;
+  
+
 
   constructor(
     private http: HttpClient 
@@ -23,4 +25,14 @@ export class ReservationsService {
         catchError(() => of({ data: 0 }))
       );
   } 
+
+  getCarParkingAvailability(selectedDate: string): Observable<DataResponse> {
+    const url = `${this.apiUrl}/disponibilidadParqueaderoCarro/${selectedDate}`;
+    return this.http.get<DataResponse>(url)
+      .pipe(
+        catchError(() => of({ data: 0 }))
+      );
+  } 
+
+
 }

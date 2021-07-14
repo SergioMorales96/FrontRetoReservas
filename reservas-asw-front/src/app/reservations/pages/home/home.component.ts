@@ -20,4 +20,8 @@ export class HomeComponent implements OnInit {
     console.log( hasCapacity );
   }
 
+  validateParkingAvailabilityPerCar( hasAvailabilityPerCar: boolean ): void {
+    console.log( hasAvailabilityPerCar );
+  }
+
 }
