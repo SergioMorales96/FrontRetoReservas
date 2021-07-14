@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class ReservationsService {
 
-  private apiUrl: string = `${environment}/reservas`;
+  private apiUrl: string = `${environment.baseUrl}/reservas`;
 
   constructor(
     private http: HttpClient 

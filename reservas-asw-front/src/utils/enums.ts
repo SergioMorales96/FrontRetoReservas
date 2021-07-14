@@ -21,3 +21,10 @@ export enum RouteName {
     DomainView = "/admin/domains/view",
 
 }
+
+export enum DateValidationType {
+    DayCapacity = 0,
+    ParkingAvailabilityPerMotorcycle = 1,
+    ParkingAvailabilityPerCar = 2,
+    ParkingAvailabilityPerBicycle = 3,
+}

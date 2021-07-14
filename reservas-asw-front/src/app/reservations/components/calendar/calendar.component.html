@@ -6,7 +6,8 @@
   [inline]="true" 
   [disabledDates]="invalidDates"
   [showOtherMonths]="false" 
-  [firstDayOfWeek]="1">
+  [firstDayOfWeek]="1"
+  (onSelect)="setSelectedDate( $event )">
 
   <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">

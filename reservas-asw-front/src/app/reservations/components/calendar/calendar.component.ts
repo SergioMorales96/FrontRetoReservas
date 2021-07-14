@@ -1,6 +1,9 @@
 import { getLocaleMonthNames } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
+import { DateValidationType } from 'src/utils/enums';
+import { ReservationsService } from '../../services/reservations.service';
+import { DataResponse } from '../../interfaces/reservations.interface';
 
 @Component({
   selector: 'app-calendar',
@@ -9,9 +12,15 @@ import * as moment from 'moment';
 })
 export class CalendarComponent implements OnInit {
 
+  @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
+  @Input() selectedFloor!: number;
+  @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>(); 
+  selectedDate: Date = new Date();
   dateValue: Date = new Date;
 
-  constructor() { }
+  constructor(
+    private reservationService: ReservationsService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -59,5 +68,55 @@ export class CalendarComponent implements OnInit {
   //     .map(date => moment(date).format('yyyy-MM-dd'))
   //     .includes(selectedDate);
   // }
+
+
+
+
+
+
+
+
+
+
+
+  setSelectedDate(selectedDate: Date): void {
+    this.selectedDate = selectedDate;
+    this.callMethodPerDateValidationType();
+    console.log(selectedDate);
+  }
+
+  callMethodPerDateValidationType(): void {
+    console.log(this.dateValidationType);
+    switch (this.dateValidationType) {
+      case DateValidationType.DayCapacity:
+        console.log('Entrando case capacity')
+        this.getCapacity();//
+        break;
+      case DateValidationType.ParkingAvailabilityPerBicycle:
+        break;
+      case DateValidationType.ParkingAvailabilityPerCar:
+        break;
+      case DateValidationType.ParkingAvailabilityPerMotorcycle:
+        break;
+      default:
+        break;
+    }
+  }
+
+  getCapacity(): void {
+    if (!this.selectedFloor) { return; }
+    const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+    this.reservationService.getCapacity(selectedDate, this.selectedFloor)
+      .subscribe(
+        (dataResponse: DataResponse) => {
+          console.log(dataResponse);
+          this.validateDayCapacity();
+        });
+  }
+
+  validateDayCapacity(  ): void {
+    
+    this.onDayCapacity.emit(true);
+  }
 
 }
