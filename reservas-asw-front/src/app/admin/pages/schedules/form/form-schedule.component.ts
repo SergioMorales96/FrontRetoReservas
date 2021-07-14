@@ -15,6 +15,7 @@ import * as moment from 'moment';
   ]
 })
 export class FormScheduleComponent implements OnInit {
+
   scheduleForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     numHours: ['', [Validators.required]],
@@ -36,6 +37,7 @@ export class FormScheduleComponent implements OnInit {
 
   isEditing: boolean = false;
   schedule!: Schedule;
+  routeName = RouteName;
 
   get formTitle(): string {
     return this.isEditing ? (this.schedule?.nombre ?? 'Editar Horario') : 'Crear Horario';

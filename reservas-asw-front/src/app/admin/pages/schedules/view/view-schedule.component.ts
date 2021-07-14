@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SchedulesService } from 'src/app/admin/services/schedules.service';
 import { Schedule, ScheduleResponse } from '../../../interfaces/schedule.interfaces';
+import { RouteName } from '../../../../../utils/enums';
 
 @Component({
   selector: 'app-schedules',
@@ -10,7 +11,9 @@ import { Schedule, ScheduleResponse } from '../../../interfaces/schedule.interfa
   ]
 })
 export class ViewScheduleComponent implements OnInit {
+
   schedule!: Schedule;
+  routeName = RouteName;
 
   get viewTitle(): string {
     return `Detalles del horario: ${this.schedule?.nombre}`;
