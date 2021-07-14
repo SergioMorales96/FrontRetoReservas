@@ -39,3 +39,8 @@ export enum WorkStationState {
     Active = 'A',
     Inactive = 'I'
 }
+
+export enum WorkStationType {
+    Gerente = 'G',
+    PuestoTrabajo = 'PT'
+}

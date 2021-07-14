@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workstation, WorkstationClass, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from 'src/app/admin/services/workstations.service';
-import { RouteName, WorkStationState } from '../../../../../utils/enums';
+import { RouteName, WorkStationState, WorkStationType } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { DomainsService } from 'src/app/admin/services/domains.service';
 import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interfaces';
@@ -40,6 +40,16 @@ export class FormWorkstationComponent implements OnInit {
     {
       label: 'Inactivo',
       value: WorkStationState.Inactive,
+    }
+  ];
+  WorkStationType = [
+    {
+      label: 'Gerente',
+      value: WorkStationType.Gerente,
+    },
+    {
+      label: 'Puesto de trabajo',
+      value: WorkStationType.PuestoTrabajo,
     }
   ];
 
