@@ -28,3 +28,10 @@ export enum RouteFloor{
     FloorAdd = '/admin/floors/add',
     FloorEdit = '/admin/floors/edit',
 }
+
+export enum DateValidationType {
+    DayCapacity,
+    ParkingAvailabilityPerMotorcycle,
+    ParkingAvailabilityPerCar,
+    ParkingAvailabilityPerBicycle,
+}
