@@ -14,9 +14,9 @@ import { ToastsService } from '../../../../services/toasts.service';
 })
 export class FormDomainComponent implements OnInit {
   domainForm = this.fb.group({
-    codigoDominio: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    valorDominio: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
-    descripcion: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]]
+    codigoDominio: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200)]],
+    valorDominio: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(5)]],
+    descripcion: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(200)]]
 
   });
 
@@ -70,9 +70,9 @@ export class FormDomainComponent implements OnInit {
 
   getDomainFormValue(): Domain {
     return {
-      codigoDominio: this.domainForm.controls['codigoDominio'].value,
-      valorDominio: this.domainForm.controls['valorDominio'].value,
-      descripcion: this.domainForm.controls['descripcion'].value,
+      codigoDominio: this.domainForm.controls['codigoDominio'].value.toUpperCase(),
+      valorDominio: this.domainForm.controls['valorDominio'].value.toUpperCase(),
+      descripcion: this.domainForm.controls['descripcion'].value.toUpperCase(),
     }
   }
 
