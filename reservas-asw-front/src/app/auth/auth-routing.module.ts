@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { PruebacAGuard } from 'src/app/auth/pruebac-a.guard';
 
 import { ProfileComponent } from './profile/profile.component';
 
@@ -9,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
       },
       {
         path: '**',

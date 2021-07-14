@@ -29,6 +29,7 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
 import { ListBranchComponent } from './pages/branches/list/list-branch.component';
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+import { PruebacAGuard } from '../auth/pruebac-a.guard';
 
 
 const routes: Routes = [
@@ -38,7 +39,9 @@ const routes: Routes = [
       {
         path: 'admins',
         component: AdminsComponent,
+        canActivate: [PruebacAGuard],
         children: [
+          
           {
             path: 'add',
             component: FormAdminComponent
