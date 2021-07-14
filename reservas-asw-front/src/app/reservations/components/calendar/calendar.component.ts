@@ -1,7 +1,7 @@
 import { getLocaleMonthNames } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { RoomReservationsResponse } from '../../interfaces/reservations.interface';
+import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
 
 import { ReservationsService } from '../../services/reservations.service';
 import * as moment from 'moment';
@@ -13,23 +13,44 @@ import * as moment from 'moment';
 })
 export class CalendarComponent implements OnInit {
 
-  dateValue: Date = new Date;
+  dateValue: Date = new Date();
 
-  constructor(private reservationsService: ReservationsService) { }
+  constructor(private reservationsService: ReservationsService) {
+  }
 
   ngOnInit(): void {
+
   }
 
   //Las fechas en esta lista desactivan los días en el calendario
-  invalidDates: Date[] = [new Date("07/30/2021"), new Date("07/31/2021")];
+  invalidDates: Date[] = [];
   //Las fechas en esta lista colorean la mitad de arriba de los días en el calendario
-  morning: number[] = [5, 6, 7, 8, 9, 10, 11];
+  morning: number[] = [];
   //Las fechas en esta lista colorean la mitad de abajo de los días en el calendario
-  afterNoon: number[] = [19, 20, 21, 22, 23, 24, 25];
+  afterNoon: number[] = [];
   //Las fechas en esta lista colorean el día completo de los días en el calendario
-  complete: number[] = [1, 2, 3, 4];
+  complete: number[] = [];
 
   morningDates: Date[] = [new Date('07/07/2021'), new Date('07/08/2021'), new Date('07/09/2021'), new Date('07/10/2021')];
+
+
+  //Resultado de consutla al servicio back se almacena en reservations
+  reservations: Reservation[] = [];
+
+  //Número de personas para saber si se trata de una sala o un puesto de trabajo
+  private _numberOfPeople: number = 0;
+
+  //Id del puesto de trabajo o de la sala
+  private _id: number = 0;
+
+  private tempDate: Date = new Date();
+
+  private roomUrlPlugin: string = '/reservas/reservas_sala';
+
+  //Atributo que se usa para especificar las fechas en las que se quiere realizar la consulta
+  private queryDates: string = '';
+
+  currentMonth: number = 0;
 
   afterNoonM(day: number): boolean {
     return this.afterNoon.includes(day);
@@ -43,38 +64,120 @@ export class CalendarComponent implements OnInit {
     return this.complete.includes(day);
   }
 
-  monthChange(month: number): void {
+  monthChange(month: number, year: number): void {
     this.complete = [];
     this.morning = [];
     this.afterNoon = [];
-
-    console.log(month);
+    this.invalidDates = [];
+    this.tempDate.setMonth(month-1);
+    this.tempDate.setDate(1);
+    this.tempDate.setFullYear(year);
+    this.consultReservations();
   }
 
-  // completeDate(value: number): string {
-  //   return value > 9 ? `${value}` : `0${value}`;
-  // }
+  consultReservations(): void {
+    this.setDates(this.tempDate);
+    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : '';
 
-  // morningDatesM(date: any): boolean {
-  //   const month = date.month + 1;
-  //   const selectedDate = `${date.year}-${this.completeDate(month)}-${this.completeDate(date.day)}`;
-
-  //   return this.morningDates
-  //     .map(date => moment(date).format('yyyy-MM-dd'))
-  //     .includes(selectedDate);
-  // }
-
-    get consultReservations(): boolean{
-
-
-      this.reservationsService.sendRequest('reservas/reservas_sala', '1/01-01-2021/31-07-2021')
+    this.reservationsService.sendRequest(urlPlugin, this.queryDates)
       .subscribe(
-        (answ: RoomReservationsResponse ) => console.log(answ.data)
-        
-        
+        (answ: ReservationsResponse) => {
+          this.reservations = answ.data;
+          this.updateCalendar();
+        }
       );
-      
-      return true;
+  }
+
+
+
+  updateCalendar(): void {
+    let i = 0;
+    let checked: string[] = [];
+
+    for (const reservation of this.reservations) {
+
+      if (!checked.includes(this.reservations[i].dia)) {
+        checked = this.compareReservations(i, checked);
+      }
+
+      i++;
     }
+
+
+  }
+
+
+
+  private compareReservations(i: number = 0, checked: string[]): string[] {
+    let flag: boolean = false;
+    let iRerservation: Reservation = this.reservations[i];
+    for (let j = 0; j < this.reservations.length; j++) {
+      let jReservation: Reservation = this.reservations[j];
+      if (j != i) {
+        if (jReservation.dia === iRerservation.dia) {
+          this.complete.push(parseInt(jReservation.dia));
+          checked.push(jReservation.dia);
+          flag = true;
+        }
+      }
+
+    }
+
+    if (!flag) {
+      ((parseInt(iRerservation.horaInicio) < 13) ? (parseInt(iRerservation.horaFin) < 13 ? this.morning.push(parseInt(iRerservation.dia))
+        : (this.completeDay(iRerservation, checked))
+      )
+        : this.afterNoon.push(parseInt(iRerservation.dia)))
+    }
+    return checked;
+  }
+
+
+  private completeDay(rev: Reservation, checked: string[]): void {
+    this.complete.push(parseInt(rev.dia));
+    checked.push(rev.dia);
+  }
+
+  set numberOfPeople(numOfPeople: number) {
+    this._numberOfPeople = numOfPeople;
+  }
+
+  set id(id: number) {
+    this._id = id;
+  }
+
+  private onMorning(reservation: Reservation): boolean {
+
+    return true;
+  }
+
+  setDates(dateValue: Date) {
+    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
+    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
+
+    let month: number = dateValue.getMonth() + 1;
+    let strMonth: string = month.toString();
+
+    let year: number = dateValue.getFullYear();
+    let strYear: string = year.toString();
+
+    let startDay: number = first.getDate();
+    let strStartDay: string = startDay.toString();
+
+    let lastDay: number = last.getDate();
+    let strLastDay: string = lastDay.toString();
+
+    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
+    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+
+    
+    
+    
+    if(this._numberOfPeople > 1){
+      this.queryDates = this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
+      
+    }
+    
+  }
 
 }

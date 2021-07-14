@@ -1,5 +1,5 @@
 
-export interface RoomReservationsResponse {
+export interface ReservationsResponse {
     data:    Reservation[];
     success?: boolean;
     message?: string;
@@ -12,8 +12,3 @@ export interface Reservation {
     horaInicio:    string;
     horaFin:       string;
 }
-
-
-
-
-
