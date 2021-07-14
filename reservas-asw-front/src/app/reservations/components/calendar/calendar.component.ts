@@ -14,7 +14,7 @@ export class CalendarComponent implements OnInit {
 
   @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
   @Input() selectedFloor!: number;
-  @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>(); 
+  @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedDate: Date = new Date();
   dateValue: Date = new Date;
 
@@ -104,19 +104,24 @@ export class CalendarComponent implements OnInit {
   }
 
   getCapacity(): void {
-    if (!this.selectedFloor) { return; }
+    if (!this.selectedFloor) { return; }//toast
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationService.getCapacity(selectedDate, this.selectedFloor)
       .subscribe(
         (dataResponse: DataResponse) => {
           console.log(dataResponse);
-          this.validateDayCapacity();
+          this.validateDayCapacity(dataResponse.data);
         });
   }
 
-  validateDayCapacity(  ): void {
-    
-    this.onDayCapacity.emit(true);
+  validateDayCapacity(data : number | any): void {
+    if (data > 0) {
+      this.onDayCapacity.emit(true);
+    }
+    else {
+      this.onDayCapacity.emit(false);
+      //toast
+    }
   }
 
 }
