@@ -23,8 +23,8 @@ export enum RouteName {
 }
 
 export enum DateValidationType {
-    DayCapacity = 0,
-    ParkingAvailabilityPerMotorcycle = 1,
-    ParkingAvailabilityPerCar = 2,
-    ParkingAvailabilityPerBicycle = 3,
+    DayCapacity,
+    ParkingAvailabilityPerMotorcycle,
+    ParkingAvailabilityPerCar,
+    ParkingAvailabilityPerBicycle,
 }
