@@ -2,7 +2,6 @@ import { getLocaleMonthNames } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
-
 import { ReservationsService } from '../../services/reservations.service';
 import * as moment from 'moment';
 
@@ -30,10 +29,6 @@ export class CalendarComponent implements OnInit {
   afterNoon: number[] = [];
   //Las fechas en esta lista colorean el día completo de los días en el calendario
   complete: number[] = [];
-
-  morningDates: Date[] = [new Date('07/07/2021'), new Date('07/08/2021'), new Date('07/09/2021'), new Date('07/10/2021')];
-
-
   //Resultado de consutla al servicio back se almacena en reservations
   reservations: Reservation[] = [];
 
@@ -45,7 +40,9 @@ export class CalendarComponent implements OnInit {
 
   private tempDate: Date = new Date();
 
-  private roomUrlPlugin: string = '/reservas/reservas_sala';
+  private roomUrlPlugin: string = 'reservas/reservas_sala';
+
+  private workstationUrlPlugin: string = 'reservas/reservas_puesto';
 
   //Atributo que se usa para especificar las fechas en las que se quiere realizar la consulta
   private queryDates: string = '';
@@ -77,7 +74,7 @@ export class CalendarComponent implements OnInit {
 
   consultReservations(): void {
     this.setDates(this.tempDate);
-    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : '';
+    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
 
     this.reservationsService.sendRequest(urlPlugin, this.queryDates)
       .subscribe(
@@ -88,8 +85,6 @@ export class CalendarComponent implements OnInit {
       );
   }
 
-
-
   updateCalendar(): void {
     let i = 0;
     let checked: string[] = [];
@@ -99,14 +94,9 @@ export class CalendarComponent implements OnInit {
       if (!checked.includes(this.reservations[i].dia)) {
         checked = this.compareReservations(i, checked);
       }
-
       i++;
     }
-
-
   }
-
-
 
   private compareReservations(i: number = 0, checked: string[]): string[] {
     let flag: boolean = false;
@@ -120,7 +110,6 @@ export class CalendarComponent implements OnInit {
           flag = true;
         }
       }
-
     }
 
     if (!flag) {
@@ -131,7 +120,6 @@ export class CalendarComponent implements OnInit {
     }
     return checked;
   }
-
 
   private completeDay(rev: Reservation, checked: string[]): void {
     this.complete.push(parseInt(rev.dia));
@@ -147,7 +135,6 @@ export class CalendarComponent implements OnInit {
   }
 
   private onMorning(reservation: Reservation): boolean {
-
     return true;
   }
 
@@ -169,13 +156,11 @@ export class CalendarComponent implements OnInit {
 
     let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
     let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
-
-    
-    
     
     if(this._numberOfPeople > 1){
       this.queryDates = this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
-      
+    }else {
+      this.queryDates = this._numberOfPeople == 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
     }
     
   }

@@ -1,12 +1,8 @@
 <p>calendar works!</p>
 
-<button (click)="numberOfPeople = 3">set numOfPeople</button>
-<button (click)="id = 3">set id</button>
+<button (click)="numberOfPeople = 1">set numOfPeople</button>
+<button (click)="id = 1">set id</button>
 <button (click)="consultReservations()">update</button>
-
-
-<!-- <p-calendar name="value" [(ngModel)]="value" [inline]="true"></p-calendar> -->
-
 
 <p-calendar 
   name="dateValue" 
@@ -16,8 +12,6 @@
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
   (onMonthChange)="monthChange( $event.month, $event.year)">
-
-
   <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">
       <div class="p-datepicker-title1 ng-tns-c58-1">
