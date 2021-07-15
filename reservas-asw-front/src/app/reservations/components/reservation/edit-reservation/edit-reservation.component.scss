@@ -1,17 +1,9 @@
-.p-col {
-    flex-grow: none; 
-    padding:none;
-    flex-basis: none;
-}
 .col-White{
     width: 2.875rem;
     height: 21.4375rem;
 }
 .col-b{
     width: 25.5625rem;
-    height: 25.5625rem;
-    margin: 0rem;
-    padding: 0rem;
 }
 .col-b1{
     color: #ffffff;
@@ -21,17 +13,15 @@
     margin: 0 .625rem 0 .625rem;
     background-color: #0666fb;
 }
-.col-b2{
-    padding: 0rem;
-    margin: 0rem;
+.col-b2{  
     height: 9.25rem;
     color: white;
-     -webkit-backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.13);
     background-color: rgba(#000002,0.7);
 }
-.col-b3{   
+.col-b3{  
     width: 24.25rem;
     height: .0625rem;   
     margin: 0 .625rem 0 .625rem;
@@ -47,7 +37,6 @@
     margin: 0 .625rem 0 .625rem;
     background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 97%, var(#ffffff) 49%, rgba(255, 255, 255, 0) 2%);}
 .col-b6{
-    margin: 0rem;
     color: #ffffff;
     height: 10.25rem;
     -webkit-backdrop-filter: blur(30px);
@@ -63,37 +52,13 @@
 }
 .col-b8{
     width: 13.25rem;
-    height: 2.0625rem;
-    margin: .75rem 12.3125rem 0 0;
-    padding: 0 30.8px 10.8px 33.8px;
+    height: 2.5rem;
     background-color: #fa729c;
 }
-.b2re{
-    margin: 0rem;
-    padding: 0rem;
-    height: 5.6875rem;
-}
-.b22re{
-    margin: 0rem;
-    padding: 0rem;
-    height: 3.5625rem;
-
-}
-.division{
-    width: 0.1875rem;
-    height: 7.7px;
-    margin: 14.1px 0 18.1px;
-    opacity: 0.56;
-    border: solid 0.5px var(--white);
-}
-.imgreserva{
-    margin: 0rem;
-    padding: 1.75rem 0 0 2.36875rem;
-}
 .reserva {
-    width: 43px;
+    width: 76px;
     height: 15px;  
-    font-family: Futura;
+    font-family: Roboto;
     font-size: 12px;
     font-weight: 500;
     font-stretch: normal;
@@ -101,64 +66,58 @@
     line-height: 1.25;
     letter-spacing: normal;
     text-align: left;
-    color: var(#ffffff);
-    margin: 0rem;
-    padding: 0 0 0 1.3125rem;
-       
+    color: var(#ffffff);      
 }
 .fecha{
     width: 207px;
-  height: 46px;
-  margin: 8px 30px 10px 40.9px;
-  font-family: Futura;
-  font-size: 36px;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.31;
-  letter-spacing: normal;
-  text-align: center;
-  color: var(#ffffff);
+    height: 46px;
+    font-family: Roboto;
+    font-size: 36px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: center;
+    color: var(#ffffff);
+}
+.division{    
+    height: 7.7px;
+    opacity: 0.56;
+    border: solid 0.5px var(--white);
 }
 .hora{
-    
     width: 81px;
-    height: 27px;
-    margin: 2px 14.4px 11px 26.9px;
+    height: 27px;   
     opacity: 0.56;
-    font-family: Futura;
-    font-size: 21px;
+    font-family: Roboto;    
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.33;
     letter-spacing: normal;
-    text-align: center;
+    text-align: right;
     color: var(#ffffff);
 }
 .dia{
     width: 99px;
     height: 27px;
-    margin: 2px 0px 11px 14px;
     opacity: 0.56;
-    font-family: Futura;
-    font-size: 21px;
+    font-family: Roboto;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.33;
     letter-spacing: normal;
-    text-align: center;
+    text-align: left;
     color: var(--white);
 
 }
 .piso {
     width: 55px;
-    height: 22px;
-    margin: 11px 11px 24px 3px;
+    height: 22px;   
     opacity: 0.56;
-    font-family: Futura;
-    font-size: 17px;
+    font-family: Roboto;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -170,10 +129,8 @@
 .sala{
     width: 50px;
     height: 22px;
-    margin: 11px 11px 24px 11px;
     opacity: 0.56;
-    font-family: Futura;
-    font-size: 17px;
+    font-family: Roboto;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -182,13 +139,11 @@
     text-align: center;
     color: var(--white);  
 }
-.cant{
+.personas{
     width: 85px;
     height: 22px;
-    margin: 11px 0px 24px 11px;
     opacity: 0.56;
-    font-family: Futura;
-    font-size: 17px;
+    font-family: Roboto;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -198,29 +153,8 @@
     color: var(--white);
     padding-right: 0rem;
 }
-.le{
-    padding-right: 3.0625rem;
-}
-.div2{
-    width: 0;
-    height: 7.7px;
-    margin: 19.1px 0 29.1px;
-    opacity: 0.56;
-    border: solid 0.5px var(--white);
-}
-.bb6{
-    padding: 0rem;
-}
-.bb66{
-    margin: 0rem;
-    padding: 0rem;
-    height: 2.94375rem;
-}
-.mediot{
-    width: 141px;
-    height: 20px;
-    margin: 24px 0 0 26px;
-    font-family: Futura;
+.mediot{    
+    font-family: Roboto;
     font-size: 15px;
     font-weight: 500;
     font-stretch: normal;
@@ -229,10 +163,6 @@
     letter-spacing: normal;
     text-align: left;
     color: var(--white);
-}
-.bici{
-    padding: 1.25rem 0 2.9375rem 4.125rem;
-
 }
 .letrab {
     padding: 0rem;
@@ -251,28 +181,19 @@
     color: var(--white);
 }
 .marca{
-    width: 45px;
-    height: 20px;
-    margin: 21.1px 0 0 99px;
-    font-family: Futura;
+    font-family: Roboto;
     font-size: 15px;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.33;
     letter-spacing: normal;
-    text-align: left;
+    text-align: center;
     color: var(--white);
-
 }
-
 .descrip {
-    padding: 0rem;
-    width: 130px;
-    height: 21px;
-    margin: 21.9px 0 73px 0;
     opacity: 0.56;
-    font-family: Futura;
+    font-family: Roboto;
     font-size: 16px;
     font-weight: 500;
     font-stretch: normal;
