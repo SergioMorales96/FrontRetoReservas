@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouteFloor } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-floors',
@@ -6,11 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class FloorsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class FloorsComponent {
+  routeFloor = RouteFloor;
 
 }

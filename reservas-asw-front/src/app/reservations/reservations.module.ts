@@ -12,7 +12,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { ReservationComponent } from './components/reservation/reservation.component';
 import { SceneComponent } from './components/scene/scene.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
-import { CalendarModule } from 'primeng/calendar';
+import { ViewReservationComponent } from './components/reservation/view-reservation/view-reservation.component';
+import { EditReservationComponent } from './components/reservation/edit-reservation/edit-reservation.component';
 
 
 
@@ -24,14 +25,17 @@ import { CalendarModule } from 'primeng/calendar';
     ReservationComponent,
     SceneComponent,
     TimeSelectorComponent,
+    ViewReservationComponent,
+    EditReservationComponent,
   ],
   imports: [
+    PrimeNgModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
     ReservationsRoutingModule,
-    CalendarModule
-  ], exports: [
+  ], 
+  exports: [
     CalendarComponent
   ]
 })
