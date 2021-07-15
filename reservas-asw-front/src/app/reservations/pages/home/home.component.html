@@ -1,9 +1,11 @@
 <p>home works!</p>
 
 <app-calendar 
-    [dateValidationType]="dateValidationType.DayCapacity"
+    [dateValidationType]="dateValidationType.ParkingAvailabilityPerCar"
     [selectedFloor]="1"
-    (onDayCapacity)="validateDayCapacity( $event )">
+    (onDayCapacity)="validateDayCapacity( $event )"
+    (onDayParkingAvailabilityPerCar)="validateParkingAvailabilityPerCar( $event )">
+    
 </app-calendar>
 
 <app-reservation></app-reservation> 

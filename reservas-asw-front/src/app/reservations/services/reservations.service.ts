@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DataResponse } from '../interfaces/reservations.interface';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
-import { Reservation, ReservationClass, ReservationResponse} from '../interfaces/reservations.interface';
+import { DataResponse, Reservation, ReservationClass, ReservationResponse} from '../interfaces/reservations.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +31,22 @@ export class ReservationsService {
         catchError(() => of({ data: 0 }))
       );
   } 
+
+  getCarParkingAvailability(selectedDate: string): Observable<DataResponse> {
+    const url = `${this.apiUrl}/disponibilidadParqueaderoCarro/${selectedDate}`;
+    return this.http.get<DataResponse>(url)
+      .pipe(
+        catchError(() => of({ data: 0 }))
+      );
+  } 
+
+
   httpOptions = {
     headers: {
       'Content-Type': 'application/json'
     }
   };
+
   /**
    * Add a schedule, using the endpoint crear
    */

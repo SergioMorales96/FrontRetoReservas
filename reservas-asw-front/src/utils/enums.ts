@@ -40,6 +40,11 @@ export enum WorkStationState {
     Inactive = 'I'
 }
 
+export enum WorkStationType {
+    Gerente = 'G',
+    PuestoTrabajo = 'PT'
+}
+
 export enum DateValidationType {
     DayCapacity,
     ParkingAvailabilityPerMotorcycle,

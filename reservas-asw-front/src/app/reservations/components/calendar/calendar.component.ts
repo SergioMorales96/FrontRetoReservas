@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { ReservationsService } from '../../services/reservations.service';
 import { DataResponse } from '../../interfaces/reservations.interface';
-import { ToastsService } from '../../../services/toasts.service';
+import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-calendar',
@@ -13,9 +13,16 @@ import { ToastsService } from '../../../services/toasts.service';
 })
 export class CalendarComponent implements OnInit {
 
+ 
+
   @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
+  @Input() dateCar: DateValidationType = DateValidationType.ParkingAvailabilityPerCar;
+
   @Input() selectedFloor!: number;
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> = new EventEmitter<boolean>();/////
+
+
   selectedDate: Date = new Date();
   dateValue: Date = new Date;
 
@@ -74,13 +81,6 @@ export class CalendarComponent implements OnInit {
 
 
 
-
-
-
-
-
-
-
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
@@ -94,10 +94,14 @@ export class CalendarComponent implements OnInit {
         console.log('Entrando case capacity')
         this.getCapacity();//
         break;
+      case DateValidationType.ParkingAvailabilityPerCar:
+          console.log('Entrando case ParkingAvailabilityPerCar ')
+          this.getCarParkingAvailability();
+        break;
+
       case DateValidationType.ParkingAvailabilityPerBicycle:
         break;
-      case DateValidationType.ParkingAvailabilityPerCar:
-        break;
+        
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         break;
       default:
@@ -119,6 +123,19 @@ export class CalendarComponent implements OnInit {
         });
   }
 
+  
+  getCarParkingAvailability(): void {
+    const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+    console.log(selectedDate);
+    this.reservationService.getCarParkingAvailability(selectedDate)
+     .subscribe(
+        (dataResponse: DataResponse) => {
+          console.log(dataResponse);
+          this.validateParkingAvailabilityPerCar(dataResponse.data);
+          });
+  }
+
+
   validateDayCapacity(data : number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
@@ -126,6 +143,19 @@ export class CalendarComponent implements OnInit {
     else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({summary:'No hay aforo disponible',detail:'En el piso seleccionado no hay capacidad en esta fecha'})
+    }
+  }
+
+  
+  validateParkingAvailabilityPerCar(data : number | any): void {
+    if (data > 0) {
+      this.onDayParkingAvailabilityPerCar.emit(true);
+     
+    }
+    else {
+      this.onDayParkingAvailabilityPerCar.emit(false);
+      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles ', detail: '' });
+
     }
   }
 
