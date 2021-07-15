@@ -1,1 +1,17 @@
 <p>reservation works!</p>
+<a
+    pButton
+    (click)= "addReservation()"
+    class="button-link p-button-success"
+    icon="pi pi-plus"
+    pTooltip="Agregar"
+    tooltipPosition="top"
+  >
+  </a>
+  <p-toast></p-toast>
+  <p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  acceptLabel ="Aceptar"
+  rejectLabel ="Ok"
+></p-confirmDialog>
