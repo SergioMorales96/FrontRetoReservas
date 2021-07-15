@@ -1,1 +1,61 @@
-<p>view-reservation works!</p>
+<div class="p-grid p-flex-column" [ngStyle]="{ 'width': '24rem', 'height': '22rem','background-color': '#606060' }">
+    <div class="p-col p-grid p-flex-column p-p-2" [ngStyle]="{ 'height': '11rem' }">
+        <div class="p-col p-grid" [ngStyle]="{ 'height': '7rem' }">
+            <div class="p-col-4 p-d-flex p-jc-center p-ai-center p-ta-center">
+                <div class="p-grid p-flex-column">
+                    <div class="p-col p-d-flex p-jc-center p-ai-end">
+                        <div class="box">
+                            <img src="assets/images/icons/workbench.svg">
+                        </div>
+                    </div>
+                    <div class="p-col p-d-flex p-jc-center p-ai-top">
+                        <div class="box">
+                            Reserva
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-col p-d-flex p-jc-center p-ai-center">
+                <div class="p-grid p-flex-column">   
+                    <div class="p-col p-d-flex p-jc-center p-ai-end"> 
+                            <div class="box">
+                                <img src="assets/images/icons/travel-guide.svg">
+                                11/06/2021
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col p-d-flex p-jc-center p-ai-end">
+                            <div class="box">
+                                8:00 a.m | Medio dia
+                            </div>
+                    </div>
+            </div>
+        </div>
+        <div class="p-col p-d-flex p-jc-end p-ai-center" [ngStyle]="{ 'height': '2rem' }">
+            <h5>Piso 18 | Sala 3 | 3 personas</h5>
+        </div>
+    </div>
+    <div class="p-col p-grid">
+        <div class="p-col">
+            Medio de transporte
+          <img src="assets/images/icons/bicycle.svg">  
+          Bicicleta
+        </div>
+        <div class="p-col">
+            Marca
+            <hr>
+            Rockbuster ST1000
+        </div>
+    </div>
+    <div class="p-col p-grid" [ngStyle]="{'background-color': '#5ebc00'}">
+        <div class="p-col-2">
+            <img src="assets/images/icons/eye-white.svg">
+        </div>
+        <div class="p-col-10">
+            <p [style]="{'background-color': '#5ebc00','margin':'0','color':'white','font-size':'11px','padding':'10px','font-family': 'Roboto'}">
+                    Estas listo para ingresar a las oficinas ¡Te extrañabamos!
+                    En la puerta de ingreso reconócete con WhoAmEye para que el sistema sepa que llegaste a tu reserva.
+            </p>
+        </div>
+    </div>
+</div>
