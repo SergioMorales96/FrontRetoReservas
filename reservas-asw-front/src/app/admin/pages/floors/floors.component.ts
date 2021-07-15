@@ -3,7 +3,7 @@ import { RouteFloor } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-floors',
-  templateUrl: './Floors.component.html',
+  templateUrl: './floors.component.html',
   styles: [
   ]
 })
