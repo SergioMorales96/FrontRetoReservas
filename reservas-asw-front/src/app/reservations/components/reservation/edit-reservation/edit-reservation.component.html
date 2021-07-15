@@ -1,1 +1,104 @@
-<p>edit-reservation works!</p>
+
+<div class="p-grid ">
+    <!-- colum A -->
+    <div class="p-col-1 col-White"></div>
+    <!-- colum B -->
+    <div class="p-col-8 col-b p-grid p-flex-column">
+        <!-- fila 1 -->
+        <div class="col-b1 p-d-flex p-jc-between p-ai-center">
+            <span>Editar reserva</span>
+            <span>
+                <button pButton pRipple  [style]="{'background-color': 'white',
+                                                   'color':'red',
+                                                   'width':'24px',
+                                                   'height':'24px'}"
+                                   type="button" 
+                                   icon="pi pi-times"
+                                   class="p-button-rounded " >
+                </button>
+            </span>
+        </div>
+        <!-- fila 2 -->
+        <div class="col-b2 p-p-2 p-flex-column ">            
+            <div class="p-grid  ">
+                <div class="p-col-4 p-flex-column p-pt-3 p-pl-5">
+                    <img src="assets/images/icons/workbench.svg" >
+                    <!-- reserva -->
+                    <p class="reserva p-mt-0 p-ml-4">Reserva</p>
+                </div>
+                <div class="p-col-8 p-d-flex p-flex-column p-ai-center p-jc-center">
+                    <!-- fecha -->
+                    <p class="fecha p-m-0">11/06/21</p>
+                    <div class="p-grid">
+                        <!-- hora -->
+                        <p class="hora p-mx-3 p-mb-0">8:00 am</p>
+                        <!-- division -->
+                        <p class="division">|</p>
+                        <!-- dia  -->
+                        <p class="dia p-mx-3 p-mb-0">Medio dia</p>
+                    </div>   
+                </div>
+            </div> 
+            <div class="p-grid p-mt-0 p-d-flex p-ai-around p-jc-end">
+                <!-- piso -->
+                <p class="piso p-mx-3 p-mt-0">Piso 18</p>
+                <!-- division -->
+                <p class="division p-m-0">|</p>
+                <!-- sala  -->
+                <p class="sala p-mx-3 p-mt-0">Sala 3</p>
+                <!-- division -->
+                <p class="division p-m-0">|</p>
+                <!-- personas  -->
+                <p class="personas p-ml-3 p-mr-6 p-mt-0">3 personas</p>
+            </div>   
+        </div>
+        <!-- fila 3 -->
+        <div class="col-b3"></div>
+        <!-- fila 4 -->
+        <div class="col-b4"></div>
+        <!-- fila 5 -->
+        <div class="col-b5"></div>
+        <!-- fila 6 -->
+        <div class="col-b6 p-flex-column">
+            <!-- Segunda divicion de la interfaz, vehiculo y marca -->
+            <div class="p-grid p-m-0" [ngStyle]="{}">
+                <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                    <p class="mediot p-mb-2 p-mt-4 p-ml-4 "> 
+                        Medio de transporte
+                    </p>
+                    <div class="p-d-flex p-jc-center p-ai-center">
+                        <img class="p-mr-2 p-mb-1 p-ml-5" src="assets/images/icons/bicycle.svg">  
+                        <p class="letrab p-mb-5"> Bicicleta</p>
+                    </div>
+                </div>
+                <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                    <div class="p-mb-4">
+                        <p class="marca p-mt-1">Marca</p>
+                        <p class="descrip"> 
+                            Rockbuster ST1000
+                        </p>
+                    </div>
+                </div>
+            </div> 
+        </div>            
+        <!-- fila 7 -->
+        <div class="col-b7"></div>
+        <!-- fila 8 -->
+        <div class="col-b8 p-mt-3 p-d-flex p-jc-center" >
+            <button pButton type="button"
+                          label="Cancelar Reserva" 
+                          icon="pi pi-times" 
+                          class="p-button-text p-button-sm"
+                          [style]="{'width': '13.25rem',
+                                    'height': '2.5rem',
+                                    'align-items':'center',
+                                    'background-color': '#fa729c',
+                                    'border':'none',
+                                    'color':'white',
+                                    'borde-radius':'none'}">
+            </button>
+        </div>
+    </div>
+    <!-- colum C -->
+    <div class="p-col-9 col-White"></div>
+</div>
