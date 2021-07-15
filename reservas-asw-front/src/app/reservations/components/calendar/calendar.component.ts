@@ -148,13 +148,12 @@ export class CalendarComponent implements OnInit {
   validateParkingAvailabilityPerCar(data : number | any): void {
     if (data > 0) {
       this.onDayParkingAvailabilityPerCar.emit(true);
-      this.toastService.showToastSuccess({ summary: `Los parqueaderos disponibles son ${data}`, detail: `` });
+     
     }
     else {
       this.onDayParkingAvailabilityPerCar.emit(false);
       this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles ', detail: '' });
 
-      //toast
     }
   }
 
