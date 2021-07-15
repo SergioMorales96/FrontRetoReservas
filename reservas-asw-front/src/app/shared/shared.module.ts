@@ -9,7 +9,6 @@ import { ReservationFormComponent } from './reservation-form/reservation-form.co
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HomeComponent } from './home/home.component';
 
 
 
@@ -19,14 +18,12 @@ import { HomeComponent } from './home/home.component';
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
-    HomeComponent,
   ],
   exports: [
     ErrorPageComponent,
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
-    HomeComponent,
   ],
   imports: [
     RouterModule,
