@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { ReservationsService } from '../../services/reservations.service';
 import { DataResponse } from '../../interfaces/reservations.interface';
+import { ToastsService } from '../../../services/toasts.service';
 
 @Component({
   selector: 'app-calendar',
@@ -12,14 +13,14 @@ import { DataResponse } from '../../interfaces/reservations.interface';
 })
 export class CalendarComponent implements OnInit {
 
-  @Input() dateValidationType: DateValidationType = DateValidationType.ParkingAvailabilityPerMotorcycle;
-  @Input() dateValidationTypeMoto: DateValidationType = DateValidationType.ParkingAvailabilityPerMotorcycle;
+  @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
   @Input() selectedFloor!: number;
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedDate: Date = new Date();
   dateValue: Date = new Date;
 
   constructor(
+    private toastService: ToastsService,
     private reservationService: ReservationsService
   ) { }
 
@@ -131,8 +132,20 @@ export class CalendarComponent implements OnInit {
       .subscribe(
         (dataResponse: DataResponse) => {
           console.log(dataResponse);
-          this.validateDayCapacity(dataResponse.data);
+          this.validateAvailabilityMotorcycle(dataResponse.data);
         });
   }
+
+  validateAvailabilityMotorcycle(data : number| any): void {
+    if (data > 0) {
+      this.onDayCapacity.emit(true);
+      this.toastService.showToastSuccess({summary: `Existen ${data} parqueaderos disponibles`,detail:''})
+    }
+    else {
+      this.onDayCapacity.emit(false);
+      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles', detail: '' });
+    }
+  }
+
 
 }
