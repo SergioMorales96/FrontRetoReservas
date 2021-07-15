@@ -39,3 +39,10 @@ export enum WorkStationState {
     Active = 'A',
     Inactive = 'I'
 }
+
+export enum DateValidationType {
+    DayCapacity,
+    ParkingAvailabilityPerMotorcycle,
+    ParkingAvailabilityPerCar,
+    ParkingAvailabilityPerBicycle,
+}

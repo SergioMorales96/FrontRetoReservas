@@ -1,5 +1,9 @@
 <p>home works!</p>
 
-<!-- <app-calendar></app-calendar> -->
+<app-calendar 
+    [dateValidationType]="dateValidationType.DayCapacity"
+    [selectedFloor]="1"
+    (onDayCapacity)="validateDayCapacity( $event )">
+</app-calendar>
 
 <app-reservation></app-reservation> 

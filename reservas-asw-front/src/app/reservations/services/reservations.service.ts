@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DataResponse } from '../interfaces/reservations.interface';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
@@ -18,13 +19,24 @@ import { Reservation, ReservationClass, ReservationResponse} from '../interfaces
 export class ReservationsService {
   private apiUrl: string = `${environment.baseUrl}/reservas`;
 
+
+  constructor(
+    private http: HttpClient,
+    private toastService: ToastsService
+  ) { }
+
+  getCapacity(selectedDate: string, selectedFloor: number): Observable<DataResponse> {
+    const url = `${this.apiUrl}/reservas_aforo_dia/${selectedDate}/${selectedFloor}`;
+    return this.http.get<DataResponse>(url)
+      .pipe(
+        catchError(() => of({ data: 0 }))
+      );
+  } 
   httpOptions = {
     headers: {
       'Content-Type': 'application/json'
     }
   };
-
-  constructor(private http: HttpClient, private toastService: ToastsService) { }
   /**
    * Add a schedule, using the endpoint crear
    */
