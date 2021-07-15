@@ -1,9 +1,6 @@
-import { getLocaleMonthNames } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
