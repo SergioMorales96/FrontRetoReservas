@@ -8,8 +8,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { MenuComponent } from './menu/menu.component';
 import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
-import { ReservationsModule } from '../reservations/reservations.module';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -25,12 +24,10 @@ import { ReservationsModule } from '../reservations/reservations.module';
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
-    ErrorPageComponent,
-
   ],
   imports: [
     CommonModule,
-    ReservationsModule,
+    FormsModule,
     RouterModule,
     PrimeNgModule
   ]

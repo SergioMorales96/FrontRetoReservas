@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": "32c9e06b-bc29-4b13-adcf-a4a9ffde6842"
+    "analytics": false
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -76,6 +76,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "reservas-asw-front:build", 
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "reservas-asw-front:build:production"

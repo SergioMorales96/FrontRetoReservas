@@ -1,0 +1,44 @@
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
+
+    <h3> {{ viewTitle }} </h3>
+    <a
+        pButton
+        [routerLink]="[routeName.BranchEdit, branch?.idSucursal]"
+        class="button-link p-button-info p-m-1"
+        icon="pi pi-pencil"
+        pTooltip="Editar"
+        tooltipPosition="top">
+    </a>
+
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <p> Nit </p>
+        <p><strong> {{ branch?.nit }} </strong></p>
+    </div>
+</div>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <p> Nombre </p>
+        <p><strong> {{ branch?.nombre }} </strong></p>
+    </div>
+    <div class="p-field p-col">
+        <p> Aforo máximo </p>
+        <p><strong> {{ branch?.aforoMaximo }} </strong></p>
+    </div>
+</div>
+
+<p-divider></p-divider>
+
+<div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col">
+        <p> Direccion  </p>
+        <p><strong> {{ branch?.direccion }} </strong></p>
+    </div>
+    <div class="p-field p-col">
+        <p> Sucursal No. </p>
+        <p><strong> {{ branch?.idSucursal }} </strong></p>
+    </div>
+</div>

@@ -1,45 +1,183 @@
+import { getLocaleMonthNames } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
+
+import { ReservationsService } from '../../services/reservations.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styles: [
-  ]
+  styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent{
-  value: Date = new Date();
+export class CalendarComponent implements OnInit {
+
+  dateValue: Date = new Date();
+
+  constructor(private reservationsService: ReservationsService) {
+  }
+
+  ngOnInit(): void {
+
+  }
 
   //Las fechas en esta lista desactivan los días en el calendario
-  invalidDates: Date[] = [new Date("07/07/2021"),new Date("07/08/2021")];
-  //Las fechas en esta lista colorean la mitad de abajo de los días en el calendario
-  afterNoon: number[] = [5,10,15,20,25,30];
+  invalidDates: Date[] = [];
   //Las fechas en esta lista colorean la mitad de arriba de los días en el calendario
-  morning: number[] = [6,11,16,26];
+  morning: number[] = [];
+  //Las fechas en esta lista colorean la mitad de abajo de los días en el calendario
+  afterNoon: number[] = [];
   //Las fechas en esta lista colorean el día completo de los días en el calendario
-  complete: number[] = [7,8];
+  complete: number[] = [];
+
+  morningDates: Date[] = [new Date('07/07/2021'), new Date('07/08/2021'), new Date('07/09/2021'), new Date('07/10/2021')];
 
 
-  afterNoonM(day: number): boolean{
+  //Resultado de consutla al servicio back se almacena en reservations
+  reservations: Reservation[] = [];
+
+  //Número de personas para saber si se trata de una sala o un puesto de trabajo
+  private _numberOfPeople: number = 0;
+
+  //Id del puesto de trabajo o de la sala
+  private _id: number = 0;
+
+  private tempDate: Date = new Date();
+
+  private roomUrlPlugin: string = '/reservas/reservas_sala';
+
+  //Atributo que se usa para especificar las fechas en las que se quiere realizar la consulta
+  private queryDates: string = '';
+
+  currentMonth: number = 0;
+
+  afterNoonM(day: number): boolean {
     return this.afterNoon.includes(day);
   }
 
-  morningM(day: number): boolean{
+  morningM(day: number): boolean {
     return this.morning.includes(day);
   }
 
-  completeM(day: number): boolean{
+  completeM(day: number): boolean {
     return this.complete.includes(day);
   }
 
-  monthChange(month: number): void{
+  monthChange(month: number, year: number): void {
     this.complete = [];
     this.morning = [];
     this.afterNoon = [];
+    this.invalidDates = [];
+    this.tempDate.setMonth(month-1);
+    this.tempDate.setDate(1);
+    this.tempDate.setFullYear(year);
+    this.consultReservations();
+  }
+
+  consultReservations(): void {
+    this.setDates(this.tempDate);
+    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : '';
+
+    this.reservationsService.sendRequest(urlPlugin, this.queryDates)
+      .subscribe(
+        (answ: ReservationsResponse) => {
+          this.reservations = answ.data;
+          this.updateCalendar();
+        }
+      );
+  }
+
+
+
+  updateCalendar(): void {
+    let i = 0;
+    let checked: string[] = [];
+
+    for (const reservation of this.reservations) {
+
+      if (!checked.includes(this.reservations[i].dia)) {
+        checked = this.compareReservations(i, checked);
+      }
+
+      i++;
+    }
+
+
+  }
+
+
+
+  private compareReservations(i: number = 0, checked: string[]): string[] {
+    let flag: boolean = false;
+    let iRerservation: Reservation = this.reservations[i];
+    for (let j = 0; j < this.reservations.length; j++) {
+      let jReservation: Reservation = this.reservations[j];
+      if (j != i) {
+        if (jReservation.dia === iRerservation.dia) {
+          this.complete.push(parseInt(jReservation.dia));
+          checked.push(jReservation.dia);
+          flag = true;
+        }
+      }
+
+    }
+
+    if (!flag) {
+      ((parseInt(iRerservation.horaInicio) < 13) ? (parseInt(iRerservation.horaFin) < 13 ? this.morning.push(parseInt(iRerservation.dia))
+        : (this.completeDay(iRerservation, checked))
+      )
+        : this.afterNoon.push(parseInt(iRerservation.dia)))
+    }
+    return checked;
+  }
+
+
+  private completeDay(rev: Reservation, checked: string[]): void {
+    this.complete.push(parseInt(rev.dia));
+    checked.push(rev.dia);
+  }
+
+  set numberOfPeople(numOfPeople: number) {
+    this._numberOfPeople = numOfPeople;
+  }
+
+  set id(id: number) {
+    this._id = id;
+  }
+
+  private onMorning(reservation: Reservation): boolean {
+
+    return true;
+  }
+
+  setDates(dateValue: Date) {
+    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
+    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
+
+    let month: number = dateValue.getMonth() + 1;
+    let strMonth: string = month.toString();
+
+    let year: number = dateValue.getFullYear();
+    let strYear: string = year.toString();
+
+    let startDay: number = first.getDate();
+    let strStartDay: string = startDay.toString();
+
+    let lastDay: number = last.getDate();
+    let strLastDay: string = lastDay.toString();
+
+    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
+    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+
     
-    console.log(month);
+    
+    
+    if(this._numberOfPeople > 1){
+      this.queryDates = this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
+      
+    }
     
   }
-  constructor() { }
-
 
 }
