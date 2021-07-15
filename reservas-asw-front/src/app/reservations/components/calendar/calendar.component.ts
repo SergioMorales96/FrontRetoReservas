@@ -12,7 +12,8 @@ import { DataResponse } from '../../interfaces/reservations.interface';
 })
 export class CalendarComponent implements OnInit {
 
-  @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
+  @Input() dateValidationType: DateValidationType = DateValidationType.ParkingAvailabilityPerMotorcycle;
+  @Input() dateValidationTypeMoto: DateValidationType = DateValidationType.ParkingAvailabilityPerMotorcycle;
   @Input() selectedFloor!: number;
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedDate: Date = new Date();
@@ -92,11 +93,12 @@ export class CalendarComponent implements OnInit {
         console.log('Entrando case capacity')
         this.getCapacity();//
         break;
-      case DateValidationType.ParkingAvailabilityPerBicycle:
+        case DateValidationType.ParkingAvailabilityPerBicycle:
         break;
-      case DateValidationType.ParkingAvailabilityPerCar:
+        case DateValidationType.ParkingAvailabilityPerCar:
         break;
-      case DateValidationType.ParkingAvailabilityPerMotorcycle:
+        case DateValidationType.ParkingAvailabilityPerMotorcycle:
+        this.getParkingMotorcycle();
         break;
       default:
         break;
@@ -122,6 +124,15 @@ export class CalendarComponent implements OnInit {
       this.onDayCapacity.emit(false);
       //toast
     }
+  }
+  getParkingMotorcycle(): void {
+    const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+    this.reservationService.getParkingMotorcycle(selectedDate)
+      .subscribe(
+        (dataResponse: DataResponse) => {
+          console.log(dataResponse);
+          this.validateDayCapacity(dataResponse.data);
+        });
   }
 
 }

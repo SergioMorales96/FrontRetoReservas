@@ -23,4 +23,12 @@ export class ReservationsService {
         catchError(() => of({ data: 0 }))
       );
   } 
+  getParkingMotorcycle(selectDate: string): Observable<DataResponse> {
+    const url = `${this.apiUrl}/disponibilidadParqueaderoMoto/${selectDate}`;
+    return this.http.get<DataResponse>(url)
+      .pipe(
+        catchError(() => of({ data: 0 }))
+      );
+
+  }
 }
