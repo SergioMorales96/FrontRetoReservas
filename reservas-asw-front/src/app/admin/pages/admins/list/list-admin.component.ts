@@ -8,8 +8,7 @@ import { AlertsService } from '../../../../services/alerts.service';
 @Component({
   selector: 'app-list-admin',
   templateUrl: './list-admin.component.html',
-  styles: [
-  ]
+  styleUrls: ['./list-admin.component.scss']
 })
 export class ListAdminComponent implements OnInit {
 
@@ -36,8 +35,6 @@ export class ListAdminComponent implements OnInit {
   get results(): Administrador[] {
     return this.adminsService.admin;
   }
-
-  selectedAdmin!: Administrador;
 
   deleteAdmin(id: number): void {
     this.alertService.showConfirmDialog({

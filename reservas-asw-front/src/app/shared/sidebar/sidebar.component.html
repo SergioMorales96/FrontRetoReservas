@@ -1,21 +1,11 @@
-<p-toggleButton 
-    [(ngModel)]="display" 
-    offIcon="pi pi-chevron-right"
-    [onIcon]="'pi pi-times'"
-    styleClass="p-my-2">
-</p-toggleButton>
-
 <p-sidebar 
-    [visible]='display' 
-    [showCloseIcon]="false">
+    [(visible)]="display"
+    styleClass="p-sidebar-sm"
+    [transitionOptions]="'0ms'"
+    (onHide)="hide()">
 
-    <p-toggleButton 
-        [(ngModel)]="display"
-        offIcon="pi pi-chevron-right" 
-        [onIcon]="'pi pi-times'">
-    </p-toggleButton>
+    <p-divider></p-divider>
 
-    <hr>
     <p-panelMenu 
         [model]="items"
         [style]="{ width: '100%' }">

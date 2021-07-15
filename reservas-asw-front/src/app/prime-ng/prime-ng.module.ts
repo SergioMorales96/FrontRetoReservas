@@ -22,7 +22,11 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { BadgeModule } from 'primeng/badge';
 import { MessagesModule } from 'primeng/messages';
+import { PaginatorModule } from 'primeng/paginator';
 
 
 @NgModule({
@@ -34,6 +38,7 @@ import { MessagesModule } from 'primeng/messages';
     ConfirmDialogModule,
     DialogModule,
     DividerModule,
+    DialogModule,
     DropdownModule,
     InputNumberModule,
     InputMaskModule,
@@ -43,6 +48,7 @@ import { MessagesModule } from 'primeng/messages';
     ListboxModule,
     MegaMenuModule,
     MenubarModule,
+    PaginatorModule,
     PanelMenuModule,
     SidebarModule,
     SplitterModule,
@@ -51,8 +57,11 @@ import { MessagesModule } from 'primeng/messages';
     ToastModule,
     ToggleButtonModule,
     TooltipModule,
-    ConfirmDialogModule,
-    MessagesModule,   
+    MenubarModule,
+    MessagesModule,
+    AvatarModule,
+    AvatarGroupModule,
+    BadgeModule,
   ],
 })
 export class PrimeNgModule { }

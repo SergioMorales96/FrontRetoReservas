@@ -1,8 +1,4 @@
-<div
-  class="
-    p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4
-  "
->
+<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
   <h3>Listado Horarios</h3>
   <p-messages [value]="msgs"></p-messages>
   <a
@@ -11,17 +7,15 @@
     class="button-link p-button-success"
     icon="pi pi-plus"
     pTooltip="Agregar"
-    tooltipPosition="top"
-  >
+    tooltipPosition="top">
   </a>
 </div>
 
 <p-table
   #dt
-  [value]="schedules"
+  [value]="schedules | sort:'idHorario'"
   [resizableColumns]="true"
-  styleClass="p-datatable-striped p-datatable-responsive-demo"
->
+  styleClass="p-datatable-striped p-datatable-responsive-demo">
   <ng-template pTemplate="header">
     <tr>
       <th pSortableColumn="idHorario">
@@ -72,8 +66,7 @@
           class="button-link p-button-help p-mr-1"
           icon="pi pi-eye"
           pTooltip="Ver"
-          tooltipPosition="top"
-        >
+          tooltipPosition="top">
         </a>
         <a
           pButton
@@ -81,8 +74,7 @@
           class="button-link p-button-info p-mr-1"
           icon="pi pi-pencil"
           pTooltip="Editar"
-          tooltipPosition="top"
-        >
+          tooltipPosition="top">
         </a>
         <button
           pButton
@@ -92,9 +84,8 @@
           icon="pi pi-times"
           pTooltip="Eliminar"
           tooltipPosition="top"
-          (click)="deleteSchedule(schedule.idHorario)"
-         
-        ></button>
+          (click)="deleteSchedule(schedule.idHorario)">
+      </button>
       </td>
     </tr>
   </ng-template>

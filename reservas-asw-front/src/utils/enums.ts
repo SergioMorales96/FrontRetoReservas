@@ -1,7 +1,13 @@
 export enum RouteName {
     RoomsList = '/admin/rooms/list',
     RoomView = '/admin/rooms/view',
-    RoomAdd = '/admin/rooms/add',
+    RoomAdd = '/admin/rooms/add', 
+
+    WorkstationList = '/admin/workstations/list',
+    WorkstationView = '/admin/workstations/view',
+    WorkstationAdd = '/admin/workstations/add',
+    WorkstationEdit = '/admin/workstations/edit',
+
     RoomEdit = '/admin/rooms/edit',
     AdminsList = '/admin/admins/list',
     AdminView = '/admin/admins/view',
@@ -19,7 +25,19 @@ export enum RouteName {
     DomainAdd = "/admin/domains/add",
     DomainEdit = "/admin/domains/edit",
     DomainView = "/admin/domains/view",
+    
+    }
 
+export enum RouteFloor {
+    FloorList = '/admin/floors/list',
+    FloorView = '/admin/floors/view',
+    FloorAdd = '/admin/floors/add',
+    FloorEdit = '/admin/floors/edit',
+}
+
+export enum WorkStationState {
+    Active = 'A',
+    Inactive = 'I'
 }
 
 export enum DateValidationType {
