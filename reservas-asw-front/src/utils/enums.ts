@@ -1,7 +1,13 @@
 export enum RouteName {
     RoomsList = '/admin/rooms/list',
     RoomView = '/admin/rooms/view',
-    RoomAdd = '/admin/rooms/add',
+    RoomAdd = '/admin/rooms/add', 
+
+    WorkstationList = '/admin/workstations/list',
+    WorkstationView = '/admin/workstations/view',
+    WorkstationAdd = '/admin/workstations/add',
+    WorkstationEdit = '/admin/workstations/edit',
+
     RoomEdit = '/admin/rooms/edit',
     AdminsList = '/admin/admins/list',
     AdminView = '/admin/admins/view',
@@ -22,7 +28,7 @@ export enum RouteName {
     
     }
 
-export enum RouteFloor{
+export enum RouteFloor {
     FloorList = '/admin/floors/list',
     FloorView = '/admin/floors/view',
     FloorAdd = '/admin/floors/add',
@@ -34,4 +40,8 @@ export enum DateValidationType {
     ParkingAvailabilityPerMotorcycle,
     ParkingAvailabilityPerCar,
     ParkingAvailabilityPerBicycle,
+}
+export enum WorkStationState {
+    Active = 'A',
+    Inactive = 'I'
 }

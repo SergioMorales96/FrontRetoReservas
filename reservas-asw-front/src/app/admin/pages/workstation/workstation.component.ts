@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouteName } from 'src/utils/enums';
 
 @Component({
   selector: 'app-workstation',
@@ -6,11 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class WorkstationComponent implements OnInit {
+export class WorkstationComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  routeName = RouteName;
 
 }

@@ -8,12 +8,15 @@ import { FloorsComponent } from './pages/floors/floors.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { SchedulesComponent } from './pages/schedules/schedules.component';
 import { WorkstationComponent } from './pages/workstation/workstation.component';
-import { AddAdminComponent } from './pages/admins/form/add-admin.component';
+import { FormAdminComponent } from './pages/admins/form/form-admin.component';
 import { ViewAdminComponent } from './pages/admins/view/view-admin.component';
 import { ListAdminComponent } from './pages/admins/list/list-admin.component';
 import { ListRoomComponent } from './pages/rooms/list/list-room.component';
 import { ViewRoomComponent } from './pages/rooms/view/view-room.component';
 import { FormRoomComponent } from './pages/rooms/form/form-room.component';
+import { ListWorkstationComponent } from './pages/workstation/list-workstation/list-workstation.component';
+import { ViewWorkstationComponent } from './pages/workstation/view-workstation/view-workstation.component';
+import { FormWorkstationComponent } from './pages/workstation/form-workstation/form-workstation.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { FormFloorComponent } from './pages/floors/form/form.floor.component';
@@ -23,8 +26,6 @@ import { ViewScheduleComponent } from './pages/schedules/view/view-schedule.comp
 import { ListDomainComponent } from './pages/domains/list/list-domain.component';
 import { ViewDomainComponent } from './pages/domains/view/view-domain.component';
 import { FormDomainComponent } from './pages/domains/form/form-domain.component';
-
-
 import { ListBranchComponent } from './pages/branches/list/list-branch.component';
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
@@ -40,7 +41,7 @@ const routes: Routes = [
         children: [
           {
             path: 'add',
-            component: AddAdminComponent
+            component: FormAdminComponent
           },
           {
             path: 'view/:id',
@@ -48,7 +49,7 @@ const routes: Routes = [
           },
           {
             path: 'edit/:id',
-            component: AddAdminComponent
+            component: FormAdminComponent
           },
           {
             path: 'list',
@@ -199,7 +200,29 @@ const routes: Routes = [
       },
       {
         path: 'workstations',
-        component: WorkstationComponent
+        component: WorkstationComponent,
+        children: [
+          {
+            path: 'list',
+            component: ListWorkstationComponent
+          },
+          {
+            path: 'view/:id',
+            component: ViewWorkstationComponent
+          },
+          {
+            path: 'add',
+            component: FormWorkstationComponent
+          },
+          {
+            path: 'edit/:id',
+            component: FormWorkstationComponent
+          },
+          {
+            path: '**',
+            redirectTo: 'list'
+          }
+        ]
       },
       {
         path: '**',

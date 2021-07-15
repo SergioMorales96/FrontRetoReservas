@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Floor, FloorResponse } from '../../../interfaces/interface.schedule';
 import { Room, RoomResponse, RoomClass } from '../../../interfaces/rooms.interfaces';
 import { RoomsService } from '../../../services/rooms.service';
-import { RouteName } from '../../../../../utils/enums';
+import { RouteName, WorkStationState } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
@@ -24,6 +24,16 @@ export class FormRoomComponent implements OnInit {
   isEditing: boolean = false;
   room!: Room;
   routeName = RouteName;
+  workstationStates = [
+    {
+      label: 'Activo',
+      value: WorkStationState.Active,
+    },
+    {
+      label: 'Inactivo',
+      value: WorkStationState.Inactive,
+    }
+  ];
 
   get formTitle(): string {
     return this.isEditing ? ( this.room?.nombre ?? 'Editar sala' ) : 'Crear sala';
