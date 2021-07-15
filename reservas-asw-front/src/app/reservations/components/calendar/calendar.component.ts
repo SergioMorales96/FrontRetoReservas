@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { ReservationsService } from '../../services/reservations.service';
 import { DataResponse } from '../../interfaces/reservations.interface';
+import { SharedService } from '../../../shared/services/shared.service';
 
 @Component({
   selector: 'app-calendar',
@@ -19,7 +20,8 @@ export class CalendarComponent implements OnInit {
   dateValue: Date = new Date;
 
   constructor(
-    private reservationService: ReservationsService
+    private reservationService: ReservationsService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -69,16 +71,6 @@ export class CalendarComponent implements OnInit {
   //     .includes(selectedDate);
   // }
 
-
-
-
-
-
-
-
-
-
-
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
@@ -86,6 +78,7 @@ export class CalendarComponent implements OnInit {
   }
 
   callMethodPerDateValidationType(): void {
+    this.dateValidationType = 3;
     console.log(this.dateValidationType);
     switch (this.dateValidationType) {
       case DateValidationType.DayCapacity:
@@ -93,6 +86,8 @@ export class CalendarComponent implements OnInit {
         this.getCapacity();//
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
+        console.log('Entrando case bicis')
+        this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
         break;
@@ -121,6 +116,26 @@ export class CalendarComponent implements OnInit {
     else {
       this.onDayCapacity.emit(false);
       //toast
+    }
+  }
+
+  getBici(): void{
+    const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+    this.sharedService.getDPBicicletas(selectedDate)
+      .subscribe(
+        (dpbicicletas: DataResponse) => {
+          console.log(dpbicicletas.data);
+          console.log(this.validationBicis(dpbicicletas.data));
+        }
+      );
+  }
+
+  validationBicis(data: Number | any){
+    if (data > 0) {
+      this.onDayCapacity.emit(true);
+    }
+    else {
+      this.onDayCapacity.emit(false);
     }
   }
 
