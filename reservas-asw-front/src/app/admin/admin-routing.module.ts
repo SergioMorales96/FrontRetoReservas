@@ -29,7 +29,7 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
 import { ListBranchComponent } from './pages/branches/list/list-branch.component';
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
-
+import { ReservationComponent } from '../reservations/components/reservation/reservation.component';
 
 const routes: Routes = [
   {
@@ -223,6 +223,10 @@ const routes: Routes = [
             redirectTo: 'list'
           }
         ]
+      },
+      {
+        path:'reservations',
+        component: ReservationComponent,
       },
       {
         path: '**',

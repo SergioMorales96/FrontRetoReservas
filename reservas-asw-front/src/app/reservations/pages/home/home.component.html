@@ -3,5 +3,9 @@
 <app-calendar 
     [dateValidationType]="dateValidationType.ParkingAvailabilityPerMotorcycle"
     [selectedFloor]="1"
-    (onDayCapacity)="validateDayCapacity( $event )">
+    (onDayCapacity)="validateDayCapacity( $event )"
+    (onDayParkingAvailabilityPerCar)="validateParkingAvailabilityPerCar( $event )">
+    
 </app-calendar>
+
+<app-reservation></app-reservation> 

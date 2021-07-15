@@ -35,13 +35,19 @@ export enum RouteFloor {
     FloorEdit = '/admin/floors/edit',
 }
 
+export enum WorkStationState {
+    Active = 'A',
+    Inactive = 'I'
+}
+
+export enum WorkStationType {
+    Gerente = 'G',
+    PuestoTrabajo = 'PT'
+}
+
 export enum DateValidationType {
     DayCapacity,
     ParkingAvailabilityPerMotorcycle,
     ParkingAvailabilityPerCar,
     ParkingAvailabilityPerBicycle,
-}
-export enum WorkStationState {
-    Active = 'A',
-    Inactive = 'I'
 }
