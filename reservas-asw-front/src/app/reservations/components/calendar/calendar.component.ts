@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { ReservationsService } from '../../services/reservations.service';
 import { DataResponse } from '../../interfaces/reservations.interface';
+import { ToastsService } from '../../../services/toasts.service';
 
 @Component({
   selector: 'app-calendar',
@@ -19,7 +20,8 @@ export class CalendarComponent implements OnInit {
   dateValue: Date = new Date;
 
   constructor(
-    private reservationService: ReservationsService
+    private reservationService: ReservationsService,
+    private toastService: ToastsService,
   ) { }
 
   ngOnInit(): void {
@@ -104,7 +106,10 @@ export class CalendarComponent implements OnInit {
   }
 
   getCapacity(): void {
-    if (!this.selectedFloor) { return; }//toast
+    if (!this.selectedFloor) { 
+      this.toastService.showToastWarning({summary:'Seleccione un piso',detail:'No se ha seleccionado algún piso'})
+      return; 
+    }
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationService.getCapacity(selectedDate, this.selectedFloor)
       .subscribe(
@@ -120,7 +125,7 @@ export class CalendarComponent implements OnInit {
     }
     else {
       this.onDayCapacity.emit(false);
-      //toast
+      this.toastService.showToastDanger({summary:'No hay aforo disponible',detail:'En el piso seleccionado no hay capacidad en esta fecha'})
     }
   }
 
