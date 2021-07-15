@@ -97,7 +97,7 @@ export class FormBranchComponent implements OnInit {
         .subscribe(
           (branchResponse: BranchResponse) => {
             this.router.navigateByUrl(RouteName.BranchesList);
-            this.toastService.showToastSuccess({ summary: 'Sucursal creado', detail: 'La Sucursal ha sido creado correctamente.' });
+            this.toastService.showToastSuccess({ summary: 'Sucursal creado', detail: 'La Sucursal ha sido creada correctamente.' });
           },
           (() => this.branch = new BranchClass())
         );
