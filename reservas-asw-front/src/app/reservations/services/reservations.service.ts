@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
-import { DataResponse, Reservation, ReservationClass, ReservationResponse } from '../interfaces/reservations.interface';
+import { DataResponse, Reservation, ReservationResponse, ReservationsResponse } from '../interfaces/reservations.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,15 @@ import { DataResponse, Reservation, ReservationClass, ReservationResponse } from
 export class ReservationsService {
   private apiUrl: string = `${environment.baseUrl}/reservas`;
 
+  serviceUrl: string = environment.baseUrl;
+
+  sendRequest(urlPlugin: string = '', query: string = ''): Observable<ReservationsResponse>{    
+
+    return this.http.get<ReservationsResponse>(`${this.serviceUrl}/${urlPlugin}/${query}`)
+    .pipe(
+      catchError(err => of({data: []}))
+    );
+  }
 
   constructor(
     private http: HttpClient,

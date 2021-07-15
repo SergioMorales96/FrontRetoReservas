@@ -29,11 +29,14 @@ import { EditReservationComponent } from './components/reservation/edit-reservat
     EditReservationComponent,
   ],
   imports: [
+    PrimeNgModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
-    PrimeNgModule,
-    ReservationsRoutingModule
+    ReservationsRoutingModule,
+  ], 
+  exports: [
+    CalendarComponent
   ]
 })
 export class ReservationsModule { }

@@ -24,8 +24,6 @@ import { MessageService } from 'primeng/api';
     AppRoutingModule,
     PrimeNgModule,
     SharedModule,
-    BrowserAnimationsModule,
-    BrowserModule,
   ],
   providers: [
     ConfirmationService,
