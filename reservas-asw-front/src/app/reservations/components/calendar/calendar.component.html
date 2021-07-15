@@ -1,5 +1,9 @@
 <p>calendar works!</p>
 
+<button (click)="numberOfPeople = 1">set numOfPeople</button>
+<button (click)="id = 1">set id</button>
+<button (click)="consultReservations()">update</button>
+
 <p-calendar 
   name="dateValue" 
   [(ngModel)]="dateValue" 
@@ -27,3 +31,4 @@
     </td>
   </ng-template>
 </p-calendar>
+

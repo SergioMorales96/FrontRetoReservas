@@ -8,7 +8,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 import { BranchesService } from '../../../services/branches.service';
 import { BranchesResponse, Branch } from 'src/app/admin/interfaces/branches.interfaces';
 @Component({
-  selector: 'app-form-admin',
+  selector: 'form-add-admin',
   templateUrl: './form-admin.component.html',
   styles: [
   ]

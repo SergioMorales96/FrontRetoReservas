@@ -63,14 +63,14 @@
                 required>
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Nit</label>
-            <input 
-                id="nit" 
-                type="text" 
+            <label for="floorId">Empresa</label>
+                <p-dropdown 
+                [options]="enterprises" 
                 formControlName="nit" 
-                placeholder="Nit" 
-                pInputText
-                required>
+                placeholder="Seleccione empresa" 
+                optionLabel="nombre"
+                optionValue="nit">
+                </p-dropdown>
         </div>
 
     </div>

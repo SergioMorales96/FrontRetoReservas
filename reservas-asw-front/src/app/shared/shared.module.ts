@@ -8,7 +8,10 @@ import { MenuComponent } from './menu/menu.component';
 import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormAssistantComponent } from './reservation-form/form-assistant/form-assistant.component';
+import { FormDateComponent } from './reservation-form/form-date/form-date.component';
+import { FormWorkstationComponent } from './reservation-form/form-workstation/form-workstation.component';
 
 
 
@@ -18,6 +21,9 @@ import { FormsModule } from '@angular/forms';
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
+    FormAssistantComponent,
+    FormDateComponent,
+    FormWorkstationComponent,
   ],
   exports: [
     ErrorPageComponent,
@@ -26,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     SidebarComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     RouterModule,
     CommonModule,
     FormsModule,
