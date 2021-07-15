@@ -1,0 +1,84 @@
+.Rectngulo {
+    cursor: pointer;
+    position: relative;
+    top: -0.25rem;
+    left: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 8px 9px 8px 6.5px;
+    background-color: #0666fb;
+  }
+
+  .caracteristicas{
+    font-family: Roboto;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffff;
+  }
+
+  .caracteristicas1{
+    opacity: 0.56;
+    font-family: Roboto;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffff;
+  }
+
+  .reserva{
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffff;
+  }
+
+.medioT{
+    
+    font-family: Roboto;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.25;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffff;
+
+}
+
+.bicicleta{
+    opacity: 0.56;
+    font-family: Roboto;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffff;
+}
+
+.bienvenida{
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--white);
+}
