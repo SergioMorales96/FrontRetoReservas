@@ -1,84 +1,94 @@
-.Rectngulo {
-    cursor: pointer;
-    position: relative;
-    top: -0.25rem;
-    left: 0.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 8px 9px 8px 6.5px;
-    background-color: #0666fb;
-  }
-
-  .caracteristicas{
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffff;
-  }
-
-  .caracteristicas1{
-    opacity: 0.56;
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffff;
-  }
-
-  .reserva{
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.25;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffff;
-  }
-
-.medioT{
-    
-    font-family: Roboto;
-    font-size: 1rem;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.25;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffff;
-
+.reservation__title {
+  font-size: 2rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
 }
 
-.bicicleta{
-    opacity: 0.56;
-    font-family: Roboto;
-    font-size: 1rem;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: left;
-    color: #ffff;
+.reservation__subtitle {
+  font-size: 1.3125rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+  display: flex;
+  align-items: center;
 }
 
-.bienvenida{
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.31;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--white);
+.reservation__subtitle-2 {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+  display: flex;
+  align-items: center;
+}
+
+.reservation__text {
+  font-size: 1rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+}
+
+.reservation__text-small {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.reservation__text-small-2 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.reservation__pipe-divider {
+  font-size: 0.5rem;
+}
+
+:host ::ng-deep {
+  .reservation__button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .reservation__button:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .reservation__controls-button:focus {
+    outline: none;
+    box-shadow: none;
+  }
 }

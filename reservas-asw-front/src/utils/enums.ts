@@ -39,3 +39,8 @@ export enum WorkStationState {
     Active = 'A',
     Inactive = 'I'
 }
+
+export enum ReservationAction {
+    Edit,
+    ViewSummary
+}

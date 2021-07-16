@@ -1,12 +1,13 @@
-<!-- <div>
-    
-    <ng-template #edit>
-        <app-edit-reservation></app-edit-reservation>
-    </ng-template>
-    
-</div> -->
-<app-edit-reservation></app-edit-reservation>
 
+<app-view-reservation 
+    (onAction)="showComponent( $event )"
+    *ngIf="!hasEditing; else showEditing">
+</app-view-reservation>
 
-<!-- <app-view-reservation *ngIf="true"></app-view-reservation> -->
+<ng-template #showEditing>
+    <app-edit-reservation
+        (onAction)="showComponent( $event )">
+    </app-edit-reservation>
+</ng-template>
+
 

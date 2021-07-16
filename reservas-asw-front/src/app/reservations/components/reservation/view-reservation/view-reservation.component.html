@@ -1,72 +1,99 @@
 <div class="p-d-flex">
     <!-- Flecha hacia la izquierda -->
-    <div class="p-mr-2 p-d-flex p-jc-center p-ai-center">
-        <img src="assets/images/icons/arrow-left-blue.svg">
+    <div class="p-d-flex p-jc-center p-ai-center">
+        <p-button 
+            styleClass="reservation__controls-button p-button-text"
+            (onClick)="showReservation( -1 )"
+            [disabled]="!canShowPreview">
+            <ng-template pTemplate="content">
+                <img 
+                    alt="icon" 
+                    src="assets/images/icons/arrow-left-blue.svg" />
+            </ng-template>
+        </p-button>
     </div>
-        <!-- Interfaz de reservas -->
-        <div class="p-mr-2">
-            <div [ngStyle]="{ 'width': '24rem','background-color': '#606060' }">
-                <div class="p-p-2" [ngStyle]="{'height': '11rem' }">
-                    <!-- Icono del recorrido superior-derecha -->
-                    <div class="p-d-flex p-jc-end p-ai-center" [ngStyle]="{'height':'2rem'}">
-                        <img class="Rectngulo" src="assets/images/icons/travel-guide.svg">
-                    </div>
-                    <div class="p-grid" [ngStyle]="{'width':'100%','height': '7rem' }">
-                        <!-- Columna reserva con mesa -->
-                        <div class="p-col-4 p-d-flex p-flex-column p-jc-center p-ai-center">
-                                <img class="p-mt-2 p-mb-0 p-ml-4" src="assets/images/icons/workstation.svg">
-                                <p class="reserva p-mt-2 p-mb-0 p-ml-4">Reserva</p>            
-                        </div>
-                        <!-- Parte de las fechas -->
-                        <div class="p-col-8 p-d-flex p-flex-column p-jc-center p-ai-end">
-                                <h1 class="caracteristicas p-mt-1 p-mb-0">11/06/2021</h1>
-                                <h3 class="caracteristicas1 p-mt-1 p-mb-0" [ngStyle]="{'font-size':'1.5em' }">8:00 am | Medio dia</h3>
-                        </div>
-                    </div>
-                    <div class="p-d-flex p-jc-end p-ai-center" [ngStyle]="{ 'height': '3rem','font-size':'1.3em' }">
-                        <p class="caracteristicas1 p-mr-2 p-mb-6">Piso 18 | Sala 3 | 3 personas</p>
-                    </div>
+    <!-- Interfaz de reservas -->
+    <div class="" [ngStyle]="{ 'width': '24rem','background-color': '#606060' }">
+        <div class="position-relative p-pt-6 p-px-4 p-pb-4">
+            <!-- Icono del recorrido superior-derecha -->
+            <p-button 
+                styleClass="button_square reservation__button"
+                (onClick)="showEditReservation()">
+                <ng-template pTemplate="content">
+                    <img 
+                        alt="icon" 
+                        src="assets/images/icons/travel-guide.svg" 
+                        *ngIf="false; else edit"/>
+                    <ng-template #edit>
+                        <img alt="icon" src="assets/images/icons/edit.svg" />
+                    </ng-template>
+                </ng-template>
+            </p-button>
+            <div class="p-grid p-m-0" [ngStyle]="{'width':'100%'}">
+                <!-- Columna reserva con mesa -->
+                <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
+                    <img class="" src="assets/images/icons/workstation.svg">
+                    <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                 </div>
-                <!-- Linea blanca -->
-                <hr [style]="{'height':'2px','border':'0','background-image': 'linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96))'}">
-                <!-- Segunda divicion de la interfaz, vehiculo y marca -->
-                <div class="p-grid p-m-0" [ngStyle]="{}">
-                    <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
-                        <h5 class="medioT p-mt-1"> 
-                            Medio de transporte
-                        </h5>
-                        <div class="p-d-flex p-jc-center p-ai-center">
-                            <img class="p-mr-2 p-mb-1" src="assets/images/icons/bicycle.svg">  
-                            <p class="bicicleta p-mb-5"> Bicicleta</p>
-                        </div>
-                    </div>
-                    <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
-                        <div class="p-mb-4">
-                            <h5 class="medioT p-mt-1">Marca</h5>
-                            <p class="bicicleta "> 
-                                Rockbuster ST1000
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Tercera divicion fondo verde -->
-                <div class="p-grid p-m-0" [ngStyle]="{'background-color': '#5ebc00'}">
-                    <!-- Ojo blanco -->
-                    <div class="p-col-2 p-d-flex p-jc-center p-ai-center">
-                        <img src="assets/images/icons/eye-white.svg">
-                    </div>
-                    <!-- Texto de bienvenida -->
-                    <div class="p-col-10 p-d-flex p-jc-start p-ai-center" [style]="{'color':'white','font-family': 'Roboto'}">
-                        <p>
-                                Estas listo para ingresar a las oficinas ¡Te extrañabamos!
-                                En la puerta de ingreso reconócete con WhoAmEye para que el sistema sepa que llegaste a tu reserva.
-                        </p>
-                    </div>
+                <!-- Parte de las fechas -->
+                <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
+                    <h1 class="reservation__title p-mt-0 p-mb-2">{{ '11/06/2021' }}</h1>
+                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">8:00 am &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; Medio dia
+                    </h3>
                 </div>
             </div>
+            <div class="p-d-flex p-jc-end p-ai-center">
+                <p class="reservation__subtitle-2 p-my-0">Piso 18 &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; Sala 3 &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; 3 personas</p>
+            </div>
         </div>
-        <!-- Flecha hacia la derecha -->
-    <div class="p-mr-2 p-d-flex p-jc-center p-ai-center">
-        <img src="assets/images/icons/arrow-right-blue.svg">
+        <!-- Linea blanca -->
+        <hr
+            [style]="{'height':'2px','border':'0','background-image': 'linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96))'}">
+        <!-- Segunda divicion de la interfaz, vehiculo y marca -->
+        <div class="p-grid p-m-0 p-py-3">
+            <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                <h5 class="reservation__text-small p-mt-0">
+                    Medio de transporte
+                </h5>
+                <div class="p-d-flex p-jc-center p-ai-center">
+                    <img class="p-mr-2" src="assets/images/icons/bicycle.svg">
+                    <p class="reservation__text"> Bicicleta</p>
+                </div>
+            </div>
+            <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                <h5 class="reservation__text-small p-mt-0">Marca</h5>
+                <p class="reservation__text p-my-0">
+                    Rockbuster ST1000
+                </p>
+            </div>
+        </div>
+        <!-- Tercera divicion fondo verde -->
+        <div class="p-grid p-m-0" [ngStyle]="{'background-color': '#5ebc00'}">
+            <!-- Ojo blanco -->
+            <div class="p-col-2 p-d-flex p-jc-center p-ai-center">
+                <img src="assets/images/icons/eye-white.svg">
+            </div>
+            <!-- Texto de bienvenida -->
+            <div class="p-col-10 p-d-flex p-jc-start p-ai-center">
+                <p class="reservation__text-small-2 p-py-0">
+                    Estas listo para ingresar a las oficinas ¡Te extrañabamos!
+                    En la puerta de ingreso reconócete con WhoAmEye para que el sistema sepa que llegaste a tu reserva.
+                </p>
+            </div>
+        </div>
     </div>
-</div> 
+    <!-- Flecha hacia la derecha -->
+    <div class="p-d-flex p-jc-center p-ai-center">
+        <p-button 
+            styleClass="reservation__controls-button p-button-text"
+            (onClick)="showReservation( 1 )"
+            [disabled]="!canShowNext">
+            <ng-template pTemplate="content">
+                <img alt="icon" src="assets/images/icons/arrow-right-blue.svg" />
+            </ng-template>
+        </p-button>
+    </div>
+</div>
