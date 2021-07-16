@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scene',
@@ -65,10 +66,55 @@ export class SceneComponent implements OnInit {
     }
     loader.load( this.path3D, function ( gltf ) {
 
-      const model3 = gltf.scene;
-      model3.position.set( 1, 3, 0 );
-      model3.scale.set( 1, 1, 1);
-      scene.add( model3 );
+      const modelPiso = gltf.scene.children[0] as THREE.Mesh;
+      console.log(modelPiso);
+      const materialPiso = modelPiso.material as THREE.MeshStandardMaterial;
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+      const objects = [modelPiso];
+      let intersects = [];
+
+      modelPiso.position.set( 0, 0, 0 );
+      modelPiso.scale.set( 1, 1, 1);
+
+      scene.add( modelPiso ); 
+
+      renderer.domElement.addEventListener("click", onClick);
+
+      function onClick(event:any) {
+
+        mouse.x = event.clientX / window.innerWidth * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        intersects = raycaster.intersectObjects(objects);
+
+        if (intersects.length > 0) {
+
+          materialPiso.color = new THREE.Color( 0xbf );
+          materialPiso.opacity = 0.49;
+          materialPiso.roughness = 0.9;
+          materialPiso.metalness = 0;
+          materialPiso.fog= true;
+          materialPiso.transparent= true;
+          materialPiso.depthTest = true;
+          materialPiso.depthWrite = true;
+          materialPiso.side = THREE.FrontSide;
+
+        }else {
+
+          materialPiso.color = new THREE.Color( 0x3131ff);
+          materialPiso.opacity = 1;
+          materialPiso.roughness = 0.9;
+          materialPiso.metalness = 0;
+          materialPiso.fog= true;
+          materialPiso.transparent= true;
+          materialPiso.depthTest = true;
+          materialPiso.depthWrite = true;
+          materialPiso.side = THREE.FrontSide;
+
+        }
+}
 
     }, undefined, function ( e ) {
 
@@ -78,10 +124,25 @@ export class SceneComponent implements OnInit {
 
     loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
 
-      const model4 = gltf.scene;
-      model4.position.set( 1, -1, 0 );
-      model4.scale.set( 1, 1, 1);
-      scene.add( model4 );
+      const modelPT = gltf.scene.children[0];
+      console.log(modelPT);
+      const puestoTrabajo = modelPT.getObjectByName( 'Cube024') as THREE.Mesh;
+      const materialPT = puestoTrabajo.material as THREE.MeshStandardMaterial;
+
+      modelPT.position.set( 1, -1, 0 );
+      modelPT.scale.set( 1, 1, 1);
+      
+      materialPT.color = new THREE.Color( 0xffffff );
+      materialPT.opacity = 0.5;
+      materialPT.roughness = 0;
+      materialPT.metalness = 1;
+      materialPT.fog= true;
+      materialPT.transparent= true;
+      materialPT.depthTest = true;
+      materialPT.depthWrite = true;
+      materialPT.side = THREE.FrontSide;
+
+      scene.add( modelPT );
 
     }, undefined, function ( e ) {
 
@@ -91,10 +152,25 @@ export class SceneComponent implements OnInit {
 
     loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
 
-      const model5 = gltf.scene;
-      model5.position.set( 0, -1, 0 );
-      model5.scale.set( 1, 1, 1);
-      scene.add( model5 );
+      const modelSilla = gltf.scene.children[0];
+      console.log(modelSilla);
+      const silla = modelSilla.getObjectByName( 'Cube024') as THREE.Mesh;
+      const materialSilla = silla.material as THREE.MeshStandardMaterial;
+
+      modelSilla.position.set( 0, -1, 0 );
+      modelSilla.scale.set( 1, 1, 1);
+
+      materialSilla.color = new THREE.Color( 0x444B93 );
+      materialSilla.opacity = 1;
+      materialSilla.roughness = 1;
+      materialSilla.metalness = 0;
+      materialSilla.fog= true;
+      materialSilla.transparent= false;
+      materialSilla.depthTest = true;
+      materialSilla.depthWrite = true;
+      materialSilla.side = THREE.FrontSide;
+    
+      scene.add( modelSilla );
 
     }, undefined, function ( e ) {
 
@@ -104,10 +180,25 @@ export class SceneComponent implements OnInit {
 
     loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
-      const model6 = gltf.scene;
-      model6.position.set( -3, -1, 0 );
-      model6.scale.set( 1, 1, 1);
-      scene.add( model6 );
+      const modelEscalera = gltf.scene.children[0] as THREE.Mesh;
+      console.log(modelEscalera);
+      const materialEscalera = modelEscalera.material as THREE.MeshStandardMaterial;
+
+      modelEscalera.position.set( -3, -1, 0 );
+      modelEscalera.rotateY(180);
+      //modelEscalera.scale.set( 10, 1, 1);
+      
+      materialEscalera.color = new THREE.Color( 0xbf );
+      materialEscalera.opacity = 0.49;
+      materialEscalera.roughness = 0.9;
+      materialEscalera.metalness = 1;
+      materialEscalera.fog= true;
+      materialEscalera.transparent= true;
+      materialEscalera.depthTest = true;
+      materialEscalera.depthWrite = true;
+      materialEscalera.side = THREE.FrontSide;
+
+      scene.add( modelEscalera );
 
     }, undefined, function ( e ) {
 
@@ -135,6 +226,7 @@ export class SceneComponent implements OnInit {
 
       renderer.render( scene, camera );
     }
+
   }
 
 }
