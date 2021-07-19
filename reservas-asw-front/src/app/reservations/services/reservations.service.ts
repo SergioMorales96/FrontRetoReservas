@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ReservationsResponse } from '../interfaces/reservations.interface';
+import { RoomsPerFloorResponse } from '../interfaces/rooms-per-floor.interface';
+import { workSpacesPerFloorResponse } from '../interfaces/workspaces-per-floor.interface';
 
 
 @Injectable({
@@ -21,7 +23,19 @@ export class ReservationsService {
     );
   }
 
+  sendRoomsPerFloorRequest(urlPlugin: string = '', query: string = ''): Observable<RoomsPerFloorResponse>{
+    return this.http.get<RoomsPerFloorResponse>(`${this.serviceUrl}/${urlPlugin}/${query}`)
+    .pipe(
+      catchError(err => of({data: []}))
+    );
+  }
 
+  sendWorkSpacesPerFloorRequest(urlPlugin: string = '', query: string = ''): Observable<workSpacesPerFloorResponse>{
+    return this.http.get<workSpacesPerFloorResponse>(`${this.serviceUrl}/${urlPlugin}/${query}`)
+      .pipe(
+        catchError(err => of({ data: [] }))
+      );
+  }
 
   constructor(private http : HttpClient){ }
 }
