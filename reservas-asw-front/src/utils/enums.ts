@@ -51,3 +51,5 @@ export enum DateValidationType {
     ParkingAvailabilityPerCar,
     ParkingAvailabilityPerBicycle,
 }
+
+ 

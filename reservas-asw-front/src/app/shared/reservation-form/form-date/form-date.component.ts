@@ -11,13 +11,23 @@ export class FormDateComponent implements OnInit {
  
   @Input() formGroupName!: string;
   form!: FormGroup;
+  form1!:FormGroup;
+  numPersonas!: number;
   @Input() submitted!: boolean;
-
-  constructor(private rootFormGroup: FormGroupDirective) {}
+  //@Input() numPersonas!: number;
+  constructor(private rootFormGroup: FormGroupDirective) {
+  }
 
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
+    this.form1 = this.rootFormGroup.control.get("puestoInfo") as FormGroup;
+    this.numPersonas = this.form1.get('personasReserva')?.value;
+    console.log(this.numPersonas);
   }
+
+
+
+
 
   get f(){return this.form.controls}
 

@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { DataResponse } from 'src/app/reservations/interfaces/reservations.interface';
+import { DateValidationType } from 'src/utils/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ import { DataResponse } from 'src/app/reservations/interfaces/reservations.inter
 export class SharedService {
 
   private apiUrl: string = `${ environment.baseUrl }/reservas/disponibilidadParqueaderoBicis`;
+  public numPiso$: EventEmitter<number> =  new EventEmitter<number>();
+  public numPersonas$: EventEmitter<number> =  new EventEmitter<number>();
+  public tipoValidacion$: EventEmitter<DateValidationType> = new EventEmitter<DateValidationType>();
+
 
   constructor(
     private http: HttpClient

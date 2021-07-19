@@ -1,5 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  Reservation,
+  ReservationsResponse,
+} from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
 import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
@@ -7,34 +17,46 @@ import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
 import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit {
-
+export class CalendarComponent implements OnInit, OnDestroy {
   dateValue: Date = new Date();
+  numPisoSubscription!: Subscription;
 
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
     private sharedService: SharedService
-  ) { }
+  ) {}
 
-  @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
-  @Input() dateCar: DateValidationType = DateValidationType.ParkingAvailabilityPerCar;
+  @Input() dateValidationType: DateValidationType =
+    DateValidationType.DayCapacity;
+  @Input() dateCar: DateValidationType =
+    DateValidationType.ParkingAvailabilityPerCar;
 
-  @Input() selectedFloor!: number;
+  selectedFloor!: number;
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> = new EventEmitter<boolean>();/////
+  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
+    new EventEmitter<boolean>(); /////
 
   selectedDate: Date = new Date();
 
-  
   ngOnInit(): void {
+    this.numPisoSubscription = this.sharedService.numPiso$.subscribe(
+      (numPiso) => {
+        this.selectedFloor = numPiso;
+        console.log(this.selectedFloor);
+      }
+    );
+  }
 
+  ngOnDestroy(): void {
+    this.numPisoSubscription?.unsubscribe();
   }
 
   //Las fechas en esta lista desactivan los días en el calendario
@@ -82,7 +104,7 @@ export class CalendarComponent implements OnInit {
     this.morning = [];
     this.afterNoon = [];
     this.invalidDates = [];
-    this.tempDate.setMonth(month-1);
+    this.tempDate.setMonth(month - 1);
     this.tempDate.setDate(1);
     this.tempDate.setFullYear(year);
     this.consultReservations();
@@ -90,15 +112,15 @@ export class CalendarComponent implements OnInit {
 
   consultReservations(): void {
     this.setDates(this.tempDate);
-    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
+    let urlPlugin: string =
+      this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
 
-    this.reservationsService.sendRequest(urlPlugin, this.queryDates)
-      .subscribe(
-        (answ: ReservationsResponse) => {
-          this.reservations = answ.data;
-          this.updateCalendar();
-        }
-      );
+    this.reservationsService
+      .sendRequest(urlPlugin, this.queryDates)
+      .subscribe((answ: ReservationsResponse) => {
+        this.reservations = answ.data;
+        this.updateCalendar();
+      });
   }
 
   updateCalendar(): void {
@@ -106,7 +128,6 @@ export class CalendarComponent implements OnInit {
     let checked: string[] = [];
 
     for (const reservation of this.reservations) {
-
       if (!checked.includes(this.reservations[i].dia)) {
         checked = this.compareReservations(i, checked);
       }
@@ -129,10 +150,11 @@ export class CalendarComponent implements OnInit {
     }
 
     if (!flag) {
-      ((parseInt(iRerservation.horaInicio) < 13) ? (parseInt(iRerservation.horaFin) < 13 ? this.morning.push(parseInt(iRerservation.dia))
-        : (this.completeDay(iRerservation, checked))
-      )
-        : this.afterNoon.push(parseInt(iRerservation.dia)))
+      parseInt(iRerservation.horaInicio) < 13
+        ? parseInt(iRerservation.horaFin) < 13
+          ? this.morning.push(parseInt(iRerservation.dia))
+          : this.completeDay(iRerservation, checked)
+        : this.afterNoon.push(parseInt(iRerservation.dia));
     }
     return checked;
   }
@@ -172,17 +194,15 @@ export class CalendarComponent implements OnInit {
 
     let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
     let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
-    
-    if(this._numberOfPeople > 1){
-      this.queryDates = this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
-    }else {
-      this.queryDates = this._numberOfPeople == 1 ? `${this._id}/${startDate}/${endDate}` : '' ;
+
+    if (this._numberOfPeople > 1) {
+      this.queryDates =
+        this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '';
+    } else {
+      this.queryDates =
+        this._numberOfPeople == 1 ? `${this._id}/${startDate}/${endDate}` : '';
     }
-    
   }
-
-
-
 
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
@@ -195,20 +215,20 @@ export class CalendarComponent implements OnInit {
     console.log(this.dateValidationType);
     switch (this.dateValidationType) {
       case DateValidationType.DayCapacity:
-        console.log('Entrando case capacity')
-        this.getCapacity();//
+        console.log('Entrando case capacity');
+        this.getCapacity(); //
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
-        console.log('Entrando case bicis')
+        console.log('Entrando case bicis');
         this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
-          console.log('Entrando case ParkingAvailabilityPerCar ')
-          this.getCarParkingAvailability();
+        console.log('Entrando case ParkingAvailabilityPerCar ');
+        this.getCarParkingAvailability();
         break;
 
       case DateValidationType.ParkingAvailabilityPerBicycle:
-        break;   
+        break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
         break;
@@ -218,94 +238,97 @@ export class CalendarComponent implements OnInit {
   }
 
   getCapacity(): void {
-    if (!this.selectedFloor) { 
-      this.toastService.showToastWarning({summary:'Seleccione un piso',detail:'No se ha seleccionado algún piso'})
-      return; 
+    if (!this.selectedFloor) {
+      this.toastService.showToastWarning({
+        summary: 'Seleccione un piso',
+        detail: 'No se ha seleccionado algún piso',
+      });
+      return;
     }
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.reservationsService.getCapacity(selectedDate, this.selectedFloor)
-      .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateDayCapacity(dataResponse.data);
-        });
+    this.reservationsService
+      .getCapacity(selectedDate, this.selectedFloor)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateDayCapacity(dataResponse.data);
+      });
   }
 
-  
   getCarParkingAvailability(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     console.log(selectedDate);
-    this.reservationsService.getCarParkingAvailability(selectedDate)
-     .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateParkingAvailabilityPerCar(dataResponse.data);
-          });
+    this.reservationsService
+      .getCarParkingAvailability(selectedDate)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateParkingAvailabilityPerCar(dataResponse.data);
+      });
   }
 
-
-  validateDayCapacity(data : number | any): void {
+  validateDayCapacity(data: number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-    }
-    else {
+    } else {
       this.onDayCapacity.emit(false);
-      this.toastService.showToastDanger({summary:'No hay aforo disponible',detail:'En el piso seleccionado no hay capacidad en esta fecha'})
+      this.toastService.showToastDanger({
+        summary: 'No hay aforo disponible',
+        detail: 'En el piso seleccionado no hay capacidad en esta fecha',
+      });
     }
   }
 
-  getBici(): void{
+  getBici(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.sharedService.getDPBicicletas(selectedDate)
-      .subscribe(
-        (dpbicicletas: DataResponse) => {
-          console.log(dpbicicletas.data);
-          console.log(this.validationBicis(dpbicicletas.data));
-        }
-      );
+    this.sharedService
+      .getDPBicicletas(selectedDate)
+      .subscribe((dpbicicletas: DataResponse) => {
+        console.log(dpbicicletas.data);
+        console.log(this.validationBicis(dpbicicletas.data));
+      });
   }
 
-  validationBicis(data: Number | any){
+  validationBicis(data: Number | any) {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-    }
-    else {
+    } else {
       this.onDayCapacity.emit(false);
     }
   }
 
-  
-  validateParkingAvailabilityPerCar(data : number | any): void {
+  validateParkingAvailabilityPerCar(data: number | any): void {
     if (data > 0) {
       this.onDayParkingAvailabilityPerCar.emit(true);
-     
-    }
-    else {
+    } else {
       this.onDayParkingAvailabilityPerCar.emit(false);
-      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles ', detail: '' });
-
+      this.toastService.showToastDanger({
+        summary: 'No hay parqueaderos para carro disponibles ',
+        detail: '',
+      });
     }
   }
   getParkingMotorcycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.reservationsService.getParkingMotorcycle(selectedDate)
-      .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateAvailabilityMotorcycle(dataResponse.data);
-        });
+    this.reservationsService
+      .getParkingMotorcycle(selectedDate)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateAvailabilityMotorcycle(dataResponse.data);
+      });
   }
 
-  validateAvailabilityMotorcycle(data : number| any): void {
+  validateAvailabilityMotorcycle(data: number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-      this.toastService.showToastSuccess({summary: `Existen ${data} parqueaderos disponibles`,detail:''})
-    }
-    else {
+      this.toastService.showToastSuccess({
+        summary: `Existen ${data} parqueaderos disponibles`,
+        detail: '',
+      });
+    } else {
       this.onDayCapacity.emit(false);
-      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles', detail: '' });
+      this.toastService.showToastDanger({
+        summary: 'No hay parqueaderos para carro disponibles',
+        detail: '',
+      });
     }
   }
-
-
 }
