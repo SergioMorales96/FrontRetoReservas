@@ -12,6 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormAssistantComponent } from './reservation-form/form-assistant/form-assistant.component';
 import { FormDateComponent } from './reservation-form/form-date/form-date.component';
 import { FormWorkstationComponent } from './reservation-form/form-workstation/form-workstation.component';
+import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
+import { ReservationsModule } from '../reservations/reservations.module';
+import { HomeComponent } from '../reservations/pages/home/home.component';
 
 
 
@@ -24,6 +27,7 @@ import { FormWorkstationComponent } from './reservation-form/form-workstation/fo
     FormAssistantComponent,
     FormDateComponent,
     FormWorkstationComponent,
+    
   ],
   exports: [
     ErrorPageComponent,
@@ -37,7 +41,8 @@ import { FormWorkstationComponent } from './reservation-form/form-workstation/fo
     CommonModule,
     FormsModule,
     RouterModule,
-    PrimeNgModule
+    PrimeNgModule,
+    ReservationsModule
   ]
 })
 export class SharedModule { }
