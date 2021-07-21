@@ -8,9 +8,13 @@ import { MenuComponent } from './menu/menu.component';
 import { ReservationFormComponent } from './reservation-form/reservation-form.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormAssistantComponent } from './reservation-form/form-assistant/form-assistant.component';
+import { FormDateComponent } from './reservation-form/form-date/form-date.component';
+import { FormWorkstationComponent } from './reservation-form/form-workstation/form-workstation.component';
 import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
+import { ReservationsModule } from '../reservations/reservations.module';
+import { HomeComponent } from '../reservations/pages/home/home.component';
 
 
 
@@ -20,7 +24,10 @@ import { CalendarComponent } from '../reservations/components/calendar/calendar.
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
-
+    FormAssistantComponent,
+    FormDateComponent,
+    FormWorkstationComponent
+    
   ],
   exports: [
     ErrorPageComponent,
@@ -29,11 +36,14 @@ import { CalendarComponent } from '../reservations/components/calendar/calendar.
     SidebarComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     RouterModule,
     CommonModule,
     FormsModule,
     RouterModule,
     PrimeNgModule,
+    ReservationsModule
   ]
+
 })
 export class SharedModule { }

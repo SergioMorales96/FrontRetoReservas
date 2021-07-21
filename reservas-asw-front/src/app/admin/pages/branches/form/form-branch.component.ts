@@ -5,6 +5,9 @@ import { Branch, BranchClass, BranchResponse } from 'src/app/admin/interfaces/br
 import { BranchesService } from '../../../services/branches.service';
 import { RouteName } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';
+import { Enterprise, EnterprisesResponse } from 'src/app/admin/interfaces/enterprise.interfaces';
+import { EnterprisesService } from '../../../services/enterprises.service';
+
 
 @Component({
   selector: 'app-form-branch',
@@ -24,6 +27,7 @@ export class FormBranchComponent implements OnInit {
   isEditing: boolean = false;
   branch!: Branch;
   routeName = RouteName;
+  enterprises: Enterprise[] = [];
 
   get formTitle(): string {
     return this.isEditing ? (this.branch?.nombre ?? 'Editar sucursal') : 'Crear sucursal';
@@ -38,10 +42,12 @@ export class FormBranchComponent implements OnInit {
     private fb: FormBuilder,
     private branchesService: BranchesService,
     private router: Router,
-    private toastService: ToastsService
+    private toastService: ToastsService,
+    private enterpriseService: EnterprisesService
   ) { }
 
   ngOnInit(): void {
+    this.getEntrepises();
     this.activatedRoute.params
       .subscribe(({ id }) => {
         if (id) {
@@ -51,6 +57,15 @@ export class FormBranchComponent implements OnInit {
           this.branch = new BranchClass();
         }
       });
+  }
+
+  getEntrepises(): void {
+    this.enterpriseService.getEnterprises()
+    .subscribe(
+      (enterprisesResponse: EnterprisesResponse) => {
+        this.enterprises = enterprisesResponse.data;
+      }
+    )
   }
 
   getBranch(id: number): void {

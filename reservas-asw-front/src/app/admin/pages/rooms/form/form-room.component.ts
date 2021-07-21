@@ -6,6 +6,7 @@ import { Room, RoomResponse, RoomClass } from '../../../interfaces/rooms.interfa
 import { RoomsService } from '../../../services/rooms.service';
 import { RouteName, WorkStationState } from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
+import { Domain, DomainResponse, DomainsResponse } from '../../../interfaces/domains.interfaces';
 
 @Component({
   selector: 'app-form',
@@ -18,22 +19,14 @@ export class FormRoomComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     maxCapacity: ['', [Validators.required]],
     domainState: ['', [Validators.required]],
-    floorId: ['', [Validators.required]],
+    floorId: ['', [Validators.required]]
   });
+
   floors: Floor[] = [];
+  domains: Domain[] = [];
   isEditing: boolean = false;
   room!: Room;
   routeName = RouteName;
-  workstationStates = [
-    {
-      label: 'Activo',
-      value: WorkStationState.Active,
-    },
-    {
-      label: 'Inactivo',
-      value: WorkStationState.Inactive,
-    }
-  ];
 
   get formTitle(): string {
     return this.isEditing ? ( this.room?.nombre ?? 'Editar sala' ) : 'Crear sala';
@@ -53,6 +46,7 @@ export class FormRoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.getFloors();
+    this.getDomains();
     this.activatedRoute.params
       .subscribe(({ id }) => {
         if ( id ) {
@@ -81,6 +75,16 @@ export class FormRoomComponent implements OnInit {
       );
   }
 
+  getDomains(): void{
+    this.roomsService.getDomains("ESTADO_SALA")
+      .subscribe(
+        (domainsResponse: DomainsResponse) => {
+          this.domains = domainsResponse.data
+          console.log(this.domains);
+        }
+      );
+  }
+
   setRoom( room: Room ): void {
     this.roomForm.controls['name'].setValue( room.nombre );
     this.roomForm.controls['maxCapacity'].setValue( room.aforoMax );
@@ -104,7 +108,7 @@ export class FormRoomComponent implements OnInit {
         idSala: this.room.idSala
       })
         .subscribe(
-          (roomResponce: RoomResponse) => {
+          (roomResponse: RoomResponse) => {
             this.router.navigateByUrl(RouteName.RoomsList);
             this.toastService.showToastSuccess({ summary: 'Sala actualizada', detail: 'La sala ha sido actualizada correctamente.' });
           },
@@ -114,7 +118,7 @@ export class FormRoomComponent implements OnInit {
     else{
       this.roomsService.createRoom(this.getRoomFormValue())
         .subscribe(
-          (roomResponce: RoomResponse) => {
+          (roomResponse: RoomResponse) => {
             this.router.navigateByUrl(RouteName.RoomsList);
             this.toastService.showToastSuccess({ summary: 'Sala creada', detail: 'La sala ha sido creada correctamente.' });
           },
