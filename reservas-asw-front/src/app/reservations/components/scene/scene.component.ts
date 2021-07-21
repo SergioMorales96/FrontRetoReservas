@@ -52,7 +52,7 @@ export class SceneComponent implements OnInit {
     scene.background = new THREE.Color( 0x000000 );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
-    camera.position.set( 5, 2, 8 );
+    camera.position.set( 8, 15, 10 );
 
     controls.target.set( 0, 0.5, 0 );
     controls.update();
@@ -88,7 +88,7 @@ export class SceneComponent implements OnInit {
       childMaterial.color = new THREE.Color(0x4f1245);
       model3.position.set( 0,0,0 );
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
-      model3.position.y += model3.scale.y;
+      //model3.position.y += model3.scale.y;
       model3.userData = {"id": "Piso"};
       scene.add( model3 );
 
@@ -209,34 +209,126 @@ export class SceneComponent implements OnInit {
         (answ: workSpacesPerFloorResponse) => {
           console.log(answ.data);
           
-          loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
+         // loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
+            loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
             const model5 = gltf.scene;      
             /* const child = model5.children[0].children[0] as THREE.Mesh;
             const childMaterial = child.material  as THREE.MeshStandardMaterial;
             childMaterial.color = new THREE.Color(0x65FC17); */
             //console.log(child, model5);
-            model5.position.set(-5.39,3.02,-1.44);
-            model5.scale.set( model5.scale.x*0.61, model5.scale.y*0.61, model5.scale.z*0.61);
-            model5.children[0].children[0].userData = {"id": "Modelo de las sillas"};
+            //model5.position.set(-5.39,3.02,-1.44);
+            //model5.position.set(-6.8,0,-2);
+            model5.position.set(-7.11,0,-2.18);
+            //model5.scale.set( model5.scale.x*0.61, model5.scale.y*0.61, model5.scale.z*0.61);
+            model5.scale.set( model5.scale.x*0.49, model5.scale.y*0.49, model5.scale.z*0.49);
+            //model5.children[0].children[0].userData = {"id": "Modelo de las sillas"};
+            model5.userData = {"id": "Modelo de las sillas"};
             //scene.add( model5 );
             model5.rotation.y += 2.45;
+            //model5.rotation.y += -5.40;
             let n = 0;
             
+
+            //BLOQUE 001    
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+0.20)+(0.46*i),0,(model5.position.z+0.30)+(0.46*j));
+                    piece.rotation.y += -5.40;
+                                               
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 002    
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;                  
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;                 
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    if (i === 0) {
+                      piece.position.set((model5.position.x+0.06)+(0.46*i),0,(model5.position.z+1.34)+(0.46*j));
+                      piece.rotation.y += -5.40;
+                    }else{
+                      piece.position.set((model5.position.x+0.06)+(0.40*i),0,(model5.position.z+1.22)+(0.46*j));
+                      piece.rotation.y += 4.02;
+                    }                             
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 004
+            for (let i = 0; i < 3; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.48)+(0.46*i),0,(model5.position.z)+(0.46*j));
+                    piece.rotation.y += 2.45;          
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+            
+
+            //BLOQUE 007    
             for (let i = 0; i < 2; i++) {
               for (let j = 0; j < 7; j++) {
-                  loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
+                  //loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    let child1 = piece.children[0].children[0] as THREE.Mesh;
-                    let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
+                    
+                    //let child1 = piece.children[0].children[0] as THREE.Mesh;
+                    //let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
                     //console.log(child1, childMaterial);
                     
-                    childMaterial1.color = smallChairColor;
+                    //childMaterial1.color = smallChairColor;
                     //CAMBIAR EL USERDATA POR EL RESULTADO DE LA CONSULTA AL BACK ( ANSW )
-                    piece.children[0].children[0].userData = { "id" : 'silla', "n": n , "selected": false};
+                    //piece.children[0].children[0].userData = { "id" : 'silla', "n": n , "selected": false};
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
                     n++;
-                    piece.position.set(model5.position.x+(1*i),3.02,model5.position.z + (1*j));
-                    
+                    //piece.position.set(model5.position.x+(1*i),3.02,model5.position.z + (1*j));
+                    //piece.position.set((model5.position.x+1.72)+(0.46*i),0,(model5.position.z+0.74)+(0.46*j));
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    if (i === 0) {
+                      piece.position.set((model5.position.x+1.72)+(0.46*i),0,(model5.position.z+0.74)+(0.46*j));
+                      piece.rotation.y += -5.40;
+                    }else{
+                      piece.position.set((model5.position.x+1.72)+(0.46*i),0,(model5.position.z+0.62)+(0.46*j));
+                      piece.rotation.y += 4.02;
+                    }                             
                     
                     scene.add(piece);
                   }, undefined, function ( e ) {
@@ -255,6 +347,245 @@ export class SceneComponent implements OnInit {
                   scene.add(piece); */
               }
             }
+
+            //BLOQUE 021   
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 5; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (i === 1 && j === 0) {
+                      return;
+                    }
+                    if (i === 0) {
+                      piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+0.74)+(0.46*j));
+                      piece.rotation.y += -5.40;
+                    }else{
+                      piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+0.62)+(0.46*j));
+                      piece.rotation.y += 4.02;
+                    }                             
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 030   
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    piece.position.set((model5.position.x+3.05)+(0.46*i),0,(model5.position.z+3.59)+(0.46*j));
+                    piece.rotation.y += -0.69;                           
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 31
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (i === 0) {
+                      piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+4.03)+(0.46*j));
+                      piece.rotation.y += -5.40;
+                    }else{
+                      piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+3.91)+(0.46*j));
+                      piece.rotation.y += 4.02;
+                    }                             
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 035  
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+3.82)+(0.46*i),0,(model5.position.z+5.50)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 037 
+            for (let i = 0; i < 11; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+5.08)+(0.46*i),0,(model5.position.z+3.62)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+5.20)+(0.46*i),0,(model5.position.z+3.52)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 059
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+4.60)+(0.46*i),0,(model5.position.z+5.12)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+4.72)+(0.46*i),0,(model5.position.z+5.02)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 067    
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 3; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    if (i === 0) {
+                      piece.position.set((model5.position.x+6.95)+(0.46*i),0,(model5.position.z+4.95)+(0.46*j));
+                      piece.rotation.y += -5.40;
+                    }
+
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 070
+            for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+4.60)+(0.46*i),0,(model5.position.z+6.45)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                           
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 076
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+7.46)+(0.46*i),0,(model5.position.z+4.90)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                          
+                    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+            
+
+
           }, undefined, function ( e ) {
       
             console.error( e );
@@ -276,7 +607,7 @@ export class SceneComponent implements OnInit {
       //console.log("el material de las escaleras es: ", childMaterial);
       childMaterial.color = new THREE.Color(0xf25922);
   
-      model.position.set( 4.8, 3.045, -0.44 );
+      model.position.set( 4.8, 0, -0.44 );
       model.scale.set( model.scale.x*0.7, model.scale.y*0.5, model.scale.z*0.5);
       model.userData = { "id": "stairs" };
       scene.add( model );  
