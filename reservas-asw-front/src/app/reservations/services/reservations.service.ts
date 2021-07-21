@@ -47,7 +47,6 @@ export class ReservationsService {
       );
   }
 
-
   httpOptions = {
     headers: {
       'Content-Type': 'application/json'

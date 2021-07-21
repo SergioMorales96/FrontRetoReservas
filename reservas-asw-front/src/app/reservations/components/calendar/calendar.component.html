@@ -5,6 +5,8 @@
   [(ngModel)]="dateValue" 
   [inline]="true" 
   [disabledDates]="invalidDates"
+  [disabledDays]="[0,6]"
+  [minDate] = "minDate"
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )">

@@ -9,6 +9,8 @@ import { ReservationFormComponent } from './reservation-form/reservation-form.co
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
 
 
 
@@ -18,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
+
   ],
   exports: [
     ErrorPageComponent,
@@ -30,7 +33,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     RouterModule,
-    PrimeNgModule
+    PrimeNgModule,
   ]
 })
 export class SharedModule { }

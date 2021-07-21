@@ -31,6 +31,7 @@ export class CalendarComponent implements OnInit {
     private toastService: ToastsService,
   ) { }
 
+     
   ngOnInit(): void {
   }
 
@@ -98,7 +99,6 @@ export class CalendarComponent implements OnInit {
           console.log('Entrando case ParkingAvailabilityPerCar ')
           this.getCarParkingAvailability();
         break;
-
       case DateValidationType.ParkingAvailabilityPerBicycle:
         break;   
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
@@ -111,7 +111,8 @@ export class CalendarComponent implements OnInit {
 
   getCapacity(): void {
     if (!this.selectedFloor) { 
-      this.toastService.showToastWarning({summary:'Seleccione un piso',detail:'No se ha seleccionado algún piso'})
+      this.toastService.showToastWarning({summary:'Seleccione un piso',
+                                          detail:'No se ha seleccionado algún piso'})
       return; 
     }
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
@@ -179,5 +180,5 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-
+    public minDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), this.selectedDate.getDate()); 
 }
