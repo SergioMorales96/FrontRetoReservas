@@ -13,7 +13,7 @@ export class ReservationFormComponent implements OnInit {
   submitted: boolean;
   numPersonas!: number;
   constructor(private fb: FormBuilder) {
-    this.step = 1;
+    this.step = 3;
     this.submitted = false;
     
   }
