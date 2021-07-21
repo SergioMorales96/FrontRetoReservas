@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CalendarComponent } from '../../reservations/components/calendar/calendar.component';
+import { DataService } from '../../services/data.service';
+import { DateValidationType } from '../../../utils/enums';
 
 @Component({
   selector: 'app-reservation-form',
@@ -12,13 +14,29 @@ export class ReservationFormComponent implements OnInit {
   step: number;
   submitted: boolean;
   numPersonas!: number;
-  constructor(private fb: FormBuilder) {
+
+  public floorId!: number;
+  public numberPersons!: number;
+  public validationType!: DateValidationType;
+
+  constructor(
+    private fb: FormBuilder,
+    private dataService: DataService
+    ) {
     this.step = 1;
     this.submitted = false;
     
   }
 
   ngOnInit(): void {
+
+    this.dataService.floorId$
+      .subscribe( ( floorId: number ) => this.floorId = floorId );
+    this.dataService.numberPersons$
+      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
+    this.dataService.validationType$
+      .subscribe( ( validationType: number ) => this.validationType = validationType );
+
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
       puestoInfo: this.fb.group({

@@ -18,11 +18,16 @@ export class FormDateComponent implements OnInit {
   numberPisos!: number;
   numberPeople!: number;
   valType!: DateValidationType;
+
+  @Input() public floorId!: number | null;
+  @Input() public numberPersons!: number | null;
+  @Input() public validationType!: DateValidationType | null;
+
   //@Input() numPersonas!: number;
   constructor(
     private rootFormGroup: FormGroupDirective,
     private dataService: DataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;

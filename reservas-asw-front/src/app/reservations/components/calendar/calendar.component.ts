@@ -127,6 +127,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return this.complete.includes(day);
   }
 
+  onMonthChange({month, year}: { month: number, year: number }): void {
+    console.log( month, year );
+  }
+
   monthChange(month: number, year: number): void {
     this.complete = [];
     this.morning = [];

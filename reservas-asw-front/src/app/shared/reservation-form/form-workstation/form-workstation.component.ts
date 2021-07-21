@@ -60,6 +60,7 @@ export class FormWorkstationComponent implements OnInit {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     //this.datosAcomp = this.form.get('datosAcompanante') as FormGroup;
     this.numPiso = this.form.get('piso')?.value;
+    this.dataService.floorId = this.numPiso;
     this.numPersonas = this.form.get('personasReserva')?.value;
     this.medioTransporte = this.form.get('medioTransporte')?.value;
     this.medioTransporte &&
@@ -110,8 +111,9 @@ export class FormWorkstationComponent implements OnInit {
     console.log(
       'Enviando piso ' + this.numPiso + ' mediante service Data desde form-workstation (Step 1)'
     );
-    this.dataService.numPiso$.emit(this.numPiso);
+    // this.dataService.numPiso$.emit(this.numPiso);
     this.form.controls['piso'].setValue(this.numPiso); //Otra forma
+    this.dataService.floorId = this.numPiso;
   }
 
   cambiarPersonas(value: number): void {
