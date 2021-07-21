@@ -1,4 +1,6 @@
-<div class="p-d-flex" >
+<div 
+    class="p-d-flex" 
+    *ngIf="datesReservation.length > 0; else noReservations">
     <!-- Flecha hacia la izquierda -->
     <div class="p-d-flex p-jc-center p-ai-center">
         <p-button 
@@ -29,6 +31,7 @@
                     </ng-template>
                 </ng-template>
             </p-button>
+
             <div class="p-grid p-m-0" [ngStyle]="{'width':'100%'}">
                 <!-- Columna reserva con mesa -->
                 <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
@@ -37,16 +40,16 @@
                 </div>
                 <!-- Parte de las fechas -->
                 <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
-                    <h1 class="reservation__title p-mt-0 p-mb-2">{{ datesReservation[currentPosition].dia | date:'dd/MM/yyyy' }}</h1>
-                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ datesReservation[currentPosition].horaInicio}} &nbsp; <span
-                            class="reservation__pipe-divider">|</span> &nbsp; {{ datesReservation[currentPosition].horaFin}}
+                    <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
+                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ datesReservation[currentPosition]?.horaInicio}} &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; {{ datesReservation[currentPosition]?.horaFin}}
                     </h3>
                 </div>
             </div>
             <div class="p-d-flex p-jc-end p-ai-center">
-                <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition].idPiso}} &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition].nombreSala}}  &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition].numeroAsistentes}} personas</p>
+                <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition]?.idPiso}} &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.nombreSala}}  &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.numeroAsistentes}} personas</p>
             </div>
         </div>
         <!-- Linea blanca -->
@@ -59,7 +62,7 @@
                     Medio de transporte
                 </h5>
                 <div class="p-d-flex p-jc-center p-ai-center">
-                    <img class="p-mr-2" src="assets/images/icons/bicycle.svg">
+                    <img class="p-mr-2" [src]="'assets/images/icons/' + transportMedia">
                     <p class="reservation__text"> Bicicleta</p>
                 </div>
             </div>
@@ -97,3 +100,7 @@
         </p-button>
     </div>
 </div>
+
+<ng-template #noReservations>
+    <p>No hay reservas...</p>
+</ng-template>

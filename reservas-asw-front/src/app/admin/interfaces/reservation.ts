@@ -1,8 +1,8 @@
 export interface ReservationResponse {
     data:    DatesReservation[];
-    success: boolean;
-    message: string;
-    status:  string;
+    success?: boolean;
+    message?: string;
+    status?:  string;
 }
 
 export interface DatesReservation {
@@ -15,6 +15,4 @@ export interface DatesReservation {
     nombrePuesTrabajo?:   null;
     numeroAsistentes:    number;
     idPiso :             number;
-
-     
 }
