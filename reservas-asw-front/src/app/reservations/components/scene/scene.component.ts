@@ -5,10 +5,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { combineAll } from 'rxjs/operators';
-import { ACESFilmicToneMapping } from 'three';
+import { ACESFilmicToneMapping, Object3D } from 'three';
 import { ReservationsService } from '../../services/reservations.service';
 import { RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.interface';
 import { workSpacesPerFloorResponse } from '../../interfaces/workspaces-per-floor.interface';
+import { Reservation } from '../../interfaces/reservations.interface';
+
 
 @Component({
   selector: 'app-scene',
@@ -27,6 +29,8 @@ export class SceneComponent implements OnInit {
 
   constructor( private reservationsService: ReservationsService ){} 
 
+  
+
   ngOnInit(): void{
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
@@ -41,7 +45,8 @@ export class SceneComponent implements OnInit {
     const selectedObjectColor = new THREE.Color( 0xff0000 );
     const onObjectColor = new THREE.Color ( 0xEAA525 );
     const smallChairColor = new THREE.Color ( 0x65FC17 );
-    let obecjts
+    let selectedObject: Object3D | null;
+    
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -59,27 +64,135 @@ export class SceneComponent implements OnInit {
     //controls.enablePan = false;
     controls.enableDamping = true;
     controls.maxPolarAngle = Math.PI / 2;
+    
+    
 
     loader.setDRACOLoader( dracoLoader );
-    if(this.idpiso==1){
+    this.path3D = loadFloor(this.idpiso, this.path3D);    
+
+    this.query = this.query + this.idpiso ;
+    if( this.numOfPeople > 1 ){
+      loadRooms(this.urlPlugin, this.reservationsService, this.query);
+    }else{
+      loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
+    }
+    
+    loadStairs();
+
+    animate();
+
+    window.onresize = function () {
+
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize( window.innerWidth, window.innerHeight );
+
+    };
+
+  function onPointerMove( event: MouseEvent ) {
+
+      pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+      pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      checkOnObject();
+  
+  }
+
+  function checkOnObject(  ){
+    
+    raycaster.setFromCamera(pointer, camera);
+    
+    
+    let intersects = raycaster.intersectObjects(scene.children, true);
+    
+    if (intersects.length > 0 && intersects[0].object.userData.info && intersects[0].object != selectedObject) {
+
+      if ( INTERSECTED != intersects[ 0 ].object ) {
+
+        if ( INTERSECTED ) ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColor;
+
+        INTERSECTED = intersects[ 0 ].object;
+        INTERSECTED.userData.currentColor = ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color;
+
+        ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = onObjectColor;
+    } else {
+
+        if ( INTERSECTED ) ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColor;
+
+        INTERSECTED = null;
+
+    }
+    }
+
+  }
+
+  function onClick(event: MouseEvent) {
+    raycaster.setFromCamera(pointer, camera);
+    let intersects = raycaster.intersectObjects(scene.children, true);
+    console.log(intersects);
+    
+
+        
+        if( intersects[0] && intersects[0].object.userData.info  ){
+          
+          if( selectedObject && selectedObject != intersects[0].object ){
+           // console.log( selectedObject.userData.currentColor == selectedObjectColor );
+            
+            
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject.userData.currentColor;
+            
+          }
+
+          for (let ob of scene.children) {
+           /*  console.log('Los children del scene', scene.children); */
+            
+            /* console.log( 'El obejtito ome', ob.children[4].userData ); */
+            
+            //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+            /* if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+              ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+            }     */        
+          }
+          
+          selectedObject = intersects[0].object;
+          if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
+            selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
+          }else{
+            selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
+          }
+          (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
+
+          INTERSECTED = null;
+           
+        }
+        console.log('El selected: ', selectedObject);
+        
+    
+  }
+
+
+
+  function loadFloor(idpiso: number, path: string): string{
+    
+    if(idpiso==1){
       console.log('Cargado piso 18');
 
-      this.path3D = 'assets/models/18th_floor/18th_floor.gltf';
+      path = 'assets/models/18th_floor/18th_floor.gltf';
 
-    }else if(this.idpiso==2){
+    }else if(idpiso==2){
       console.log('Cargado piso 19');
       
-      this.path3D = 'assets/models/19th_floor/19th_floor.gltf';
+      path = 'assets/models/19th_floor/19th_floor.gltf';
 
-    }else if(this.idpiso==3){
+    }else if(idpiso==3){
       console.log('Cargado Piso 20');
 
-      this.path3D = 'assets/models/20th_floor/20th_floor.gltf';
+      path = 'assets/models/20th_floor/20th_floor.gltf';
       
     }else{
       console.log('No cargado ningun piso'); 
     }
-    loader.load( this.path3D, function ( gltf ) {
+    loader.load( path, function ( gltf ) {
      
       const model3 = gltf.scene;
       const child = model3.children[0] as THREE.Mesh;
@@ -96,43 +209,16 @@ export class SceneComponent implements OnInit {
 
       console.error( e );
 
-    } ); 
+    } );
+    
+    return path;
+  }
 
-     /* loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
-      
-      const model4 = gltf.scene;
-      const child = model4.children[0].children[0] as THREE.Mesh;
-     //console.log("los hijos de las mesas son:", child);
-      const childMaterial = child.material as THREE.MeshStandardMaterial;
-      //console.log("el material de la mesa es: ", childMaterial);
-      childMaterial.color = new THREE.Color(0x65FC17);
-      
-      model4.position.set( -6.9, 3.02, -0.28 );
-      model4.scale.set(model4.scale.x*0.61, model4.scale.y*0.61, model4.scale.z*0.61);
-      model4.rotation.y += -0.7;
-      model4.userData = { "id": "Modelo de las salas" };
-      scene.add( model4 );
 
-      for (let i = 1; i < 3; i++) {
-        const piece = model4.clone(true);
-        piece.userData = {"id": "chairs"};
-        piece.position.set(-6.9,3.01,0.88*i);
-        
-        scene.add(piece);
-
-      }
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );  */
-    this.query = this.query + this.idpiso ;
-    if( this.numOfPeople > 1 ){
-
-      this.urlPlugin = '/sala/salasPorPiso';
-      this.reservationsService.sendRequest( this.urlPlugin, this.query );
-      this.reservationsService.sendRoomsPerFloorRequest( this.urlPlugin, this.query )
+  function loadRooms(urlPlugin: string, reservationsService: ReservationsService, query: string,){
+    urlPlugin = '/sala/salasPorPiso';
+    //  reservationsService.sendRequest( this.urlPlugin, this.query );
+      reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: RoomsPerFloorResponse) => {
           console.log(answ.data);
@@ -162,6 +248,8 @@ export class SceneComponent implements OnInit {
                 let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
                 childMaterial1.color = smallChairColor;
                 //CAMBIAR EL USERDATA POR LO QUE DA EL RESULTADO DE LA CONSULTA
+                console.log('pieceeee', piece);
+                
                 piece.children[0].children[0].userData = {"id": "chairs"};
                 piece.position.set(-6.9,3.01,0.88*i);
               
@@ -173,21 +261,6 @@ export class SceneComponent implements OnInit {
               console.error( e );
         
             } );
-
-
-              /* let piece = gltf.scene;
-                    let child1 = piece.children[0].children[0] as THREE.Mesh;
-                    let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
-                    //console.log(child1, childMaterial);
-                    
-                    childMaterial1.color = smallChairColor;
-                    piece.children[0].children[0].userData = { "id" : 'silla', "n": n , "selected": false};
-                    piece.children[0].children[0].userData =answ.data[j];
-                    n++;
-                    piece.position.set(model5.position.x+(1*i),3.02,model5.position.z + (1*j));
-                    
-                    
-                    scene.add(piece); */
       
             }
       
@@ -199,12 +272,11 @@ export class SceneComponent implements OnInit {
           
         }
       );
+  }
 
-      
-
-    }else{
-      this.urlPlugin = '/puestoTrabajo/id_Piso';
-      this.reservationsService.sendWorkSpacesPerFloorRequest( this.urlPlugin, this.query )
+  function loadWorkSpaces( urlPlugin: string, reservationsService: ReservationsService, query: string ): void{
+    urlPlugin = '/puestoTrabajo/id_Piso';
+      reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
           console.log(answ.data);
@@ -212,7 +284,9 @@ export class SceneComponent implements OnInit {
          // loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
-            const model5 = gltf.scene;      
+            const model5 = gltf.scene;    
+            console.log('El model5 OME:', model5);
+              
             /* const child = model5.children[0].children[0] as THREE.Mesh;
             const childMaterial = child.material  as THREE.MeshStandardMaterial;
             childMaterial.color = new THREE.Color(0x65FC17); */
@@ -235,8 +309,13 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    console.log( piece, 'piece papi' );
+                    
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                     piece.position.set((model5.position.x+0.20)+(0.46*i),0,(model5.position.z+0.30)+(0.46*j));
@@ -257,8 +336,11 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;                  
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;                 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                     if (i === 0) {
@@ -285,8 +367,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -316,8 +401,11 @@ export class SceneComponent implements OnInit {
                     //childMaterial1.color = smallChairColor;
                     //CAMBIAR EL USERDATA POR EL RESULTADO DE LA CONSULTA AL BACK ( ANSW )
                     //piece.children[0].children[0].userData = { "id" : 'silla', "n": n , "selected": false};
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     //piece.position.set(model5.position.x+(1*i),3.02,model5.position.z + (1*j));
                     //piece.position.set((model5.position.x+1.72)+(0.46*i),0,(model5.position.z+0.74)+(0.46*j));
@@ -354,8 +442,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                    
@@ -385,8 +476,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                    
@@ -408,8 +502,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                    
@@ -435,8 +532,11 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -458,8 +558,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -488,8 +591,13 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
+                    ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[4]).material).color = selectedObjectColor;
+                    ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[3].children[0]).material).color = selectedObjectColor;
                     n++;
 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -503,6 +611,7 @@ export class SceneComponent implements OnInit {
                     }                             
                     
                     scene.add(piece);
+                    /* scene.add(piece.children[3]); */
                   }, undefined, function ( e ) {
       
                     console.error( e );
@@ -510,14 +619,20 @@ export class SceneComponent implements OnInit {
                   } );
               }
             }
+            console.log('Los hijitos pues',   scene.children);
+            
 
             //BLOQUE 067    
             for (let i = 0; i < 1; i++) {
               for (let j = 0; j < 3; j++) {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
+
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                     if (i === 0) {
@@ -540,8 +655,11 @@ export class SceneComponent implements OnInit {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
         
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                    
@@ -564,9 +682,12 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-        
-                    piece.userData = {"info" : answ.data[j]};
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    
+                    piece.children[0].userData = {"info" : answ.data[j]};
+                    piece.children[1].userData = {"info" : answ.data[j]};
+                    piece.children[2].userData = {"info" : answ.data[j]};
+                    piece.children[3].userData = {"info" : answ.data[j]};
+                    piece.children[4].userData = {"info" : answ.data[j]};
                     n++;
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                    
@@ -593,11 +714,11 @@ export class SceneComponent implements OnInit {
           } );
         }
       );
+  }
 
-      
-      
-    }
-    
+
+  function loadStairs(){
+    console.log( scene.children );
     
      loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
@@ -619,67 +740,6 @@ export class SceneComponent implements OnInit {
       console.error( e );
 
     } ); 
-
-    animate();
-
-    window.onresize = function () {
-
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize( window.innerWidth, window.innerHeight );
-
-    };
-
-  function onPointerMove( event: MouseEvent ) {
-
-      pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-      pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-      //checkOnObject();
-  
-  }
-
-  function checkOnObject(  ){
-    
-    raycaster.setFromCamera(pointer, camera);
-    
-    
-    let intersects = raycaster.intersectObjects(scene.children, true);
-    
-    if (intersects.length > 0 ) {
-
-      if ( INTERSECTED != intersects[ 0 ].object ) {
-
-        if ( INTERSECTED ) ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = smallChairColor;
-
-        INTERSECTED = intersects[ 0 ].object;
-        ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = onObjectColor;
-    } else {
-
-        if ( INTERSECTED ) ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = smallChairColor;
-
-        INTERSECTED = null;
-
-    }
-    }
-
-  }
-
-  function onClick(event: MouseEvent) {
-    raycaster.setFromCamera(pointer, camera);
-    let intersects = raycaster.intersectObjects(scene.children, true);
-    console.log('Hicieron Clic');
-    for (const inter of intersects) {
-     // console.log(inter);
-      
-      if( inter.object.userData.idPiso ){
-        (<THREE.MeshStandardMaterial>(<THREE.Mesh>inter.object).material).color = selectedObjectColor;  
-        inter.object.userData.selected = true;
-        console.log(inter.object.userData);
-        
-      }
-      
-    }
   }
 
     function animate() {
@@ -693,5 +753,11 @@ export class SceneComponent implements OnInit {
       renderer.render( scene, camera );
     }
   }
+
+
+
+
+
+  
 
 }
