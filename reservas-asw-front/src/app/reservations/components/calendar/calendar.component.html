@@ -1,5 +1,9 @@
 <p>calendar works!</p>
 
+<button (click)="numberOfPeople = 1">set numOfPeople</button>
+<button (click)="id = 1">set id</button>
+<button (click)="consultReservations()">update</button>
+
 <p-calendar 
   name="dateValue" 
   [(ngModel)]="dateValue" 
@@ -7,8 +11,10 @@
   [disabledDates]="invalidDates"
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
-  (onSelect)="setSelectedDate( $event )">
+  (onSelect)="setSelectedDate( $event )"
+  [disabledDays]="[0,6]"
 
+  [minDate] = "minDate">
   <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">
       <div class="p-datepicker-title1 ng-tns-c58-1">
@@ -27,3 +33,4 @@
     </td>
   </ng-template>
 </p-calendar>
+

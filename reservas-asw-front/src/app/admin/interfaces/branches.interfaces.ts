@@ -12,7 +12,6 @@ export interface BranchResponse {
     status?:  string;
 }
 
-
 export interface Branch {
     idSucursal?:    number;
     aforoMaximo:   number;

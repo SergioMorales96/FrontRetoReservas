@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
-import { DataResponse, Reservation, ReservationClass, ReservationResponse} from '../interfaces/reservations.interface';
+import { catchError } from 'rxjs/operators';
+import { DataResponse, Reservation, ReservationResponse, ReservationsResponse } from '../interfaces/reservations.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,15 @@ import { DataResponse, Reservation, ReservationClass, ReservationResponse} from 
 export class ReservationsService {
   private apiUrl: string = `${environment.baseUrl}/reservas`;
 
-  
+  serviceUrl: string = environment.baseUrl;
 
+  sendRequest(urlPlugin: string = '', query: string = ''): Observable<ReservationsResponse>{    
+
+    return this.http.get<ReservationsResponse>(`${this.serviceUrl}/${urlPlugin}/${query}`)
+    .pipe(
+      catchError(err => of({data: []}))
+    );
+  }
 
   constructor(
     private http: HttpClient,
@@ -32,7 +39,14 @@ export class ReservationsService {
       .pipe(
         catchError(() => of({ data: 0 }))
       );
-  } 
+  }
+  getParkingMotorcycle(selectDate: string): Observable<DataResponse> {
+    const url = `${this.apiUrl}/disponibilidadParqueaderoMoto/${selectDate}`;
+    return this.http.get<DataResponse>(url)
+      .pipe(
+        catchError(() => of({ data: 0 }))
+      );
+  }
 
   getCarParkingAvailability(selectedDate: string): Observable<DataResponse> {
     const url = `${this.apiUrl}/disponibilidadParqueaderoCarro/${selectedDate}`;
@@ -40,7 +54,7 @@ export class ReservationsService {
       .pipe(
         catchError(() => of({ data: 0 }))
       );
-  } 
+  }
 
 
   httpOptions = {
@@ -49,20 +63,20 @@ export class ReservationsService {
     }
   };
 
-   /**
+  /**
    * Add a schedule, using the endpoint crear
    */
   addReservation(reservation: Reservation): Observable<ReservationResponse> {
     const urlLink = `${this.apiUrl}/crearreserva`;
     console.log(reservation);
     return this.http.post<ReservationResponse>(urlLink, reservation)
-    
+
       .pipe(
         catchError(err => {
           this.toastService.showToastDanger({ summary: 'Error al crear la reserva ', detail: err?.message ? err.message : err });
           return throwError(err);
         })
       );
-      
+
   }
 }

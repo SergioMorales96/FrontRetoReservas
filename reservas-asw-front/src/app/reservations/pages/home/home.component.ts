@@ -19,6 +19,9 @@ export class HomeComponent implements OnInit {
   validateDayCapacity( hasCapacity: boolean ): void {
     console.log( hasCapacity );
   }
+  validateAvailabilityMotorcycle(availabilityMotocycle: boolean ): void {
+    console.log( availabilityMotocycle );
+  }
 
   validateParkingAvailabilityPerCar( hasAvailabilityPerCar: boolean ): void {
     console.log( hasAvailabilityPerCar );
