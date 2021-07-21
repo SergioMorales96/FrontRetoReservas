@@ -30,7 +30,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   numPisoSubscription!: Subscription;
   numPeopleSubscription!: Subscription;
   tipoValidacionSubscription!: Subscription;
-  //dateValidationType!: DateValidationType;
 
   constructor(
     private reservationsService: ReservationsService,
@@ -248,10 +247,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.getCapacity();
 
     switch (this.dateValidationType) {
-  
-  //    case DateValidationType.DayCapacity:
-        //
-       // break;
+      //    case DateValidationType.DayCapacity:
+      //
+      // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
@@ -366,4 +364,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
     }
   }
+  public minDate = new Date(
+    this.selectedDate.getFullYear(),
+    this.selectedDate.getMonth(),
+    this.selectedDate.getDate()
+  );
 }
