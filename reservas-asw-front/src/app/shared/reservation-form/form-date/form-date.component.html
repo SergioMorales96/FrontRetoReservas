@@ -14,7 +14,11 @@
     <!-- /Periodo -->
 
     <!-- Calendario -->
-     <app-calendar2></app-calendar2> 
+    <app-calendar
+      [selectedFloor]="numberPisos"
+      [_numberOfPeople]="numberPeople"
+      [dateValidationType]="valType"
+    ></app-calendar>
     <!-- /Calendario   <div class="p-field p-grid">
         <div class="p-col">
           <p-calendar

@@ -107,13 +107,16 @@ export class FormWorkstationComponent implements OnInit {
 
   cambiarPiso(value: number): void {
     this.numPiso += value;
+    console.log(
+      'Enviando piso ' + this.numPiso + ' mediante service Data desde form-workstation (Step 1)'
+    );
     this.dataService.numPiso$.emit(this.numPiso);
     this.form.controls['piso'].setValue(this.numPiso); //Otra forma
   }
 
   cambiarPersonas(value: number): void {
     this.numPersonas += value;
-    this.dataService.numPersonas$.emit(this.numPersonas);
+    //this.dataService.numPersonas$.emit(this.numPersonas);
     this.form.patchValue({ personasReserva: this.numPersonas });
   }
 
@@ -123,13 +126,10 @@ export class FormWorkstationComponent implements OnInit {
     //console.log(this.ind);
     this.medioTransporte = this.mediosTransporte[this.ind].value;
     this.form.patchValue({ medioTransporte: this.medioTransporte });
-    if(this.medioTransporte != null) {
-      this.dataService.tipoValidacion$.emit(this.medioTransporte);
-      console.log(this.medioTransporte);
-      
+    if (this.medioTransporte != null) {
+      //this.dataService.tipoValidacion$.emit(this.medioTransporte);
     }
 
-    
     // Si es Bici o Moto, no hay placa
 
     if (

@@ -26,7 +26,7 @@ import { HomeComponent } from '../reservations/pages/home/home.component';
     SidebarComponent,
     FormAssistantComponent,
     FormDateComponent,
-    FormWorkstationComponent,
+    FormWorkstationComponent
     
   ],
   exports: [
@@ -44,5 +44,6 @@ import { HomeComponent } from '../reservations/pages/home/home.component';
     PrimeNgModule,
     ReservationsModule
   ]
+
 })
 export class SharedModule { }

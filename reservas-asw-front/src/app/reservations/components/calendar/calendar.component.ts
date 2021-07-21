@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 
 @Component({
-  selector: 'app-calendar2',
+  selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
@@ -30,7 +30,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   numPisoSubscription!: Subscription;
   numPeopleSubscription!: Subscription;
   tipoValidacionSubscription!: Subscription;
-  dateValidationType!: DateValidationType;
+  //dateValidationType!: DateValidationType;
 
   constructor(
     private reservationsService: ReservationsService,
@@ -44,7 +44,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   @Input() dateCar: DateValidationType =
     DateValidationType.ParkingAvailabilityPerCar;
 
-  selectedFloor!: number;
+  @Input() selectedFloor!: number;
+  @Input() _numberOfPeople!: number;
+  @Input() dateValidationType!: DateValidationType;
+
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
     new EventEmitter<boolean>(); /////
@@ -52,10 +55,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   selectedDate: Date = new Date();
 
   ngOnInit(): void {
+    console.log(this.selectedFloor);
+    console.log(this._numberOfPeople);
+    console.log(this.dateValidationType);
+
+    /*
     this.numPisoSubscription = this.dataService.numPiso$.subscribe(
       (numPiso) => {
         this.selectedFloor = numPiso;
-        //console.log('Desde Calendar', this.selectedFloor);
+        console.log(
+          'Entrando a Calendar y recibiendo PISO '+numPiso+' por serviceData',
+          
+        );
       }
     );
 
@@ -68,15 +79,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.tipoValidacionSubscription =
       this.dataService.tipoValidacion$.subscribe((tipoValidation) => {
         this.dateValidationType = tipoValidation;
-        console.log("Cal",this.dateValidationType);
-        
-      });
+      });*/
   }
 
   ngOnDestroy(): void {
-    this.numPisoSubscription?.unsubscribe();
+    /*this.numPisoSubscription?.unsubscribe();
     this.numPeopleSubscription?.unsubscribe();
-    this.tipoValidacionSubscription?.unsubscribe();
+    this.tipoValidacionSubscription?.unsubscribe();*/
   }
 
   //Las fechas en esta lista desactivan los días en el calendario
@@ -91,7 +100,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   reservations: Reservation[] = [];
 
   //Número de personas para saber si se trata de una sala o un puesto de trabajo
-  private _numberOfPeople!: number;
+  //private _numberOfPeople!: number;
 
   //Id del puesto de trabajo o de la sala
   private _id: number = 0;
@@ -231,18 +240,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   callMethodPerDateValidationType(): void {
-    
     console.log(
       'Desde callMethodPerDateValidationType, validType = ',
       this.dateValidationType
     );
+    console.log('Entrando case capacity');
+    this.getCapacity();
 
     switch (this.dateValidationType) {
-      case DateValidationType.DayCapacity:
-        console.log('Entrando case capacity');
-
-        this.getCapacity(); //
-        break;
+  
+  //    case DateValidationType.DayCapacity:
+        //
+       // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
