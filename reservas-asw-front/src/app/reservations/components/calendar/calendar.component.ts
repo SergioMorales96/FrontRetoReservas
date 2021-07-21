@@ -301,6 +301,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   validateDayCapacity(data: number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} personas`})
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
