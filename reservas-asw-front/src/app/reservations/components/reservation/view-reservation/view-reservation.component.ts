@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ReservationAction } from '../../../../../utils/enums';
+import { DatesReservation } from '../../../../admin/interfaces/reservation';
+
 
 @Component({
   selector: 'app-view-reservation',
@@ -8,9 +10,29 @@ import { ReservationAction } from '../../../../../utils/enums';
 })
 export class ViewReservationComponent {
 
+  datesReservation: DatesReservation[]= [
+    {     
+      "dia": '12-07-2021',
+      "horaInicio": '09:00',
+      "horaFin": '11:00',
+      "dominioTipoVehiculo": 'C',
+      "placa": 'AAA003',
+      "nombreSala": "SALA 1",
+      "nombrePuesTrabajo": null,
+      "numeroAsistentes": 4,
+      "idPiso": 1
+
+    }
+
+  ]
+  
+  
+  
+
   @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>(); 
 
-  reservations: string[] = ['Uno', 'Dos', 'Tres', 'Cuatro'];
+  
+  
   currentPosition: number = 0;
 
   get canShowPreview(): boolean {
@@ -18,7 +40,7 @@ export class ViewReservationComponent {
   }
   
   get canShowNext(): boolean {
-    return this.reservations.length - 1 > this.currentPosition;
+    return this.datesReservation.length - 1 > this.currentPosition;
   }
 
   showEditReservation(): void {
@@ -29,5 +51,6 @@ export class ViewReservationComponent {
     this.currentPosition = this.currentPosition + value;
 
   }
+
 
 }

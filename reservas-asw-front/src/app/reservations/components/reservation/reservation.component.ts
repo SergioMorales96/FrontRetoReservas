@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ReservationAction } from '../../../../utils/enums';
+import { DatesReservation } from '../../../admin/interfaces/reservation';
 
 @Component({
   selector: 'app-reservation',

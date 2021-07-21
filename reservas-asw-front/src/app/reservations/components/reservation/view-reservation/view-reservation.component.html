@@ -1,4 +1,4 @@
-<div class="p-d-flex">
+<div class="p-d-flex" >
     <!-- Flecha hacia la izquierda -->
     <div class="p-d-flex p-jc-center p-ai-center">
         <p-button 
@@ -37,16 +37,16 @@
                 </div>
                 <!-- Parte de las fechas -->
                 <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
-                    <h1 class="reservation__title p-mt-0 p-mb-2">{{ '11/06/2021' }}</h1>
-                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">8:00 am &nbsp; <span
-                            class="reservation__pipe-divider">|</span> &nbsp; Medio dia
+                    <h1 class="reservation__title p-mt-0 p-mb-2">{{ datesReservation[currentPosition].dia | date:'dd/MM/yyyy' }}</h1>
+                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ datesReservation[currentPosition].horaInicio}} &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; {{ datesReservation[currentPosition].horaFin}}
                     </h3>
                 </div>
             </div>
             <div class="p-d-flex p-jc-end p-ai-center">
-                <p class="reservation__subtitle-2 p-my-0">Piso 18 &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; Sala 3 &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; 3 personas</p>
+                <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition].idPiso}} &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition].nombreSala}}  &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition].numeroAsistentes}} personas</p>
             </div>
         </div>
         <!-- Linea blanca -->

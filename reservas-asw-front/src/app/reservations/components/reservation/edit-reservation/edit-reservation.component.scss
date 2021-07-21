@@ -55,151 +55,98 @@
     height: 2.5rem;
     background-color: #fa729c;
 }
-.reserva {
-    width: 76px;
-    height: 15px;  
-    font-family: Roboto;
-    font-size: 12px;
+.reservation__title {
+    font-size: 2rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+  }
+  
+  .reservation__subtitle {
+    font-size: 1.3125rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+    opacity: 0.56;
+    display: flex;
+    align-items: center;
+  }
+  
+  .reservation__subtitle-2 {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.35;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+    opacity: 0.56;
+    display: flex;
+    align-items: center;
+  }
+  
+  .reservation__text {
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+    opacity: 0.56;
+  }
+  
+  .reservation__text-small {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.33;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+  }
+  
+  .reservation__text-small-2 {
+    font-size: 0.75rem;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.25;
     letter-spacing: normal;
     text-align: left;
-    color: var(#ffffff);      
-}
-.fecha{
-    width: 207px;
-    height: 46px;
-    font-family: Roboto;
-    font-size: 36px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.31;
-    letter-spacing: normal;
-    text-align: center;
-    color: var(#ffffff);
-}
-.division{    
-    height: 7.7px;
-    opacity: 0.56;
-    border: solid 0.5px var(--white);
-}
-.hora{
-    width: 81px;
-    height: 27px;   
-    opacity: 0.56;
-    font-family: Roboto;    
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    text-align: right;
-    color: var(#ffffff);
-}
-.dia{
-    width: 99px;
-    height: 27px;
-    opacity: 0.56;
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--white);
-
-}
-.piso {
-    width: 55px;
-    height: 22px;   
-    opacity: 0.56;
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: right;
-    color: var(--white);
-}
-.sala{
-    width: 50px;
-    height: 22px;
-    opacity: 0.56;
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: center;
-    color: var(--white);  
-}
-.personas{
-    width: 85px;
-    height: 22px;
-    opacity: 0.56;
-    font-family: Roboto;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.35;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--white);
-    padding-right: 0rem;
-}
-.mediot{    
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--white);
-}
-.letrab {
-    padding: 0rem;
-    width: 60px;
-    height: 21px;
-    margin: 27px 12px 0 0;
-    opacity: 0.56;
-    font-family: Futura;
-    font-size: 16px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.31;
-    letter-spacing: normal;
-    text-align: left;
-    color: var(--white);
-}
-.marca{
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.33;
-    letter-spacing: normal;
-    text-align: center;
-    color: var(--white);
-}
-.descrip {
-    opacity: 0.56;
-    font-family: Roboto;
-    font-size: 16px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.31;
-    letter-spacing: normal;
-    text-align: center;
-    color: var(--white);
-}
+    color: #fff;
+  }
+  
+  .reservation__pipe-divider {
+    font-size: 0.5rem;
+  }
+  
+  :host ::ng-deep {
+    .reservation__button {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  
+    .reservation__button:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  
+    .reservation__controls-button:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  

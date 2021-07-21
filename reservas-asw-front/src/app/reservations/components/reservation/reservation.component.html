@@ -1,5 +1,6 @@
-
-<app-view-reservation 
+<!-- *ngFor="let dia of datosReservation" -->
+<app-view-reservation
+    
     (onAction)="showComponent( $event )"
     *ngIf="!hasEditing; else showEditing">
 </app-view-reservation>

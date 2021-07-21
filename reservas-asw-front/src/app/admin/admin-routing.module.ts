@@ -29,6 +29,9 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
 import { ListBranchComponent } from './pages/branches/list/list-branch.component';
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+import { ViewReservationComponent } from '../reservations/components/reservation/view-reservation/view-reservation.component';
+import { ReservationComponent } from '../reservations/components/reservation/reservation.component';
+import { EditReservationComponent } from '../reservations/components/reservation/edit-reservation/edit-reservation.component';
 
 
 const routes: Routes = [
@@ -116,8 +119,22 @@ const routes: Routes = [
           }
 
         ]
-
       },
+      //Reserva
+      // {
+      //   path: 'reserva',
+      //   component: ReservationComponent,
+      //   children: [
+      //     {
+      //       path: 'reserva_usuario/11-07-2021/13-07-2021/user6@asesoftware.com',
+      //       component: EditReservationComponent
+      //     },
+      //     {
+      //       path:'',
+      //       component: ViewReservationComponent
+      //     }
+      //   ]
+      // },
       {
         path: 'floors',
         component: FloorsComponent,
