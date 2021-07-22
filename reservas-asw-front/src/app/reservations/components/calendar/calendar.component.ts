@@ -11,7 +11,6 @@ import {
   ReservationsResponse,
 } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
@@ -49,7 +48,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
-    new EventEmitter<boolean>(); /////
+    new EventEmitter<boolean>(); 
 
   selectedDate: Date = new Date();
 
@@ -206,23 +205,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   setDates(dateValue: Date) {
-    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
-    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
+  
+    const startDate = moment(dateValue).startOf('month').format('DD-MM-YYYY');
 
-    let month: number = dateValue.getMonth() + 1;
-    let strMonth: string = month.toString();
-
-    let year: number = dateValue.getFullYear();
-    let strYear: string = year.toString();
-
-    let startDay: number = first.getDate();
-    let strStartDay: string = startDay.toString();
-
-    let lastDay: number = last.getDate();
-    let strLastDay: string = lastDay.toString();
-
-    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
-    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+    const endDate = moment(dateValue).endOf('month').format('DD-MM-YYYY');
 
     if (this._numberOfPeople > 1) {
       this.queryDates =
@@ -260,6 +246,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.getCarParkingAvailability();
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
+        this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
@@ -352,22 +339,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   validateAvailabilityMotorcycle(data: number | any): void {
     if (data > 0) {
-      this.onDayCapacity.emit(true);
+     
       this.toastService.showToastSuccess({
         summary: `Existen ${data} parqueaderos disponibles`,
         detail: '',
       });
     } else {
-      this.onDayCapacity.emit(false);
+     
       this.toastService.showToastDanger({
         summary: 'No hay parqueaderos para carro disponibles',
         detail: '',
       });
     }
   }
-  public minDate = new Date(
-    this.selectedDate.getFullYear(),
-    this.selectedDate.getMonth(),
-    this.selectedDate.getDate()
-  );
+  public minDate = new Date();
 }
