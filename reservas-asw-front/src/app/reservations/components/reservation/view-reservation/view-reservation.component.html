@@ -35,7 +35,7 @@
             <div class="p-grid p-m-0" [ngStyle]="{'width':'100%'}">
                 <!-- Columna reserva con mesa -->
                 <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
-                    <img class="" src="assets/images/icons/workstation.svg">
+                    <img class="" [src]="'assets/images/icons/'+ workStationMedia">
                     <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                 </div>
                 <!-- Parte de las fechas -->
@@ -48,8 +48,8 @@
             </div>
             <div class="p-d-flex p-jc-end p-ai-center">
                 <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition]?.idPiso}} &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.nombreSala}}  &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.numeroAsistentes}} personas</p>
+                        class="reservation__pipe-divider">|</span> &nbsp; {{salaOrJob}}  &nbsp; <span
+                        class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
             </div>
         </div>
         <!-- Linea blanca -->
@@ -63,13 +63,13 @@
                 </h5>
                 <div class="p-d-flex p-jc-center p-ai-center">
                     <img class="p-mr-2" [src]="'assets/images/icons/' + transportMedia">
-                    <p class="reservation__text"> Bicicleta</p>
+                    <p class="reservation__text">{{typeVehicle}}</p>
                 </div>
             </div>
             <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
-                <h5 class="reservation__text-small p-mt-0">Marca</h5>
+                <h5 class="reservation__text-small p-mt-0">{{brandOrPlate}}</h5>
                 <p class="reservation__text p-my-0">
-                    Rockbuster ST1000
+                    {{currentReservation?.placa}}
                 </p>
             </div>
         </div>
