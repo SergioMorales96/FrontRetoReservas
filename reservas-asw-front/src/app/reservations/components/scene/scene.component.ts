@@ -4,8 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
-import { map } from 'rxjs/operators';
-import { FogExp2, Mesh } from 'three';
+import { MeshStandardMaterial } from 'three';
 
 @Component({
   selector: 'app-scene',
@@ -15,9 +14,7 @@ import { FogExp2, Mesh } from 'three';
 })
 export class SceneComponent implements OnInit {
 
-  @Input() idpiso: number = 0;
-
-  path3D : string = '';
+  @Input() idFloor: number = 0;
 
   constructor(){} 
 
@@ -29,6 +26,10 @@ export class SceneComponent implements OnInit {
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let intersects = [];
+    let floor: string = '';
 
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -48,39 +49,18 @@ export class SceneComponent implements OnInit {
 
     loader.setDRACOLoader( dracoLoader );
 
-    if(this.idpiso==1){
-      console.log('Cargado piso 18');
+    floor = selectFloor(this.idFloor);
 
-      this.path3D = 'assets/models/18th_floor/18th_floor.gltf';
+    loader.load( floor, function ( gltf ) {
 
-    }else if(this.idpiso==2){
-      console.log('Cargado piso 19');
-      
-      this.path3D = 'assets/models/19th_floor/19th_floor.gltf';
+      const modelFloor = gltf.scene.children[0] as THREE.Mesh;
+      const materialFloor = modelFloor.material as THREE.MeshStandardMaterial;
+      const objects = [modelFloor];
 
-    }else if(this.idpiso==3){
-      console.log('Cargado Piso 20');
+      modelFloor.position.set( 0, 0, 0 );
+      modelFloor.scale.set( 1, 1, 1);
 
-      this.path3D = 'assets/models/20th_floor/20th_floor.gltf';
-      
-    }else{
-      console.log('No cargado ningun piso'); 
-    }
-    loader.load( this.path3D, function ( gltf ) {
-
-      const modelPiso = gltf.scene.children[0] as THREE.Mesh;
-      //console.log(modelPiso);
-      const materialPiso = modelPiso.material as THREE.MeshStandardMaterial;
-
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-      const objects = [modelPiso];
-      let intersects = [];
-
-      modelPiso.position.set( 0, 0, 0 );
-      modelPiso.scale.set( 1, 1, 1);
-
-      scene.add( modelPiso ); 
+      scene.add( modelFloor ); 
 
       renderer.domElement.addEventListener("click", onClick);
 
@@ -93,27 +73,27 @@ export class SceneComponent implements OnInit {
 
         if (intersects.length > 0) {
 
-          materialPiso.color = new THREE.Color( 0x3131ff);
-          materialPiso.opacity = 1;
-          materialPiso.roughness = 0.9;
-          materialPiso.metalness = 0;
-          materialPiso.fog= false;
-          materialPiso.transparent= true;
-          materialPiso.depthTest = true;
-          materialPiso.depthWrite = true;
-          materialPiso.side = THREE.FrontSide;
+          materialFloor.color = new THREE.Color( 0x3131ff);
+          materialFloor.opacity = 1;
+          materialFloor.roughness = 0.9;
+          materialFloor.metalness = 0;
+          materialFloor.fog= false;
+          materialFloor.transparent= true;
+          materialFloor.depthTest = true;
+          materialFloor.depthWrite = true;
+          materialFloor.side = THREE.FrontSide;
         
         }else {
 
-          materialPiso.color = new THREE.Color( 0xbf );
-          materialPiso.opacity = 0.49;
-          materialPiso.roughness = 0.9;
-          materialPiso.metalness = 0;
-          materialPiso.fog= false;
-          materialPiso.transparent= true;
-          materialPiso.depthTest = true;
-          materialPiso.depthWrite = true;
-          materialPiso.side = THREE.FrontSide;
+          materialFloor.color = new THREE.Color( 0xbf );
+          materialFloor.opacity = 0.49;
+          materialFloor.roughness = 0.9;
+          materialFloor.metalness = 0;
+          materialFloor.fog= false;
+          materialFloor.transparent= true;
+          materialFloor.depthTest = true;
+          materialFloor.depthWrite = true;
+          materialFloor.side = THREE.FrontSide;
 
         }
       }
@@ -302,24 +282,24 @@ export class SceneComponent implements OnInit {
 
     loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
-      const modelEscalera = gltf.scene.children[0] as THREE.Mesh;
-      const materialEscalera = modelEscalera.material as THREE.MeshStandardMaterial;
+      const modelStairs = gltf.scene.children[0] as THREE.Mesh;
+      const materialStairs = modelStairs.material as THREE.MeshStandardMaterial;
 
-      modelEscalera.position.set( -3, -1, 0 );
-      modelEscalera.rotateY(180);
+      modelStairs.position.set( -3, -1, 0 );
+      modelStairs.rotateY(180);
       //modelEscalera.scale.set( 10, 1, 1);
       
-      materialEscalera.color = new THREE.Color( 0xbf );
-      materialEscalera.opacity = 0.49;
-      materialEscalera.roughness = 0.9;
-      materialEscalera.metalness = 0;
-      materialEscalera.fog= false;
-      materialEscalera.transparent= true;
-      materialEscalera.depthTest = true;
-      materialEscalera.depthWrite = true;
-      materialEscalera.side = THREE.FrontSide;
+      materialStairs.color = new THREE.Color( 0xbf );
+      materialStairs.opacity = 0.49;
+      materialStairs.roughness = 0.9;
+      materialStairs.metalness = 0;
+      materialStairs.fog= false;
+      materialStairs.transparent= true;
+      materialStairs.depthTest = true;
+      materialStairs.depthWrite = true;
+      materialStairs.side = THREE.FrontSide;
 
-      scene.add( modelEscalera );
+      scene.add( modelStairs );
 
     }, undefined, function ( e ) {
 
@@ -348,15 +328,42 @@ export class SceneComponent implements OnInit {
       renderer.render( scene, camera );
     }
 
-    function initColor(parent: any, type: any, mtl: any) {
+    function initColor(parent: THREE.Mesh, type: string, mtl: MeshStandardMaterial) {
       parent.traverse((o: any) => {
        if (o.isMesh) {
          if (o.name.includes(type)) {
-              o.material = mtl;
-              o.nameID = type;
-           }
-       }
-     });
+            o.material = mtl;
+            o.nameID = type;
+          }
+        }
+      });
+    }
+
+    function selectFloor (id: number) {
+
+      let path3D : string = '';
+
+      if(id==1){
+        console.log('Cargado piso 18');
+  
+        path3D = 'assets/models/18th_floor/18th_floor.gltf';
+  
+      }else if(id==2){
+        console.log('Cargado piso 19');
+        
+        path3D = 'assets/models/19th_floor/19th_floor.gltf';
+  
+      }else if(id==3){
+        console.log('Cargado Piso 20');
+  
+        path3D = 'assets/models/20th_floor/20th_floor.gltf';
+        
+      }else{
+        console.log('No cargado ningun piso'); 
+      }
+
+      return path3D;
+
     }
 
   }
