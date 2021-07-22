@@ -120,21 +120,6 @@ const routes: Routes = [
 
         ]
       },
-      //Reserva
-      // {
-      //   path: 'reserva',
-      //   component: ReservationComponent,
-      //   children: [
-      //     {
-      //       path: 'reserva_usuario/11-07-2021/13-07-2021/user6@asesoftware.com',
-      //       component: EditReservationComponent
-      //     },
-      //     {
-      //       path:'',
-      //       component: ViewReservationComponent
-      //     }
-      //   ]
-      // },
       {
         path: 'floors',
         component: FloorsComponent,

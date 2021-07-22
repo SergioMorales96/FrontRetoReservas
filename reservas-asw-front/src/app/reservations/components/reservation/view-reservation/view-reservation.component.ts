@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 @Component({
   selector: 'app-view-reservation',
-  templateUrl: './view-reservation.component.html',
+  templateUrl: './view-reservation.component.html ,',
   styleUrls: ['./view-reservation.component.scss']
 })
 export class ViewReservationComponent implements OnInit {
