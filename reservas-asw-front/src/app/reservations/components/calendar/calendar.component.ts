@@ -243,13 +243,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       'Desde callMethodPerDateValidationType, validType = ',
       this.dateValidationType
     );
-    console.log('Entrando case capacity');
+
     this.getCapacity();
 
     switch (this.dateValidationType) {
-      //    case DateValidationType.DayCapacity:
-      //
-      // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
@@ -270,7 +267,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getCapacity(): void {
-    console.log('Selected Floor desde getCapacity: ', this.selectedFloor);
     if (!this.selectedFloor) {
       this.toastService.showToastWarning({
         summary: 'Seleccione un piso',
@@ -282,7 +278,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.reservationsService
       .getCapacity(selectedDate, this.selectedFloor)
       .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
         this.validateDayCapacity(dataResponse.data);
       });
   }
@@ -299,10 +294,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   validateDayCapacity(data: number | any): void {
-    if (data > 0) {
+    if (data > 1) {
       this.onDayCapacity.emit(true);
       this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} personas`})
-    } else {
+    } else if(data === 1){
+      this.onDayCapacity.emit(true);
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} persona`})
+
+    }else{  
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
         summary: 'No hay aforo disponible',
