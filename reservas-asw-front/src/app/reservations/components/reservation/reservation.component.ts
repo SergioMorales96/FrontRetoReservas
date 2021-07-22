@@ -10,8 +10,8 @@ import { AlertsService } from '../../../services/alerts.service';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
-  providers:[MessageService, ConfirmationService],
-  styleUrls: ['./reservation.component.scss']
+  styleUrls: ['./reservation.component.scss'],
+  providers:[MessageService, ConfirmationService]
 })
 
 export class ReservationComponent  {
