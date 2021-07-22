@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { map } from 'rxjs/operators';
+import { FogExp2, Mesh } from 'three';
 
 @Component({
   selector: 'app-scene',
@@ -36,6 +37,7 @@ export class SceneComponent implements OnInit {
 
     scene.background = new THREE.Color( 0x000000 );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+    scene.fog = new THREE.Fog(0x681453, 1, 20);
 
     camera.position.set( 5, 2, 8 );
 
@@ -67,7 +69,7 @@ export class SceneComponent implements OnInit {
     loader.load( this.path3D, function ( gltf ) {
 
       const modelPiso = gltf.scene.children[0] as THREE.Mesh;
-      console.log(modelPiso);
+      //console.log(modelPiso);
       const materialPiso = modelPiso.material as THREE.MeshStandardMaterial;
 
       const raycaster = new THREE.Raycaster();
@@ -91,30 +93,30 @@ export class SceneComponent implements OnInit {
 
         if (intersects.length > 0) {
 
-          materialPiso.color = new THREE.Color( 0xbf );
-          materialPiso.opacity = 0.49;
-          materialPiso.roughness = 0.9;
-          materialPiso.metalness = 0;
-          materialPiso.fog= true;
-          materialPiso.transparent= true;
-          materialPiso.depthTest = true;
-          materialPiso.depthWrite = true;
-          materialPiso.side = THREE.FrontSide;
-
-        }else {
-
           materialPiso.color = new THREE.Color( 0x3131ff);
           materialPiso.opacity = 1;
           materialPiso.roughness = 0.9;
           materialPiso.metalness = 0;
-          materialPiso.fog= true;
+          materialPiso.fog= false;
+          materialPiso.transparent= true;
+          materialPiso.depthTest = true;
+          materialPiso.depthWrite = true;
+          materialPiso.side = THREE.FrontSide;
+        
+        }else {
+
+          materialPiso.color = new THREE.Color( 0xbf );
+          materialPiso.opacity = 0.49;
+          materialPiso.roughness = 0.9;
+          materialPiso.metalness = 0;
+          materialPiso.fog= false;
           materialPiso.transparent= true;
           materialPiso.depthTest = true;
           materialPiso.depthWrite = true;
           materialPiso.side = THREE.FrontSide;
 
         }
-}
+      }
 
     }, undefined, function ( e ) {
 
@@ -124,23 +126,78 @@ export class SceneComponent implements OnInit {
 
     loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
 
-      const modelPT = gltf.scene.children[0];
+      const modelPT = gltf.scene.children[0] as THREE.Mesh;
       console.log(modelPT);
-      const puestoTrabajo = modelPT.getObjectByName( 'Cube024') as THREE.Mesh;
-      const materialPT = puestoTrabajo.material as THREE.MeshStandardMaterial;
 
       modelPT.position.set( 1, -1, 0 );
       modelPT.scale.set( 1, 1, 1);
       
-      materialPT.color = new THREE.Color( 0xffffff );
-      materialPT.opacity = 0.5;
-      materialPT.roughness = 0;
-      materialPT.metalness = 1;
-      materialPT.fog= true;
-      materialPT.transparent= true;
-      materialPT.depthTest = true;
-      materialPT.depthWrite = true;
-      materialPT.side = THREE.FrontSide;
+      const INITIAL_MAP = [
+        {childID: "Cube024", //sillin
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x444b93,
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide} )
+        },
+        {childID: "Cube024_1", 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x1e, //Union espaldar silla
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube017", //Patas silla
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x1e,
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube018", //Espaldar silla
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x444b93, 
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube020", //Mesa
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0xffffff, 
+          opacity: 0.5,
+          roughness: 0,
+          metalness: 1,
+          fog: false,
+          transparent: true,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )}
+      ];
+
+      for (let object of INITIAL_MAP) {
+        initColor(modelPT, object.childID, object.mtl);
+      }
+      
 
       scene.add( modelPT );
 
@@ -150,27 +207,92 @@ export class SceneComponent implements OnInit {
 
     } );
 
-    loader.load( 'assets/models/small_chair/small_chair.gltf', function ( gltf ) {
+    loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {
 
-      const modelSilla = gltf.scene.children[0];
-      console.log(modelSilla);
-      const silla = modelSilla.getObjectByName( 'Cube024') as THREE.Mesh;
-      const materialSilla = silla.material as THREE.MeshStandardMaterial;
+      const modelPS = gltf.scene ;
+      console.log(modelPS);
 
-      modelSilla.position.set( 0, -1, 0 );
-      modelSilla.scale.set( 1, 1, 1);
+      modelPS.position.set( 0, -1, 0 );
+      modelPS.scale.set( 1, 1, 1);
 
-      materialSilla.color = new THREE.Color( 0x444B93 );
-      materialSilla.opacity = 1;
-      materialSilla.roughness = 1;
-      materialSilla.metalness = 0;
-      materialSilla.fog= true;
-      materialSilla.transparent= false;
-      materialSilla.depthTest = true;
-      materialSilla.depthWrite = true;
-      materialSilla.side = THREE.FrontSide;
-    
-      scene.add( modelSilla );
+      const modelPS_silla = modelPS.children[3] as THREE.Mesh;
+      const modelPS_mesa = modelPS.children[4] as THREE.Mesh;
+
+      const INITIAL_MAP_silla = [
+        {childID: "Cube024", //sillin
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x444b93,
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide} )
+        },
+        {childID: "Cube024_1", 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x1e, //Union espaldar silla
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube017", //Patas silla
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x1e,
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube018", //Espaldar silla
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0x444b93, 
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        }
+      ];
+
+      const INITIAL_MAP_mesa = [
+        {childID: "Cube020", //Mesa
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: 0xffffff, 
+          opacity: 0.5,
+          roughness: 0,
+          metalness: 1,
+          fog: false,
+          transparent: true,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        }
+      ];
+
+      for (let object of INITIAL_MAP_silla) {
+        initColor(modelPS_silla, object.childID, object.mtl);
+      }
+
+      for (let object of INITIAL_MAP_mesa) {
+        initColor(modelPS_mesa, object.childID, object.mtl);
+      }
+
+      scene.add( modelPS );
 
     }, undefined, function ( e ) {
 
@@ -181,7 +303,6 @@ export class SceneComponent implements OnInit {
     loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
       const modelEscalera = gltf.scene.children[0] as THREE.Mesh;
-      console.log(modelEscalera);
       const materialEscalera = modelEscalera.material as THREE.MeshStandardMaterial;
 
       modelEscalera.position.set( -3, -1, 0 );
@@ -191,8 +312,8 @@ export class SceneComponent implements OnInit {
       materialEscalera.color = new THREE.Color( 0xbf );
       materialEscalera.opacity = 0.49;
       materialEscalera.roughness = 0.9;
-      materialEscalera.metalness = 1;
-      materialEscalera.fog= true;
+      materialEscalera.metalness = 0;
+      materialEscalera.fog= false;
       materialEscalera.transparent= true;
       materialEscalera.depthTest = true;
       materialEscalera.depthWrite = true;
@@ -225,6 +346,17 @@ export class SceneComponent implements OnInit {
       controls.update();
 
       renderer.render( scene, camera );
+    }
+
+    function initColor(parent: any, type: any, mtl: any) {
+      parent.traverse((o: any) => {
+       if (o.isMesh) {
+         if (o.name.includes(type)) {
+              o.material = mtl;
+              o.nameID = type;
+           }
+       }
+     });
     }
 
   }
