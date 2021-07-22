@@ -14,16 +14,92 @@ export class ViewReservationComponent implements OnInit {
 
   datesReservation: DatesReservation[] = [];
   routeName = RouteName;
+  currentPosition: number = 0;
+
+  usersMap = {
+    '=0': 'No hay personas',
+    '=1': '1 persona',
+    'other': '# personas',
+  };
+
+  get brandOrPlate(): string {
+    const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
+
+    if(typeDomainVehicle === 'M' || typeDomainVehicle === 'C'){
+      return 'Placa'
+    }
+    else if(typeDomainVehicle === 'B'){
+      return 'Marca'
+    }
+    else{
+      return 'No se registró vehiculo'
+    }
+  }
+
+  get canShowPreview(): boolean {
+    return this.currentPosition - 1 >= 0;
+  }
+
+  get canShowNext(): boolean {
+    return this.datesReservation.length - 1 > this.currentPosition;
+  }
+
+  get currentReservation(): DatesReservation {
+    return this.datesReservation[this.currentPosition];
+  }
 
   get reservationDate(): string {
-    const date = this.datesReservation[this.currentPosition]?.dia?.split('-');
+    const date = this.currentReservation?.dia?.split('-');
 
-    return `${ date[0] }/${ date[1] }/${ date[2] }`;
+    return `${date[0]}/${date[1]}/${date[2]}`;
+  }
+
+  get salaOrJob(): string {
+    return this.currentReservation.idSala
+      ? this.currentReservation.nombreSala
+      : this.currentReservation.nombrePuesTrabajo;
+  }
+
+  get workStationMedia(): string {
+    const asistentsNumber = this.currentReservation.numeroAsistentes;
+    if (asistentsNumber > 1) {
+      return 'workbench.svg'
+    }
+    else {
+      return 'workstation.svg'
+    }
+  }
+
+  get typeVehicle(): string {
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
+    switch (vehicleType) {
+      case 'B':
+        return 'Bicicleta';
+      case 'M':
+        return 'Moto'
+      case 'C':
+        return 'Carro'
+      default:
+        return 'No se registro vehiculo'
+    }
   }
 
   get transportMedia(): string {
-    return true ? 'bicycle.svg' : 'bicycle.svg';
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
+
+    switch (vehicleType) {
+      case 'B':
+        return 'bicycle.svg';
+      case 'M':
+        return 'bicycle.svg'
+      case 'C':
+        return 'bicycle.svg'
+      default:
+        return 'bicycle.svg'
+    }
+
   }
+
 
   constructor(
     private reservationsService: ReservationsService
@@ -38,7 +114,7 @@ export class ViewReservationComponent implements OnInit {
   getData() {
     return {
       startDate: '11-07-2021',
-      endDate: '13-07-2021',
+      endDate: '14-07-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
       email: 'user6@asesoftware.com'
@@ -54,30 +130,16 @@ export class ViewReservationComponent implements OnInit {
         (ReservationResponse: ReservationResponse) => this.datesReservation = ReservationResponse.data
       )
   }
-
-
-  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
-
-
-
-  currentPosition: number = 0;
-
-  get canShowPreview(): boolean {
-    return this.currentPosition - 1 >= 0;
-  }
-
-  get canShowNext(): boolean {
-    return this.datesReservation.length - 1 > this.currentPosition;
-  }
-
+  
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);
   }
-
+  
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;
-
+    
   }
-
-
+  
+  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
+  
 }

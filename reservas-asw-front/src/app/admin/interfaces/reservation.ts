@@ -11,8 +11,10 @@ export interface DatesReservation {
     horaFin:             string;
     dominioTipoVehiculo: string;
     placa:               string;
-    nombreSala?:          string;
-    nombrePuesTrabajo?:   null;
+    nombreSala:          string;
+    nombrePuesTrabajo:   string;
     numeroAsistentes:    number;
-    idPiso :             number;
+    idPiso:              number;
+    idSala:              number;   
+    idPuestoTrabajo:     number;   
 }
