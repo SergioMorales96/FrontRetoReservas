@@ -283,13 +283,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getCarParkingAvailability(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    console.log(selectedDate);
     this.reservationsService
       .getCarParkingAvailability(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateParkingAvailabilityPerCar(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityPerCar(dataResponse.data));
   }
 
   validateDayCapacity(data: number | any): void {
@@ -314,8 +310,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
         );
   }
 
-  validateAvailabilityCycle(data: Number | any) {
-    if (data > 0) {
+  validateAvailabilityCycle(data: Number | any[]) {
+    if (data) {
       this.onDayCapacity.emit(true);
       this.toastService.showToastSuccess({
         summary: `Hay ${data} parqueaderos de bicicleta disponibles`,
