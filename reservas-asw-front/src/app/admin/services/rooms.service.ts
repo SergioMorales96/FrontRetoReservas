@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 import { ToastsService } from '../../services/toasts.service';
 
 import { throwError } from 'rxjs';
+import { DomainsResponse } from '../interfaces/domains.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ import { throwError } from 'rxjs';
 export class RoomsService {
   private apiUrl: string = `${ environment.baseUrl }/sala`;
   private apiUrlP: string = `${ environment.baseUrl }/piso`;
-
+  private apiUrlD: string = `${ environment.baseUrl }/dominio`;
+  
   constructor(
     private http: HttpClient,
     private toastService: ToastsService
@@ -25,6 +27,14 @@ export class RoomsService {
   getRooms(): Observable<RoomsResponse>{
     const url = `${this.apiUrl}/todas`;
     return this.http.get<RoomsResponse>(url)
+      .pipe(
+        catchError(err => of({data: []}))
+      );
+  }
+
+  getDomains(estado: String): Observable<DomainsResponse>{
+    const url = `${this.apiUrlD}/dominio/${estado}`;
+    return this.http.get<DomainsResponse>(url)
       .pipe(
         catchError(err => of({data: []}))
       );
