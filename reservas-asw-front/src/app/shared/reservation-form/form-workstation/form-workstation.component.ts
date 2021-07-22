@@ -6,7 +6,6 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { SharedService } from '../../services/shared.service';
 import { DateValidationType } from '../../../../utils/enums';
 import { DataService } from '../../../services/data.service';
 
@@ -32,7 +31,6 @@ export class FormWorkstationComponent implements OnInit {
   constructor(
     private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder,
-    private sharedService: SharedService,
     private dataService: DataService
   ) {
     //this.mediosTransporte = ['Ninguno', 'Bicicleta', 'Carro', 'Moto'];

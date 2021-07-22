@@ -11,14 +11,11 @@ import {
   ReservationsResponse,
 } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
-import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
 import { Subscription } from 'rxjs';
-import { DataService } from '../../../services/data.service';
 
 @Component({
   selector: 'app-calendar',
@@ -33,9 +30,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   constructor(
     private reservationsService: ReservationsService,
-    private toastService: ToastsService,
-    private sharedService: SharedService,
-    private dataService: DataService
+    private toastService: ToastsService
   ) {}
 
   /*@Input() dateValidationType: DateValidationType =
@@ -251,8 +246,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       //
       // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
-        console.log('Entrando case bicis');
-        this.getBici();
+        this.getParkingCycle();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
         console.log('Entrando case ParkingAvailabilityPerCar ');
@@ -311,21 +305,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  getBici(): void {
+  getParkingCycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.sharedService
-      .getDPBicicletas(selectedDate)
-      .subscribe((dpbicicletas: DataResponse) => {
-        console.log(dpbicicletas.data);
-        console.log(this.validationBicis(dpbicicletas.data));
-      });
+    this.reservationsService
+      .getParkingCycle(selectedDate)
+        .subscribe(
+          (availabilityCycle: DataResponse) => this.validateAvailabilityCycle(availabilityCycle.data)
+        );
   }
 
-  validationBicis(data: Number | any) {
+  validateAvailabilityCycle(data: Number | any) {
     if (data > 0) {
       this.onDayCapacity.emit(true);
+      this.toastService.showToastSuccess({
+        summary: `Hay ${data} parqueaderos de bicicleta disponibles`,
+        detail: ''
+      })
     } else {
       this.onDayCapacity.emit(false);
+      this.toastService.showToastSuccess({
+        summary: `No hay parqueaderos de bicileta disponibles`,
+        detail: ''
+      })
     }
   }
 
