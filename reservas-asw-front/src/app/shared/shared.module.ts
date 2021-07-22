@@ -15,6 +15,7 @@ import { FormWorkstationComponent } from './reservation-form/form-workstation/fo
 import { CalendarComponent } from '../reservations/components/calendar/calendar.component';
 import { ReservationsModule } from '../reservations/reservations.module';
 import { HomeComponent } from '../reservations/pages/home/home.component';
+import { ReservationSummaryComponent } from './reservation-summary/reservation-summary.component';
 
 
 
@@ -26,7 +27,8 @@ import { HomeComponent } from '../reservations/pages/home/home.component';
     SidebarComponent,
     FormAssistantComponent,
     FormDateComponent,
-    FormWorkstationComponent
+    FormWorkstationComponent,
+    ReservationSummaryComponent
     
   ],
   exports: [
