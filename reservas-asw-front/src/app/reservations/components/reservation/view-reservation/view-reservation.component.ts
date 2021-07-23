@@ -28,10 +28,10 @@ export class ViewReservationComponent implements OnInit {
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
 
-    if(typeDomainVehicle === 'M' || typeDomainVehicle === 'C'){
+    if (typeDomainVehicle === 'M' || typeDomainVehicle === 'C') {
       return 'Placa'
     }
-    else if(typeDomainVehicle === 'B'){
+    else if (typeDomainVehicle === 'B') {
       return 'Marca'
     }
     else {
@@ -130,18 +130,22 @@ export class ViewReservationComponent implements OnInit {
         tap(console.log)
       )
       .subscribe(
-        (ReservationResponse: ReservationResponse) => this.datesReservation = ReservationResponse.data
+        (ReservationResponse: ReservationResponse) => {
+          this.datesReservation = ReservationResponse.data;
+          this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
+          this.onCurrentReservation.emit(this.currentReservation);
+        }
       )
   }
-  
+
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);
   }
-  
+
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;
-    this.onCurrentReservation.emit( this.currentReservation );
+    this.onCurrentReservation.emit(this.currentReservation);
   }
-  
-  
+
+
 }

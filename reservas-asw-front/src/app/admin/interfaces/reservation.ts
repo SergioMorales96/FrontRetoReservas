@@ -10,6 +10,7 @@ export interface DatesReservation {
     dia:                 string;
     horaInicio:          string;
     horaFin:             string;
+    dominioEstado:       string;
     dominioTipoVehiculo: string;
     placa:               string;
     nombreSala:          string;

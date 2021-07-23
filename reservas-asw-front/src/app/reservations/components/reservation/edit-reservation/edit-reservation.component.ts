@@ -127,18 +127,19 @@ export class EditReservationComponent {
   }
 
 
-  cancelReservation(reservationC:DatesReservation):void{
+  cancelReservation():void{
     this.cancelReservationService.showConfirmDialog({
       message: '¿Desea cancelar la reserva, esta acción no se podrá revertir?',
       header: 'Cancelar reserva',
     })
       .then(resp => {
         if (resp) {
-          this.reservationsService.cancelReservation(reservationC)
+          this.reservationsService.cancelReservation(this.currentReservation.numeroReserva)
             .subscribe(
               (reservationReponse: ReservationResponse) => {
-                this.datesReservation = this.datesReservation.filter((dateReservation: DatesReservation) => dateReservation.numeroReserva !== reservationC.numeroReserva);
+                this.datesReservation = this.datesReservation.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
                 this.toastService.showToastSuccess({ summary: 'Reserva cancelada', detail: 'La reserva ha sido cancelada correctamente.' });
+                this.showReservation1();
               }
             );
         } else {
@@ -153,10 +154,9 @@ export class EditReservationComponent {
     this.onAction.emit(ReservationAction.Edit);
   }
 
-  // showReservation(value: number): void {
-  //   this.currentPosition = this.currentPosition + value;
-  //   this.onCurrentReservation.emit( this.currentReservation );
-  // }
+  showReservation(value: number): void {
+    this.currentPosition = this.currentPosition + value;
+  }
 
   showReservation1(): void {
     this.onAction.emit( ReservationAction.ViewSummary );

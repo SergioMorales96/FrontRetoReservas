@@ -47,9 +47,13 @@
                 </div>
             </div>
             <div class="p-d-flex p-jc-end p-ai-center">
-                <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{salaOrJob}}  &nbsp; <span
-                        class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
+                <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; 
+                    <span class="reservation__pipe-divider">|</span> &nbsp;
+                    <span style="max-width: 11.25rem;max-width: 5rem;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;"> {{salaOrJob}} </span>  &nbsp; 
+                    <span class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
             </div>
         </div>
         <!-- Linea blanca -->

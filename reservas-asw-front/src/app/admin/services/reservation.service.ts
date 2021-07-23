@@ -29,9 +29,9 @@ export class ReservationsService {
             );
     }
 
-    cancelReservation(datesReservation: DatesReservation): Observable<ReservationResponse>{
-        const url = `${this.apiUrl}/cancelarreserva`;
-        return this.http.post<ReservationResponse>(url, datesReservation)
+    cancelReservation(idReserva:number): Observable<ReservationResponse>{
+        const url = `${this.apiUrl}/cancelarreserva/${idReserva}`;
+        return this.http.get<ReservationResponse>(url)
         
             .pipe(
                 catchError(err => {
