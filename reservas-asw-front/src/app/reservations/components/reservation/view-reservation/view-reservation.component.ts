@@ -12,6 +12,9 @@ import * as moment from 'moment';
 })
 export class ViewReservationComponent implements OnInit {
 
+  @Output() onCurrentReservation: EventEmitter<DatesReservation> = new EventEmitter<DatesReservation>();
+  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
+
   datesReservation: DatesReservation[] = [];
   routeName = RouteName;
   currentPosition: number = 0;
@@ -137,9 +140,8 @@ export class ViewReservationComponent implements OnInit {
   
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;
-    
+    this.onCurrentReservation.emit( this.currentReservation );
   }
   
-  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
   
 }

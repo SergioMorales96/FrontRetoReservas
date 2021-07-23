@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReservationAction } from 'src/utils/enums';
 import { ViewReservationComponent } from '../view-reservation/view-reservation.component';
 import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
@@ -12,6 +12,10 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./edit-reservation.component.scss']
 })
 export class EditReservationComponent {
+
+  @Input() currentReservation!: DatesReservation;
+  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
+  
   datesReservation: DatesReservation[] = [];
   routeName = RouteName;
   currentPosition: number = 0;
@@ -34,12 +38,6 @@ export class EditReservationComponent {
     else {
       return 'No se registró vehiculo'
     }
-  }
-
-//  @input() = new currentReservation();
-
-  get currentReservation(): DatesReservation {
-    return this.datesReservation[this.currentPosition];
   }
 
   get reservationDate(): string {
@@ -128,18 +126,15 @@ export class EditReservationComponent {
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);
   }
-  showReservation(value: number): void {
-    this.currentPosition = this.currentPosition + value;
 
-  }
-
-
-
-
-  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
+  // showReservation(value: number): void {
+  //   this.currentPosition = this.currentPosition + value;
+  //   this.onCurrentReservation.emit( this.currentReservation );
+  // }
 
   showReservation1(): void {
     this.onAction.emit( ReservationAction.ViewSummary );
+    
   }
 
 

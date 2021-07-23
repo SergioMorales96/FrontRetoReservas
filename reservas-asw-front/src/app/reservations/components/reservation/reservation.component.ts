@@ -10,6 +10,7 @@ import { DatesReservation } from '../../../admin/interfaces/reservation';
 export class ReservationComponent {
 
   hasEditing: boolean = false;
+  currentReservation!: DatesReservation;
 
   showComponent( reservationAction: ReservationAction ): void {
     this.hasEditing = reservationAction === ReservationAction.Edit;
