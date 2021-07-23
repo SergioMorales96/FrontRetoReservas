@@ -15,16 +15,16 @@ import { DataService } from '../../../services/data.service';
   styleUrls: ['./form-workstation.component.scss'],
 })
 export class FormWorkstationComponent implements OnInit {
+
   @Input() formGroupName!: string;
   @Input() submitted!: boolean;
-  AcompananteForm!: FormGroup;
+  
   form!: FormGroup;
   numPeople!: number;
   meansOfTransport: { label: string; value: any }[] = [];
   meanOfTransport!: number | null;
   ind: number = 0;
   showLicensePlate!: boolean;
-  
   numFloor!: number;
 
   constructor(
