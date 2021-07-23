@@ -36,6 +36,7 @@ import { ReservationSummaryComponent } from './reservation-summary/reservation-s
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
+    ReservationSummaryComponent
   ],
   imports: [
     ReactiveFormsModule,
