@@ -41,13 +41,13 @@
                 <!-- Parte de las fechas -->
                 <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
                     <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
-                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ datesReservation[currentPosition]?.horaInicio}} &nbsp; <span
-                            class="reservation__pipe-divider">|</span> &nbsp; {{ datesReservation[currentPosition]?.horaFin}}
+                    <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; {{ currentReservation?.horaFin}}
                     </h3>
                 </div>
             </div>
             <div class="p-d-flex p-jc-end p-ai-center">
-                <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition]?.idPiso}} &nbsp; <span
+                <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; <span
                         class="reservation__pipe-divider">|</span> &nbsp; {{salaOrJob}}  &nbsp; <span
                         class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
             </div>

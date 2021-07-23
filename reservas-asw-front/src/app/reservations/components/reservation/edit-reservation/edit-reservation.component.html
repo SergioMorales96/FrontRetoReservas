@@ -15,7 +15,7 @@
                                    type="button" 
                                    icon="pi pi-times"
                                    class="p-button-rounded " 
-                                    (click)="showReservation()">
+                                    (click)="showReservation1()">
                 </button>
             </span>
         </div>
@@ -33,15 +33,15 @@
                     <!-- Parte de las fechas -->
                     <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
                         <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
-                        <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ datesReservation[currentPosition]?.horaInicio}} &nbsp; <span
-                                class="reservation__pipe-divider">|</span> &nbsp; {{ datesReservation[currentPosition]?.horaFin}}
+                        <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
+                                class="reservation__pipe-divider">|</span> &nbsp; {{ currentReservation?.horaFin}}
                         </h3>
                     </div>
                 </div> 
                 <div class="p-d-flex p-jc-end p-ai-center">
-                    <p class="reservation__subtitle-2 p-my-0">Piso {{datesReservation[currentPosition]?.idPiso}} &nbsp; <span
-                            class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.nombreSala}} &nbsp; <span
-                            class="reservation__pipe-divider">|</span> &nbsp; {{datesReservation[currentPosition]?.numeroAsistentes}} personas</p>
+                    <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; {{salaOrJob}} &nbsp; <span
+                            class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
                 </div>
                 
                 
@@ -55,13 +55,13 @@
                     </h5>
                     <div class="p-d-flex p-jc-center p-ai-center">
                         <img class="p-mr-2" src="assets/images/icons/bicycle.svg">
-                        <p class="reservation__text"> Bicicleta</p>
+                        <p class="reservation__text"> {{typeVehicle}}</p>
                     </div>
                 </div>
                 <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
-                    <h5 class="reservation__text-small p-mt-0">Marca</h5>
+                    <h5 class="reservation__text-small p-mt-0">{{brandOrPlate}}</h5>
                     <p class="reservation__text p-my-0">
-                        Rockbuster ST1000
+                        {{currentReservation?.placa}}
                     </p>
                 </div>                
             </div> 
