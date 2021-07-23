@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -24,7 +23,7 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit {
   dateValue: Date = new Date();
   numPisoSubscription!: Subscription;
   numPeopleSubscription!: Subscription;
@@ -37,8 +36,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private dataService: DataService
   ) {}
 
-  /*@Input() dateValidationType: DateValidationType =
-    DateValidationType.DayCapacity;*/
+
   @Input() dateCar: DateValidationType =
     DateValidationType.ParkingAvailabilityPerCar;
 
@@ -58,34 +56,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     console.log(this._numberOfPeople);
     console.log(this.dateValidationType);
 
-    /*
-    this.numPisoSubscription = this.dataService.numPiso$.subscribe(
-      (numPiso) => {
-        this.selectedFloor = numPiso;
-        console.log(
-          'Entrando a Calendar y recibiendo PISO '+numPiso+' por serviceData',
-          
-        );
-      }
-    );
-
-    this.numPeopleSubscription = this.dataService.numPersonas$.subscribe(
-      (numPeople) => {
-        this._numberOfPeople = numPeople;
-      }
-    );
-
-    this.tipoValidacionSubscription =
-      this.dataService.tipoValidacion$.subscribe((tipoValidation) => {
-        this.dateValidationType = tipoValidation;
-      });*/
+    
   }
 
-  ngOnDestroy(): void {
-    /*this.numPisoSubscription?.unsubscribe();
-    this.numPeopleSubscription?.unsubscribe();
-    this.tipoValidacionSubscription?.unsubscribe();*/
-  }
+ 
 
   //Las fechas en esta lista desactivan los días en el calendario
   invalidDates: Date[] = [];
@@ -230,13 +204,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       'Desde callMethodPerDateValidationType, validType = ',
       this.dateValidationType
     );
-    console.log('Entrando case capacity');
+    
     this.getCapacity();
 
     switch (this.dateValidationType) {
-      //    case DateValidationType.DayCapacity:
-      //
-      // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
@@ -333,19 +304,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .getParkingMotorcycle(selectedDate)
       .subscribe((dataResponse: DataResponse) => {
         console.log(dataResponse);
-        this.validateAvailabilityMotorcycle(dataResponse.data);
+        this.validateParkingAvailabilityMotorcycle(dataResponse.data);
       });
   }
 
-  validateAvailabilityMotorcycle(data: number | any): void {
+  validateParkingAvailabilityMotorcycle(data: number | any): void {
     if (data > 0) {
-     
+      this.onDayCapacity.emit(true);
       this.toastService.showToastSuccess({
-        summary: `Existen ${data} parqueaderos disponibles`,
-        detail: '',
+        summary: `Parqueadero de moto disponible:`,
+        detail: ` ${data} parqueaderos disponibles`,
       });
     } else {
-     
+      this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
         summary: 'No hay parqueaderos para carro disponibles',
         detail: '',
