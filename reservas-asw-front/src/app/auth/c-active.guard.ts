@@ -4,7 +4,7 @@ import { Router, ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTr
 @Injectable({
   providedIn: 'root'
 })
-export class PruebacAGuard implements CanActivate {
+export class CActiveGuard implements CanActivate {
 
   constructor(private router:Router){}
 
@@ -19,7 +19,7 @@ export class PruebacAGuard implements CanActivate {
     // pueda entrar a la página después de las 10:00 pm  
     console.log(hora);
     
-    if (hora >= 13) {
+    if (hora >= 21) {
       console.log("FUNCIONO!");
       
       // Si la hora es mayor o igual redireccionamos al homeComponent

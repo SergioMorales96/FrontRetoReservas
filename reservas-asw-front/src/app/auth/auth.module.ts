@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { AuthRoutingModule } from './auth-routing.module';
 
 import { ProfileComponent } from './profile/profile.component';
-import { PruebacAGuard } from './pruebac-a.guard';
+import { CActiveGuard } from './c-active.guard';
+import { CLoadService } from './c-load.service';
 
 
 
@@ -16,6 +17,6 @@ import { PruebacAGuard } from './pruebac-a.guard';
     CommonModule,
     AuthRoutingModule
   ],
-  providers: [PruebacAGuard]
+  providers: [CActiveGuard,CLoadService]
 })
 export class AuthModule { }

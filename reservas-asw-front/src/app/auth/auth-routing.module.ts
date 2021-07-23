@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PruebacAGuard } from 'src/app/auth/pruebac-a.guard';
 
 import { ProfileComponent } from './profile/profile.component';
 

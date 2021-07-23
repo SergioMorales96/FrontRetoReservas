@@ -39,7 +39,8 @@ import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { FilterPipe } from './pipes/filter.pipe';
-import { PruebacAGuard } from '../auth/pruebac-a.guard';
+import { CActiveGuard } from '../auth/c-active.guard';
+import { CLoadService } from '../auth/c-load.service';
 
 
 @NgModule({
@@ -84,6 +85,6 @@ import { PruebacAGuard } from '../auth/pruebac-a.guard';
     SortPipe,
     FilterPipe
   ],
-  providers: [PruebacAGuard]
+  providers: [CActiveGuard,CLoadService]
 })
 export class AdminModule { }
