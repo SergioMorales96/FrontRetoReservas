@@ -302,23 +302,21 @@ export class CalendarComponent implements OnInit {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
       .getParkingMotorcycle(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateParkingAvailabilityMotorcycle(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityMotorcycle(dataResponse.data));
   }
 
-  validateParkingAvailabilityMotorcycle(data: number | any): void {
-    if (data > 0) {
+  validateParkingAvailabilityMotorcycle(data: number | any[]): void {
+    if (data) {
       this.onDayCapacity.emit(true);
+       const menssage = data!=1 ? "parqueaderos disponibles" : "parqueadero disponible";
       this.toastService.showToastSuccess({
         summary: `Parqueadero de moto disponible:`,
-        detail: ` ${data} parqueaderos disponibles`,
+        detail: ` ${data} ${menssage}`,
       });
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
-        summary: 'No hay parqueaderos para carro disponibles',
+        summary: 'No hay parqueaderos para Moto disponibles',
         detail: '',
       });
     }
