@@ -46,6 +46,8 @@ export class SceneComponent implements OnInit {
     const onObjectColor = new THREE.Color ( 0xEAA525 );
     const smallChairColor = new THREE.Color ( 0x65FC17 );
     let selectedObject: Object3D | null;
+    let idPiso = this.idpiso;
+    let numeroPersonas = this.numOfPeople;
     
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -64,7 +66,11 @@ export class SceneComponent implements OnInit {
     //controls.enablePan = false;
     controls.enableDamping = true;
     controls.maxPolarAngle = Math.PI / 2;
-    
+
+    const axesHelper = new THREE.AxesHelper( 15 );
+    //scene.add( axesHelper );
+    var grid = new THREE.GridHelper(20, 100);
+    //scene.add(grid);
     
 
     loader.setDRACOLoader( dracoLoader );
@@ -214,7 +220,10 @@ export class SceneComponent implements OnInit {
     return path;
   }
 
-
+  function invisibleModels(pisoActual: number ): boolean{
+    return pisoActual === idPiso;
+  }
+  
   function loadRooms(urlPlugin: string, reservationsService: ReservationsService, query: string,){
     urlPlugin = '/sala/salasPorPiso';
     //  reservationsService.sendRequest( this.urlPlugin, this.query );
@@ -231,38 +240,68 @@ export class SceneComponent implements OnInit {
             //console.log("el material de la mesa es: ", childMaterial);
             childMaterial.color = new THREE.Color(0x65FC17);
             
-            model4.position.set( -6.9, 3.02, -0.28 );
-            model4.scale.set(model4.scale.x*0.61, model4.scale.y*0.61, model4.scale.z*0.61);
+            //model4.position.set( -6.9, 0, -0.28 );
+            model4.position.set(-7.02,0,-4.28)
+            model4.scale.set(model4.scale.x*0.49, model4.scale.y*0.49, model4.scale.z*0.49);
             model4.rotation.y += -0.7;
             model4.userData = { "id": "Modelo de las salas" };
-            scene.add( model4 );
+            //scene.add( model4 );
       
-            for (let i = 1; i < 3; i++) {
+            // for (let i = 1; i < 3; i++) {
               
               
 
-              loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
+            //   loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
 
-                let piece = gltf.scene;
-                let child1 = piece.children[0].children[0] as THREE.Mesh;
-                let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
-                childMaterial1.color = smallChairColor;
-                //CAMBIAR EL USERDATA POR LO QUE DA EL RESULTADO DE LA CONSULTA
-                console.log('pieceeee', piece);
+            //     let piece = gltf.scene;
+            //     let child1 = piece.children[0].children[0] as THREE.Mesh;
+            //     let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
+            //     childMaterial1.color = smallChairColor;
+            //     //CAMBIAR EL USERDATA POR LO QUE DA EL RESULTADO DE LA CONSULTA
+            //     console.log('pieceeee', piece);
                 
-                piece.children[0].children[0].userData = {"id": "chairs"};
-                piece.position.set(-6.9,3.01,0.88*i);
+            //     piece.children[0].children[0].userData = {"id": "chairs"};
+            //     piece.position.set(-6.9,3.01,0.88*i);
               
-              scene.add(piece);
+            //   scene.add(piece);
 
 
-            }, undefined, function ( e ) {
+            // }, undefined, function ( e ) {
       
-              console.error( e );
+            //   console.error( e );
         
-            } );
+            // } );
       
+            // }
+
+            //////************PISO 18********//////////
+            
+            //BLOQUE S01
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    let child1 = piece.children[0].children[0] as THREE.Mesh;
+                    let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
+                    childMaterial1.color = smallChairColor;
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    piece.scale.set( piece.scale.x*0.39, piece.scale.y*0.39, piece.scale.z*0.39);
+                   
+                    if (j === 0) {
+                      piece.position.set((model4.position.x+4.22)+(0.57*i),0,(model4.position.z+7.75)+(0.57*j));
+                      piece.rotation.y += -0.69;
+                    }                          
+                    piece.visible = invisibleModels(1) && numeroPersonas > 1;
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
             }
+
       
           }, undefined, function ( e ) {
       
@@ -290,10 +329,16 @@ export class SceneComponent implements OnInit {
             /* const child = model5.children[0].children[0] as THREE.Mesh;
             const childMaterial = child.material  as THREE.MeshStandardMaterial;
             childMaterial.color = new THREE.Color(0x65FC17); */
-            //console.log(child, model5);
-            //model5.position.set(-5.39,3.02,-1.44);
-            //model5.position.set(-6.8,0,-2);
-            model5.position.set(-7.11,0,-2.18);
+
+            if (idPiso === 1) {
+              model5.position.set(-7.02,0,-4.28);  ////// COORDENADAS PISO 18
+            } else if (idPiso === 2) {
+              model5.position.set(-7.08,0,-4.32);  ////// COORDENADAS PISO 19
+            } else{
+              model5.position.set(-7.11,0,-2.18); ///////COORDENADAS PISO 20
+            }
+
+
             //model5.scale.set( model5.scale.x*0.61, model5.scale.y*0.61, model5.scale.z*0.61);
             model5.scale.set( model5.scale.x*0.49, model5.scale.y*0.49, model5.scale.z*0.49);
             //model5.children[0].children[0].userData = {"id": "Modelo de las sillas"};
@@ -303,7 +348,7 @@ export class SceneComponent implements OnInit {
             //model5.rotation.y += -5.40;
             let n = 0;
             
-
+            ////////// PISO 20 //////////
             //BLOQUE 001    
             for (let i = 0; i < 1; i++) {
               for (let j = 0; j < 1; j++) {
@@ -321,7 +366,7 @@ export class SceneComponent implements OnInit {
                     piece.position.set((model5.position.x+0.20)+(0.46*i),0,(model5.position.z+0.30)+(0.46*j));
                     piece.rotation.y += -5.40;
                                                
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -350,7 +395,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+0.06)+(0.40*i),0,(model5.position.z+1.22)+(0.46*j));
                       piece.rotation.y += 4.02;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -376,7 +421,8 @@ export class SceneComponent implements OnInit {
 
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                     piece.position.set((model5.position.x+1.48)+(0.46*i),0,(model5.position.z)+(0.46*j));
-                    piece.rotation.y += 2.45;          
+                    piece.rotation.y += 2.45; 
+                    piece.visible = invisibleModels(3);         
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -417,7 +463,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+1.72)+(0.46*i),0,(model5.position.z+0.62)+(0.46*j));
                       piece.rotation.y += 4.02;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -460,7 +506,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+0.62)+(0.46*j));
                       piece.rotation.y += 4.02;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -486,7 +532,7 @@ export class SceneComponent implements OnInit {
                    
                     piece.position.set((model5.position.x+3.05)+(0.46*i),0,(model5.position.z+3.59)+(0.46*j));
                     piece.rotation.y += -0.69;                           
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -517,7 +563,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+2.87)+(0.46*i),0,(model5.position.z+3.91)+(0.46*j));
                       piece.rotation.y += 4.02;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -542,7 +588,7 @@ export class SceneComponent implements OnInit {
                     piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                     piece.position.set((model5.position.x+3.82)+(0.46*i),0,(model5.position.z+5.50)+(0.46*j));
                     piece.rotation.y += -5.40;                                         
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -574,7 +620,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+5.20)+(0.46*i),0,(model5.position.z+3.52)+(0.46*j));
                       piece.rotation.y += 2.45;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -609,7 +655,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+4.72)+(0.46*i),0,(model5.position.z+5.02)+(0.46*j));
                       piece.rotation.y += 2.45;
                     }                             
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                     /* scene.add(piece.children[3]); */
                   }, undefined, function ( e ) {
@@ -639,7 +685,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+6.95)+(0.46*i),0,(model5.position.z+4.95)+(0.46*j));
                       piece.rotation.y += -5.40;
                     }
-
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -667,7 +713,7 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+4.60)+(0.46*i),0,(model5.position.z+6.45)+(0.46*j));
                       piece.rotation.y += -0.69;
                     }                           
-                    
+                    piece.visible = invisibleModels(3);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -695,7 +741,31 @@ export class SceneComponent implements OnInit {
                       piece.position.set((model5.position.x+7.46)+(0.46*i),0,(model5.position.z+4.90)+(0.46*j));
                       piece.rotation.y += -0.69;
                     }                          
-                    
+                    piece.visible = invisibleModels(3);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }  
+
+
+            ////////// PISO 19 //////////
+
+            //BLOQUE 001    
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 5; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x-0.14)+(0.46*i),0,(model5.position.z)+(0.46*j));
+                    piece.rotation.y += 4.02;
+                    piece.visible = invisibleModels(2);
                     scene.add(piece);
                   }, undefined, function ( e ) {
       
@@ -704,7 +774,1318 @@ export class SceneComponent implements OnInit {
                   } );
               }
             }
+
+            //BLOQUE 006
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+0.70)+(0.46*i),0,(model5.position.z+0.11)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA    
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 007
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.63)+(0.46*i),0,(model5.position.z)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA 
+                    piece.visible = invisibleModels(2);   
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 012 
+             for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.60)+(0.46*i),0,(model5.position.z+0.92)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+0.72)+(0.46*i),0,(model5.position.z+0.78)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+             //BLOQUE 024
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.33)+(0.46*i),0,(model5.position.z+2.52)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 025 
+             for (let i = 0; i < 3; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.67)+(0.46*i),0,(model5.position.z+2.30)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.79)+(0.46*i),0,(model5.position.z+2.16)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
             
+             //BLOQUE 028
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+3.03)+(0.46*i),0,(model5.position.z+2.40)+(0.46*j));
+                    piece.rotation.y += 4.02;                                        
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 032
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.48)+(0.46*i),0,(model5.position.z+3.45)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.60)+(0.46*i),0,(model5.position.z+3.31)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 040
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.17)+(0.46*i),0,(model5.position.z+4.78)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.29)+(0.46*i),0,(model5.position.z+4.64)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 050 
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.32)+(0.46*i),0,(model5.position.z+6.23)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 051
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.65)+(0.46*i),0,(model5.position.z+6.01)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.77)+(0.46*i),0,(model5.position.z+5.87)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 059   
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 3; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x-0.04)+(0.46*i),0,(model5.position.z+7.11)+(0.46*j));
+                    piece.rotation.y += 4.02;
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 062 
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+0.93)+(0.46*i),0,(model5.position.z+7.31)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 063
+            for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    if (i === 0 && j === 0) {
+                      return;
+                    }
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.80)+(0.46*i),0,(model5.position.z+7.32)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+0.92)+(0.46*i),0,(model5.position.z+7.18)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 074
+            for (let i = 0; i < 8; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.35)+(0.46*i),0,(model5.position.z+8.60)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                           
+                    piece.visible = invisibleModels(2); 
+                   scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            
+             //BLOQUE 082
+             for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA  
+
+                    if (i === 0 || i=== 1) {
+                      piece.position.set((model5.position.x+12.32)+(0.46*i),0,(model5.position.z+-0.01)+(0.46*j));
+                    }else{
+                      piece.position.set((model5.position.x+12.32)+(0.46*i),0,(model5.position.z+0.12)+(0.46*j));
+                    }                 
+                    piece.visible = invisibleModels(2); 
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 087
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+12.20)+(0.46*i),0,(model5.position.z+0.94)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+12.32)+(0.46*i),0,(model5.position.z+0.80)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 097
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+13.55)+(0.46*i),0,(model5.position.z+1.80)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                          
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 099
+            for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if ( i > 1 && j === 0) {
+                      return;
+                    }
+
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+11.86)+(0.46*i),0,(model5.position.z+2.15)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else if (i > 2 && j ===  1 ) {
+                      piece.position.set((model5.position.x+11.98)+(0.46*i),0,(model5.position.z+1.86)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }else{
+                      piece.position.set((model5.position.x+11.98)+(0.46*i),0,(model5.position.z+2.01)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 107
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+14.30)+(0.46*i),0,(model5.position.z+3.07)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 108
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (i ===4 && j === 1) {
+                      return;
+                    }
+                    
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+11.90)+(0.46*i),0,(model5.position.z+3.37)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+12.02)+(0.46*i),0,(model5.position.z+3.24)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 117
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 3; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+12.68)-(0.34*j),0,(model5.position.z+4.59)+(0.28*j));
+                    piece.rotation.y += -0.01;
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 120
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+7.15)+(0.46*i),0,(model5.position.z+6.20)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA    
+                    piece.visible = invisibleModels(2);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            ////////// PISO 18 /////////
+
+            //BLOQUE 001    
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 5; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x-0.14)+(0.46*i),0,(model5.position.z)+(0.46*j));
+                    piece.rotation.y += 4.02;
+                    piece.visible = invisibleModels(1);
+
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 006
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+0.68)+(0.46*i),0,(model5.position.z+0.07)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA   
+                    piece.visible = invisibleModels(1); 
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 007
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.56)+(0.46*i),0,(model5.position.z)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA    
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 012 
+             for (let i = 0; i < 7; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.49)+(0.46*i),0,(model5.position.z+0.92)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+0.61)+(0.46*i),0,(model5.position.z+0.78)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+             //BLOQUE 026
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.33)+(0.46*i),0,(model5.position.z+2.45)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 027
+             for (let i = 0; i < 3; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.67)+(0.46*i),0,(model5.position.z+2.23)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.79)+(0.46*i),0,(model5.position.z+2.09)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            
+             //BLOQUE 030
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+3.03)+(0.46*i),0,(model5.position.z+2.32)+(0.46*j));
+                    piece.rotation.y += 4.02;                                        
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 034
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.48)+(0.46*i),0,(model5.position.z+3.45)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.60)+(0.46*i),0,(model5.position.z+3.31)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 042
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+0.2)+(0.46*i),0,(model5.position.z+3.95)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA  
+                    piece.visible = invisibleModels(1);  
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 044
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.12)+(0.46*i),0,(model5.position.z+4.70)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.24)+(0.46*i),0,(model5.position.z+4.56)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 054 
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+1.32)+(0.46*i),0,(model5.position.z+6.19)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 055
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+1.65)+(0.46*i),0,(model5.position.z+5.97)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+1.77)+(0.46*i),0,(model5.position.z+5.83)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 063   
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 3; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x-0.04)+(0.46*i),0,(model5.position.z+7.11)+(0.46*j));
+                    piece.rotation.y += 4.02;
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 066
+            for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.70)+(0.46*i),0,(model5.position.z+7.32)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+0.82)+(0.46*i),0,(model5.position.z+7.18)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 078
+            for (let i = 0; i < 8; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+0.15)+(0.46*i),0,(model5.position.z+8.60)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                           
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            
+             //BLOQUE 085
+             for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA  
+
+                    if (i === 0 || i=== 1 || i === 2) {
+                      piece.position.set((model5.position.x+11.58)+(0.46*i),0,(model5.position.z+-0.01)+(0.46*j));
+                    }else{
+                      piece.position.set((model5.position.x+11.58)+(0.46*i),0,(model5.position.z+0.08)+(0.46*j));
+                    }                 
+                    piece.visible = invisibleModels(1);  
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 091
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+11.98)+(0.46*i),0,(model5.position.z+0.94)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+12.10)+(0.46*i),0,(model5.position.z+0.80)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 101
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+13.33)+(0.46*i),0,(model5.position.z+1.75)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }                          
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 103
+            for (let i = 0; i < 6; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if ( i > 1 && j === 0) {
+                      return;
+                    }
+
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+11.76)+(0.46*i),0,(model5.position.z+2.15)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else if (i > 2 && j ===  1 ) {
+                      piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+1.86)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }else{
+                      piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+2.01)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 111
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+14.10)+(0.46*i),0,(model5.position.z+3)+(0.46*j));
+                    piece.rotation.y += -5.40;                                         
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 112
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (i ===4 && j === 1) {
+                      return;
+                    }
+                    
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+11.80)+(0.46*i),0,(model5.position.z+3.33)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+11.92)+(0.46*i),0,(model5.position.z+3.20)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 121
+            for (let i = 0; i < 2; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+11.85)+(0.46*i),0,(model5.position.z+4.57)+(0.46*j));
+                    piece.rotation.y += -0.69;   
+                    piece.visible = invisibleModels(1);    
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             //BLOQUE 123
+             for (let i = 0; i < 9; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+8.32)+(0.46*i),0,(model5.position.z+4.97)+(0.46*j));
+                    piece.rotation.y += 2.45;      //SILLA MIRANDO ARRIBA 
+                    piece.visible = invisibleModels(1);   
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 132    
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 8; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+7.36)+(0.46*i),0,(model5.position.z+5.15)+(0.46*j));
+                    piece.rotation.y += 4.02;
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 140
+            for (let i = 0; i < 5; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+8.20)+(0.46*i),0,(model5.position.z+5.86)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+8.32)+(0.46*i),0,(model5.position.z+5.72)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+             //BLOQUE 150
+             for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 3; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+11.28)-(0.34*j),0,(model5.position.z+5.59)+(0.28*j));
+                    piece.rotation.y += -0.01;
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+            //BLOQUE 153
+            for (let i = 0; i < 3; i++) {
+              for (let j = 0; j < 2; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                   
+                    if (i ===2 && j === 1) {
+                      return;
+                    }
+                    
+                    if (j === 0) {
+                      piece.position.set((model5.position.x+8.18)+(0.46*i),0,(model5.position.z+7.06)+(0.46*j));
+                      piece.rotation.y += -0.69;
+                    }else{
+                      piece.position.set((model5.position.x+8.30)+(0.46*i),0,(model5.position.z+6.92)+(0.46*j));
+                      piece.rotation.y += 2.45;
+                    }                             
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+
+            //BLOQUE 158
+            for (let i = 0; i < 1; i++) {
+              for (let j = 0; j < 1; j++) {
+                  loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
+                    let piece = gltf.scene;
+        
+                    piece.userData = {"info" : answ.data[j]};
+                    console.log(piece.userData = {"info" : answ.data[j]});
+                    n++;
+
+                    piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
+                    piece.position.set((model5.position.x+8.08)-(0.34*j),0,(model5.position.z+8.19)+(0.28*j));
+                    piece.rotation.y += -0.01;
+                    piece.visible = invisibleModels(1);
+                    scene.add(piece);
+                  }, undefined, function ( e ) {
+      
+                    console.error( e );
+      
+                  } );
+              }
+            }
+
+             
+
 
 
           }, undefined, function ( e ) {
@@ -728,12 +2109,12 @@ export class SceneComponent implements OnInit {
       //console.log("el material de las escaleras es: ", childMaterial);
       childMaterial.color = new THREE.Color(0xf25922);
   
-      model.position.set( 4.8, 0, -0.44 );
-      model.scale.set( model.scale.x*0.7, model.scale.y*0.5, model.scale.z*0.5);
+      model.position.set( 4.6, 0, -0.57 );
+      model.scale.set( model.scale.x*0.5, model.scale.y*0.5, model.scale.z*0.5);
       model.userData = { "id": "stairs" };
       scene.add( model );  
 
-      model.rotation.y += 9.45;
+      model.rotation.y += 9.43;
 
     }, undefined, function ( e ) {
 
