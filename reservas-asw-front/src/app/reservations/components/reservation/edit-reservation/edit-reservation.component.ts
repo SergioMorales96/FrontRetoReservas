@@ -5,6 +5,8 @@ import { DatesReservation, ReservationResponse } from '../../../../admin/interfa
 import { RouteName } from '../../../../../utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { tap } from 'rxjs/operators';
+import { AlertsService } from '../../../../services/cancelReservation.service';
+import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -96,8 +98,9 @@ export class EditReservationComponent {
 
 
   constructor(
-    private reservationsService: ReservationsService
-
+    private reservationsService: ReservationsService,
+    private toastService: ToastsService,
+    private cancelReservationService: AlertsService
   ) { }
 
   ngOnInit(): void {
@@ -124,6 +127,29 @@ export class EditReservationComponent {
         (ReservationResponse: ReservationResponse) => this.datesReservation = ReservationResponse.data
       )
   }
+
+
+  cancelReservation(reservationC:DatesReservation):void{
+    this.cancelReservationService.showConfirmDialog({
+      message: '¿Desea cancelar la reserva, esta acción no se podrá revertir?',
+      header: 'Cancelar reserva',
+    })
+      .then(resp => {
+        if (resp) {
+          this.reservationsService.cancelReservation(reservationC)
+            .subscribe(
+              (reservationReponse: ReservationResponse) => {
+                this.datesReservation = this.datesReservation.filter((dateReservation: DatesReservation) => dateReservation.numeroReserva !== reservationC.numeroReserva);
+                this.toastService.showToastSuccess({ summary: 'Reserva cancelada', detail: 'La reserva ha sido cancelada correctamente.' });
+              }
+            );
+        } else {
+          return;
+        }
+      })
+    .catch(console.log);
+  }
+
 
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);

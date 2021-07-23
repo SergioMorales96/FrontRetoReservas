@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ToastsService } from '../../services/toasts.service';
 import { catchError } from 'rxjs/operators';
-import { ReservationResponse } from '../interfaces/reservation';
+import { ReservationResponse, DatesReservation } from '../interfaces/reservation';
 
 @Injectable({
     providedIn: 'root'
@@ -28,4 +28,16 @@ export class ReservationsService {
                 catchError(err => of ({data:[]}))
             );
     }
+
+    cancelReservation(datesReservation: DatesReservation): Observable<ReservationResponse>{
+        const url = `${this.apiUrl}/cancelarreserva`;
+        return this.http.post<ReservationResponse>(url, datesReservation)
+        
+            .pipe(
+                catchError(err => {
+                    this.toastService.showToastDanger({summary:'Error al cancelar la reserva', detail: err?.message ? err.message: err});
+                    return throwError(err);
+                })
+            );
+        }
 }

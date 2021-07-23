@@ -6,6 +6,7 @@ export interface ReservationResponse {
 }
 
 export interface DatesReservation {
+    numeroReserva:       number;
     dia:                 string;
     horaInicio:          string;
     horaFin:             string;
