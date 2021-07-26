@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ReservationAction } from 'src/utils/enums';
-import { ViewReservationComponent } from '../view-reservation/view-reservation.component';
-import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
-import { RouteName } from '../../../../../utils/enums';
-import { ReservationsService } from '../../../../admin/services/reservation.service';
-import { tap } from 'rxjs/operators';
 import { AlertsService } from '../../../../services/cancelReservation.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
+import { ReservationAction } from 'src/utils/enums';
+import { ReservationsService } from '../../../../admin/services/reservation.service';
+import { RouteName } from '../../../../../utils/enums';
+import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
@@ -19,9 +18,8 @@ export class EditReservationComponent {
   @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
   
   datesReservation: DatesReservation[] = [];
-  routeName = RouteName;
   currentPosition: number = 0;
-
+  routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',
     '=1': '1 persona',
@@ -44,7 +42,6 @@ export class EditReservationComponent {
 
   get reservationDate(): string {
     const date = this.currentReservation?.dia?.split('-');
-
     return `${date[0]}/${date[1]}/${date[2]}`;
   }
 
@@ -54,13 +51,17 @@ export class EditReservationComponent {
       : this.currentReservation.nombrePuesTrabajo;
   }
 
-  get workStationMedia(): string {
-    const asistentsNumber = this.currentReservation.numeroAsistentes;
-    if (asistentsNumber > 1) {
-      return 'workbench.svg'
-    }
-    else {
-      return 'workstation.svg'
+  get transportMedia(): string {
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
+    switch (vehicleType) {
+      case 'B':
+        return 'bicycle.svg';
+      case 'M':
+        return 'bicycle.svg'
+      case 'C':
+        return 'bicycle.svg'
+      default:
+        return 'bicycle.svg'
     }
   }
 
@@ -78,31 +79,23 @@ export class EditReservationComponent {
     }
   }
 
-  get transportMedia(): string {
-    const vehicleType = this.currentReservation.dominioTipoVehiculo;
-
-    switch (vehicleType) {
-      case 'B':
-        return 'bicycle.svg';
-      case 'M':
-        return 'motorcycle.svg'
-      case 'C':
-        return 'car.svg'
-      default:
-        return 'N/A'
+  get workStationMedia(): string {
+    const asistentsNumber = this.currentReservation.numeroAsistentes;
+    if (asistentsNumber > 1) {
+      return 'workbench.svg'
     }
-
+    else {
+      return 'workstation.svg'
+    }
   }
 
-
   constructor(
+    private cancelReservationService: AlertsService,
     private reservationsService: ReservationsService,
-    private toastService: ToastsService,
-    private cancelReservationService: AlertsService
+    private toastService: ToastsService 
   ) { }
 
   ngOnInit(): void {
-
     this.getRervations(this.getData());
   }
 

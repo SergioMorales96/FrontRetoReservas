@@ -1,7 +1,6 @@
 <div 
     class="p-d-flex" 
      *ngIf="datesReservation.length > 0; else noReservations"> 
-    <!-- Flecha hacia la izquierda -->
     <div class="p-d-flex p-jc-center p-ai-center">
         <p-button 
             styleClass="reservation__controls-button p-button-text"
@@ -14,10 +13,8 @@
             </ng-template>
         </p-button>
     </div>
-    <!-- Interfaz de reservas -->
-    <div class="" [ngStyle]="{ 'width': '24rem','background-color': '#606060' }">
+    <div class="reservation__background" >
         <div class="position-relative p-pt-6 p-px-4 p-pb-4">
-            <!-- Icono del recorrido superior-derecha -->
             <p-button 
                 styleClass="button_square reservation__button"
                 (onClick)="showEditReservation()">
@@ -32,13 +29,11 @@
                 </ng-template>
             </p-button>
 
-            <div class="p-grid p-m-0" [ngStyle]="{'width':'100%'}">
-                <!-- Columna reserva con mesa -->
+            <div class="p-grid p-m-0" >
                 <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
                     <img class="" [src]="'assets/images/icons/'+ workStationMedia">
                     <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                 </div>
-                <!-- Parte de las fechas -->
                 <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
                     <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
                     <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
@@ -56,10 +51,7 @@
                     <span class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
             </div>
         </div>
-        <!-- Linea blanca -->
-        <hr
-            [style]="{'height':'2px','border':'0','background-image': 'linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96))'}">
-        <!-- Segunda divicion de la interfaz, vehiculo y marca -->
+        <hr class="white__line">
         <div class="p-grid p-m-0 p-py-3">
             <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
                 <h5 class="reservation__text-small p-mt-0">
@@ -77,13 +69,10 @@
                 </p>
             </div>
         </div>
-        <!-- Tercera divicion fondo verde -->
-        <div class="p-grid p-m-0" [ngStyle]="{'background-color': '#5ebc00'}">
-            <!-- Ojo blanco -->
+        <div class="green__division p-grid p-m-0" >
             <div class="p-col-2 p-d-flex p-jc-center p-ai-center">
                 <img src="assets/images/icons/eye-white.svg">
             </div>
-            <!-- Texto de bienvenida -->
             <div class="p-col-10 p-d-flex p-jc-start p-ai-center">
                 <p class="reservation__text-small-2 p-py-0">
                     Estas listo para ingresar a las oficinas ¡Te extrañabamos!
@@ -92,7 +81,6 @@
             </div>
         </div>
     </div>
-    <!-- Flecha hacia la derecha -->
     <div class="p-d-flex p-jc-center p-ai-center">
         <p-button 
             styleClass="reservation__controls-button p-button-text"

@@ -1,24 +1,21 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
-import { ReservationAction, RouteName } from '../../../../../utils/enums';
 import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
+import { ReservationAction, RouteName } from '../../../../../utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
-import * as moment from 'moment';
-
+import { tap } from 'rxjs/operators';
 @Component({
   selector: 'app-view-reservation',
   templateUrl: './view-reservation.component.html',
   styleUrls: ['./view-reservation.component.scss']
 })
 export class ViewReservationComponent implements OnInit {
-
-  @Output() onCurrentReservation: EventEmitter<DatesReservation> = new EventEmitter<DatesReservation>();
+  
   @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
-
+  @Output() onCurrentReservation: EventEmitter<DatesReservation> = new EventEmitter<DatesReservation>();
+  
   datesReservation: DatesReservation[] = [];
-  routeName = RouteName;
   currentPosition: number = 0;
-
+  routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',
     '=1': '1 persona',
@@ -39,13 +36,13 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get canShowPreview(): boolean {
-    return this.currentPosition - 1 >= 0;
-  }
-
   get canShowNext(): boolean {
     return this.datesReservation.length - 1 > this.currentPosition;
   }
+
+  get canShowPreview(): boolean {
+    return this.currentPosition - 1 >= 0;
+  } 
 
   get currentReservation(): DatesReservation {
     return this.datesReservation[this.currentPosition];
@@ -53,7 +50,6 @@ export class ViewReservationComponent implements OnInit {
 
   get reservationDate(): string {
     const date = this.currentReservation?.dia?.split('-');
-
     return `${date[0]}/${date[1]}/${date[2]}`;
   }
 
@@ -62,14 +58,18 @@ export class ViewReservationComponent implements OnInit {
       ? this.currentReservation.nombreSala
       : this.currentReservation.nombrePuesTrabajo;
   }
+  get transportMedia(): string {
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
 
-  get workStationMedia(): string {
-    const asistentsNumber = this.currentReservation.numeroAsistentes;
-    if (asistentsNumber > 1) {
-      return 'workbench.svg'
-    }
-    else {
-      return 'workstation.svg'
+    switch (vehicleType) {
+      case 'B':
+        return 'bicycle.svg';
+      case 'M':
+        return 'bicycle.svg'
+      case 'C':
+        return 'bicycle.svg'
+      default:
+        return 'bicycle.svg'
     }
   }
 
@@ -87,30 +87,21 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get transportMedia(): string {
-    const vehicleType = this.currentReservation.dominioTipoVehiculo;
-
-    switch (vehicleType) {
-      case 'B':
-        return 'bicycle.svg';
-      case 'M':
-        return 'motorcycle.svg'
-      case 'C':
-        return 'car.svg'
-      default:
-        return 'N/A'
+  get workStationMedia(): string {
+    const asistentsNumber = this.currentReservation.numeroAsistentes;
+    if (asistentsNumber > 1) {
+      return 'workbench.svg'
     }
-
+    else {
+      return 'workstation.svg'
+    }
   }
-
 
   constructor(
     private reservationsService: ReservationsService
-
   ) { }
 
   ngOnInit(): void {
-
     this.getRervations(this.getData());
   }
 
@@ -146,6 +137,4 @@ export class ViewReservationComponent implements OnInit {
     this.currentPosition = this.currentPosition + value;
     this.onCurrentReservation.emit(this.currentReservation);
   }
-
-
 }

@@ -1,3 +1,12 @@
+.green__division{
+  background-color: #5ebc00;
+}
+
+.reservation__background{
+  width: 24rem;
+  background-color: #606060;
+}
+
 .reservation__title {
   font-size: 2rem;
   font-weight: 500;
@@ -73,6 +82,12 @@
 
 .reservation__pipe-divider {
   font-size: 0.5rem;
+}
+
+.white__line{
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
 }
 
 :host ::ng-deep {
