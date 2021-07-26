@@ -12,18 +12,11 @@ import { DateValidationType } from '../../../../utils/enums';
 export class FormDateComponent implements OnInit {
   @Input() submitted!: boolean;
   @Input() formGroupName!: string;
-  numPisoSubscriptio!: Subscription;
   form!: FormGroup;
-  form2!: FormGroup;
-  numberPisos!: number;
-  numberPeople!: number;
+  formWorkstationInfo!: FormGroup;
+  numFloor!: number;
+  numPeople!: number;
   valType!: DateValidationType;
-
-  @Input() public floorId!: number | null;
-  @Input() public numberPersons!: number | null;
-  @Input() public validationType!: DateValidationType | null;
-
-  //@Input() numPersonas!: number;
   constructor(
     private rootFormGroup: FormGroupDirective,
     private dataService: DataService
@@ -31,17 +24,12 @@ export class FormDateComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    this.form2 = this.rootFormGroup.control.get("puestoInfo") as FormGroup;
+    this.formWorkstationInfo = this.rootFormGroup.control.get(
+      'puestoInfo'
+    ) as FormGroup;
 
-    this.numberPisos = this.form2.controls['piso'].value;
-    this.numberPeople = this.form2.controls['personasReserva'].value;
-    this.valType = this.form2.controls['medioTransporte'].value;
-    //console.log("Num piso desde form-date (Step 2) "+ this.numberPisos);
-    //console.log("Entrando a Step 2 y enviando PISO por serviceData");
-    //this.dataService.numPiso$.emit(this.numberPisos);
-  }
-
-  get f() {
-    return this.form.controls;
+    this.numFloor = this.formWorkstationInfo.controls['piso'].value;
+    this.numPeople = this.formWorkstationInfo.controls['personasReserva'].value;
+    this.valType = this.formWorkstationInfo.controls['medioTransporte'].value;
   }
 }
