@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
 import { ToastsService } from '../../../services/toasts.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-calendar',
@@ -19,7 +20,12 @@ export class CalendarComponent implements OnInit {
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-  ) { }
+    private store: Store<AppState>
+  ) { 
+    this.store
+    .select( 'reservation' )
+    .subscribe( reservation => console.log( reservation.floorNumber ) );
+  }
 
   @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
   @Input() dateCar: DateValidationType = DateValidationType.ParkingAvailabilityPerCar;
