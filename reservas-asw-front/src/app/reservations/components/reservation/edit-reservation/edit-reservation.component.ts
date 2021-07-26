@@ -35,7 +35,7 @@ export class EditReservationComponent {
       return 'Placa'
     }
     else if(typeDomainVehicle === 'B'){
-      return 'Marca'
+      return 'N/A'
     }
     else {
       return 'No se registró vehiculo'
@@ -85,11 +85,11 @@ export class EditReservationComponent {
       case 'B':
         return 'bicycle.svg';
       case 'M':
-        return 'bicycle.svg'
+        return 'motorcycle.svg'
       case 'C':
-        return 'bicycle.svg'
+        return 'car.svg'
       default:
-        return 'bicycle.svg'
+        return 'N/A'
     }
 
   }

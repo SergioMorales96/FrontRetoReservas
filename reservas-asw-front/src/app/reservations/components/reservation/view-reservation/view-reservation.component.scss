@@ -92,3 +92,37 @@
     box-shadow: none;
   }
 }
+
+.dimensions{
+  height: 24rem;
+  text-align: center;
+}
+
+.question{
+  margin: 0%;
+  object-fit: contain;
+  opacity: 0.3;
+  font-family: Futura;
+  font-size: 128px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  color: var(--dark-navy-blue);
+}
+
+.noReservation{
+  margin: 0%;
+  opacity: 0.3;
+  font-family: Futura;
+  font-size: 14px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.36;
+  letter-spacing: normal;
+  text-align: left;
+  color: var(--dark-navy-blue);
+}
+

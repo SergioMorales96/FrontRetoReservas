@@ -32,7 +32,7 @@ export class ViewReservationComponent implements OnInit {
       return 'Placa'
     }
     else if (typeDomainVehicle === 'B') {
-      return 'Marca'
+      return 'N/A'
     }
     else {
       return 'No se registró vehiculo'
@@ -94,11 +94,11 @@ export class ViewReservationComponent implements OnInit {
       case 'B':
         return 'bicycle.svg';
       case 'M':
-        return 'bicycle.svg'
+        return 'motorcycle.svg'
       case 'C':
-        return 'bicycle.svg'
+        return 'car.svg'
       default:
-        return 'bicycle.svg'
+        return 'N/A'
     }
 
   }
@@ -120,7 +120,7 @@ export class ViewReservationComponent implements OnInit {
       endDate: '14-07-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
-      email: 'user6@asesoftware.com'
+      email: 'user0@asesoftware.com'
     }
   }
 

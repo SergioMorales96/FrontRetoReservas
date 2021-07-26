@@ -106,5 +106,15 @@
 </div>
 
 <ng-template #noReservations>
-    <p>No hay reservas...</p>
+    <div class="p-d-flex">
+        <div class="p-d-flex p-jc-center p-ai-center">
+           <i>
+                <img alt="icon" src="assets/images/icons/flecha.svg">
+           </i> 
+        </div>
+        <div class="dimensions p-col-3 d-p-flex p-jc-center p-ai-center">
+            <p class="question" ><img src="assets/images/icons/question.svg"></p>
+            <p class="noReservation">No hay reservas para este mes, realiza una reserva</p>
+        </div>
+    </div>
 </ng-template>
