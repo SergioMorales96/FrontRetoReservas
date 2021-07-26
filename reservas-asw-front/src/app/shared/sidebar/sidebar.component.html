@@ -1,15 +1,24 @@
-<p-sidebar 
-    [(visible)]="display"
-    styleClass="p-sidebar-sm"
-    [transitionOptions]="'0ms'"
-    (onHide)="hide()">
-
-    <p-divider></p-divider>
-
-    <p-panelMenu 
-        [model]="items"
-        [style]="{ width: '100%' }">
-    </p-panelMenu>
-
-</p-sidebar>    
+<div class="sidebar" [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
+    <h2 class="spaceLogo">
+        <img class="imageLogo" src="../../../assets/images/logos/logo.svg">
+    </h2>
+    <p-button class="p-menuButton" *ngIf="!display" (onClick)="selectButton(true)">
+        <a class="text">Generar una reserva</a>
+        <img class="image imageIcon" src="../../../assets/images/icons/plus-blue.svg">
+    </p-button>
+    <p-button class="p-menuButton" *ngIf="display">
+        <a class="text">Generar una reserva</a>
+        <img class="image imageIcon" src="../../../assets/images/icons/close-red.svg">
+    </p-button>
+    <p-button class="p-menuButton p-menuReservation" *ngIf="display" (onClick)="selectButton(false)">
+        <img class="image imageCalendar" src="../../../assets/images/icons/calendar.svg">
+        <a>Mis reservas</a>
+        <img src="../../../assets/images/icons/arrow-right-white.svg">
+    </p-button>
+    <p-button class="p-menuButton p-menuReservationActive" *ngIf="!display">
+        <img class="image imageCalendar" src="../../../assets/images/icons/calendar-blue.svg">
+        <a>Mis reservas</a>
+        <img src="../../../assets/images/icons/arrow-right-blue.svg">
+    </p-button>
+</div>
 
