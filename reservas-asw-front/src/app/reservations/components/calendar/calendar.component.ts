@@ -206,23 +206,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   setDates(dateValue: Date) {
-    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
-    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
-
-    let month: number = dateValue.getMonth() + 1;
-    let strMonth: string = month.toString();
-
-    let year: number = dateValue.getFullYear();
-    let strYear: string = year.toString();
-
-    let startDay: number = first.getDate();
-    let strStartDay: string = startDay.toString();
-
-    let lastDay: number = last.getDate();
-    let strLastDay: string = lastDay.toString();
-
-    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
-    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+    
+    const startDate = moment(dateValue).startOf('month').format('DD-MM-YYYY');
+    const endDate = moment(dateValue).endOf('month').format('DD-MM-YYYY');
 
     if (this._numberOfPeople > 1) {
       this.queryDates =
@@ -366,8 +352,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
   public minDate = new Date(
-    this.selectedDate.getFullYear(),
-    this.selectedDate.getMonth(),
-    this.selectedDate.getDate()
+    // this.selectedDate.getFullYear(),
+    // this.selectedDate.getMonth(),
+    // this.selectedDate.getDate()
   );
 }
