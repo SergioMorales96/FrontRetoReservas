@@ -107,12 +107,12 @@ export class FormWorkstationComponent implements OnInit {
     this.formControls['piso'].setValue(this.numFloor); 
   }
 
-  cambiarPersonas(value: number): void {
+  changePeople(value: number): void {
     this.numPeople += value;
     this.formControls['personasReserva'].setValue(this.numPeople); 
   }
 
-  cambiarTransporte(value: number): void {
+  changeTransport(value: number): void {
     this.ind += value;
     this.ind < 0 ? (this.ind = 3) : this.ind > 3 ? (this.ind = 0) : true;
     this.meanOfTransport = this.meansOfTransport[this.ind].value;

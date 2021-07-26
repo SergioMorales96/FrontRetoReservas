@@ -48,14 +48,14 @@
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarPersonas(-1); removePeople()"
+            (click)="changePeople(-1); removePeople()"
           ></button>
           <span>{{ numPeople }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarPersonas(1); addPeople()"
+            (click)="changePeople(1); addPeople()"
           ></button>
         </div>
       </div>
@@ -109,14 +109,14 @@
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarTransporte(-1)"
+            (click)="changeTransport(-1)"
           ></button>
           <span>{{ transportModeName }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarTransporte(1)"
+            (click)="changeTransport(1)"
           ></button>
         </div>
       </div>
