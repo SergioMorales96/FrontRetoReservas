@@ -1,36 +1,24 @@
-
 <div class="p-grid ">
-    <!-- colum A -->
-    <div class="p-col-1 col-White"></div>
-    <!-- colum B -->
-    <div class="p-col-8 col-b p-grid p-flex-column">
-        <!-- fila 1 -->
-        <div class="col-b1 p-d-flex p-jc-between p-ai-center">
+    <div class="p-col-1 column__White"></div>
+    <div class="p-col-8 column__center p-grid p-flex-column">
+        <div class="reservation__edit p-d-flex p-jc-between p-ai-center">
             <span>Editar reserva</span>
             <span>
-                <button pButton pRipple  [style]="{'background-color': 'white',
-                                                   'color':'red',
-                                                   'width':'24px',
-                                                   'height':'24px'}"
+                <button pButton pRipple 
                                    type="button" 
                                    icon="pi pi-times"
-                                   class="p-button-rounded " 
+                                   class="button__close " 
                                    (click)="showReservation1()">
                 </button>
             </span>
         </div>
-        <!-- fila 2 -->
-        <div style="width: 24.25rem;left:.6rem; height: 302px; background-color: #0666fb; position: relative;">
-            <hr class="col-b3">
-            <div class= "col-b2 p-pt-2 p-px-4 p-pb-4" >
-                
+        <div class="reservation__background" >
+            <div class= "style__backgruond1 p-pt-2 p-px-4 p-pb-4" >                
                 <div class="p-grid p-m-0" >
-                    <!-- Columna reserva con mesa -->
                     <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
                         <img class="" src="assets/images/icons/workbench.svg">
                         <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                     </div>
-                    <!-- Parte de las fechas -->
                     <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
                         <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
                         <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
@@ -42,13 +30,9 @@
                     <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; <span
                             class="reservation__pipe-divider">|</span> &nbsp; {{salaOrJob}} &nbsp; <span
                             class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
-                </div>
-                
-                
+                </div>             
             </div>
-         
-            <!-- fila 6 -->
-            <div class="col-b6 p-grid p-m-0 p-py-3">                              
+            <div class="style__backgruond2 p-grid p-m-0 p-py-3">                              
                 <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
                     <h5 class="reservation__text-small p-mt-0">
                         Medio de transporte
@@ -66,26 +50,16 @@
                 </div>                
             </div> 
         </div>
-        <!-- fila 7 -->
-        <div class="col-b7"></div>
-        <!-- fila 8 -->
-        <div class="col-b8 p-mt-5 p-d-flex p-jc-center" >
+        <div class="degrade__line"></div>
+        <div class="reservation__cancel p-mt-5 p-d-flex p-jc-center" >
             <button pButton type="button"
                           label="Cancelar Reserva" 
                           icon="pi pi-times" 
-                          class="p-button-text p-button-sm"
-                          [style]="{'width': '13.25rem',
-                                    'height': '2.5rem',
-                                    'align-items':'center',
-                                    'background-color': '#fa729c',
-                                    'border':'none',
-                                    'color':'white',
-                                    'borde-radius':'none'}"
-                            (click)="cancelReservation()">
+                          class="cancel__button p-button-text"   
+                          (click)="cancelReservation()">
             </button>
         </div>
     </div>
-    <!-- colum C -->
-    <div class="p-col-9 col-White"></div>
+    <div class="p-col-9 column__White"></div>
 </div>
 

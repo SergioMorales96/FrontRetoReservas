@@ -1,11 +1,11 @@
-.col-White {
+.column__White {
   width: 2.875rem;
   height: 21.4375rem;
 }
-.col-b {
+.column__center {
   width: 25.5625rem;
 }
-.col-b1 {
+.reservation__edit {
   color: #ffffff;
   width: 24.25rem;
   height: 2.5rem;
@@ -13,7 +13,7 @@
   margin: 0 0.625rem 0 0.625rem;
   background-color: #0666fb;
 }
-.col-b2 {
+.style__backgruond1 {
   position: absolute;
   top: 0;
   left: -0.5rem;
@@ -30,7 +30,7 @@
   border-image-source: linear-gradient(to right, #606060, white, #606060);
 }
 
-.col-b6 {
+.style__backgruond2 {
   position: absolute;
   top: 152px;
   left: -0.5rem;
@@ -46,16 +46,39 @@
   border-width: 2px;
   border-image-source: linear-gradient(to right, #606060, white, #606060);
 }
-.col-b7 {
+.degrade__line {
   width: 24.25rem;
   height: 0.0625rem;
   margin: 0 0.625rem 0 0.625rem;
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 97%, var(#ffffff) 49%, rgba(255, 255, 255, 0) 2%);
 }
-.col-b8 {
+.cancel__button{
+  width: 13.25rem;
+  height: 2.5rem;
+  align-items: center;
+  background-color: #fa729c;
+  border: none;
+  color: white;
+  border-radius: none;  
+}
+.reservation__cancel {
   width: 13.25rem;
   height: 2.5rem;
   background-color: #fa729c;
+}
+.button__close{
+  background-color: white;
+  color: red;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+}
+.reservation__background{
+  width: 24.25rem;
+  left:.6rem;
+  height: 302px; 
+  background-color: #0666fb; 
+  position: relative;
 }
 .reservation__title {
   font-size: 2rem;
