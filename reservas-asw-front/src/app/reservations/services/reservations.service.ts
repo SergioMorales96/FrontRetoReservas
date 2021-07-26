@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
+import { catchError } from 'rxjs/operators';
 import { DataResponse, Reservation, ReservationResponse, ReservationsResponse } from '../interfaces/reservations.interface';
 
 @Injectable({

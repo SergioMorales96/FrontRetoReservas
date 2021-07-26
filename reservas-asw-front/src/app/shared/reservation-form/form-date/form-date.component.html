@@ -1,7 +1,8 @@
-<ng-container [formGroup]="form">
-    <p-card header="Step 2" [style]="{ width: '25rem', 'margin-bottom': '2em' }">
+<div class="p-fluid">
+  <p-card header="Step 2">
+    <ng-container [formGroup]="form">
       <!-- Periodo -->
-      <div class="p-field p-grid">
+      <div class="p-field">
         <label for="timeonly">Time Only</label>
         <div class="p-col">
           <p-calendar
@@ -9,29 +10,22 @@
             inputId="timeonly"
             formControlName="periodoTiempo"
           ></p-calendar>
-  
         </div>
       </div>
       <!-- /Periodo -->
-  
+
       <!-- Calendario -->
-      <div class="p-field p-grid">
-        <div class="p-col">
-          <p-calendar
-            inputId="basic"
-            formControlName="fecha"
-            [inline]="true"
-            [showWeek]="true"
-          ></p-calendar>
-        </div>
-      </div>
-      <!-- /Calendario -->
-  
+      <app-calendar
+        [selectedFloor]="numFloor"
+        [_numberOfPeople]="numPeople"
+        [dateValidationType]="valType"
+      ></app-calendar>
+
       <!-- Aforo -->
       <label>Informacion del Aforo</label>
       <br />
       <span>El aforo es para <strong>(65 personas)</strong></span>
       <!-- /Aforo -->
-    </p-card>
-  </ng-container>
-  
+    </ng-container>
+  </p-card>
+</div>

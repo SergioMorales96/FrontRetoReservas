@@ -1,17 +1,21 @@
 import { createReducer, on } from '@ngrx/store';
-import { setFloorNumber } from './reservation.actions';
+import * as actions from './reservation.actions';
 
 export interface State {
     floorNumber: number; 
+    peopleNumber: number;
 }
 
 export const initialState: State = {
    floorNumber: 0,
+   peopleNumber: 0
+
 }
 
 const _reservationReducer = createReducer(initialState,
 
-    on(setFloorNumber, (state, { floorNumber }) => ({ ...state, floorNumber: floorNumber})),
+    on(actions.setFloorNumber , (state, { floorNumber }) => ({ ...state, floorNumber: floorNumber})),
+    on(actions.setPeopleNumber, (state, { peopleNumber }) => ({ ...state, peopleNumber: peopleNumber})),
 
 );
 
