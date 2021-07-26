@@ -20,7 +20,7 @@ export class FormDateComponent implements OnInit {
   constructor(
     private rootFormGroup: FormGroupDirective,
     private dataService: DataService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;

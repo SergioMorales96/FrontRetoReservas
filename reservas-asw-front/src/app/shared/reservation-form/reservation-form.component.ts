@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CalendarComponent } from '../../reservations/components/calendar/calendar.component';
+import { DataService } from '../../services/data.service';
+import { DateValidationType } from '../../../utils/enums';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.reducer';
+import { setFloorNumber, setPeopleNumber } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-form',
@@ -12,13 +17,30 @@ export class ReservationFormComponent implements OnInit {
   step: number;
   submitted: boolean;
   numPersonas!: number;
-  constructor(private fb: FormBuilder) {
+
+  public floorId!: number;
+  public numberPersons!: number;
+  public validationType!: DateValidationType;
+
+  constructor(
+    private fb: FormBuilder,
+    private dataService: DataService,
+    private store: Store<AppState>
+    ) {
     this.step = 1;
     this.submitted = false;
     
   }
 
   ngOnInit(): void {
+
+    this.dataService.floorId$
+      .subscribe( ( floorId: number ) => this.floorId = floorId );
+    this.dataService.numberPersons$
+      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
+    this.dataService.validationType$
+      .subscribe( ( validationType: number ) => this.validationType = validationType );
+
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
       puestoInfo: this.fb.group({
@@ -51,6 +73,9 @@ export class ReservationFormComponent implements OnInit {
       }),
     });
     //console.log(this.reservaForm.get('personasReserva')?.value);
+
+    this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
+    this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
   }
 
   

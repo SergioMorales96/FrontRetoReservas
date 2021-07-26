@@ -6,6 +6,9 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.reducer';
+import { setFloorNumber, setPeopleNumber } from '../../reservation.actions';
 import { DateValidationType } from '../../../../utils/enums';
 import { DataService } from '../../../services/data.service';
 
@@ -30,7 +33,8 @@ export class FormWorkstationComponent implements OnInit {
   constructor(
     private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder,
-    private dataService: DataService
+    private dataService: DataService,
+    private store: Store<AppState>
   ) {
     this.meansOfTransport = [
       {
@@ -104,12 +108,16 @@ export class FormWorkstationComponent implements OnInit {
 
   cambiarPiso(value: number): void {
     this.numFloor += value;
+    this.form.controls['piso'].setValue(this.numFloor); //Otra forma
+    this.numFloor += value;
     this.formControls['piso'].setValue(this.numFloor); 
+    this.store.dispatch( setFloorNumber({ floorNumber: this.numFloor}) );
   }
 
   changePeople(value: number): void {
     this.numPeople += value;
-    this.formControls['personasReserva'].setValue(this.numPeople); 
+    this.formControls['personasReserva'].setValue(this.numPeople);
+    this.store.dispatch( setPeopleNumber({ peopleNumber: this.numPeople }) );
   }
 
   changeTransport(value: number): void {
