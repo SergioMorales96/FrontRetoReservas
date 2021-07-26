@@ -16,12 +16,12 @@ import { Branch, BranchesResponse } from 'src/app/admin/interfaces/branches.inte
 export class FormFloorComponent implements OnInit {
 
   floorForm = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-    aforoMaximo: ['', [Validators.required]],
-    numeroPiso: ['', [Validators.required]],
-    idSucursal: ['', [Validators.required]],
-    nombreSucursal: [''],
-    idPiso: [''],
+    nameFloor: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    maximunCapacity: ['', [Validators.required]],
+    numberFloor: ['', [Validators.required]],
+    idBranch: ['', [Validators.required]],
+    nameBranch: [''],
+    idFloor: [''],
   });
   isEditing: boolean = false;
   floor!: Floor;
@@ -73,22 +73,22 @@ export class FormFloorComponent implements OnInit {
   }
 
   setFloor(floor: Floor): void {
-    this.floorForm.controls['nombre'].setValue(floor.nombre);
-    this.floorForm.controls['aforoMaximo'].setValue(floor.aforoMaximo);
-    this.floorForm.controls['numeroPiso'].setValue(floor.numeroPiso);
-    this.floorForm.controls['nombreSucursal'].setValue(floor.nombreSucursal);
-    this.floorForm.controls['idSucursal'].setValue(floor.sucursalEntity?.idSucursal);
-    this.floorForm.controls['idPiso'].setValue(floor.idPiso);
+    this.floorForm.controls['nameFloor'].setValue(floor.nombre);
+    this.floorForm.controls['maximunCapacity'].setValue(floor.aforoMaximo);
+    this.floorForm.controls['numberFloor'].setValue(floor.numeroPiso);
+    this.floorForm.controls['nameBranch'].setValue(floor.nombreSucursal);
+    this.floorForm.controls['idBranch'].setValue(floor.sucursalEntity?.idSucursal);
+    this.floorForm.controls['idFloor'].setValue(floor.idPiso);
   }
 
   getFloorFormValue(): Floor {
     return {
-      nombreSucursal: this.floorForm.controls['nombreSucursal'].value,
-      aforoMaximo: this.floorForm.controls['aforoMaximo'].value,
-      numeroPiso: this.floorForm.controls['numeroPiso'].value,
-      idSucursal: this.floorForm.controls['idSucursal'].value,
-      idPiso: this.floorForm.controls['idPiso'].value,
-      nombre: this.floorForm.controls['nombre'].value,
+      nombre: this.floorForm.controls['nameFloor'].value,
+      aforoMaximo: this.floorForm.controls['maximunCapacity'].value,
+      nombreSucursal: this.floorForm.controls['nameBranch'].value,
+      numeroPiso: this.floorForm.controls['numberFloor'].value,
+      idSucursal: this.floorForm.controls['idBranch'].value,
+      idPiso: this.floorForm.controls['idFloor'].value,
     }
   }
 

@@ -27,6 +27,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BadgeModule } from 'primeng/badge';
 import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
+import {SliderModule} from 'primeng/slider';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { PaginatorModule } from 'primeng/paginator';
     AvatarModule,
     AvatarGroupModule,
     BadgeModule,
+    SliderModule
   ],
 })
 export class PrimeNgModule { }

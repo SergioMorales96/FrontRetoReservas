@@ -1,0 +1,35 @@
+<p>time-period-slider works!</p>
+
+<div class="p-fluid">
+
+    <p-card>
+       <div>
+           <p class="p-titleSlider">Fecha de reserva</p>
+        <p class="p-textHour">Periodo de tiempo por horas salas</p>
+       </div>
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col">
+            <p class="p-durationTime">
+               h8:00
+               <br>
+               9:00
+               <br>
+               10:00
+               <br>
+            </p> 
+            </div>
+
+            <div class="p-slider1 p-field p-col">
+
+             <p>{{min}}</p>
+             <p>{{max}}</p>   
+             <p-slider [step]="1"[(ngModel)]="rangeValues" [min]="0" [max]=18 [range]="true"></p-slider>
+            </div>
+            
+        </div>
+        
+        <button (click)="verrange()">hola</button>
+       
+    </p-card>
+    
+</div>

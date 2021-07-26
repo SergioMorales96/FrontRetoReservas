@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Reservation,ReservationResponse } from '../../interfaces/reservations.interface';
-import { RouteName } from '../../../../utils/enums';
 import { ReservationsService} from '../../services/reservations.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { ConfirmationService } from 'primeng/api';

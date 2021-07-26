@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -11,7 +10,6 @@ import {
   ReservationsResponse,
 } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
@@ -25,7 +23,7 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit {
   dateValue: Date = new Date();
   numPisoSubscription!: Subscription;
   numPeopleSubscription!: Subscription;
@@ -38,8 +36,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private dataService: DataService
   ) {}
 
-  /*@Input() dateValidationType: DateValidationType =
-    DateValidationType.DayCapacity;*/
+
   @Input() dateCar: DateValidationType =
     DateValidationType.ParkingAvailabilityPerCar;
 
@@ -49,7 +46,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
-    new EventEmitter<boolean>(); /////
+    new EventEmitter<boolean>(); 
 
   selectedDate: Date = new Date();
 
@@ -59,34 +56,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     console.log(this._numberOfPeople);
     console.log(this.dateValidationType);
 
-    /*
-    this.numPisoSubscription = this.dataService.numPiso$.subscribe(
-      (numPiso) => {
-        this.selectedFloor = numPiso;
-        console.log(
-          'Entrando a Calendar y recibiendo PISO '+numPiso+' por serviceData',
-          
-        );
-      }
-    );
-
-    this.numPeopleSubscription = this.dataService.numPersonas$.subscribe(
-      (numPeople) => {
-        this._numberOfPeople = numPeople;
-      }
-    );
-
-    this.tipoValidacionSubscription =
-      this.dataService.tipoValidacion$.subscribe((tipoValidation) => {
-        this.dateValidationType = tipoValidation;
-      });*/
+    
   }
 
-  ngOnDestroy(): void {
-    /*this.numPisoSubscription?.unsubscribe();
-    this.numPeopleSubscription?.unsubscribe();
-    this.tipoValidacionSubscription?.unsubscribe();*/
-  }
+ 
 
   //Las fechas en esta lista desactivan los días en el calendario
   invalidDates: Date[] = [];
@@ -230,13 +203,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
       'Desde callMethodPerDateValidationType, validType = ',
       this.dateValidationType
     );
-    console.log('Entrando case capacity');
+    
     this.getCapacity();
 
     switch (this.dateValidationType) {
-      //    case DateValidationType.DayCapacity:
-      //
-      // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
@@ -246,6 +216,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.getCarParkingAvailability();
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
+        this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
@@ -330,30 +301,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
       .getParkingMotorcycle(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateAvailabilityMotorcycle(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityMotorcycle(dataResponse.data));
   }
 
-  validateAvailabilityMotorcycle(data: number | any): void {
-    if (data > 0) {
+  validateParkingAvailabilityMotorcycle(data: number | any[]): void {
+    if (data) {
       this.onDayCapacity.emit(true);
+       const menssage = data!=1 ? "parqueaderos disponibles" : "parqueadero disponible";
       this.toastService.showToastSuccess({
-        summary: `Existen ${data} parqueaderos disponibles`,
-        detail: '',
+        summary: `Parqueadero de moto disponible:`,
+        detail: ` ${data} ${menssage}`,
       });
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
-        summary: 'No hay parqueaderos para carro disponibles',
+        summary: 'No hay parqueaderos para Moto disponibles',
         detail: '',
       });
     }
   }
-  public minDate = new Date(
-    // this.selectedDate.getFullYear(),
-    // this.selectedDate.getMonth(),
-    // this.selectedDate.getDate()
-  );
+  public minDate = new Date();
 }
