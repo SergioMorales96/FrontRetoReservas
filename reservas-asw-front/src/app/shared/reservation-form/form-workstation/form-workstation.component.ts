@@ -15,26 +15,24 @@ import { DataService } from '../../../services/data.service';
   styleUrls: ['./form-workstation.component.scss'],
 })
 export class FormWorkstationComponent implements OnInit {
+
   @Input() formGroupName!: string;
   @Input() submitted!: boolean;
-  AcompananteForm!: FormGroup;
+  
   form!: FormGroup;
-  numPiso!: number;
-  numPersonas!: number;
-  mediosTransporte: { label: string; value: any }[] = [];
-  medioTransporte!: number | null;
+  numPeople!: number;
+  meansOfTransport: { label: string; value: any }[] = [];
+  meanOfTransport!: number | null;
   ind: number = 0;
-  mostrarPlaca!: boolean;
-
-  //esMiembro!: boolean;
+  showLicensePlate!: boolean;
+  numFloor!: number;
 
   constructor(
     private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder,
     private dataService: DataService
   ) {
-    //this.mediosTransporte = ['Ninguno', 'Bicicleta', 'Carro', 'Moto'];
-    this.mediosTransporte = [
+    this.meansOfTransport = [
       {
         label: 'Ninguno',
         value: null,
@@ -56,18 +54,17 @@ export class FormWorkstationComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    //this.datosAcomp = this.form.get('datosAcompanante') as FormGroup;
-    this.numPiso = this.form.get('piso')?.value;
-    this.numPersonas = this.form.get('personasReserva')?.value;
-    this.medioTransporte = this.form.get('medioTransporte')?.value;
-    this.medioTransporte &&
-    this.medioTransporte !== DateValidationType.ParkingAvailabilityPerBicycle
-      ? (this.mostrarPlaca = true)
-      : (this.mostrarPlaca = false);
+    this.numFloor = this.form.get('piso')?.value;
+    this.numPeople = this.form.get('personasReserva')?.value;
+    this.meanOfTransport = this.form.get('meanOfTransport')?.value;
+    this.meanOfTransport &&
+    this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
+      ? (this.showLicensePlate = true)
+      : (this.showLicensePlate = false);
   }
 
   get transportModeName(): string {
-    switch (this.medioTransporte) {
+    switch (this.meanOfTransport) {
       case DateValidationType.ParkingAvailabilityPerBicycle:
         return 'Bicicleta';
       case DateValidationType.ParkingAvailabilityPerCar:
@@ -79,18 +76,20 @@ export class FormWorkstationComponent implements OnInit {
     }
   }
 
-  get f() {
+  get formControls() {
     return this.form.controls;
   }
-  get datosAcompanante() {
-    return this.form.controls['datosAcompanante'] as FormArray;
-  }
-  removeAcompanante() {
-    this.datosAcompanante.removeAt(this.datosAcompanante.length - 1);
+  
+  get peopleData() {
+    return this.formControls['datosAcompanante'] as FormArray;
   }
 
-  addAcompanante() {
-    const AcompananteForm = this.fb.group({
+  removePeople() {
+    this.peopleData.removeAt(this.peopleData.length - 1);
+  }
+
+  addPeople() {
+    const peopleReservation = this.fb.group({
       correo: [
         '',
         [
@@ -100,44 +99,35 @@ export class FormWorkstationComponent implements OnInit {
       ],
       miembroOrganizacion: [false, Validators.required],
     });
-    this.datosAcompanante.push(AcompananteForm);
+    this.peopleData.push(peopleReservation);
   }
 
   cambiarPiso(value: number): void {
-    this.numPiso += value;
-    console.log(
-      'Enviando piso ' + this.numPiso + ' mediante service Data desde form-workstation (Step 1)'
-    );
-    this.dataService.numPiso$.emit(this.numPiso);
-    this.form.controls['piso'].setValue(this.numPiso); //Otra forma
+    this.numFloor += value;
+    this.formControls['piso'].setValue(this.numFloor); 
   }
 
-  cambiarPersonas(value: number): void {
-    this.numPersonas += value;
-    //this.dataService.numPersonas$.emit(this.numPersonas);
-    this.form.patchValue({ personasReserva: this.numPersonas });
+  changePeople(value: number): void {
+    this.numPeople += value;
+    this.formControls['personasReserva'].setValue(this.numPeople); 
   }
 
-  cambiarTransporte(value: number): void {
+  changeTransport(value: number): void {
     this.ind += value;
     this.ind < 0 ? (this.ind = 3) : this.ind > 3 ? (this.ind = 0) : true;
-    //console.log(this.ind);
-    this.medioTransporte = this.mediosTransporte[this.ind].value;
-    this.form.patchValue({ medioTransporte: this.medioTransporte });
-    if (this.medioTransporte != null) {
-      //this.dataService.tipoValidacion$.emit(this.medioTransporte);
+    this.meanOfTransport = this.meansOfTransport[this.ind].value;
+    this.formControls['medioTransporte'].setValue(this.meanOfTransport );
+    if (this.meanOfTransport != null) {
     }
 
-    // Si es Bici o Moto, no hay placa
-
     if (
-      this.medioTransporte === this.mediosTransporte[1].value ||
-      this.medioTransporte === this.mediosTransporte[0].value
+      this.meanOfTransport === this.meansOfTransport[1].value ||
+      this.meanOfTransport === this.meansOfTransport[0].value
     ) {
-      this.mostrarPlaca = false;
-      this.form.controls['placa'].setValue('');
+      this.showLicensePlate = false;
+      this.formControls['placa'].setValue('');
     } else {
-      this.mostrarPlaca = true;
+      this.showLicensePlate = true;
     }
   }
 }
