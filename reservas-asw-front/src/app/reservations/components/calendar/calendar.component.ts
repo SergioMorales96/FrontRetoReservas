@@ -1,39 +1,97 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Reservation, ReservationsResponse } from '../../interfaces/reservations.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  Reservation,
+  ReservationsResponse,
+} from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
 import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { Subscription } from 'rxjs';
+import { DataService } from '../../../services/data.service';
 
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit {
-
+export class CalendarComponent implements OnInit, OnDestroy {
   dateValue: Date = new Date();
+  numPisoSubscription!: Subscription;
+  numPeopleSubscription!: Subscription;
+  tipoValidacionSubscription!: Subscription;
 
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-    private sharedService: SharedService
-  ) { }
+    private sharedService: SharedService,
+    private dataService: DataService,
+    private store: Store<AppState>
+  ) {
+    this.store
+      .select('reservation')
+      .subscribe(({ floorNumber, peopleNumber }) => console.log('data from store ngrx', { floorNumber, peopleNumber }));
+  }
 
-  @Input() dateValidationType: DateValidationType = DateValidationType.DayCapacity;
-  @Input() dateCar: DateValidationType = DateValidationType.ParkingAvailabilityPerCar;
+  /*@Input() dateValidationType: DateValidationType =
+    DateValidationType.DayCapacity;*/
+  @Input() dateCar: DateValidationType =
+    DateValidationType.ParkingAvailabilityPerCar;
 
   @Input() selectedFloor!: number;
+  @Input() _numberOfPeople!: number;
+  @Input() dateValidationType!: DateValidationType;
+
   @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> = new EventEmitter<boolean>();/////
+  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
+    new EventEmitter<boolean>(); /////
 
   selectedDate: Date = new Date();
 
   ngOnInit(): void {
+    console.log(this.selectedFloor);
+    console.log(this._numberOfPeople);
+    console.log(this.dateValidationType);
+
+    /*
+    this.numPisoSubscription = this.dataService.numPiso$.subscribe(
+      (numPiso) => {
+        this.selectedFloor = numPiso;
+        console.log(
+          'Entrando a Calendar y recibiendo PISO '+numPiso+' por serviceData',
+          
+        );
+      }
+    );
+
+    this.numPeopleSubscription = this.dataService.numPersonas$.subscribe(
+      (numPeople) => {
+        this._numberOfPeople = numPeople;
+      }
+    );
+
+    this.tipoValidacionSubscription =
+      this.dataService.tipoValidacion$.subscribe((tipoValidation) => {
+        this.dateValidationType = tipoValidation;
+      });*/
+  }
+
+  ngOnDestroy(): void {
+    /*this.numPisoSubscription?.unsubscribe();
+    this.numPeopleSubscription?.unsubscribe();
+    this.tipoValidacionSubscription?.unsubscribe();*/
   }
 
   //Las fechas en esta lista desactivan los días en el calendario
@@ -48,7 +106,7 @@ export class CalendarComponent implements OnInit {
   reservations: Reservation[] = [];
 
   //Número de personas para saber si se trata de una sala o un puesto de trabajo
-  private _numberOfPeople: number = 0;
+  //private _numberOfPeople!: number;
 
   //Id del puesto de trabajo o de la sala
   private _id: number = 0;
@@ -76,6 +134,10 @@ export class CalendarComponent implements OnInit {
     return this.complete.includes(day);
   }
 
+  onMonthChange({ month, year }: { month: number, year: number }): void {
+    console.log(month, year);
+  }
+
   monthChange(month: number, year: number): void {
     this.complete = [];
     this.morning = [];
@@ -89,15 +151,15 @@ export class CalendarComponent implements OnInit {
 
   consultReservations(): void {
     this.setDates(this.tempDate);
-    let urlPlugin: string = this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
+    let urlPlugin: string =
+      this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
 
-    this.reservationsService.sendRequest(urlPlugin, this.queryDates)
-      .subscribe(
-        (answ: ReservationsResponse) => {
-          this.reservations = answ.data;
-          this.updateCalendar();
-        }
-      );
+    this.reservationsService
+      .sendRequest(urlPlugin, this.queryDates)
+      .subscribe((answ: ReservationsResponse) => {
+        this.reservations = answ.data;
+        this.updateCalendar();
+      });
   }
 
   updateCalendar(): void {
@@ -105,7 +167,6 @@ export class CalendarComponent implements OnInit {
     let checked: string[] = [];
 
     for (const reservation of this.reservations) {
-
       if (!checked.includes(this.reservations[i].dia)) {
         checked = this.compareReservations(i, checked);
       }
@@ -128,10 +189,11 @@ export class CalendarComponent implements OnInit {
     }
 
     if (!flag) {
-      ((parseInt(iRerservation.horaInicio) < 13) ? (parseInt(iRerservation.horaFin) < 13 ? this.morning.push(parseInt(iRerservation.dia))
-        : (this.completeDay(iRerservation, checked))
-      )
-        : this.afterNoon.push(parseInt(iRerservation.dia)))
+      parseInt(iRerservation.horaInicio) < 13
+        ? parseInt(iRerservation.horaFin) < 13
+          ? this.morning.push(parseInt(iRerservation.dia))
+          : this.completeDay(iRerservation, checked)
+        : this.afterNoon.push(parseInt(iRerservation.dia));
     }
     return checked;
   }
@@ -180,9 +242,6 @@ export class CalendarComponent implements OnInit {
 
   }
 
-
-
-
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
@@ -190,19 +249,23 @@ export class CalendarComponent implements OnInit {
   }
 
   callMethodPerDateValidationType(): void {
-    this.dateValidationType = 3;
-    console.log(this.dateValidationType);
+    console.log(
+      'Desde callMethodPerDateValidationType, validType = ',
+      this.dateValidationType
+    );
+    console.log('Entrando case capacity');
+    this.getCapacity();
+
     switch (this.dateValidationType) {
-      case DateValidationType.DayCapacity:
-        console.log('Entrando case capacity')
-        this.getCapacity();//
-        break;
+      //    case DateValidationType.DayCapacity:
+      //
+      // break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
-        console.log('Entrando case bicis')
+        console.log('Entrando case bicis');
         this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
-        console.log('Entrando case ParkingAvailabilityPerCar ')
+        console.log('Entrando case ParkingAvailabilityPerCar ');
         this.getCarParkingAvailability();
         break;
 
@@ -217,94 +280,104 @@ export class CalendarComponent implements OnInit {
   }
 
   getCapacity(): void {
+    console.log('Selected Floor desde getCapacity: ', this.selectedFloor);
     if (!this.selectedFloor) {
-      this.toastService.showToastWarning({ summary: 'Seleccione un piso', detail: 'No se ha seleccionado algún piso' })
+      this.toastService.showToastWarning({
+        summary: 'Seleccione un piso',
+        detail: 'No se ha seleccionado algún piso',
+      });
       return;
     }
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.reservationsService.getCapacity(selectedDate, this.selectedFloor)
-      .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateDayCapacity(dataResponse.data);
-        });
+    this.reservationsService
+      .getCapacity(selectedDate, this.selectedFloor)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateDayCapacity(dataResponse.data);
+      });
   }
-
 
   getCarParkingAvailability(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     console.log(selectedDate);
-    this.reservationsService.getCarParkingAvailability(selectedDate)
-      .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateParkingAvailabilityPerCar(dataResponse.data);
-        });
+    this.reservationsService
+      .getCarParkingAvailability(selectedDate)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateParkingAvailabilityPerCar(dataResponse.data);
+      });
   }
-
 
   validateDayCapacity(data: number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-    }
-    else {
+      this.toastService.showToastInfo({ summary: 'Aforo Disponible:', detail: `El aforo disponible para esta fecha es de ${data} personas` })
+    } else {
       this.onDayCapacity.emit(false);
-      this.toastService.showToastDanger({ summary: 'No hay aforo disponible', detail: 'En el piso seleccionado no hay capacidad en esta fecha' })
+      this.toastService.showToastDanger({
+        summary: 'No hay aforo disponible',
+        detail: 'En el piso seleccionado no hay capacidad en esta fecha',
+      });
     }
   }
 
   getBici(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.sharedService.getDPBicicletas(selectedDate)
-      .subscribe(
-        (dpbicicletas: DataResponse) => {
-          console.log(dpbicicletas.data);
-          console.log(this.validationBicis(dpbicicletas.data));
-        }
-      );
+    this.sharedService
+      .getDPBicicletas(selectedDate)
+      .subscribe((dpbicicletas: DataResponse) => {
+        console.log(dpbicicletas.data);
+        console.log(this.validationBicis(dpbicicletas.data));
+      });
   }
 
   validationBicis(data: Number | any) {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-    }
-    else {
+    } else {
       this.onDayCapacity.emit(false);
     }
   }
 
-
   validateParkingAvailabilityPerCar(data: number | any): void {
     if (data > 0) {
       this.onDayParkingAvailabilityPerCar.emit(true);
-
-    }
-    else {
+    } else {
       this.onDayParkingAvailabilityPerCar.emit(false);
-      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles ', detail: '' });
-
+      this.toastService.showToastDanger({
+        summary: 'No hay parqueaderos para carro disponibles ',
+        detail: '',
+      });
     }
   }
   getParkingMotorcycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.reservationsService.getParkingMotorcycle(selectedDate)
-      .subscribe(
-        (dataResponse: DataResponse) => {
-          console.log(dataResponse);
-          this.validateAvailabilityMotorcycle(dataResponse.data);
-        });
+    this.reservationsService
+      .getParkingMotorcycle(selectedDate)
+      .subscribe((dataResponse: DataResponse) => {
+        console.log(dataResponse);
+        this.validateAvailabilityMotorcycle(dataResponse.data);
+      });
   }
 
   validateAvailabilityMotorcycle(data: number | any): void {
     if (data > 0) {
       this.onDayCapacity.emit(true);
-      this.toastService.showToastSuccess({ summary: `Existen ${data} parqueaderos disponibles`, detail: '' })
-    }
-    else {
+      this.toastService.showToastSuccess({
+        summary: `Existen ${data} parqueaderos disponibles`,
+        detail: '',
+      });
+    } else {
       this.onDayCapacity.emit(false);
-      this.toastService.showToastDanger({ summary: 'No hay parqueaderos para carro disponibles', detail: '' });
+      this.toastService.showToastDanger({
+        summary: 'No hay parqueaderos para carro disponibles',
+        detail: '',
+      });
     }
   }
-
-
+  public minDate = new Date(
+    this.selectedDate.getFullYear(),
+    this.selectedDate.getMonth(),
+    this.selectedDate.getDate()
+  );
 }

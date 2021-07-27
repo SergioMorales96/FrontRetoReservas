@@ -1,0 +1,37 @@
+:host ::ng-deep .p-card {
+  background: rgb(6, 102, 251);
+  width: 22rem;
+
+  .p-button {
+    background: transparent;
+    border: transparent;
+  }
+
+  .p-button:focus {
+    box-shadow: none;
+  }
+
+  .p-field > label {
+    color: rgb(146, 188, 253);
+  }
+
+  .p-card {
+    box-shadow: none;
+  }
+
+  .p-d-flex {
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .p-inputtext {
+    background: transparent;
+    border: 0px transparent;
+    border-bottom: 2px solid rgb(146, 188, 253);
+  }
+
+  .p-inputtext::placeholder {
+    text-justify: auto;
+    color: rgb(146, 188, 253);
+  }
+}

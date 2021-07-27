@@ -1,127 +1,113 @@
-<ng-container [formGroup]="form">
-    <p-card header="Step 3" [style]="{ width: '25rem', 'margin-bottom': '2em' }">
+<div class="p-fluid">
+  <p-card header="Step 3">
+    <ng-container [formGroup]="form">
       <!-- Nombres -->
-      <div class="p-field p-grid">
-        <label for="nombres" class="p-col-fixed" style="width: 200px"
-          >Nombres y Apellidos</label
-        >
-        <div class="p-col">
-          <input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="nombres"
-          />
-          <span
-            class="text-danger"
-            *ngIf="submitted && f.nombres.errors?.required"
-            >Por favor ingresar sus nombres</span
-          >
-        </div>
+      <div class="p-field">
+        <label for="nombres">Nombres y Apellidos</label>
+
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext"
+          formControlName="nombres"
+          [style]="{ 'text-transform': 'uppercase' }"
+        />
+        <small
+          *ngIf="submitted && formControls.nombres.errors?.required"
+          class="p-error"
+          >Se requieren los nombres
+        </small>
       </div>
       <!-- /Nombres -->
-  
+
       <!-- Identificacion -->
-      <div class="p-field p-grid">
-        <label for="identificacion" class="p-col-fixed" style="width: 200px"
-          >Identificación</label
-        >
-        <div class="p-col">
-          <input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="identificacion"
-          />
-          <span
-            class="text-danger"
-            *ngIf="submitted && f.nombres.errors?.required"
-            >Por favor ingresar su identificacion</span
-          >
-        </div>
+      <div class="p-field">
+        <label for="identificacion">Identificación</label>
+
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext"
+          formControlName="identificacion"
+        />
+        <small
+          *ngIf="submitted && formControls.nombres.errors?.required"
+          class="p-error"
+          >Por favor ingresar su identificacion
+        </small>
       </div>
       <!-- /Identificacion -->
-  
+
       <!-- Grupo Riesgo -->
-      <div class="p-field p-grid">
-        <label for="grupoRiesgo" class="p-col-fixed" style="width: 200px"
-          >Grupo de riesgo 1</label
-        >
-        <div class="p-col">
-          <input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="grupoRiesgo"
-          />
-          <span
-            class="text-danger"
-            *ngIf="submitted && f.grupoRiesgo.errors?.required"
-            >Por favor ingresar sus Grupo de Riesgo</span
-          >
-        </div>
+      <div class="p-field">
+        <label for="grupoRiesgo">Grupo de riesgo 1</label>
+
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext"
+          formControlName="grupoRiesgo"
+        />
       </div>
       <!-- /Grupo Riesgo -->
-  
+
       <!-- Convive Grupo Riesgo -->
-      <div class="p-field p-grid">
-        <label for="convivenciaRiesgo" class="p-col-fixed" style="width: 200px"
-          >Convive con grupo de riesgo 1</label
-        >
-        <div class="p-col">
-          <input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="convivenciaRiesgo"
-          />
-          <span
-            class="text-danger"
-            *ngIf="submitted && f.convivenciaRiesgo.errors?.required"
-            >Por favor indique si convive con grupo de giesgo 1</span
-          >
-        </div>
+      <div class="p-field">
+        <label for="convivenciaRiesgo">Convive con grupo de riesgo 1</label>
+
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext"
+          formControlName="convivenciaRiesgo"
+        />
       </div>
       <!-- /Convive Grupo Riesgo -->
-  
+
       <!-- Sintomas -->
-      <div class="p-field p-grid">
-        <label for="piso" class="p-col-fixed" style="width: 200px"
-          >¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor de
-          garganta, dificultad para identificar olores y sabores</label
+      <div class="p-field">
+        <label for="piso"
+          >¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
+          de garganta, dificultad para identificar olores y sabores)</label
         >
-        <div class="p-col">
+        <div class="p-d-flex">
           <button
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="Sintomas()"
+            (click)="Symptoms()"
           ></button>
-          <span>{{ sintomas }}</span>
+          <span>{{ symptoms }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="Sintomas()"
+            (click)="Symptoms()"
           ></button>
         </div>
-       </div>
+      </div>
       <!-- /Sintomas -->
-  
+
       <!-- Descripción Barrio y Recorrido -->
-      <textarea
-        [rows]="2"
-        [cols]="30"
-        pInputTextarea
-        placeholder="Descripción"
-        formControlName="descripcion"
-      ></textarea>
-      <span
-            class="text-danger"
-            *ngIf="submitted && f.descripcion.errors?.required"
-            >Por favor descripa su trayecto</span
-          >
+      <div class="p-field">
+        <label for="piso"
+          >¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
+          de garganta, dificultad para identificar olores y sabores</label
+        >
+        <textarea
+          [rows]="2"
+          [cols]="30"
+          pInputTextarea
+          placeholder="Descripción"
+          formControlName="descripcion"
+        ></textarea>
+        <small
+          *ngIf="submitted && formControls.descripcion.errors?.required"
+          class="p-error"
+          >Por favor descripa su trayecto
+        </small>
+      </div>
       <!-- /Descripción Barrio y Recorrido -->
-    </p-card>
-  </ng-container>
-  
+    </ng-container>
+  </p-card>
+</div>
