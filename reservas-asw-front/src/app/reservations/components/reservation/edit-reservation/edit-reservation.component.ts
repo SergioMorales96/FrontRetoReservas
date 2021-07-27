@@ -57,11 +57,11 @@ export class EditReservationComponent {
       case 'B':
         return 'bicycle.svg';
       case 'M':
-        return 'bicycle.svg'
+        return 'motorcycle.svg'
       case 'C':
-        return 'bicycle.svg'
+        return 'car.svg'
       default:
-        return 'bicycle.svg'
+        return 'N/A'
     }
   }
 
