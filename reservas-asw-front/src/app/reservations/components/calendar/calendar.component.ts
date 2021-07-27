@@ -179,9 +179,8 @@ export class CalendarComponent implements OnInit {
   }
 
   setDates(dateValue: Date) {
-  
+    
     const startDate = moment(dateValue).startOf('month').format('DD-MM-YYYY');
-
     const endDate = moment(dateValue).endOf('month').format('DD-MM-YYYY');
 
     if (this._numberOfPeople > 1) {
