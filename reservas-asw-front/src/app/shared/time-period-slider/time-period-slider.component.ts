@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastsService } from '../../services/toasts.service';
 
 @Component({
   selector: 'app-time-period-slider',
@@ -7,103 +8,61 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimePeriodSliderComponent implements OnInit { 
   public rangeValues!: Array<string>;
-  public min="hola";
-  public max="hola";
- // public countries!:String[];
- public rangeHour=[
-   {
-     id:1,
-     value:"8:00",
-   },
-   {
-    id:2,
-    value:"8:30",
-  },
-  {
-    id:3,
-    value:"9:00",
-  },
-  {
-    id:4,
-    value:"9:30",
-  },
-  {
-    id:5,
-    value:"10:00",
-  },
-  {
-    id:6,
-    value:"10:30",
-  },
-  {
-    id:7,
-    value:"11:00",
-  },
-  {
-    id:8,
-    value:"11:30",
-  },
-  {
-    id:9,
-    value:"12:00",
-  },{
-    id:10,
-    value:"12:30",
-  },
-  {
-    id:11,
-    value:"13:00",
-  },
-  {
-    id:12,
-    value:"13:30",
-  },{
-    id:13,
-    value:"14:00",
-  },{
-    id:14,
-    value:"14:30",
-  },{
-    id:15,
-    value:"15:00",
-  },
-  {
-    id:17,
-    value:"15:30",
-  },
-  {
-    id:18,
-    value:"16:00",
-  },{
-    id:19,
-    value:"16:30",
-  },
-  {
-    id:20,
-    value:"17:00",
-  },
- ]
-  public countries = [
-    "India",
-    "United States of America \\\n",
-    "United Kingdom"
-     ];
-  constructor() { 
+  public min="8:00";
+  public max="8:00";
+  public min1=0;
+  public max1=0;
+  public firstHour=" hora";
+  public secondHour=" hora";
+  public thirdHour=" hora";
+  
+  
+  constructor(
+    public toastService:ToastsService,
+  ) { 
     console.log(this.rangeValues);
+    this.rangeValues=['0','0'];
   }
 
   ngOnInit(): void {
-     //console.log(this.rangeValues);
   }
-  verrange():void{
-     const min1 = parseInt(this.rangeValues[0]) ;
-     const max1 = parseInt(this.rangeValues[1]);
-     this.min = this.rangeHour[min1].value;
-     this.max = this.rangeHour[max1].value;
-    console.log(this.min);
-    console.log(this.max);
-    console.log(this.rangeValues[0]);
+
+
+  functionHour():void{
+    this.min1 = parseInt(this.rangeValues[0]) ;
+    this.max1 = parseInt(this.rangeValues[1]);
+    this.min = this.hourSlider(this.min1);
+    this.max = this.hourSlider(this.max1);
+    let range=(this.max1-this.min1)/2;
+    if(range<0.5){
+    this.firstHour= '-';
+    this.secondHour= '0horas';
+    this.thirdHour= range+0.5+'horas'; 
+    }else{
+      const valitionHour = range-0.5==1 ? "hora" : "horas";
+      this.firstHour= range-0.5+valitionHour;
+      const valitionHour1 = range==1 ? "hora" : "horas";
+      this.secondHour= range+valitionHour1;
+      const valitionHour2 = range+0.5==1 ? "hora" : "horas";
+      this.thirdHour= range+0.5+valitionHour2;                  
+    }
   }
+
+  hourSlider(num:number):string{
+    const hour=num*30;
+    const hour1=Math.floor(hour/60)+8;
+    let horaFin='8:00';
+    if(hour%60!=0){
+       horaFin=hour1+':30';
+    }else{
+      horaFin=hour1+':00';
+    }
+    return horaFin; 
+  }
+
+
+         
+  
   
 
 }

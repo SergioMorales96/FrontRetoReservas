@@ -1,8 +1,11 @@
 :host ::ng-deep .p-card {
     background-color: #0666fb;
-    width: 22rem;
-    height: 19rem;
+    width: 12rem;
+    height: 13rem;
     .p-titleSlider{
+        width: 79px;
+        height: 13px;
+        margin: 8px 8.8px 29px 0;
         font-family: Futura;
         font-size: 10px;
         font-weight: 500;
@@ -11,26 +14,80 @@
         line-height: 1.3;
         letter-spacing: normal;
         text-align: left;
-        color: var(--white); 
-        color: white; 
+        color: white;
     }
     .p-textHour{
+        width: 164px;
+        height: 13px;
+        margin: 20px 0.8px 10px 0;
         opacity: 0.57;
         font-family: Futura;
         font-size: 10px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: left;
         color: white;
     }
-    .p-durationTime{
-        width: 66px;
-        height: 100px;
+    .p-timeFrame{
+        width: 46px;
+        height: 63px;
+        padding: 7px 8px 7px 7px;
         border-radius: 11px;
         border: solid 1px rgba(255, 255, 255, 0.47);
+       
     }
    
+    
+   
+    .p-listHour{
+        width: 30px;
+        height: 13px;
+        margin: 2px 1px 5px 0;
+        font-family: Futura;
+        font-size: 10px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: left;
+        color: white;
+    }
+    .p-selectTime{
+        width: 100px;
+        height: 13px;
+        margin: 10px 1px 5px 0;
+        opacity: 0.57;
+        font-family: Futura;
+        font-size: 10px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: right;
+        color: white;
+    }
+    .p-opacities{
+        opacity: 0.57;
+    }
+
     .p-slider1{
-        width: 95px;
-        height: 10px;
-        
+        width: 90px;
+        height: 20px;
+        margin-top: 10px;
+        margin-left: 20px;
+        text-align: center;
+
+    }
+    .p-slider-handle{
+        width: 10px;
+        height: 30;
+        border-block-start-color: white;
+        border-color: white;
     }
     
   }
