@@ -227,7 +227,7 @@ export class SceneComponent implements OnInit {
   function generateModelsWorkSpace(answ: workSpacesPerFloorResponse, columnas: number, filas: number, bloque: number, piso: number){
     loader.load('assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ){
       let model5 = gltf.scene;
-     
+      let n = 0;
 
       if (piso === 1) {
         model5.position.set(-7.02,0,-4.28);  ////// COORDENADAS PISO 18
@@ -236,11 +236,11 @@ export class SceneComponent implements OnInit {
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
 
-              piece.children[0].userData = {"info" : answ.data[j]};
-              piece.children[1].userData = {"info" : answ.data[j]};
-              piece.children[2].userData = {"info" : answ.data[j]};
-              piece.children[3].userData = {"info" : answ.data[j]};
-              piece.children[4].userData = {"info" : answ.data[j]};
+              piece.children[0].userData = {"info" : answ.data[n]};
+              piece.children[1].userData = {"info" : answ.data[n]};
+              piece.children[2].userData = {"info" : answ.data[n]};
+              piece.children[3].userData = {"info" : answ.data[n]};
+              piece.children[4].userData = {"info" : answ.data[n]};
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -451,11 +451,11 @@ export class SceneComponent implements OnInit {
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
 
-              piece.children[0].userData = {"info" : answ.data[j]};
-              piece.children[1].userData = {"info" : answ.data[j]};
-              piece.children[2].userData = {"info" : answ.data[j]};
-              piece.children[3].userData = {"info" : answ.data[j]};
-              piece.children[4].userData = {"info" : answ.data[j]};
+              piece.children[0].userData = {"info" : answ.data[n]};
+              piece.children[1].userData = {"info" : answ.data[n]};
+              piece.children[2].userData = {"info" : answ.data[n]};
+              piece.children[3].userData = {"info" : answ.data[n]};
+              piece.children[4].userData = {"info" : answ.data[n]};
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -624,6 +624,7 @@ export class SceneComponent implements OnInit {
               
               piece.visible = invisibleModels(piso);
               scene.add(piece);
+              n++;
             }, undefined, function ( e ) {
     
                 console.error( e );
@@ -641,11 +642,11 @@ export class SceneComponent implements OnInit {
               loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                 let piece = gltf.scene;
                 
-                piece.children[0].userData = {"info" : answ.data[j]};
-                piece.children[1].userData = {"info" : answ.data[j]};
-                piece.children[2].userData = {"info" : answ.data[j]};
-                piece.children[3].userData = {"info" : answ.data[j]};
-                piece.children[4].userData = {"info" : answ.data[j]};
+                piece.children[0].userData = {"info" : answ.data[n]};
+                piece.children[1].userData = {"info" : answ.data[n]};
+                piece.children[2].userData = {"info" : answ.data[n]};
+                piece.children[3].userData = {"info" : answ.data[n]};
+                piece.children[4].userData = {"info" : answ.data[n]};
     
                 piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                             
@@ -749,6 +750,7 @@ export class SceneComponent implements OnInit {
                                            
                 piece.visible = invisibleModels(piso);
                 scene.add(piece);
+                n++;
               }, undefined, function ( e ) {
     
                 console.error( e );
@@ -871,8 +873,7 @@ export class SceneComponent implements OnInit {
           
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
-            let n = 0;
-            
+                        
             ////////// PISO 20 //////////
             //BLOQUE 001    
             generateModelsWorkSpace(answ,1,1,1,3);
@@ -1027,10 +1028,8 @@ export class SceneComponent implements OnInit {
             // //BLOQUE 066
             generateModelsWorkSpace(answ,6,2,66,1);
 
-
             // //BLOQUE 078
             generateModelsWorkSpace(answ,8,1,78,1);
-
             
             //  //BLOQUE 085
             generateModelsWorkSpace(answ,6,1,85,1);
