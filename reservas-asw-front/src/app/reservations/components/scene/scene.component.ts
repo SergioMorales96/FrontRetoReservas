@@ -29,9 +29,7 @@ export class SceneComponent implements OnInit {
 
   constructor( private reservationsService: ReservationsService ){} 
 
-  
-
-  ngOnInit(): void{
+  main(){
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
@@ -47,8 +45,13 @@ export class SceneComponent implements OnInit {
     const smallChairColor = new THREE.Color ( 0x65FC17 );
     let selectedObject: Object3D | null;
     let idPiso = this.idpiso;
+    let idPisoActual = idPiso;
     let numeroPersonas = this.numOfPeople;
-    
+    let floorsList: THREE.Group[] = [];
+    let workSpacesList: THREE.Group[] = [];
+    let roomsList: THREE.Group[] = [];
+    let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
+
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -74,7 +77,7 @@ export class SceneComponent implements OnInit {
     
 
     loader.setDRACOLoader( dracoLoader );
-    this.path3D = loadFloor(this.idpiso, this.path3D);    
+    loadFloor(this.idpiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
 
     this.query = this.query + this.idpiso ;
     if( this.numOfPeople > 1 ){
@@ -87,6 +90,9 @@ export class SceneComponent implements OnInit {
 
     animate();
 
+
+    updateModels();
+
     window.onresize = function () {
 
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -95,6 +101,8 @@ export class SceneComponent implements OnInit {
       renderer.setSize( window.innerWidth, window.innerHeight );
 
     };
+
+    
 
   function onPointerMove( event: MouseEvent ) {
 
@@ -133,6 +141,9 @@ export class SceneComponent implements OnInit {
   }
 
   function onClick(event: MouseEvent) {
+
+    idPiso++;
+    
     raycaster.setFromCamera(pointer, camera);
     let intersects = raycaster.intersectObjects(scene.children, true);
     console.log(intersects);
@@ -155,9 +166,9 @@ export class SceneComponent implements OnInit {
             /* console.log( 'El obejtito ome', ob.children[4].userData ); */
             
             //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-            /* if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+            if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
               ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-            }     */        
+            }            
           }
           
           selectedObject = intersects[0].object;
@@ -172,25 +183,25 @@ export class SceneComponent implements OnInit {
            
         }
         console.log('El selected: ', selectedObject);
+
         
     
   }
 
-
-
-  function loadFloor(idpiso: number, path: string): string{
+  function loadThisFloor( floorNumber: number, answ: RoomsPerFloorResponse ){
+    let path: string = '';
     
-    if(idpiso==1){
+    if(floorNumber==1){
       console.log('Cargado piso 18');
 
       path = 'assets/models/18th_floor/18th_floor.gltf';
 
-    }else if(idpiso==2){
+    }else if(floorNumber==2){
       console.log('Cargado piso 19');
       
       path = 'assets/models/19th_floor/19th_floor.gltf';
 
-    }else if(idpiso==3){
+    }else if(floorNumber==3){
       console.log('Cargado Piso 20');
 
       path = 'assets/models/20th_floor/20th_floor.gltf';
@@ -198,8 +209,8 @@ export class SceneComponent implements OnInit {
     }else{
       console.log('No cargado ningun piso'); 
     }
+
     loader.load( path, function ( gltf ) {
-     
       const model3 = gltf.scene;
       const child = model3.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
@@ -208,7 +219,8 @@ export class SceneComponent implements OnInit {
       model3.position.set( 0,0,0 );
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
-      model3.userData = {"id": "Piso"};
+      model3.userData = { "info": answ.data[floorNumber-1] };
+      sceneInfo.floors.push( model3 );
       scene.add( model3 );
 
     }, undefined, function ( e ) {
@@ -216,8 +228,22 @@ export class SceneComponent implements OnInit {
       console.error( e );
 
     } );
-    
-    return path;
+  }
+
+  function loadFloor(idpiso: number, path: string, reservationsService: ReservationsService, urlPlugin: string, query: string){
+
+    urlPlugin = 'piso';
+    query = 'todos';
+    reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
+      .subscribe(
+        (answ: RoomsPerFloorResponse) => {
+          
+          for (let i = 0; i < answ.data.length; i++) {
+            loadThisFloor( i+1, answ );
+          }
+
+        }
+        ); 
   }
 
   function invisibleModels(pisoActual: number ): boolean{
@@ -232,15 +258,20 @@ export class SceneComponent implements OnInit {
       if (piso === 1) {
         model5.position.set(-7.02,0,-4.28);  ////// COORDENADAS PISO 18
         for (let i = 0; i < columnas; i++) {
+          
           for (let j = 0; j < filas; j++) {
+            
+            
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
+              piece.children[0].userData = {"info" : answ.data[0]};
+              piece.children[1].userData = {"info" : answ.data[0]};
+              piece.children[2].userData = {"info" : answ.data[0]};
+              piece.children[3].userData = {"info" : answ.data[0]};
+              piece.children[4].userData = {"info" : answ.data[0]};
+              answ.data.shift();
 
-              piece.children[0].userData = {"info" : answ.data[n]};
-              piece.children[1].userData = {"info" : answ.data[n]};
-              piece.children[2].userData = {"info" : answ.data[n]};
-              piece.children[3].userData = {"info" : answ.data[n]};
-              piece.children[4].userData = {"info" : answ.data[n]};
+              n++;
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -434,6 +465,7 @@ export class SceneComponent implements OnInit {
               
               piece.visible = invisibleModels(piso);
               scene.add(piece);
+              
             }, undefined, function ( e ) {
     
                 console.error( e );
@@ -443,6 +475,8 @@ export class SceneComponent implements OnInit {
           }
           
         }
+        //console.log( 'El n es: ', n , 'Length de answ: ', answ.data.length);
+        
       } else if (piso === 2) {
         model5.position.set(-7.08,0,-4.32);  ////// COORDENADAS PISO 19
         
@@ -796,37 +830,7 @@ export class SceneComponent implements OnInit {
             model4.scale.set(model4.scale.x*0.49, model4.scale.y*0.49, model4.scale.z*0.49);
             model4.rotation.y += -0.7;
             model4.userData = { "id": "Modelo de las salas" };
-            //scene.add( model4 );
-      
-            // for (let i = 1; i < 3; i++) {
-              
-              
-
-            //   loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
-
-            //     let piece = gltf.scene;
-            //     let child1 = piece.children[0].children[0] as THREE.Mesh;
-            //     let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
-            //     childMaterial1.color = smallChairColor;
-            //     //CAMBIAR EL USERDATA POR LO QUE DA EL RESULTADO DE LA CONSULTA
-            //     console.log('pieceeee', piece);
-                
-            //     piece.children[0].children[0].userData = {"id": "chairs"};
-            //     piece.position.set(-6.9,3.01,0.88*i);
-              
-            //   scene.add(piece);
-
-
-            // }, undefined, function ( e ) {
-      
-            //   console.error( e );
-        
-            // } );
-      
-            // }
-
             //////************PISO 18********//////////
-            
             //BLOQUE S01
             for (let i = 0; i < 5; i++) {
               for (let j = 0; j < 1; j++) {
@@ -845,6 +849,7 @@ export class SceneComponent implements OnInit {
                     }                          
                     piece.visible = invisibleModels(1) && numeroPersonas > 1;
                     scene.add(piece);
+                    sceneInfo.room.push( piece );
                   }, undefined, function ( e ) {
       
                     console.error( e );
@@ -1110,12 +1115,46 @@ export class SceneComponent implements OnInit {
 
       requestAnimationFrame( animate );
 
+      checkChanges();
+
       controls.update();
 
       //checkOnObject();
 
       renderer.render( scene, camera );
     }
+
+
+    function updateModels(){
+
+      for (let ws of sceneInfo.workSpaces) {
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso ? true : false;
+      }
+
+      for (let f of sceneInfo.floors) {
+        f.visible = f.userData.info.idPiso == idPiso ? true : false; 
+        console.log( f.visible );
+        
+      }
+    }
+
+    function checkChanges(): void{
+      if( infoHasChanged() ){
+         updateModels() 
+         idPisoActual = idPiso;
+        }  
+    }
+
+
+    function infoHasChanged(): boolean{
+      return idPiso != idPisoActual;
+    }
+  }
+
+  ngOnInit(): void{
+    
+    this.main();
+
   }
 
 
