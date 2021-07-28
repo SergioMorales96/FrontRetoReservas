@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setWorkstation } from '../../reservation.actions';
 import { DateValidationType } from '../../../../utils/enums';
 import { DataService } from '../../../services/data.service';
 
@@ -24,6 +24,7 @@ export class FormWorkstationComponent implements OnInit {
   
   form!: FormGroup;
   numPeople!: number;
+  reserva!:string;
   meansOfTransport: { label: string; value: any }[] = [];
   meanOfTransport!: number | null;
   ind: number = 0;
@@ -60,6 +61,7 @@ export class FormWorkstationComponent implements OnInit {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.numFloor = this.form.get('piso')?.value;
     this.numPeople = this.form.get('personasReserva')?.value;
+    this.reserva= this.form.get('reserva')?.value;
     this.meanOfTransport = this.form.get('meanOfTransport')?.value;
     this.meanOfTransport &&
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
@@ -120,6 +122,10 @@ export class FormWorkstationComponent implements OnInit {
     this.numPeople += value;
     this.formControls['personasReserva'].setValue(this.numPeople);
     this.store.dispatch( setPeopleNumber({ peopleNumber: this.numPeople }) );
+  }
+  verReserva(){
+    this.formControls['reserva'].setValue(this.reserva);
+    this.store.dispatch(setWorkstation({ workstation: this.reserva}));
   }
 
   changeTransport(value: number): void {

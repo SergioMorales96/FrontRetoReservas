@@ -5,7 +5,7 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setContinue, setWorkstation } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-form',

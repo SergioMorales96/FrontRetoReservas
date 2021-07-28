@@ -5,7 +5,7 @@ export interface State {
     floorNumber: number; 
     peopleNumber: number;
     continuar: boolean;
-    //workstation: string;
+    workstation: string;
     meanOfTransport: number | null;
 }
 
@@ -13,7 +13,7 @@ export const initialState: State = {
    floorNumber: 0,
    peopleNumber: 0,
    continuar: false,
-   //workstation: "",
+   workstation: "",
    meanOfTransport: 0
 }
 
@@ -22,7 +22,7 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setFloorNumber , (state, { floorNumber }) => ({ ...state, floorNumber: floorNumber})),
     on(actions.setPeopleNumber, (state, { peopleNumber }) => ({ ...state, peopleNumber: peopleNumber})),
     on(actions.setContinue,(state, { continuar }) => ({ ...state, continuar: continuar})),
-    //on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
+    on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
     on(actions.setMeanOfTransport,(state, { meanOfTransport }) => ({ ...state, meanOfTransport: meanOfTransport}))
 );
 
