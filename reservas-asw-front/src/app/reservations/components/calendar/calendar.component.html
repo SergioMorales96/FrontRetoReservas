@@ -11,8 +11,11 @@
   [disabledDates]="invalidDates"
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
-  (onSelect)="setSelectedDate( $event )">
+  (onSelect)="setSelectedDate( $event )"
+  (onMonthChange)="onMonthChange( $event )"
+  [disabledDays]="[0,6]"
 
+  [minDate] = "minDate">
   <!-- <ng-template pTemplate="header">
     <div class="p-datepicker-header ng-tns-c58-1">
       <div class="p-datepicker-title1 ng-tns-c58-1">

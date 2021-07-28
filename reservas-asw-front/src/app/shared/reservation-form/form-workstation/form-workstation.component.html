@@ -1,16 +1,17 @@
-<ng-container [formGroup]="form">
-    <p-card header="Step 1" [style]="{ width: '25rem', 'margin-bottom': '2em' }">
+<div class="p-fluid">
+  <p-card header="Step 1">
+    <ng-container [formGroup]="form">
       <!-- Piso -->
-      <div class="p-field p-grid">
-        <label for="piso" class="p-col-fixed" style="width: 200px">Piso</label>
-        <div class="p-col">
+      <div class="p-field">
+        <label for="piso">Piso</label>
+        <div class="p-d-flex">
           <button
             pButton
             type="button"
             icon="pi pi-chevron-left"
             (click)="cambiarPiso(-1)"
           ></button>
-          <span>{{ numPiso }}</span>
+          <span>{{ numFloor }}</span>
           <button
             pButton
             type="button"
@@ -20,151 +21,128 @@
         </div>
       </div>
       <!-- /Piso -->
-  
+
       <!-- Reserva -->
-      <div class="p-field p-grid">
-        <label for="reserva" class="p-col-fixed" style="width: 200px"
-          >Reserva</label
+      <div class="p-field">
+        <label for="reserva">Reserva</label>
+        <input
+          type="text"
+          pInputText
+          class="p-inputtext"
+          formControlName="reserva"
+          placeholder="Escoja un puesto o sala de reuniones en el mapa"
+        />
+        <small
+          *ngIf="formControls.reserva.errors?.required && submitted"
+          class="p-error"
+          >Escoja un puesto o sala en el mapa</small
         >
-        <div class="p-col">
-          <input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="reserva"
-            placeholder="Escoja un puesto o sala de reuniones en el mapa"
-          />
-          <div
-            class="text-danger"
-            *ngIf="submitted && f.reserva.errors?.required"
-          >
-            Por favor escoger una reserva
-          </div>
-        </div>
       </div>
       <!-- /Reserva -->
-  
+
       <!-- Personas Reserva -->
-      <div class="p-field p-grid">
-        <label for="personasReserva" class="p-col-fixed" style="width: 200px"
-          >Personas Reserva</label
-        >
-        <div class="p-col">
+      <div class="p-field">
+        <label for="personasReserva">Personas Reserva</label>
+        <div class="p-d-flex">
           <button
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarPersonas(-1); removeAcompanante()"
+            (click)="changePeople(-1); removePeople()"
           ></button>
-          <span>{{ numPersonas }}</span>
+          <span>{{ numPeople }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarPersonas(1); addAcompanante()"
+            (click)="changePeople(1); addPeople()"
           ></button>
         </div>
       </div>
       <!-- /Personas Reserva -->
-  
-      <!-- Datos Acompañante -->
-  
+
+      <!-- Datos Personas -->
       <ng-container formArrayName="datosAcompanante">
         <ng-container
-          *ngFor="let AcompananteForm of datosAcompanante.controls; let i = index"
+          *ngFor="let peopleReservation of peopleData.controls; let i = index"
         >
-          <label for="datosAcompanant" class="p-col-fixed" style="width: 200px"
-            >Datos Acompañante</label
-          >
-          <div class="p-col" [formGroupName]="i">
-            <input
-              type="text"
-              pInputTex
-              class="p-inputtext"
-              formControlName="correo"
-              placeholder="Correo"
-            />
-            <div
-              class="text-danger"
-              *ngIf="
-                AcompananteForm.get('correo')?.touched &&
-                AcompananteForm.get('correo')?.errors
-              "
-            >
-              <span>Correo inválido</span>
+          <div class="p-field">
+            <label for="peopleReservation">Datos Personas</label>
+            <div [formGroupName]="i">
+              <input
+                type="text"
+                pInputTex
+                class="p-inputtext"
+                formControlName="correo"
+                placeholder="Correo"
+              />
+
+              <small
+                *ngIf="
+                  (peopleReservation.get('correo')?.touched &&
+                    peopleReservation.get('correo')?.errors) ||
+                  (submitted && peopleReservation.get('correo')?.errors)
+                "
+                class="p-error"
+                >Correo inválido</small
+              >
+              <div class="p-field_checkbox">
+                <input
+                  class="checkMember"
+                  type="checkbox"
+                  checked="false"
+                  formControlName="miembroOrganizacion"
+                />
+                <label for="esDeOrganizacion">Es de la organizacion</label>
+              </div>
             </div>
-            <!--<div
-              class="text-danger"
-              *ngIf="submitted && AcompananteForm.errors?.required"
-            >
-              Por favor ingrese los datos del acompañante
-            </div> -->
-  
-            <input
-              type="checkbox"
-              checked="false"
-              formControlName="miembroOrganizacion"
-            />
-            <label for="esDeOrganizacion" class="p-col-fixed" style="width: 200px"
-              >Es de la organizacion</label
-            >
           </div>
         </ng-container>
       </ng-container>
-      <!-- /Datos Acompañante -->
-  
+      <!-- /Datos Personas -->
+
       <!-- Medio de transporte -->
-      <div class="p-field p-grid">
-        <label for="medioTransporte" class="p-col-fixed" style="width: 200px"
-          >Medio de transporte</label
-        >
-        <div class="p-col">
+      <div class="p-field">
+        <label for="medioTransporte">Medio de transporte</label>
+        <div class="p-d-flex">
           <button
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarTransporte(-1)"
+            (click)="changeTransport(-1)"
           ></button>
-          <span>{{ medioTransporte }}</span>
+          <span>{{ transportModeName }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarTransporte(1)"
+            (click)="changeTransport(1)"
           ></button>
         </div>
       </div>
       <!-- /Medio de transporte -->
-  
+
       <!-- Placa Vehiculo -->
-      <div *ngIf="mostrarPlaca" class="p-field p-grid">
-        <label for="placaMedioTransporte" class="p-col-fixed" style="width: 200px"
-          >Placa de tu {{ medioTransporte }}
+      <div *ngIf="showLicensePlate" class="p-field">
+        <label for="placaMedioTransporte"
+          >Placa de tu {{ transportModeName }}
         </label>
-        <div class="p-col">
-           <!--<input
-            type="text"
-            pInputText
-            class="p-inputtext"
-            formControlName="placa"
-            placeholder="XXX-###"
-          />-->
-          <p-inputMask
-            placeholder="XXX-###"
-            formControlName="placa"
-            mask="aaa-99*"
-            [autoClear]=false
-            [style]="{'text-transform': 'uppercase'}"
-          ></p-inputMask>
-        </div>
-        <div
-          class="text-danger"
-          *ngIf="f.placa?.touched && f.placa.errors?.pattern"
-        >
-          <span>Placa inválida</span>
-        </div>
+
+        <p-inputMask
+          placeholder="XXX-###"
+          formControlName="placa"
+          mask="aaa-99*"
+          [autoClear]="false"
+          [style]="{ 'text-transform': 'uppercase' }"
+        ></p-inputMask>
       </div>
+      <small
+        *ngIf="formControls.placa?.touched && formControls.placa.errors"
+        class="p-error"
+        >Placa inválida</small
+      >
+
       <!-- /Placa Vehiculo -->
-    </p-card>
-  </ng-container>
-  
+    </ng-container>
+  </p-card>
+</div>
