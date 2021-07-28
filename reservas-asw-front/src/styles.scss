@@ -12,6 +12,7 @@ body {
   font-family: 'Roboto', sans-serif;
   color: $dark-navy-blue;
   font-size: 16px;
+  margin: 0% !important;
 }
 
 .button-link {
@@ -31,7 +32,7 @@ body {
 
 .sidebar{
   position: absolute;
-  width: 22%;
+  width: 208px;
   height: 100%;
 }
 
@@ -48,17 +49,24 @@ body {
   margin: 0;
   padding: 0;
   background: #fff;
-  height: 10%;
+  height: 54px;
+  line-height: 2.7;
 }
 
 .p-menuButton .p-button{
   border: 0 !important;
   padding: 0 !important;
   width: 100% !important;
-  height: 10% !important;
+  height: 54px !important;
   border-radius: 0% !important;
   color: white;
   font-size: 14.5px;
+}
+
+.p-menuBlocked .p-button{
+  background-color: #B9B9B9 !important;
+  //border-bottom: 2px solid #eee;
+  //box-shadow: 2px 2px 5px #999;
 }
 
 .p-menuReservation .p-button{
@@ -87,10 +95,32 @@ body {
 }
 
 .imageLogo{
-  padding-top: 5%;
   width: 50%;
+}
+
+.imageArrow{
+  width: 35px;
 }
 
 .text{
   margin-left: 10%;
+}
+
+
+.p-sidebar-header{
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0 !important;
+}
+
+.p-sidebar-content{
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 577.33px;
+}
+
+.p-sidebar-left{
+  width: 208px !important; 
+  border: 0 !important;
 }

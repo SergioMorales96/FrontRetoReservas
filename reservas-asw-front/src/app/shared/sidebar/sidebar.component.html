@@ -1,24 +1,38 @@
-<div class="sidebar" [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
+<!--p-sidebar [(visible)]="sid" position="right">
+    
+</p-sidebar-->
+
+<!--button (click)="blocked = !blocked">Bloquear</button-->
+
+<div 
+    class="sidebar" 
+    [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
     <h2 class="spaceLogo">
-        <img class="imageLogo" src="../../../assets/images/logos/logo.svg">
+        <img 
+            class="imageLogo" 
+            src="../../../assets/images/logos/logo.svg">
     </h2>
-    <p-button class="p-menuButton" *ngIf="!display" (onClick)="selectButton(true)">
+    <p-button 
+        class="p-menuButton"
+        [ngClass]="{'p-menuBlocked': blocked}" 
+        (onClick)="display = true"
+        [disabled]="blocked">
         <a class="text">Generar una reserva</a>
-        <img class="image imageIcon" src="../../../assets/images/icons/plus-blue.svg">
+        <img 
+            class="image imageIcon" 
+            [src]="generateReservationIcon">
     </p-button>
-    <p-button class="p-menuButton" *ngIf="display">
-        <a class="text">Generar una reserva</a>
-        <img class="image imageIcon" src="../../../assets/images/icons/close-red.svg">
-    </p-button>
-    <p-button class="p-menuButton p-menuReservation" *ngIf="display" (onClick)="selectButton(false)">
-        <img class="image imageCalendar" src="../../../assets/images/icons/calendar.svg">
+
+    <p-button 
+        class="p-menuButton p-menuReservation" 
+        [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
+        (onClick)="display = false">
+        <img 
+            class="image imageCalendar" 
+            [src]="myReservationIconCalendar">
         <a>Mis reservas</a>
-        <img src="../../../assets/images/icons/arrow-right-white.svg">
-    </p-button>
-    <p-button class="p-menuButton p-menuReservationActive" *ngIf="!display">
-        <img class="image imageCalendar" src="../../../assets/images/icons/calendar-blue.svg">
-        <a>Mis reservas</a>
-        <img src="../../../assets/images/icons/arrow-right-blue.svg">
+        <img 
+            class="imageArrow"
+            [src]="myReservationIconArrow">
     </p-button>
 </div>
-

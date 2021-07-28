@@ -1,6 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { RouteName, RouteFloor } from '../../../utils/enums';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,10 +8,24 @@ import { RouteName, RouteFloor } from '../../../utils/enums';
 })
 export class SidebarComponent {
 
-  display: boolean = false;
+  display: boolean;
+  blocked: boolean;
 
-  selectButton(activate: boolean):void {
-    this.display = activate;
+  get generateReservationIcon(): string {
+    return `assets/images/icons/${ this.blocked ? 'minus-gray' :  this.display ? 'close-red' : 'plus-blue' }.svg`;
+  }
+
+  get myReservationIconCalendar(): string {
+    return `assets/images/icons/${ this.display ? 'calendar-white' : 'calendar-blue' }.svg`;
+  }
+
+  get myReservationIconArrow(): string {
+    return `assets/images/icons/${ this.display ? 'arrow-right-white' : 'arrow-right-blue' }.svg`;
+  }
+
+  constructor() {
+    this.display = false;
+    this.blocked = false;
   }
 
 }
