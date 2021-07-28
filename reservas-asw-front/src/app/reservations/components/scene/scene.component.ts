@@ -76,6 +76,10 @@ export class SceneComponent implements OnInit {
   constructor(){} 
 
   ngOnInit(): void{
+    this.main();
+  }
+
+  main(): void {
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
@@ -421,7 +425,6 @@ export class SceneComponent implements OnInit {
       return path3D;
 
     }
-
   }
 
 }
