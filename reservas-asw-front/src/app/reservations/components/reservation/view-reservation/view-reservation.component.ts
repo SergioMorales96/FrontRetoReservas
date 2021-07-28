@@ -17,15 +17,15 @@ export class ViewReservationComponent implements OnInit {
   datesReservation: DatesReservation[];
   currentPosition: number;
   counterDays: number;
+  dataUser: DataUsersBlock | undefined;
+  dataUsersBlock: DataUsersBlock[];
+  remainingDays: number;
   routeName = RouteName;
-  lockedUsersReservation: DataUsersBlock[];
-  lockedUser: DataUsersBlock | undefined;
   usersMap = {
     '=0': 'No hay personas',
     '=1': '1 persona',
     'other': '# personas',
   };
-  remainingDays: number;
 
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
@@ -63,6 +63,11 @@ export class ViewReservationComponent implements OnInit {
       ? this.currentReservation.nombreSala
       : this.currentReservation.nombrePuesTrabajo;
   }
+
+  get showReservations(): boolean {
+    return !this.dataUser;
+  }
+
   get transportMedia(): string {
     const vehicleType = this.currentReservation.dominioTipoVehiculo;
 
@@ -70,11 +75,11 @@ export class ViewReservationComponent implements OnInit {
       case 'B':
         return 'assets/images/icons/bicycle.svg';
       case 'M':
-        return 'assets/images/icons/motorcycle.svg'
+        return 'assets/images/icons/motorcycle.svg';
       case 'C':
-        return 'assets/images/icons/car.svg'
+        return 'assets/images/icons/car.svg';
       default:
-        return ' '
+        return ' ';
     }
   }
 
@@ -102,14 +107,10 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get showReservations(): boolean {
-    return !this.lockedUser;
-  }
-
   constructor(
     private reservationsService: ReservationsService
   ) {
-    this.lockedUsersReservation = [];
+    this.dataUsersBlock = [];
     this.datesReservation = [];
     this.currentPosition = 0;
     this.counterDays = 0;
@@ -117,22 +118,35 @@ export class ViewReservationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getRervations(this.getData());
     this.getLockedUsers();
+    this.getRervations(this.getData());    
   }
 
+  getCounterDays( dateLocked: string ): number {
+    const startDate = moment( ).format('MM-DD-YYYY');
+    const endDate = moment(dateLocked);
+    return endDate.diff( startDate, 'days' );
+  }
+  
   getData() {
     return {
       startDate: '11-07-2021',
       endDate: '14-07-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
-      email: 'user8@asesoftware.com'
+      email: 'user4@asesoftware.com'
     }
   }
+  
+  getLockedUsers() {
+    this.reservationsService.getLockedUsers()
+      .subscribe(response => {
+        this.dataUsersBlock = this.transformLockedUsers( response.data );
+        this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
+      });
 
- 
-
+  }
+  
   getRervations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
     this.reservationsService.getReservations(startDate, endDate, email)
       .pipe(
@@ -143,43 +157,10 @@ export class ViewReservationComponent implements OnInit {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
           console.log(this.datesReservation);
-
           this.onCurrentReservation.emit(this.currentReservation);
         }
       )
   }
-
-  getCounterDays( dateLocked: string ): number {
-    console.log({dateLocked});
-    
-    const startDate = moment( ).format('MM-DD-YYYY');
-    const endDate = moment(dateLocked);
-    console.log({startDate});
-    console.log({endDate});
-    console.log(endDate.diff( startDate, 'days' ));
-    
-    return endDate.diff( startDate, 'days' );
-  }
-
-  getLockedUsers() {
-    this.reservationsService.getLockedUsers()
-      .subscribe(response => {
-        this.lockedUsersReservation = this.transformLockedUsers( response.data );
-        console.log(this.lockedUsersReservation);
-        
-        this.lockedUser = this.lockedUsersReservation.find( user => user.email === this.getData().email && user.remainingDays > 0);
-        console.log(this.lockedUser);
-      });
-
-  }
-
-  transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
-    return users.map(d => ({ 
-      ...d, 
-      remainingDays: this.getCounterDays( moment(d.bloqueadoHasta).format('DD-MM-YYYY') )
-    }));
-  }
-
 
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);
@@ -189,4 +170,11 @@ export class ViewReservationComponent implements OnInit {
     this.currentPosition = this.currentPosition + value;
     this.onCurrentReservation.emit(this.currentReservation);
   }
+
+  transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
+    return users.map(d => ({ 
+      ...d, 
+      remainingDays: this.getCounterDays( moment(d.bloqueadoHasta).format('DD-MM-YYYY') )
+    }));
+  }  
 }

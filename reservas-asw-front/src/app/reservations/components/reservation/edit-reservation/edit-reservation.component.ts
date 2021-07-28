@@ -55,13 +55,13 @@ export class EditReservationComponent {
     const vehicleType = this.currentReservation.dominioTipoVehiculo;
     switch (vehicleType) {
       case 'B':
-        return 'bicycle.svg';
+        return 'assets/images/icons/bicycle.svg';
       case 'M':
-        return 'motorcycle.svg'
+        return 'assets/images/icons/motorcycle.svg';
       case 'C':
-        return 'car.svg'
+        return 'assets/images/icons/car.svg';
       default:
-        return 'N/A'
+        return ' ';
     }
   }
 
@@ -75,7 +75,7 @@ export class EditReservationComponent {
       case 'C':
         return 'Carro'
       default:
-        return 'No se registro vehiculo'
+        return 'N/A'
     }
   }
 
@@ -105,7 +105,7 @@ export class EditReservationComponent {
       endDate: '14-07-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
-      email: 'user6@asesoftware.com'
+      email: 'user4@asesoftware.com'
     }
   }
 
@@ -142,7 +142,6 @@ export class EditReservationComponent {
     .catch(console.log);
   }
 
-
   showEditReservation(): void {
     this.onAction.emit(ReservationAction.Edit);
   }
@@ -155,6 +154,4 @@ export class EditReservationComponent {
     this.onAction.emit( ReservationAction.ViewSummary );
     
   }
-
-
 }
