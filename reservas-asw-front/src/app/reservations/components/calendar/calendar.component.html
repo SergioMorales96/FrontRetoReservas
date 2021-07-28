@@ -12,6 +12,7 @@
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
+  (onMonthChange)="onMonthChange( $event )"
   [disabledDays]="[0,6]"
 
   [minDate] = "minDate">

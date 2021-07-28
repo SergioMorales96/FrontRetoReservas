@@ -11,7 +11,7 @@
             icon="pi pi-chevron-left"
             (click)="cambiarPiso(-1)"
           ></button>
-          <span>{{ numPiso }}</span>
+          <span>{{ numFloor }}</span>
           <button
             pButton
             type="button"
@@ -32,7 +32,9 @@
           formControlName="reserva"
           placeholder="Escoja un puesto o sala de reuniones en el mapa"
         />
-        <small *ngIf="f.reserva.errors?.required && submitted" class="p-error"
+        <small
+          *ngIf="formControls.reserva.errors?.required && submitted"
+          class="p-error"
           >Escoja un puesto o sala en el mapa</small
         >
       </div>
@@ -46,29 +48,26 @@
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarPersonas(-1); removeAcompanante()"
+            (click)="changePeople(-1); removePeople()"
           ></button>
-          <span>{{ numPersonas }}</span>
+          <span>{{ numPeople }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarPersonas(1); addAcompanante()"
+            (click)="changePeople(1); addPeople()"
           ></button>
         </div>
       </div>
       <!-- /Personas Reserva -->
 
-      <!-- Datos Acompañante -->
+      <!-- Datos Personas -->
       <ng-container formArrayName="datosAcompanante">
         <ng-container
-          *ngFor="
-            let AcompananteForm of datosAcompanante.controls;
-            let i = index
-          "
+          *ngFor="let peopleReservation of peopleData.controls; let i = index"
         >
           <div class="p-field">
-            <label for="datosAcompanant">Datos Acompañante</label>
+            <label for="peopleReservation">Datos Personas</label>
             <div [formGroupName]="i">
               <input
                 type="text"
@@ -80,9 +79,9 @@
 
               <small
                 *ngIf="
-                  (AcompananteForm.get('correo')?.touched &&
-                    AcompananteForm.get('correo')?.errors) ||
-                  (submitted && AcompananteForm.get('correo')?.errors)
+                  (peopleReservation.get('correo')?.touched &&
+                    peopleReservation.get('correo')?.errors) ||
+                  (submitted && peopleReservation.get('correo')?.errors)
                 "
                 class="p-error"
                 >Correo inválido</small
@@ -100,7 +99,7 @@
           </div>
         </ng-container>
       </ng-container>
-      <!-- /Datos Acompañante -->
+      <!-- /Datos Personas -->
 
       <!-- Medio de transporte -->
       <div class="p-field">
@@ -110,21 +109,21 @@
             pButton
             type="button"
             icon="pi pi-chevron-left"
-            (click)="cambiarTransporte(-1)"
+            (click)="changeTransport(-1)"
           ></button>
           <span>{{ transportModeName }}</span>
           <button
             pButton
             type="button"
             icon="pi pi-chevron-right"
-            (click)="cambiarTransporte(1)"
+            (click)="changeTransport(1)"
           ></button>
         </div>
       </div>
       <!-- /Medio de transporte -->
 
       <!-- Placa Vehiculo -->
-      <div *ngIf="mostrarPlaca" class="p-field">
+      <div *ngIf="showLicensePlate" class="p-field">
         <label for="placaMedioTransporte"
           >Placa de tu {{ transportModeName }}
         </label>
@@ -137,7 +136,9 @@
           [style]="{ 'text-transform': 'uppercase' }"
         ></p-inputMask>
       </div>
-      <small *ngIf="f.placa?.touched && f.placa.errors" class="p-error"
+      <small
+        *ngIf="formControls.placa?.touched && formControls.placa.errors"
+        class="p-error"
         >Placa inválida</small
       >
 

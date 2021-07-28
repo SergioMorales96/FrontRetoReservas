@@ -11,12 +11,13 @@ import {
   ReservationsResponse,
 } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
-import { getLocaleMonthNames } from '@angular/common';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
 import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 
@@ -35,8 +36,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
     private sharedService: SharedService,
-    private dataService: DataService
-  ) {}
+    private dataService: DataService,
+    private store: Store<AppState>
+  ) { 
+    this.store
+    .select( 'reservation' )
+    .subscribe( ({ floorNumber, peopleNumber }) => console.log( 'data from store ngrx', { floorNumber, peopleNumber } ) );
+  }
 
   /*@Input() dateValidationType: DateValidationType =
     DateValidationType.DayCapacity;*/
@@ -125,6 +131,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   completeM(day: number): boolean {
     return this.complete.includes(day);
+  }
+
+  onMonthChange({month, year}: { month: number, year: number }): void {
+    console.log( month, year );
   }
 
   monthChange(month: number, year: number): void {
