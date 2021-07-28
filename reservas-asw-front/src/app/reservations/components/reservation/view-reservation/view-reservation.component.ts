@@ -68,13 +68,13 @@ export class ViewReservationComponent implements OnInit {
 
     switch (vehicleType) {
       case 'B':
-        return 'bicycle.svg';
+        return 'assets/images/icons/bicycle.svg';
       case 'M':
-        return 'motorcycle.svg'
+        return 'assets/images/icons/motorcycle.svg'
       case 'C':
-        return 'car.svg'
+        return 'assets/images/icons/car.svg'
       default:
-        return 'N/A'
+        return ' '
     }
   }
 
@@ -88,7 +88,7 @@ export class ViewReservationComponent implements OnInit {
       case 'C':
         return 'Carro'
       default:
-        return 'No se registro vehiculo'
+        return 'N/A'
     }
   }
 
@@ -127,9 +127,11 @@ export class ViewReservationComponent implements OnInit {
       endDate: '14-07-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
-      email: 'user6@asesoftware.com'
+      email: 'user8@asesoftware.com'
     }
   }
+
+ 
 
   getRervations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
     this.reservationsService.getReservations(startDate, endDate, email)
@@ -150,15 +152,14 @@ export class ViewReservationComponent implements OnInit {
   getCounterDays( dateLocked: string ): number {
     console.log({dateLocked});
     
-    const startDate = moment();
-    const endDate = moment( dateLocked );
+    const startDate = moment( ).format('MM-DD-YYYY');
+    const endDate = moment(dateLocked);
     console.log({startDate});
     console.log({endDate});
     console.log(endDate.diff( startDate, 'days' ));
     
     return endDate.diff( startDate, 'days' );
   }
-
 
   getLockedUsers() {
     this.reservationsService.getLockedUsers()
@@ -175,8 +176,7 @@ export class ViewReservationComponent implements OnInit {
   transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
     return users.map(d => ({ 
       ...d, 
-      bloqueadoHasta: '07/31/2021',
-      remainingDays: this.getCounterDays( '07/31/2021' )
+      remainingDays: this.getCounterDays( moment(d.bloqueadoHasta).format('DD-MM-YYYY') )
     }));
   }
 

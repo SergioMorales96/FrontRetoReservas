@@ -37,3 +37,4 @@ export interface DataUsersBlock {
     bloqueadoHasta: string;
     remainingDays:  number;
 }
+
