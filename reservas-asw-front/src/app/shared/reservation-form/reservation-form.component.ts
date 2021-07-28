@@ -73,7 +73,6 @@ export class ReservationFormComponent implements OnInit {
       }),
     });
     //console.log(this.reservaForm.get('personasReserva')?.value);
-
     this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
     this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
   }

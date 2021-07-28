@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport } from '../../reservation.actions';
 import { DateValidationType } from '../../../../utils/enums';
 import { DataService } from '../../../services/data.service';
 
@@ -65,6 +65,7 @@ export class FormWorkstationComponent implements OnInit {
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
+      
   }
 
   get transportModeName(): string {
@@ -78,6 +79,7 @@ export class FormWorkstationComponent implements OnInit {
       default:
         return 'Ninguno';
     }
+
   }
 
   get formControls() {
@@ -125,7 +127,9 @@ export class FormWorkstationComponent implements OnInit {
     this.ind < 0 ? (this.ind = 3) : this.ind > 3 ? (this.ind = 0) : true;
     this.meanOfTransport = this.meansOfTransport[this.ind].value;
     this.formControls['medioTransporte'].setValue(this.meanOfTransport );
+    this.store.dispatch( setMeanOfTransport({ meanOfTransport: this.meanOfTransport}) );
     if (this.meanOfTransport != null) {
+      
     }
 
     if (
@@ -138,4 +142,5 @@ export class FormWorkstationComponent implements OnInit {
       this.showLicensePlate = true;
     }
   }
+ 
 }
