@@ -99,7 +99,7 @@ export class SceneComponent implements OnInit {
 
     scene.background = new THREE.Color( BACKGROUND_COLOR );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
-    scene.fog = new THREE.Fog(FOG_COLOR, FOG_NEAR, FOG_FAR);
+    //scene.fog = new THREE.Fog(FOG_COLOR, FOG_NEAR, FOG_FAR);
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT );
 
@@ -119,7 +119,7 @@ export class SceneComponent implements OnInit {
       const objects = [modelFloor];
 
       modelFloor.position.set( FLOOR_POS_X, FLOOR_POS_Y, FLOOR_POS_Z );
-      modelFloor.scale.set( FLOOR_SCALE_X, FLOOR_SCALE_Y, FLOOR_SCALE_Z);
+      //modelFloor.scale.set( FLOOR_SCALE_X, FLOOR_SCALE_Y, FLOOR_SCALE_Z);
 
       scene.add( modelFloor ); 
 
