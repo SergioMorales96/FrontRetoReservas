@@ -65,7 +65,7 @@ export class ReservationSummaryComponent implements OnInit {
       if (this.peopleNumber === 1) {
         this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} persona , ${this.nameOfTransport}`;
       } else {
-        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} personas , ${this.meanOfTransport}`;
+        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
     }
   }
