@@ -6,6 +6,7 @@
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.13);
     background-color: var(--black);
     backdrop-filter: blur(50px);
+    font-weight: bold;
 }
 
 :host ::ng-deep .p-datepicker .p-datepicker-header {
