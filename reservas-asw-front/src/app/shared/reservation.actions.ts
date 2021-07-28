@@ -9,3 +9,8 @@ export const setPeopleNumber = createAction(
     '[Reservations Component] setPeopleNumber',
     props<{ peopleNumber: number }>()    
 );
+
+export const setContinue = createAction(
+    '[Reservations Component] setContinue',
+    props<{ continuar: boolean }>()
+)
