@@ -20,6 +20,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
+import { setSelectedDate } from 'src/app/shared/reservation.actions';
 
 @Component({
   selector: 'app-calendar',
@@ -246,6 +247,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
     console.log(selectedDate);
+    this.store.dispatch( setSelectedDate({ selectedDateSummary: this.selectedDate}) );
   }
 
   callMethodPerDateValidationType(): void {

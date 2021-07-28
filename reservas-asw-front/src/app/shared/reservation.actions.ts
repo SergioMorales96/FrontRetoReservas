@@ -26,3 +26,9 @@ export const setMeanOfTransport = createAction(
     '[Reservations Component] setMeanOfTransport',
     props<{ meanOfTransport: number | null}>()
 )
+
+export const setSelectedDate = createAction(
+    '[Reservations Component] setSelectedDate',
+    props<{ selectedDateSummary: Date}>()
+
+)
