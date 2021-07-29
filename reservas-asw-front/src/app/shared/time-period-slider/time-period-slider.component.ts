@@ -47,7 +47,6 @@ export class TimePeriodSliderComponent implements OnInit {
       this.thirdHour= range+0.5+valitionHour2;                  
     }
   }
-
   hourSlider(num:number):string{
     const hour=num*30;
     const hour1=Math.floor(hour/60)+8;
@@ -62,7 +61,4 @@ export class TimePeriodSliderComponent implements OnInit {
 
 
          
-  
-  
-
 }
