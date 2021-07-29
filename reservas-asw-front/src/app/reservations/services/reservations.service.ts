@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { DataResponse, Reservation, ReservationResponse, ReservationsResponse } from '../interfaces/reservations.interface';
 import { RoomsPerFloorResponse } from '../interfaces/rooms-per-floor.interface';
 import { workSpacesPerFloorResponse } from '../interfaces/workspaces-per-floor.interface';
-import { FloorsResponse } from '../interfaces/floors.interface';
+import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
 
 
 @Injectable({
