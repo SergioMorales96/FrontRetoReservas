@@ -33,8 +33,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-    private sharedService: SharedService,
-    private dataService: DataService,
     private store: Store<AppState>
   ) { 
     this.store
