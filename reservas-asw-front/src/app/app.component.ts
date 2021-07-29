@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
 
   title = 'reservas-asw-front';
   display: boolean = false;
+  responsive: boolean = true;
 
   items: MenuItem[] = [];
 

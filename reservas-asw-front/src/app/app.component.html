@@ -10,9 +10,17 @@
 </p-confirmDialog>
 <app-menu></app-menu>
 
-<app-sidebar 
-[display]="display"
-(onHide)="display = false"></app-sidebar>
+<button (click)="responsive = !responsive">Responsive</button>
+
+<p-sidebar
+    [(visible)]="responsive"
+    *ngIf = "responsive; else sidebar">
+    <app-sidebar></app-sidebar>
+</p-sidebar>
+
+<ng-template #sidebar>
+    <app-sidebar></app-sidebar>
+</ng-template>
 
 <div class="p-mt-2 position-relative">
 
