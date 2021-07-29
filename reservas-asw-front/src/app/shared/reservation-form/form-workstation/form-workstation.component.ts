@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormGroupDirective,
@@ -8,9 +8,14 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber } from '../../reservation.actions';
+import * as actions from '../../reservation.actions';
 import { DateValidationType } from '../../../../utils/enums';
-import { DataService } from '../../../services/data.service';
+import { EmittedValue } from '../../interfaces/shared.interfaces';
+
+interface MeanOfTransport {
+  label: string;
+  value: any;
+}
 
 @Component({
   selector: 'app-form-workstation',
@@ -23,17 +28,18 @@ export class FormWorkstationComponent implements OnInit {
   @Input() submitted!: boolean;
   
   form!: FormGroup;
-  numPeople!: number;
-  meansOfTransport: { label: string; value: any }[] = [];
+  peopleNumber!: number;
+  floorNumber!: number;
+  meansOfTransport: MeanOfTransport[] = [];
   meanOfTransport!: number | null;
-  ind: number = 0;
+  reservationId!: number;
   showLicensePlate!: boolean;
-  numFloor!: number;
+
+  private vehiclesWithLicensePlates: { key: string, value: number } [];
 
   constructor(
     private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder,
-    private dataService: DataService,
     private store: Store<AppState>
   ) {
     this.meansOfTransport = [
@@ -54,20 +60,34 @@ export class FormWorkstationComponent implements OnInit {
         value: DateValidationType.ParkingAvailabilityPerMotorcycle,
       },
     ];
+    this.vehiclesWithLicensePlates = [
+      {
+        key: 'Carro',
+        value: 1
+      },
+      {
+        key: 'Moto',
+        value: 2
+      },
+    ];
   }
 
   ngOnInit(): void {
+
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    this.numFloor = this.form.get('piso')?.value;
-    this.numPeople = this.form.get('personasReserva')?.value;
-    this.meanOfTransport = this.form.get('meanOfTransport')?.value;
+    this.floorNumber = this.form.get('piso')?.value;
+    this.peopleNumber = this.form.get('personasReserva')?.value;
+    this.meanOfTransport = this.form.get('medioTransporte')?.value;
+    this.reservationId = this.form.get('reserva')?.value;
     this.meanOfTransport &&
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
+
   }
 
   get transportModeName(): string {
+
     switch (this.meanOfTransport) {
       case DateValidationType.ParkingAvailabilityPerBicycle:
         return 'Bicicleta';
@@ -78,21 +98,29 @@ export class FormWorkstationComponent implements OnInit {
       default:
         return 'Ninguno';
     }
+
   }
 
-  get formControls() {
+  get formControls(): any {
+
     return this.form.controls;
+
   }
   
-  get peopleData() {
+  get peopleData(): FormArray {
+
     return this.formControls['datosAcompanante'] as FormArray;
+
   }
 
-  removePeople() {
+  removePeople(): void {
+
     this.peopleData.removeAt(this.peopleData.length - 1);
+
   }
 
-  addPeople() {
+  addPeople(): void {
+
     const peopleReservation = this.fb.group({
       correo: [
         '',
@@ -104,38 +132,53 @@ export class FormWorkstationComponent implements OnInit {
       miembroOrganizacion: [false, Validators.required],
     });
     this.peopleData.push(peopleReservation);
+    
   }
 
-  cambiarPiso(value: number): void {
-    this.numFloor += value;
-    this.form.controls['piso'].setValue(this.numFloor); //Otra forma
-    this.numFloor += value;
-    this.formControls['piso'].setValue(this.numFloor); 
-    this.store.dispatch( setFloorNumber({ floorNumber: this.numFloor}) );
+  onChangeFloor( selectedFloor: EmittedValue ): void {
+
+    this.floorNumber = selectedFloor.value;
+    this.formControls['piso'].setValue( this.floorNumber ); 
+    this.store.dispatch( actions.setFloorNumber({ floorNumber: this.floorNumber}) );
+
   }
 
-  changePeople(value: number): void {
-    this.numPeople += value;
-    this.formControls['personasReserva'].setValue(this.numPeople);
-    this.store.dispatch( setPeopleNumber({ peopleNumber: this.numPeople }) );
+  onChangeReservation( selectedReservation: EmittedValue ): void {
+
+    this.reservationId = selectedReservation.value;
+    this.formControls['reserva'].setValue( this.reservationId ); 
+    this.store.dispatch( actions.setReservationId({ reservationId: this.reservationId}) );
+
   }
 
-  changeTransport(value: number): void {
-    this.ind += value;
-    this.ind < 0 ? (this.ind = 3) : this.ind > 3 ? (this.ind = 0) : true;
-    this.meanOfTransport = this.meansOfTransport[this.ind].value;
-    this.formControls['medioTransporte'].setValue(this.meanOfTransport );
-    if (this.meanOfTransport != null) {
-    }
+  onChangePeople( selectedPeople: EmittedValue ): void {
 
-    if (
-      this.meanOfTransport === this.meansOfTransport[1].value ||
-      this.meanOfTransport === this.meansOfTransport[0].value
-    ) {
-      this.showLicensePlate = false;
-      this.formControls['placa'].setValue('');
+    this.peopleNumber = selectedPeople.value;
+    this.formControls['personasReserva'].setValue(this.peopleNumber);
+    this.store.dispatch( actions.setPeopleNumber({ peopleNumber: this.peopleNumber }) );
+
+    if ( selectedPeople.nextValue ) {
+      this.addPeople();
     } else {
-      this.showLicensePlate = true;
+      this.removePeople();
     }
+
   }
+
+  onChangeTransport( selectedTransport: EmittedValue ): void {
+
+    this.meanOfTransport = selectedTransport.value;
+    this.formControls['medioTransporte'].setValue( this.meanOfTransport );
+    this.store.dispatch( actions.setMeanOfTransport({ meanOfTransportId: this.meanOfTransport || 0 }) );
+
+    this.showLicensePlate = this.vehiclesWithLicensePlates
+      .map( vehicles => vehicles.value )
+      .includes( this.meanOfTransport || 0 );
+
+    if ( !this.showLicensePlate ) {
+      this.formControls['placa'].setValue('');
+    }
+
+  }
+
 }
