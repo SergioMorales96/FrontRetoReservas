@@ -53,3 +53,7 @@ export enum DateValidationType {
 }
 
  
+export enum ReservationAction {
+    Edit,
+    ViewSummary
+}
