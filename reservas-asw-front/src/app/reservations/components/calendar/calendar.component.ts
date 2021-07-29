@@ -170,23 +170,9 @@ export class CalendarComponent {
   }
 
   setDates(dateValue: Date) {
-    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
-    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
-
-    let month: number = dateValue.getMonth() + 1;
-    let strMonth: string = month.toString();
-
-    let year: number = dateValue.getFullYear();
-    let strYear: string = year.toString();
-
-    let startDay: number = first.getDate();
-    let strStartDay: string = startDay.toString();
-
-    let lastDay: number = last.getDate();
-    let strLastDay: string = lastDay.toString();
-
-    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
-    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+    
+    const startDate = moment(dateValue).startOf('month').format('DD-MM-YYYY');
+    const endDate = moment(dateValue).endOf('month').format('DD-MM-YYYY');
 
     if (this.peopleNumber > 1) {
       this.queryDates =
@@ -226,8 +212,8 @@ export class CalendarComponent {
         console.log('Entrando case ParkingAvailabilityPerCar ');
         this.getCarParkingAvailability();
         break;
-
       case DateValidationType.ParkingAvailabilityPerBicycle:
+        this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
@@ -314,26 +300,23 @@ export class CalendarComponent {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
       .getParkingMotorcycle(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateAvailabilityMotorcycle(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityMotorcycle(dataResponse.data));
   }
 
-  validateAvailabilityMotorcycle(data: number | any): void {
-    if (data > 0) {
+  validateParkingAvailabilityMotorcycle(data: number | any[]): void {
+    if (data) {
       this.onDayCapacity.emit(true);
+       const menssage = data!=1 ? "parqueaderos disponibles" : "parqueadero disponible";
       this.toastService.showToastSuccess({
-        summary: `Existen ${data} parqueaderos disponibles`,
-        detail: '',
+        summary: `Parqueadero de moto disponible:`,
+        detail: ` ${data} ${menssage}`,
       });
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
-        summary: 'No hay parqueaderos para carro disponibles',
+        summary: 'No hay parqueaderos para Moto disponibles',
         detail: '',
       });
     }
   }
-
 }

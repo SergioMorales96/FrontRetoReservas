@@ -8,12 +8,11 @@
     acceptButtonStyleClass="p-button-success"
     rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
-
 <app-menu></app-menu>
 
 <app-sidebar 
-    [display]="display"
-    (onHide)="display = false"></app-sidebar>
+[display]="display"
+(onHide)="display = false"></app-sidebar>
 
 <div class="p-mt-2 position-relative">
 
@@ -34,3 +33,4 @@
 
 </div>
 
+<app-time-period-slider></app-time-period-slider>
