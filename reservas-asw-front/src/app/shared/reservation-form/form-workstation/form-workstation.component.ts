@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormGroupDirective,
@@ -6,9 +6,16 @@ import {
   FormArray,
   Validators,
 } from '@angular/forms';
-import { SharedService } from '../../services/shared.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../app.reducer';
+import * as actions from '../../reservation.actions';
 import { DateValidationType } from '../../../../utils/enums';
-import { DataService } from '../../../services/data.service';
+import { EmittedValue } from '../../interfaces/shared.interfaces';
+
+interface MeanOfTransport {
+  label: string;
+  value: any;
+}
 
 @Component({
   selector: 'app-form-workstation',
@@ -16,27 +23,26 @@ import { DataService } from '../../../services/data.service';
   styleUrls: ['./form-workstation.component.scss'],
 })
 export class FormWorkstationComponent implements OnInit {
+
   @Input() formGroupName!: string;
   @Input() submitted!: boolean;
-  AcompananteForm!: FormGroup;
+  
   form!: FormGroup;
-  numPiso!: number;
-  numPersonas!: number;
-  mediosTransporte: { label: string; value: any }[] = [];
-  medioTransporte!: number | null;
-  ind: number = 0;
-  mostrarPlaca!: boolean;
+  peopleNumber!: number;
+  floorNumber!: number;
+  meansOfTransport: MeanOfTransport[] = [];
+  meanOfTransport!: number | null;
+  reservationId!: number;
+  showLicensePlate!: boolean;
 
-  //esMiembro!: boolean;
+  private vehiclesWithLicensePlates: { key: string, value: number } [];
 
   constructor(
     private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder,
-    private sharedService: SharedService,
-    private dataService: DataService
+    private store: Store<AppState>
   ) {
-    //this.mediosTransporte = ['Ninguno', 'Bicicleta', 'Carro', 'Moto'];
-    this.mediosTransporte = [
+    this.meansOfTransport = [
       {
         label: 'Ninguno',
         value: null,
@@ -54,22 +60,34 @@ export class FormWorkstationComponent implements OnInit {
         value: DateValidationType.ParkingAvailabilityPerMotorcycle,
       },
     ];
+    this.vehiclesWithLicensePlates = [
+      {
+        key: 'Carro',
+        value: 1
+      },
+      {
+        key: 'Moto',
+        value: 2
+      },
+    ];
   }
 
   ngOnInit(): void {
+
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    //this.datosAcomp = this.form.get('datosAcompanante') as FormGroup;
-    this.numPiso = this.form.get('piso')?.value;
-    this.numPersonas = this.form.get('personasReserva')?.value;
-    this.medioTransporte = this.form.get('medioTransporte')?.value;
-    this.medioTransporte &&
-    this.medioTransporte !== DateValidationType.ParkingAvailabilityPerBicycle
-      ? (this.mostrarPlaca = true)
-      : (this.mostrarPlaca = false);
+    this.floorNumber = this.form.get('piso')?.value;
+    this.peopleNumber = this.form.get('personasReserva')?.value;
+    this.meanOfTransport = this.form.get('medioTransporte')?.value;
+    this.reservationId = this.form.get('reserva')?.value;
+    this.meanOfTransport &&
+    this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
+      ? (this.showLicensePlate = true)
+      : (this.showLicensePlate = false);
   }
 
   get transportModeName(): string {
-    switch (this.medioTransporte) {
+
+    switch (this.meanOfTransport) {
       case DateValidationType.ParkingAvailabilityPerBicycle:
         return 'Bicicleta';
       case DateValidationType.ParkingAvailabilityPerCar:
@@ -79,20 +97,30 @@ export class FormWorkstationComponent implements OnInit {
       default:
         return 'Ninguno';
     }
+
   }
 
-  get f() {
+  get formControls(): any {
+
     return this.form.controls;
+
   }
-  get datosAcompanante() {
-    return this.form.controls['datosAcompanante'] as FormArray;
-  }
-  removeAcompanante() {
-    this.datosAcompanante.removeAt(this.datosAcompanante.length - 1);
+  
+  get peopleData(): FormArray {
+
+    return this.formControls['datosAcompanante'] as FormArray;
+
   }
 
-  addAcompanante() {
-    const AcompananteForm = this.fb.group({
+  removePeople(): void {
+
+    this.peopleData.removeAt(this.peopleData.length - 1);
+
+  }
+
+  addPeople(): void {
+
+    const peopleReservation = this.fb.group({
       correo: [
         '',
         [
@@ -102,44 +130,57 @@ export class FormWorkstationComponent implements OnInit {
       ],
       miembroOrganizacion: [false, Validators.required],
     });
-    this.datosAcompanante.push(AcompananteForm);
+    this.peopleData.push(peopleReservation);
+    
   }
 
-  cambiarPiso(value: number): void {
-    this.numPiso += value;
-    console.log(
-      'Enviando piso ' + this.numPiso + ' mediante service Data desde form-workstation (Step 1)'
-    );
-    this.dataService.numPiso$.emit(this.numPiso);
-    this.form.controls['piso'].setValue(this.numPiso); //Otra forma
+  onChangeFloor( selectedFloor: EmittedValue ): void {
+
+    this.floorNumber = selectedFloor.value;
+    this.formControls['piso'].setValue( this.floorNumber ); 
+    this.store.dispatch( actions.setFloorNumber({ floorNumber: this.floorNumber}) );
+
   }
 
-  cambiarPersonas(value: number): void {
-    this.numPersonas += value;
-    //this.dataService.numPersonas$.emit(this.numPersonas);
-    this.form.patchValue({ personasReserva: this.numPersonas });
+  onChangeReservation( selectedReservation: EmittedValue ): void {
+
+    this.reservationId = selectedReservation.value;
+    this.formControls['reserva'].setValue( this.reservationId ); 
+    this.store.dispatch( actions.setReservationId({ reservationId: this.reservationId}) );
+
   }
+  // verReserva(){
+  //   this.formControls['reserva'].setValue(this.reserva);
+  //   this.store.dispatch(actions.setWorkstation({ workstation: this.reserva}));
+  // }
 
-  cambiarTransporte(value: number): void {
-    this.ind += value;
-    this.ind < 0 ? (this.ind = 3) : this.ind > 3 ? (this.ind = 0) : true;
-    //console.log(this.ind);
-    this.medioTransporte = this.mediosTransporte[this.ind].value;
-    this.form.patchValue({ medioTransporte: this.medioTransporte });
-    if (this.medioTransporte != null) {
-      //this.dataService.tipoValidacion$.emit(this.medioTransporte);
-    }
+  onChangePeople( selectedPeople: EmittedValue ): void {
 
-    // Si es Bici o Moto, no hay placa
+    this.peopleNumber = selectedPeople.value;
+    this.formControls['personasReserva'].setValue(this.peopleNumber);
+    this.store.dispatch( actions.setPeopleNumber({ peopleNumber: this.peopleNumber }) );
 
-    if (
-      this.medioTransporte === this.mediosTransporte[1].value ||
-      this.medioTransporte === this.mediosTransporte[0].value
-    ) {
-      this.mostrarPlaca = false;
-      this.form.controls['placa'].setValue('');
+    if ( selectedPeople.nextValue ) {
+      this.addPeople();
     } else {
-      this.mostrarPlaca = true;
+      this.removePeople();
     }
   }
+
+  onChangeTransport( selectedTransport: EmittedValue ): void {
+
+    this.meanOfTransport = selectedTransport.value;
+    this.formControls['medioTransporte'].setValue( this.meanOfTransport );
+    this.store.dispatch( actions.setMeanOfTransport({ meanOfTransportId: this.meanOfTransport || 0 }) );
+
+    this.showLicensePlate = this.vehiclesWithLicensePlates
+      .map( vehicles => vehicles.value )
+      .includes( this.meanOfTransport || 0 );
+
+    if ( !this.showLicensePlate ) {
+      this.formControls['placa'].setValue('');
+    }
+
+  }
+ 
 }

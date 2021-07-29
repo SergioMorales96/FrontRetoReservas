@@ -35,6 +35,7 @@ export interface Reservation {
     totalHoras: number;
     idRelacion: number;
     tipoReserva: string
+    emailsAsistentes?: string;
 }
 
 export class ReservationClass {

@@ -1,147 +1,141 @@
 <div class="p-fluid">
-  <p-card header="Step 1">
-    <ng-container [formGroup]="form">
-      <!-- Piso -->
-      <div class="p-field">
-        <label for="piso">Piso</label>
-        <div class="p-d-flex">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-left"
-            (click)="cambiarPiso(-1)"
-          ></button>
-          <span>{{ numPiso }}</span>
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-right"
-            (click)="cambiarPiso(1)"
-          ></button>
-        </div>
-      </div>
-      <!-- /Piso -->
 
-      <!-- Reserva -->
-      <div class="p-field">
-        <label for="reserva">Reserva</label>
-        <input
-          type="text"
-          pInputText
-          class="p-inputtext"
-          formControlName="reserva"
-          placeholder="Escoja un puesto o sala de reuniones en el mapa"
-        />
-        <small *ngIf="f.reserva.errors?.required && submitted" class="p-error"
-          >Escoja un puesto o sala en el mapa</small
-        >
-      </div>
-      <!-- /Reserva -->
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Puesto reserva</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
 
-      <!-- Personas Reserva -->
-      <div class="p-field">
-        <label for="personasReserva">Personas Reserva</label>
-        <div class="p-d-flex">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-left"
-            (click)="cambiarPersonas(-1); removeAcompanante()"
-          ></button>
-          <span>{{ numPersonas }}</span>
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-right"
-            (click)="cambiarPersonas(1); addAcompanante()"
-          ></button>
-        </div>
-      </div>
-      <!-- /Personas Reserva -->
+  <ng-container [formGroup]="form">
 
-      <!-- Datos Acompañante -->
-      <ng-container formArrayName="datosAcompanante">
-        <ng-container
-          *ngFor="
-            let AcompananteForm of datosAcompanante.controls;
-            let i = index
-          "
-        >
-          <div class="p-field">
-            <label for="datosAcompanant">Datos Acompañante</label>
-            <div [formGroupName]="i">
+    <label 
+      class="label font-size-small" 
+      for="piso">
+      Piso
+    </label>
+    <app-data-selector
+      id="piso"
+      [data]="[18, 19, 20]"
+      [initialValue]="floorNumber"
+      (onCurrentValue)="onChangeFloor( $event )">
+    </app-data-selector>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="reserva">
+        Reserva
+      </label>
+      <p class="description description_muted font-size-body">
+        Elija un puesto o sala de reuniones en el mapa.
+      </p>
+      <app-data-selector
+        id="reserva"
+        [data]="[1, 2, 3, 4]"
+        [initialValue]="reservationId"
+        (onCurrentValue)="onChangeReservation( $event )">
+      </app-data-selector>
+      <small
+        *ngIf="formControls.reserva.errors?.required && submitted"
+        class="p-error">
+        Escoja un puesto o sala en el mapa
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="personasReserva">
+        Personas reserva
+      </label>
+      <app-data-selector
+        id="personasReserva"
+        [data]="[1, 2, 3, 4, 5]"
+        [initialValue]="peopleNumber"
+        (onCurrentValue)="onChangePeople( $event )">
+      </app-data-selector>
+    </div>
+
+    <ng-container formArrayName="datosAcompanante">
+      <ng-container *ngFor="let peopleReservation of peopleData.controls; let i = index">
+        <div class="p-field">
+          <label 
+            class="label font-size-small" 
+            for="peopleReservation">
+            Datos Personas
+          </label>
+          <div [formGroupName]="i">
+            <input
+              type="text"
+              pInputTex
+              class="p-inputtext"
+              formControlName="correo"
+              placeholder="Correo" />
+
+            <small
+              *ngIf="(peopleReservation.get('correo')?.touched &&
+                    peopleReservation.get('correo')?.errors) ||
+                    (submitted && peopleReservation.get('correo')?.errors)"
+              class="p-error">
+              Correo inválido
+            </small>
+            <div class="p-field_checkbox">
               <input
-                type="text"
-                pInputTex
-                class="p-inputtext"
-                formControlName="correo"
-                placeholder="Correo"
-              />
-
-              <small
-                *ngIf="
-                  (AcompananteForm.get('correo')?.touched &&
-                    AcompananteForm.get('correo')?.errors) ||
-                  (submitted && AcompananteForm.get('correo')?.errors)
-                "
-                class="p-error"
-                >Correo inválido</small
-              >
-              <div class="p-field_checkbox">
-                <input
-                  class="checkMember"
-                  type="checkbox"
-                  checked="false"
-                  formControlName="miembroOrganizacion"
-                />
-                <label for="esDeOrganizacion">Es de la organizacion</label>
-              </div>
+                class="checkMember"
+                type="checkbox"
+                checked="false"
+                formControlName="miembroOrganizacion" />
+              <label 
+                class="label font-size-small" 
+                for="esDeOrganizacion">
+                Es de la organizacion
+              </label>
             </div>
           </div>
-        </ng-container>
-      </ng-container>
-      <!-- /Datos Acompañante -->
-
-      <!-- Medio de transporte -->
-      <div class="p-field">
-        <label for="medioTransporte">Medio de transporte</label>
-        <div class="p-d-flex">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-left"
-            (click)="cambiarTransporte(-1)"
-          ></button>
-          <span>{{ transportModeName }}</span>
-          <button
-            pButton
-            type="button"
-            icon="pi pi-chevron-right"
-            (click)="cambiarTransporte(1)"
-          ></button>
         </div>
-      </div>
-      <!-- /Medio de transporte -->
-
-      <!-- Placa Vehiculo -->
-      <div *ngIf="mostrarPlaca" class="p-field">
-        <label for="placaMedioTransporte"
-          >Placa de tu {{ transportModeName }}
-        </label>
-
-        <p-inputMask
-          placeholder="XXX-###"
-          formControlName="placa"
-          mask="aaa-99*"
-          [autoClear]="false"
-          [style]="{ 'text-transform': 'uppercase' }"
-        ></p-inputMask>
-      </div>
-      <small *ngIf="f.placa?.touched && f.placa.errors" class="p-error"
-        >Placa inválida</small
-      >
-
-      <!-- /Placa Vehiculo -->
+      </ng-container>
     </ng-container>
-  </p-card>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="medioTransporte">
+        Medio de transporte
+      </label>
+      <app-data-selector
+        id="medioTransporte"
+        [data]="meansOfTransport"
+        [initialValue]="meanOfTransport"
+        label="label"
+        value="value"
+        (onCurrentValue)="onChangeTransport( $event )">
+      </app-data-selector>
+    </div>
+
+    <div 
+      *ngIf="showLicensePlate" 
+      class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="placaMedioTransporte">
+        Placa del {{ transportModeName | lowercase }}
+      </label>
+      <p-inputMask
+        id="placaMedioTransporte"
+        placeholder="XXX-###"
+        formControlName="placa"
+        mask="aaa-99*"
+        [autoClear]="false"
+        [style]="{ 'text-transform': 'uppercase' }">
+      </p-inputMask>
+    </div>
+    <small
+      *ngIf="formControls.placa?.touched && formControls.placa.errors"
+      class="p-error">
+      Placa inválida
+    </small>
+
+  </ng-container>
+
 </div>

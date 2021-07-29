@@ -1,124 +1,121 @@
 <div class="p-fluid">
-  <p-card header="Step 3">
-    <ng-container [formGroup]="form">
-      <!-- Nombres -->
-      <div class="p-field">
-        <label for="nombres">Nombres y Apellidos</label>
 
-        <input
-          type="text"
-          pInputText
-          class="p-inputtext"
-          formControlName="nombres"
-          [style]="{ 'text-transform': 'uppercase' }"
-        />
-        <small
-                *ngIf="
-                  (submitted && f.nombres.errors?.required)
-                "
-                class="p-error"
-                >Se requieren los nombres</small
-              >
-              
-        <!-- <span 
-          class="text-danger"
-          *ngIf="submitted && f.nombres.errors?.required"
-          >Por favor ingresar sus nombres</span
-        >-->
-      </div>
-      <!-- /Nombres -->
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Información del <br> asistente</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
 
-      <!-- Identificacion -->
-      <div class="p-field">
-        <label for="identificacion">Identificación</label>
+  <ng-container [formGroup]="form">
 
-        <input
-          type="text"
-          pInputText
-          class="p-inputtext"
-          formControlName="identificacion"
-        />
-        <span
-          class="text-danger"
-          *ngIf="submitted && f.nombres.errors?.required"
-          >Por favor ingresar su identificacion</span
-        >
-      </div>
-      <!-- /Identificacion -->
+    <div class="p-field">
+      <label
+        class="label font-size-small"
+        for="nombres">Nombres y Apellidos
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="nombres"
+        [style]="{ 'text-transform': 'uppercase' }" />
+      <small
+        *ngIf="submitted && formControls.nombres.errors?.required"
+        class="p-error">
+        Se requieren los nombres
+      </small>
+    </div>
 
-      <!-- Grupo Riesgo -->
-      <div class="p-field">
-        <label for="grupoRiesgo">Grupo de riesgo 1</label>
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="identificacion">
+        Identificación
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="identificacion" />
+      <small
+        *ngIf="submitted && formControls.nombres.errors?.required"
+        class="p-error">
+        Por favor ingresar su identificacion
+      </small>
+    </div>
 
-        <input
-          type="text"
-          pInputText
-          class="p-inputtext"
-          formControlName="grupoRiesgo"
-        />
-        <span
-          class="text-danger"
-          *ngIf="submitted && f.grupoRiesgo.errors?.required"
-          >Por favor ingresar sus Grupo de Riesgo</span
-        >
-      </div>
-      <!-- /Grupo Riesgo -->
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="grupoRiesgo">
+        Grupo de riesgo 1
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="grupoRiesgo" />
+    </div>
 
-      <!-- Convive Grupo Riesgo -->
-      <div class="p-field">
-        <label for="convivenciaRiesgo">Convive con grupo de riesgo 1</label>
+    <div class="p-field">
+      <label 
+        class="label font-size-small"  
+        for="convivenciaRiesgo">
+        Convive con grupo de riesgo 1
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="convivenciaRiesgo" />
+    </div>
 
-        <input
-          type="text"
-          pInputText
-          class="p-inputtext"
-          formControlName="convivenciaRiesgo"
-        />
-        <span
-          class="text-danger"
-          *ngIf="submitted && f.convivenciaRiesgo.errors?.required"
-          >Por favor indique si convive con grupo de giesgo 1</span
-        >
-      </div>
-      <!-- /Convive Grupo Riesgo -->
-
-      <!-- Sintomas -->
-      <div class="p-field">
-        <label for="piso"
-          >¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
-          de garganta, dificultad para identificar olores y sabores</label
-        >
-
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="piso">
+        ¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
+        de garganta, dificultad para identificar olores y sabores)
+      </label>
+      <div class="p-d-flex">
         <button
           pButton
           type="button"
           icon="pi pi-chevron-left"
-          (click)="Sintomas()"
-        ></button>
-        <span>{{ sintomas }}</span>
+          (click)="hasSymptoms()">
+        </button>
+        <span>{{ symptoms }}</span>
         <button
           pButton
           type="button"
           icon="pi pi-chevron-right"
-          (click)="Sintomas()"
-        ></button>
+          (click)="hasSymptoms()">
+        </button>
       </div>
-      <!-- /Sintomas -->
+    </div>
 
-      <!-- Descripción Barrio y Recorrido -->
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="piso">
+        ¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
+        de garganta, dificultad para identificar olores y sabores
+      </label>
       <textarea
         [rows]="2"
         [cols]="30"
         pInputTextarea
         placeholder="Descripción"
-        formControlName="descripcion"
-      ></textarea>
-      <span
-        class="text-danger"
-        *ngIf="submitted && f.descripcion.errors?.required"
-        >Por favor descripa su trayecto</span
-      >
-      <!-- /Descripción Barrio y Recorrido -->
-    </ng-container>
-  </p-card>
+        formControlName="descripcion">
+      </textarea>
+      <small
+        *ngIf="submitted && formControls.descripcion.errors?.required"
+        class="p-error">
+        Por favor descripa su trayecto
+      </small>
+    </div>
+
+  </ng-container>
+
 </div>

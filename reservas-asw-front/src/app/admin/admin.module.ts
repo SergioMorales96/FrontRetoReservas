@@ -39,6 +39,8 @@ import { FormFloorComponent  } from './pages/floors/form/form.floor.component';
 import { ListfloorComponent } from './pages/floors/list/list-floor.component';
 import { ViewFloorComponent } from './pages/floors/view/view-floor.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { CActiveGuard } from '../auth/c-active.guard';
+import { CLoadService } from '../auth/c-load.service';
 
 
 @NgModule({
@@ -83,5 +85,6 @@ import { FilterPipe } from './pipes/filter.pipe';
     SortPipe,
     FilterPipe
   ],
+  providers: [CActiveGuard,CLoadService]
 })
 export class AdminModule { }

@@ -1,39 +1,39 @@
-<ng-container [formGroup]="form">
-  <p-card header="Step 2" [style]="{ width: '25rem', 'margin-bottom': '2em' }">
-    <!-- Periodo -->
-    <div class="p-field p-grid">
-      <label for="timeonly">Time Only</label>
+<div class="p-fluid">
+
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Fecha de reserva</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
+
+  <ng-container [formGroup]="form">
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="timeonly">
+        Periodo de tiempo por bloques
+      </label>
       <div class="p-col">
         <p-calendar
           [timeOnly]="true"
           inputId="timeonly"
-          formControlName="periodoTiempo"
-        ></p-calendar>
+          formControlName="periodoTiempo">
+        </p-calendar>
       </div>
     </div>
-    <!-- /Periodo -->
 
-    <!-- Calendario -->
-    <app-calendar
-      [selectedFloor]="numberPisos"
-      [_numberOfPeople]="numberPeople"
-      [dateValidationType]="valType"
-    ></app-calendar>
-    <!-- /Calendario   <div class="p-field p-grid">
-        <div class="p-col">
-          <p-calendar
-            inputId="basic"
-            formControlName="fecha"
-            [inline]="true"
-            [showWeek]="true"
-          ></p-calendar>
-        </div>
-      </div>-->
+    <div class="p-my-5">
+      <app-calendar></app-calendar>
+    </div>
 
-    <!-- Aforo -->
-    <label>Informacion del Aforo</label>
+    <label class="label font-size-small">Informacion del Aforo</label>
     <br />
-    <span>El aforo es para <strong>(65 personas)</strong></span>
-    <!-- /Aforo -->
-  </p-card>
-</ng-container>
+    <p class="description font-size-body">
+      El aforo para este día es <br> bajo <span style="color: #9cf886;">(65 personas)</span>
+    </p>
+
+  </ng-container>
+
+</div>

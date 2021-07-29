@@ -1,36 +1,24 @@
-<p>calendar works!</p>
-
-<button (click)="numberOfPeople = 1">set numOfPeople</button>
-<button (click)="id = 1">set id</button>
-<button (click)="consultReservations()">update</button>
-
 <p-calendar 
-  name="dateValue" 
-  [(ngModel)]="dateValue" 
   [inline]="true" 
   [disabledDates]="invalidDates"
   [disabledDays]="[0]"
-  [minDate] = "minDate"
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
-  >
-  <!-- <ng-template pTemplate="header">
-    <div class="p-datepicker-header ng-tns-c58-1">
-      <div class="p-datepicker-title1 ng-tns-c58-1">
-        <span>Fecha</span>
-      </div>
-    </div>
-  </ng-template> -->
+  (onMonthChange)="onMonthChange( $event )"
+  [disabledDays]="[0, 6]"
+  [minDate] ="currentDate">
+
   <ng-template pTemplate="date" let-date>
     <td>
       <span [ngClass]="{
-        'tarde': afterNoonM(date.day),
-        'mañana':morningM(date.day),
-        'dia':completeM(date.day)
-      }">
-        {{date.day}}</span>
+        'tarde': isInvalidAfternoonDate(date.day),
+        'mañana':isInvalidMorningDate(date.day),
+        'dia': isInvalidTotalDate(date.day)}">
+        {{date.day}}
+      </span>
     </td>
   </ng-template>
+
 </p-calendar>
 

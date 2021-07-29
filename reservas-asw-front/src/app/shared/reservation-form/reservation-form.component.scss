@@ -23,4 +23,15 @@
     justify-content: space-around;
     align-items: center;
   }
+
+  .p-inputtext {
+    background: transparent;
+    border: 0px transparent;
+    border-bottom: 2px solid rgb(146, 188, 253);
+  }
+
+  .p-inputtext::placeholder {
+    text-justify: auto;
+    color: rgb(146, 188, 253);
+  }
 }

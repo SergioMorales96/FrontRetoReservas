@@ -1,36 +1,36 @@
 <div class="p-fluid">
     <p-card>
        
-           <p class="p-titleSlider">Fecha de reserva</p>
+        <p class="p-titleSlider">Fecha de reserva</p>
         <p class="p-textHour">Periodo de tiempo por horas (salas)</p>
        
         <div class="p-fluid p-formgrid p-grid">
             <div class="p-field p-col-3">
             <label class="p-timeFrame" for="countries" >
                <div class="p-listHour">
-                                <a class="p-listHour p-opacities">{{firstHour}}<br></a>
-                                <a class="p-listHour">{{secondHour}}<br></a>
-                                <a class="p-listHour p-opacities">{{thirdHour}}<br></a>                       
+                    <a class="p-listHour p-opacities">{{firstHour}}<br></a>
+                    <a class="p-listHour">{{secondHour}}<br></a>
+                    <a class="p-listHour p-opacities">{{thirdHour}}<br></a>                       
                </div> 
             </label> 
             </div>
             <div class="p-col-9">
                 <div class="p-grid p-selectTime">
                     <div class="p-col">
-                        {{min}}
+                        {{ startTime }}
                     </div>
                     <div class="p-col">
-                        {{max}}
+                        {{ endTime }}
                     </div>
 
                 </div>
                 <div class="p-slider1 p-col ">
                     <p-slider 
                     [(ngModel)]="rangeValues" 
-                    [min]=0 
-                    [max]=18 
+                    [min]="0" 
+                    [max]="18" 
                     [range]="true"
-                    (onChange)="functionHour()"></p-slider>               
+                    (onChange)="onChange( $event )"></p-slider>               
                 </div>
             </div>
         </div>

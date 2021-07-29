@@ -12,22 +12,30 @@ export class FormAssistantComponent implements OnInit {
   @Input() submitted!: boolean;
 
   form!: FormGroup;
-  sintomas!: string;
+  symptoms!: string;
 
-  constructor(private rootFormGroup: FormGroupDirective) {}
+  constructor(
+    private rootFormGroup: FormGroupDirective
+  ) {}
 
   ngOnInit(): void {
+
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    this.sintomas = 'No';
+    this.symptoms = 'No';
+
   }
 
-  get f() {
+  get formControls() {
+
     return this.form.controls;
+
   }
 
-  Sintomas() {
-    this.sintomas == 'No' ? (this.sintomas = 'Si') : (this.sintomas = 'No');
-    this.form.patchValue({ sintomas: this.sintomas });
+  hasSymptoms(): void {
+
+    this.symptoms == 'No' ? (this.symptoms = 'Si') : (this.symptoms = 'No');
+    this.formControls['sintomas'].setValue(this.symptoms );
+
   }
 
 }

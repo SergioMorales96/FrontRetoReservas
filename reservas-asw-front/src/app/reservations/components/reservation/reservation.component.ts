@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Reservation,ReservationResponse } from '../../interfaces/reservations.interface';
-import { ReservationsService} from '../../services/reservations.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
-import { ConfirmationService } from 'primeng/api';
-import { MessageService } from 'primeng/api';
-import { AlertsService } from '../../../services/alerts.service';
+import { ReservationAction } from '../../../../utils/enums';
+import { DatesReservation, ReservationResponse } from '../../../admin/interfaces/reservation';
+import { Reservation } from '../../interfaces/reservations.interface';
+import { ReservationsService } from '../../services/reservations.service';
+
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
   styleUrls: ['./reservation.component.scss'],
   providers:[MessageService, ConfirmationService]
 })
+export class ReservationComponent {
 
-export class ReservationComponent  {
+  hasEditing: boolean = false;
+  currentReservation!: DatesReservation;
   resp: boolean= true
-  reservation:Reservation={
+  reservation: Reservation = {
     dia: "11-01-0020",
     horaInicio:"8:00",
     horaFin:"10:00",
@@ -26,7 +30,12 @@ export class ReservationComponent  {
     proyecto:"SEMILLA_2021_2",
     idPuestoTrabajo: 5,
     idRelacion: 1,
-    tipoReserva: "SALA"
+    tipoReserva: "PUESTO",
+    emailsAsistentes: "prueba@gmail.com, con@con.con, testeoeo@asw.xx"
+  }
+
+  showComponent( reservationAction: ReservationAction ): void {
+    this.hasEditing = reservationAction === ReservationAction.Edit;
   }
 
   constructor(
@@ -39,17 +48,36 @@ export class ReservationComponent  {
   ){}
 
   addReservation(){
-    this.alertsService.showConfirmDialog({
-      message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
-      header: 'Creación de reserva ',
-    }).then(resp => {
       this.reservationService.addReservation(this.reservation)
       .subscribe(
-        (reservationResponse: ReservationResponse) => {
-          //this.router.navigateByUrl(RouteName.BranchesList);
-          this.toastService.showToastSuccess({ summary: 'Reserva creada', detail: `Creación exitosa`});
+        (reservationResponse) => {
+          if(reservationResponse.status === `OK`){
+          this.alertsService.showConfirmDialog({
+            message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+            header: 'Creación de reserva ',
+          }).then(resp =>{
+            if(resp)
+            this.toastService.showToastSuccess({ summary: 'Reserva creada', detail: `Se creó la reserva exitosamente`});
+            else{
+              return;
+            }
+          }).catch(console.log);
+          
+        }
+          else if(reservationResponse.status === `INTERNAL_SERVER_ERROR`){
+          this.alertsService.showConfirmDialog({
+            message: `Ups... No fue posible crear la reserva :(`,
+            header: 'Error en la creación de la reserva ',
+          }).then(resp =>{
+            if(resp)
+            this.toastService.showToastDanger({ summary: 'Reserva NO creada', detail: `No se pudo crear la reserva`});
+            else{
+              return;
+            }
+          })
+          
+          }
         });
-    });
-   
+        
   }
 }

@@ -4,7 +4,9 @@
     border-radius: 0px;
     padding: 8%;
     box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.13);
-    background-color: var(--white);
+    background-color: var(--black);
+    backdrop-filter: blur(50px);
+    font-weight: bold;
 }
 
 :host ::ng-deep .p-datepicker .p-datepicker-header {
@@ -48,10 +50,10 @@
 }
 
 :host ::ng-deep .pi-chevron-right:before {
-    color: #0666fb;
+    color: black;
 }
 :host ::ng-deep .pi-chevron-left:before {
-    color: #0666fb;
+    color: black;
 }
 
 // :host ::ng-deep .p-datepicker-header .p-datepicker-title {
