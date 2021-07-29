@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Reservation,ReservationResponse } from '../../interfaces/reservations.interface';
+import { Reservation, ReservationResponse } from '../../interfaces/reservations.interface';
 import { RouteName } from '../../../../utils/enums';
 import { ReservationsService} from '../../services/reservations.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { AlertsService } from '../../../services/alerts.service';
+import { SharedService } from '../../../shared/services/shared.service';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
@@ -14,9 +15,9 @@ import { AlertsService } from '../../../services/alerts.service';
   providers:[MessageService, ConfirmationService]
 })
 
-export class ReservationComponent  {
+export class ReservationComponent{
   resp: boolean= true
-  reservation:Reservation={
+  /*reservation:Reservation={
     dia: "11-01-0020",
     horaInicio:"8:00",
     horaFin:"10:00",
@@ -29,7 +30,7 @@ export class ReservationComponent  {
     idRelacion: 1,
     tipoReserva: "PUESTO",
     emailsAsistentes: "prueba@gmail.com, con@con.con, testeoeo@asw.xx"
-  }
+  }*/
 
   constructor(
     private messageService: MessageService,
@@ -37,40 +38,10 @@ export class ReservationComponent  {
     private reservationService: ReservationsService,
     private router: Router,
     private toastService: ToastsService,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    private sharedService: SharedService
   ){}
 
-  addReservation(){
-      this.reservationService.addReservation(this.reservation)
-      .subscribe(
-        (reservationResponse: ReservationResponse) => {
-          if(reservationResponse.status === `OK`){
-          this.alertsService.showConfirmDialog({
-            message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
-            header: 'Creación de reserva ',
-          }).then(resp =>{
-            if(resp)
-            this.toastService.showToastSuccess({ summary: 'Reserva creada', detail: `Se creó la reserva exitosamente`});
-            else{
-              return;
-            }
-          }).catch(console.log);
-          
-        }
-          else if(reservationResponse.status === `INTERNAL_SERVER_ERROR`){
-          this.alertsService.showConfirmDialog({
-            message: `Ups... No fue posible crear la reserva :(`,
-            header: 'Error en la creación de la reserva ',
-          }).then(resp =>{
-            if(resp)
-            this.toastService.showToastDanger({ summary: 'Reserva NO creada', detail: `No se pudo crear la reserva`});
-            else{
-              return;
-            }
-          })
-          
-          }
-        });
-        
-  }
+ 
+  
 }

@@ -37,7 +37,8 @@ import { SharedService } from '../shared/services/shared.service';
     ReservationsRoutingModule,
   ], 
   exports: [
-    CalendarComponent
+    CalendarComponent,
+    ReservationComponent
   ]
 })
 export class ReservationsModule { }
