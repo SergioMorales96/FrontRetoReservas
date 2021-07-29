@@ -21,7 +21,7 @@ export class ReservationSummaryComponent implements OnInit {
   meanOfTransport: number | null = 0;
   nameTransport: string = "";
   selectedDateSummary : Date =new Date;
-  meses = [
+ /* meses = [
     "Enero",
     "Febrero",
     "Marzo",
@@ -34,7 +34,7 @@ export class ReservationSummaryComponent implements OnInit {
     "Octubre",
     "Noviembre",
     "Diciembre",
-  ];
+  ];*/
 
   constructor(
     private store: Store<AppState>
@@ -99,8 +99,8 @@ export class ReservationSummaryComponent implements OnInit {
     //console.log(selectedDate);
     if (this.continuar === true) {
       
-        this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
-      
+        //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
+          this.fecha='';
     }
     this.continuar===false;
 
