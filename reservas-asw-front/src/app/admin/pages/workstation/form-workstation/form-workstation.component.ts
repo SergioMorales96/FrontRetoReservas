@@ -3,14 +3,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workstation, WorkstationClass, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from 'src/app/admin/services/workstations.service';
-import { RouteName, WorkStationState, WorkStationType } from '../../../../../utils/enums';
+import { RouteName} from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { DomainsService } from 'src/app/admin/services/domains.service';
 import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interfaces';
 import { Floor } from 'src/app/admin/interfaces/floors.interfaces';
 import { FloorsService } from 'src/app/admin/services/floors.service';
 import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
-import { map } from 'rxjs/operators';
+
 
 
 @Component({
@@ -24,7 +24,7 @@ export class FormWorkstationComponent implements OnInit {
   private DOMAIN_STATE_CONDITION: string = 'ESTADO_PUESTO_TRABAJO';
   private DOMAIN_TYPE_CONDITION: string = 'TIPO_PUESTO_TRABAJO';
 
-  workstationForm = this.fb.group({
+  workstationForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     domainType: ['', [Validators.required]],
     domainState: ['', [Validators.required]],
@@ -53,12 +53,12 @@ export class FormWorkstationComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private workstationsService: WorkstationsService,
     private router: Router,
     private toastService: ToastsService, 
     private domainsService: DomainsService,
-    private foorService: FloorsService,
+    private floorService: FloorsService,
   ) { }
 
   ngOnInit(): void {
@@ -103,7 +103,7 @@ export class FormWorkstationComponent implements OnInit {
   }
 
   getFloors(): void {
-    this.foorService.getFloors()
+    this.floorService.getFloors()
       .subscribe(
         (floorsResponse: FloorsResponse) => this.floors = floorsResponse.data
       );

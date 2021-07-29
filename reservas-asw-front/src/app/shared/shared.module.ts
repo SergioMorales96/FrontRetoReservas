@@ -14,6 +14,9 @@ import { FormDateComponent } from './reservation-form/form-date/form-date.compon
 import { FormWorkstationComponent } from './reservation-form/form-workstation/form-workstation.component';
 import { ReservationsModule } from '../reservations/reservations.module';
 import { DataSelectorComponent } from './reservation-form/components/data-selector/data-selector.component';
+import { HomeComponent } from '../reservations/pages/home/home.component';
+import { ReservationSummaryComponent } from './reservation-summary/reservation-summary.component';
+import { TimePeriodSliderComponent } from './time-period-slider/time-period-slider.component';
 
 
 
@@ -26,7 +29,9 @@ import { DataSelectorComponent } from './reservation-form/components/data-select
     FormAssistantComponent,
     FormDateComponent,
     FormWorkstationComponent,
-    DataSelectorComponent
+    DataSelectorComponent,
+    ReservationSummaryComponent,
+    TimePeriodSliderComponent
     
   ],
   exports: [
@@ -34,6 +39,8 @@ import { DataSelectorComponent } from './reservation-form/components/data-select
     MenuComponent,
     ReservationFormComponent,
     SidebarComponent,
+    ReservationSummaryComponent,
+    TimePeriodSliderComponent
   ],
   imports: [
     ReactiveFormsModule,

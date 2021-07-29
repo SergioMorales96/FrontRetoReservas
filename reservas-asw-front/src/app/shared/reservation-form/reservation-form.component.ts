@@ -4,7 +4,7 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setContinue, setWorkstation } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-form',
@@ -72,7 +72,6 @@ export class ReservationFormComponent implements OnInit {
       }),
     });
     //console.log(this.reservaForm.get('personasReserva')?.value);
-
     this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
     this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
   }
@@ -90,9 +89,10 @@ export class ReservationFormComponent implements OnInit {
 
   submit() {
     this.submitted = true;
+    this.store.dispatch( setContinue({ continuar: true}) );
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {
+        if (this.reservaForm.controls.puestoInfo.invalid) {          
           return;
         } else {
           this.submitted = false;
@@ -117,7 +117,7 @@ export class ReservationFormComponent implements OnInit {
         break;
     }
     this.step += 1;
-
+    
     /*if (this.reservaForm.controls.puestoInfo.invalid && this.step == 1){
       return;
     }

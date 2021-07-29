@@ -15,6 +15,7 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { appReducers } from './app.reducer';
+import { CLoadService } from './auth/c-load.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { appReducers } from './app.reducer';
   providers: [
     ConfirmationService,
     MessageService,
+    CLoadService
   ],
   bootstrap: [AppComponent]
 })

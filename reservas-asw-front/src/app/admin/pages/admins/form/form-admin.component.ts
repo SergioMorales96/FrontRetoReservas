@@ -97,6 +97,7 @@ export class FormAdminComponent implements OnInit {
         .subscribe(
           (adminResponse: AdminResponse) => {
             this.router.navigateByUrl(RouteName.AdminsList);
+            
             this.toastService.showToastSuccess({ summary: 'Administrador editado', detail: 'El administrador ha sido editado correctamente' });
           },
           (() => this.admin = new AdminClass())
@@ -106,7 +107,12 @@ export class FormAdminComponent implements OnInit {
         .subscribe(
           (adminResponse: AdminResponse) => {
             this.router.navigateByUrl(RouteName.AdminsList);
-            this.toastService.showToastSuccess({ summary: 'Administrador creado', detail: 'El administrador ha sido creado correctamente' })
+            if (adminResponse.success=== false){
+              this.toastService.showToastDanger({ summary: 'No se creo el administrador', detail: 'El administrador no se pudo crear' })
+            }else{
+              this.toastService.showToastSuccess({ summary: 'Administrador creado', detail: 'El administrador ha sido creado correctamente' })
+
+            }
           },
           (() => this.admin = new AdminClass())
         )

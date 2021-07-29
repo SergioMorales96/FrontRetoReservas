@@ -11,12 +11,13 @@ import { ReservationsService } from '../../services/reservations.service';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
 import { DataResponse } from '../../interfaces/reservations.interface';
-import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { OnInit } from '@angular/core';
-
+import { Subscription } from 'rxjs';
+import { DataService } from '../../../services/data.service';
+import { setSelectedDate } from 'src/app/shared/reservation.actions';
 
 @Component({
   selector: 'app-calendar',
@@ -49,7 +50,6 @@ export class CalendarComponent implements OnInit{
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-    private sharedService: SharedService,
     private store: Store<AppState>
   ) {
     this.store
@@ -166,23 +166,9 @@ export class CalendarComponent implements OnInit{
   }
 
   setDates(dateValue: Date) {
-    let first = new Date(dateValue.getFullYear(), dateValue.getMonth(), 1);
-    let last = new Date(dateValue.getFullYear(), dateValue.getMonth() + 1, 0);
-
-    let month: number = dateValue.getMonth() + 1;
-    let strMonth: string = month.toString();
-
-    let year: number = dateValue.getFullYear();
-    let strYear: string = year.toString();
-
-    let startDay: number = first.getDate();
-    let strStartDay: string = startDay.toString();
-
-    let lastDay: number = last.getDate();
-    let strLastDay: string = lastDay.toString();
-
-    let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
-    let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
+    
+    const startDate = moment(dateValue).startOf('month').format('DD-MM-YYYY');
+    const endDate = moment(dateValue).endOf('month').format('DD-MM-YYYY');
 
     if (this.peopleNumber > 1) {
       this.queryDates =
@@ -198,10 +184,15 @@ export class CalendarComponent implements OnInit{
 
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
-
+    console.log(selectedDate);
+    this.store.dispatch( setSelectedDate({ selectedDateSummary: this.selectedDate}) );
   }
 
   callMethodPerDateValidationType(): void {
+    console.log(
+      'Desde callMethodPerDateValidationType, validType = ',
+      this.dateValidationType
+    );
 
     this.getCapacity();
 
@@ -210,15 +201,14 @@ export class CalendarComponent implements OnInit{
     
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
-        console.log('Entrando case bicis');
-        this.getBici();
+        this.getParkingCycle();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
         console.log('Entrando case ParkingAvailabilityPerCar ');
         this.getCarParkingAvailability();
         break;
-
       case DateValidationType.ParkingAvailabilityPerBicycle:
+        // this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
@@ -240,27 +230,26 @@ export class CalendarComponent implements OnInit{
     this.reservationsService
       .getCapacity(selectedDate, this.floorNumber)
       .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
         this.validateDayCapacity(dataResponse.data);
       });
   }
 
   getCarParkingAvailability(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    console.log(selectedDate);
     this.reservationsService
       .getCarParkingAvailability(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateParkingAvailabilityPerCar(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityPerCar(dataResponse.data));
   }
 
   validateDayCapacity(data: number | any): void {
-    if (data > 0) {
+    if (data > 1) {
       this.onDayCapacity.emit(true);
-      this.toastService.showToastInfo({ summary: 'Aforo Disponible:', detail: `El aforo disponible para esta fecha es de ${data} personas` })
-    } else {
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} personas`})
+    } else if(data === 1){
+      this.onDayCapacity.emit(true);
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} persona`})
+
+    }else{  
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
         summary: 'No hay aforo disponible',
@@ -269,21 +258,28 @@ export class CalendarComponent implements OnInit{
     }
   }
 
-  getBici(): void {
+  getParkingCycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-    this.sharedService
-      .getDPBicicletas(selectedDate)
-      .subscribe((dpbicicletas: DataResponse) => {
-        console.log(dpbicicletas.data);
-        console.log(this.validationBicis(dpbicicletas.data));
-      });
+    this.reservationsService
+      .getParkingCycle(selectedDate)
+        .subscribe(
+          (availabilityCycle: DataResponse) => this.validateAvailabilityCycle(availabilityCycle.data)
+        );
   }
 
-  validationBicis(data: Number | any) {
-    if (data > 0) {
+  validateAvailabilityCycle(data: Number | any[]) {
+    if (data) {
       this.onDayCapacity.emit(true);
+      this.toastService.showToastSuccess({
+        summary: `Hay ${data} parqueaderos de bicicleta disponibles`,
+        detail: ''
+      })
     } else {
       this.onDayCapacity.emit(false);
+      this.toastService.showToastSuccess({
+        summary: `No hay parqueaderos de bicileta disponibles`,
+        detail: ''
+      })
     }
   }
 
@@ -302,26 +298,23 @@ export class CalendarComponent implements OnInit{
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
       .getParkingMotorcycle(selectedDate)
-      .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
-        this.validateAvailabilityMotorcycle(dataResponse.data);
-      });
+      .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityMotorcycle(dataResponse.data));
   }
 
-  validateAvailabilityMotorcycle(data: number | any): void {
-    if (data > 0) {
+  validateParkingAvailabilityMotorcycle(data: number | any[]): void {
+    if (data) {
       this.onDayCapacity.emit(true);
+       const menssage = data!=1 ? "parqueaderos disponibles" : "parqueadero disponible";
       this.toastService.showToastSuccess({
-        summary: `Existen ${data} parqueaderos disponibles`,
-        detail: '',
+        summary: `Parqueadero de moto disponible:`,
+        detail: ` ${data} ${menssage}`,
       });
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
-        summary: 'No hay parqueaderos para carro disponibles',
+        summary: 'No hay parqueaderos para Moto disponibles',
         detail: '',
       });
     }
   }
-
 }

@@ -1,6 +1,7 @@
 <p-calendar 
   [inline]="true" 
   [disabledDates]="invalidDates"
+  [disabledDays]="[0]"
   [showOtherMonths]="false" 
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
