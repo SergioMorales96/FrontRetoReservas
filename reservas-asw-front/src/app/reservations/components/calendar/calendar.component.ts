@@ -1,9 +1,6 @@
 import {
   Component,
   EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
   Output,
 } from '@angular/core';
 import {
@@ -18,8 +15,6 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { Subscription } from 'rxjs';
-import { DataService } from '../../../services/data.service';
 
 
 @Component({
@@ -27,121 +22,78 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit, OnDestroy {
-  dateValue: Date = new Date();
-  numPisoSubscription!: Subscription;
-  numPeopleSubscription!: Subscription;
-  tipoValidacionSubscription!: Subscription;
+export class CalendarComponent {
+
+  @Output() onDayCapacity: EventEmitter<boolean>;
+  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean>;
+  
+  private tempDate: Date = new Date();
+  private roomUrlPlugin: string = 'reservas/reservas_sala';
+  private workstationUrlPlugin: string = 'reservas/reservas_puesto';
+  private queryDates: string = '';
+
+  currentDate: Date;
+  selectedDate: Date;
+  invalidDates: Date[];
+  invalidMorningDates: number[];
+  invalidAfternoonDates: number[];
+  invalidTotalDates: number[];
+  reservations: Reservation[];
+  floorNumber!: number;
+  peopleNumber!: number;
+  reservationId!: number;
+  dateValidationType: DateValidationType;
+  currentMonth: number;
 
   constructor(
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
     private sharedService: SharedService,
-    private dataService: DataService,
     private store: Store<AppState>
   ) {
     this.store
-      .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber }) => console.log('data from store ngrx', { floorNumber, peopleNumber }));
+      .select( 'reservation' )
+      .subscribe( reservation => {
+        this.floorNumber = reservation.floorNumber;
+        this.peopleNumber = reservation.peopleNumber;
+        this.reservationId = reservation.reservationId;
+      } );
+    
+      this.onDayCapacity = new EventEmitter<boolean>();
+      this.onDayParkingAvailabilityPerCar = new EventEmitter<boolean>();
+      this.selectedDate = new Date();
+      this.currentDate = new Date();
+      this.currentMonth = 0;
+      this.invalidDates = [];
+      this.invalidMorningDates = [];
+      this.invalidAfternoonDates = [];
+      this.invalidTotalDates = [];
+      this.reservations = [];
+      this.dateValidationType = DateValidationType.DayCapacity;
   }
 
-  /*@Input() dateValidationType: DateValidationType =
-    DateValidationType.DayCapacity;*/
-  @Input() dateCar: DateValidationType =
-    DateValidationType.ParkingAvailabilityPerCar;
-
-  @Input() selectedFloor!: number;
-  @Input() _numberOfPeople!: number;
-  @Input() dateValidationType!: DateValidationType;
-
-  @Output() onDayCapacity: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean> =
-    new EventEmitter<boolean>(); /////
-
-  selectedDate: Date = new Date();
-
-  ngOnInit(): void {
-    console.log(this.selectedFloor);
-    console.log(this._numberOfPeople);
-    console.log(this.dateValidationType);
-
-    /*
-    this.numPisoSubscription = this.dataService.numPiso$.subscribe(
-      (numPiso) => {
-        this.selectedFloor = numPiso;
-        console.log(
-          'Entrando a Calendar y recibiendo PISO '+numPiso+' por serviceData',
-          
-        );
-      }
-    );
-
-    this.numPeopleSubscription = this.dataService.numPersonas$.subscribe(
-      (numPeople) => {
-        this._numberOfPeople = numPeople;
-      }
-    );
-
-    this.tipoValidacionSubscription =
-      this.dataService.tipoValidacion$.subscribe((tipoValidation) => {
-        this.dateValidationType = tipoValidation;
-      });*/
+  isInvalidAfternoonDate (day: number): boolean {
+    return this.invalidAfternoonDates.includes(day);
   }
 
-  ngOnDestroy(): void {
-    /*this.numPisoSubscription?.unsubscribe();
-    this.numPeopleSubscription?.unsubscribe();
-    this.tipoValidacionSubscription?.unsubscribe();*/
+  isInvalidMorningDate (day: number): boolean {
+    return this.invalidMorningDates.includes(day);
   }
 
-  //Las fechas en esta lista desactivan los días en el calendario
-  invalidDates: Date[] = [];
-  //Las fechas en esta lista colorean la mitad de arriba de los días en el calendario
-  morning: number[] = [];
-  //Las fechas en esta lista colorean la mitad de abajo de los días en el calendario
-  afterNoon: number[] = [];
-  //Las fechas en esta lista colorean el día completo de los días en el calendario
-  complete: number[] = [];
-  //Resultado de consutla al servicio back se almacena en reservations
-  reservations: Reservation[] = [];
-
-  //Número de personas para saber si se trata de una sala o un puesto de trabajo
-  //private _numberOfPeople!: number;
-
-  //Id del puesto de trabajo o de la sala
-  private _id: number = 0;
-
-  private tempDate: Date = new Date();
-
-  private roomUrlPlugin: string = 'reservas/reservas_sala';
-
-  private workstationUrlPlugin: string = 'reservas/reservas_puesto';
-
-  //Atributo que se usa para especificar las fechas en las que se quiere realizar la consulta
-  private queryDates: string = '';
-
-  currentMonth: number = 0;
-
-  afterNoonM(day: number): boolean {
-    return this.afterNoon.includes(day);
-  }
-
-  morningM(day: number): boolean {
-    return this.morning.includes(day);
-  }
-
-  completeM(day: number): boolean {
-    return this.complete.includes(day);
+  isInvalidTotalDate (day: number): boolean {
+    return this.invalidTotalDates.includes(day);
   }
 
   onMonthChange({ month, year }: { month: number, year: number }): void {
+
     console.log(month, year);
+
   }
 
   monthChange(month: number, year: number): void {
-    this.complete = [];
-    this.morning = [];
-    this.afterNoon = [];
+    this.invalidTotalDates = [];
+    this.invalidMorningDates = [];
+    this.invalidAfternoonDates = [];
     this.invalidDates = [];
     this.tempDate.setMonth(month - 1);
     this.tempDate.setDate(1);
@@ -152,7 +104,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   consultReservations(): void {
     this.setDates(this.tempDate);
     let urlPlugin: string =
-      this._numberOfPeople > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
+      this.peopleNumber > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
 
     this.reservationsService
       .sendRequest(urlPlugin, this.queryDates)
@@ -181,7 +133,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       let jReservation: Reservation = this.reservations[j];
       if (j != i) {
         if (jReservation.dia === iRerservation.dia) {
-          this.complete.push(parseInt(jReservation.dia));
+          this.invalidTotalDates.push(parseInt(jReservation.dia));
           checked.push(jReservation.dia);
           flag = true;
         }
@@ -191,27 +143,27 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (!flag) {
       parseInt(iRerservation.horaInicio) < 13
         ? parseInt(iRerservation.horaFin) < 13
-          ? this.morning.push(parseInt(iRerservation.dia))
-          : this.completeDay(iRerservation, checked)
-        : this.afterNoon.push(parseInt(iRerservation.dia));
+          ? this.invalidMorningDates.push(parseInt(iRerservation.dia))
+          : this.invalidTotalDatesDay(iRerservation, checked)
+        : this.invalidAfternoonDates.push(parseInt(iRerservation.dia));
     }
     return checked;
   }
 
-  private completeDay(rev: Reservation, checked: string[]): void {
-    this.complete.push(parseInt(rev.dia));
+  private invalidTotalDatesDay(rev: Reservation, checked: string[]): void {
+    this.invalidTotalDates.push(parseInt(rev.dia));
     checked.push(rev.dia);
   }
 
   set numberOfPeople(numOfPeople: number) {
-    this._numberOfPeople = numOfPeople;
+    this.peopleNumber = numOfPeople;
   }
 
   set id(id: number) {
-    this._id = id;
+    this.reservationId = id;
   }
 
-  private onMorning(reservation: Reservation): boolean {
+  private oninvalidMorningDates(reservation: Reservation): boolean {
     return true;
   }
 
@@ -234,32 +186,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
     let startDate: string = `${strStartDay}-${strMonth}-${strYear}`;
     let endDate: string = `${strLastDay}-${strMonth}-${strYear}`;
 
-    if (this._numberOfPeople > 1) {
-      this.queryDates = this._numberOfPeople > 1 ? `${this._id}/${startDate}/${endDate}` : '';
+    if (this.peopleNumber > 1) {
+      this.queryDates =
+        this.peopleNumber > 1 ? `${this.reservationId}/${startDate}/${endDate}` : '';
     } else {
-      this.queryDates = this._numberOfPeople == 1 ? `${this._id}/${startDate}/${endDate}` : '';
+      this.queryDates =
+        this.peopleNumber == 1 ? `${this.reservationId}/${startDate}/${endDate}` : '';
     }
 
   }
 
   setSelectedDate(selectedDate: Date): void {
+
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
-    console.log(selectedDate);
+
   }
 
   callMethodPerDateValidationType(): void {
-    console.log(
-      'Desde callMethodPerDateValidationType, validType = ',
-      this.dateValidationType
-    );
-    console.log('Entrando case capacity');
+
     this.getCapacity();
 
     switch (this.dateValidationType) {
-      //    case DateValidationType.DayCapacity:
-      //
-      // break;
+      case DateValidationType.DayCapacity:
+    
+        break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         console.log('Entrando case bicis');
         this.getBici();
@@ -280,17 +231,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getCapacity(): void {
-    console.log('Selected Floor desde getCapacity: ', this.selectedFloor);
-    if (!this.selectedFloor) {
+    if (!this.floorNumber) {
       this.toastService.showToastWarning({
         summary: 'Seleccione un piso',
-        detail: 'No se ha seleccionado algún piso',
+        detail: 'No se ha seleccionado ningún piso',
       });
       return;
     }
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
-      .getCapacity(selectedDate, this.selectedFloor)
+      .getCapacity(selectedDate, this.floorNumber)
       .subscribe((dataResponse: DataResponse) => {
         console.log(dataResponse);
         this.validateDayCapacity(dataResponse.data);
@@ -375,9 +325,5 @@ export class CalendarComponent implements OnInit, OnDestroy {
       });
     }
   }
-  public minDate = new Date(
-    this.selectedDate.getFullYear(),
-    this.selectedDate.getMonth(),
-    this.selectedDate.getDate()
-  );
+
 }
