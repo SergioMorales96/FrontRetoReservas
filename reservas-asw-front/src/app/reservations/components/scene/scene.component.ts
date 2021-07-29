@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Component, Input, OnInit } from '@angular/core';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MeshStandardMaterial } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { combineAll } from 'rxjs/operators';
 import { ACESFilmicToneMapping, Object3D } from 'three';
@@ -10,6 +11,63 @@ import { ReservationsService } from '../../services/reservations.service';
 import { RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.interface';
 import { workSpacesPerFloorResponse } from '../../interfaces/workspaces-per-floor.interface';
 import { Reservation } from '../../interfaces/reservations.interface';
+
+
+const CAMERA_FOV = 40;
+const CAMERA_NEAR = 1;
+const CAMERA_FAR = 100;
+const BACKGROUND_COLOR = 0x000000;
+const SCENE_SIGMA = 0.04;
+const FOG_COLOR = 0x681453;
+const FOG_NEAR = 1;
+const FOG_FAR = 20;
+const CAMERA_X_INIT = 5;
+const CAMERA_Y_INIT = 2;
+const CAMERA_Z_INIT = 8;
+const CAMERA_TARGET_X = 0;
+const CAMERA_TARGET_Y = 0;
+const CAMERA_TARGET_Z = 0;
+const FLOOR_POS_X = 0;
+const FLOOR_POS_Y = 0;
+const FLOOR_POS_Z = 0;
+const FLOOR_SCALE_X = 1;
+const FLOOR_SCALE_Y = 1;
+const FLOOR_SCALE_Z = 1;
+const CHAIRS_POS_X = 1;
+const CHAIRS_POS_Y = -1;
+const CHAIRS_POS_Z = 0;
+const CHAIRS_SCALE_X = 1;
+const CHAIRS_SCALE_Y = 1;
+const CHAIRS_SCALE_Z = 1;
+const ROOMS_POS_X = 0;
+const ROOMS_POS_Y = -1;
+const ROOMS_POS_Z = 0;
+const ROOMS_SCALE_X = 1;
+const ROOMS_SCALE_Y = 1;
+const ROOMS_SCALE_Z = 1;
+const STAIRS_POS_X = -3;
+const STAIRS_POS_Y = -1;
+const STAIRS_POS_Z = 0;
+const STAIRS_SCALE_X = 1;
+const STAIRS_SCALE_Y = 1;
+const STAIRS_SCALE_Z = 1;
+const FLOOR_ACTIVE_COLOR = 0x3131ff;
+const FLOOR_INACTIVE_COLOR = 0xbf;
+const CHAIR_SADDLE_COLOR = 0x444b93;
+const CHAIR_BACK_COLOR = 0x444b93;
+const CHAIR_UNION_COLOR = 0x1e;
+const CHAIR_WHEELS_COLOR = 0x1e;
+const TABLE_COLOR = 0xffffff;
+const STAIRS_COLOR = 0xbf;
+const PATH = 'assets/models/';
+const PATH_FLOOR_18 = '18th_floor/18th_floor.gltf';
+const PATH_FLOOR_19 = '19th_floor/19th_floor.gltf';
+const PATH_FLOOR_20 = '20th_floor/20th_floor.gltf';
+const PATH_CHAIRS = 'chairs/chairs.gltf';
+const PATH_ROOMS = 'PUESTOS CON MESA/PLANOS 3D.gltf';
+const PATH_STAIRS = 'stairs/stairs.gltf';
+const MOUSE_VAL1 = 1;
+const MOUSE_VAL2 = 2;
 
 
 @Component({
@@ -33,7 +91,7 @@ export class SceneComponent implements OnInit {
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 100 );
+    const camera = new THREE.PerspectiveCamera( CAMERA_FOV, window.innerWidth / window.innerHeight, CAMERA_NEAR, CAMERA_FAR );
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
@@ -59,12 +117,13 @@ export class SceneComponent implements OnInit {
     document.addEventListener( 'mousemove', onPointerMove );
     window.addEventListener('click', onClick);
 
-    scene.background = new THREE.Color( 0x000000 );
-    scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+    scene.background = new THREE.Color( BACKGROUND_COLOR );
+    scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
+    //scene.fog = new THREE.Fog(FOG_COLOR, FOG_NEAR, FOG_FAR);
 
     camera.position.set( 8, 15, 10 );
 
-    controls.target.set( 0, 0.5, 0 );
+    controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
     controls.update();
     //controls.enablePan = false;
     controls.enableDamping = true;
