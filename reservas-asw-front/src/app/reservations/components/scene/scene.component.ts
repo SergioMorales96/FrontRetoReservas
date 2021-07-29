@@ -8,8 +8,10 @@ import { combineAll } from 'rxjs/operators';
 import { ACESFilmicToneMapping, Object3D } from 'three';
 import { ReservationsService } from '../../services/reservations.service';
 import { RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.interface';
-import { workSpacesPerFloorResponse } from '../../interfaces/workspaces-per-floor.interface';
+import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspaces-per-floor.interface';
 import { Reservation } from '../../interfaces/reservations.interface';
+import { Floors } from '../../interfaces/floors.interface';
+import { Floor } from '../../../admin/interfaces/admin.interfaces';
 
 
 @Component({
@@ -57,7 +59,7 @@ export class SceneComponent implements OnInit {
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild( renderer.domElement );
     document.addEventListener( 'mousemove', onPointerMove );
-    window.addEventListener('click', onClick);
+    //window.addEventListener('click', onClick);
 
     scene.background = new THREE.Color( 0x000000 );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
@@ -84,6 +86,65 @@ export class SceneComponent implements OnInit {
       loadRooms(this.urlPlugin, this.reservationsService, this.query);
     }else{
       loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
+      renderer.domElement.addEventListener( 'click', onClick );
+      function onClick(event: MouseEvent) {
+
+        //idPiso++;
+        
+        raycaster.setFromCamera(pointer, camera);
+        let intersects = raycaster.intersectObjects(scene.children, true);
+        console.log('El intersecado es: ', intersects[0].object.userData.info);
+        
+    
+            
+            if( intersects[0] && intersects[0].object.userData.info  ){
+              
+              if( selectedObject && selectedObject != intersects[0].object ){
+               // console.log( selectedObject.userData.currentColor == selectedObjectColor );
+                //Cambia color al anterior por cambio de selecciÃ³n
+                (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject.userData.currentColor;
+                for (let ob of scene.children) {
+                  if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject.userData.info.idPuestoTrabajo ){
+                    ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
+                  }
+                }
+                
+              }
+    
+              for (let ob of scene.children) {
+               /*  console.log('Los children del scene', scene.children); */
+                
+                /* console.log( 'El obejtito ome', ob.children[4].userData ); */
+                
+                //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+                if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+
+                  ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+                  console.log( 'Color ACtual de la silla', ob.userData.chairCurrentColor );
+                  
+                  ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+                  console.log( 'Color rojo de la silla', ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color );
+                }            
+              }
+              
+              selectedObject = intersects[0].object;
+              if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
+                selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
+              }else{
+                selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
+              }
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
+    
+              INTERSECTED = null;
+               
+            }
+            console.log('El selected: ', selectedObject);
+    
+            
+        
+      }  
+
+
     }
     
     loadStairs();
@@ -118,6 +179,7 @@ export class SceneComponent implements OnInit {
     
     
     let intersects = raycaster.intersectObjects(scene.children, true);
+
     
     if (intersects.length > 0 && intersects[0].object.userData.info && intersects[0].object != selectedObject) {
 
@@ -136,57 +198,13 @@ export class SceneComponent implements OnInit {
         INTERSECTED = null;
 
     }
+    }else if ( INTERSECTED ){
+      ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColro;
     }
 
   }
 
-  function onClick(event: MouseEvent) {
-
-    //idPiso++;
-    
-    raycaster.setFromCamera(pointer, camera);
-    let intersects = raycaster.intersectObjects(scene.children, true);
-    console.log(intersects);
-    
-
-        
-        if( intersects[0] && intersects[0].object.userData.info  ){
-          
-          if( selectedObject && selectedObject != intersects[0].object ){
-           // console.log( selectedObject.userData.currentColor == selectedObjectColor );
-            
-            
-            (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject.userData.currentColor;
-            
-          }
-
-          for (let ob of scene.children) {
-           /*  console.log('Los children del scene', scene.children); */
-            
-            /* console.log( 'El obejtito ome', ob.children[4].userData ); */
-            
-            //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-            if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
-              ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-            }            
-          }
-          
-          selectedObject = intersects[0].object;
-          if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
-            selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
-          }else{
-            selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
-          }
-          (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-
-          INTERSECTED = null;
-           
-        }
-        console.log('El selected: ', selectedObject);
-
-        
-    
-  }
+  
 
   function loadThisFloor( floorNumber: number, answ: RoomsPerFloorResponse ){
     let path: string = '';
@@ -251,7 +269,7 @@ export class SceneComponent implements OnInit {
     return pisoActual === idPiso;
   }
 
-  function generateModelsWorkSpace(answ: workSpacesPerFloorResponse, columnas: number, filas: number, bloque: number, piso: number){
+  function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number): workSpaceW[]{
     loader.load('assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ){
       let model5 = gltf.scene;
       let n = 0;
@@ -265,13 +283,13 @@ export class SceneComponent implements OnInit {
             
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
-              piece.children[0].userData = {"info" : answ.data[0]};
-              piece.children[1].userData = {"info" : answ.data[0]};
-              piece.children[2].userData = {"info" : answ.data[0]};
-              piece.children[3].userData = {"info" : answ.data[0]};
-              piece.children[4].userData = {"info" : answ.data[0]};
-             
-              answ.data.shift();
+              piece.children[0].userData = {"info" : workPlaces[0]};
+              piece.children[1].userData = {"info" : workPlaces[0]};
+              piece.children[2].userData = {"info" : workPlaces[0]};
+              piece.children[3].userData = {"info" : workPlaces[0]};
+              piece.children[4].userData = {"info" : workPlaces[0]};
+              
+              workPlaces.shift();
               n++;
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -468,6 +486,7 @@ export class SceneComponent implements OnInit {
               
               piece.visible = invisibleModels(piso);
               scene.add(piece);
+              sceneInfo.workSpaces.push(piece);
               
             }, undefined, function ( e ) {
     
@@ -487,12 +506,14 @@ export class SceneComponent implements OnInit {
           for (let j = 0; j < filas; j++) {
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
-
-              piece.children[0].userData = {"info" : answ.data[n]};
-              piece.children[1].userData = {"info" : answ.data[n]};
-              piece.children[2].userData = {"info" : answ.data[n]};
-              piece.children[3].userData = {"info" : answ.data[n]};
-              piece.children[4].userData = {"info" : answ.data[n]};
+              piece.children[0].userData = {"info" : workPlaces[0]};
+              piece.children[1].userData = {"info" : workPlaces[0]};
+              piece.children[2].userData = {"info" : workPlaces[0]};
+              piece.children[3].userData = {"info" : workPlaces[0]};
+              piece.children[4].userData = {"info" : workPlaces[0]};
+              
+              
+              workPlaces.shift();
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -661,7 +682,9 @@ export class SceneComponent implements OnInit {
               
               piece.visible = invisibleModels(piso);
               scene.add(piece);
+              sceneInfo.workSpaces.push(piece);
               n++;
+          
             }, undefined, function ( e ) {
     
                 console.error( e );
@@ -679,11 +702,14 @@ export class SceneComponent implements OnInit {
               loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                 let piece = gltf.scene;
                 
-                piece.children[0].userData = {"info" : answ.data[n]};
-                piece.children[1].userData = {"info" : answ.data[n]};
-                piece.children[2].userData = {"info" : answ.data[n]};
-                piece.children[3].userData = {"info" : answ.data[n]};
-                piece.children[4].userData = {"info" : answ.data[n]};
+                piece.children[0].userData = {"info" : workPlaces[0]};
+                piece.children[1].userData = {"info" : workPlaces[0]};
+                piece.children[2].userData = {"info" : workPlaces[0]};
+                piece.children[3].userData = {"info" : workPlaces[0]};
+                piece.children[4].userData = {"info" : workPlaces[0]};
+
+                
+                workPlaces.shift();
     
                 piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                             
@@ -787,7 +813,9 @@ export class SceneComponent implements OnInit {
                                            
                 piece.visible = invisibleModels(piso);
                 scene.add(piece);
+                sceneInfo.workSpaces.push(piece);
                 n++;
+               
               }, undefined, function ( e ) {
     
                 console.error( e );
@@ -799,14 +827,13 @@ export class SceneComponent implements OnInit {
         return;
       }
     
-    
-
+      
     }, undefined, function ( e ) {
 
       console.error( e );
 
     });
-
+    return workPlaces;
     
 
     
@@ -873,214 +900,246 @@ export class SceneComponent implements OnInit {
       );
   }
 
+
+  function loadChairWorkSpaces(answ: workSpacesPerFloorResponse, matriz: (workSpaceW[])[]): (workSpaceW[])[]{
+           for (let ws of answ.data) {
+              if (ws.idPiso == 1) {
+                matriz[0].push(ws);
+              } else if (ws.idPiso == 2) {
+                matriz[1].push(ws);
+              } else if (ws.idPiso == 3) {
+                matriz[2].push(ws);
+              }
+            }
+            return matriz;
+  }
+
   function loadWorkSpaces( urlPlugin: string, reservationsService: ReservationsService, query: string ): void{
-    urlPlugin = '/puestoTrabajo/id_Piso';
+    urlPlugin = '/puestoTrabajo/todas';
+    query = '';
+    let jocker1: workSpaceW[] = [];
+    let jocker2: workSpaceW[] = [];
+    let jocker3: workSpaceW[] = [];
+    let matriz: (workSpaceW[])[] = [jocker1, jocker2, jocker3];
       reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
-          //console.log(answ.data);
-
+          console.log(answ.data);
+          matriz = loadChairWorkSpaces( answ, matriz );
+          console.log("matriz[0] es ",matriz[0]);
+          console.log("matriz[1] es ",matriz[1]);
+          console.log("matriz[2] es ",matriz[2]);
+          
           
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
                         
             ////////// PISO 20 //////////
             //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,1,1,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,1,1,3);
             
             //BLOQUE 002    
-            generateModelsWorkSpace(answ,2,1,2,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,1,2,3);
 
             //BLOQUE 004
-            generateModelsWorkSpace(answ,3,1,4,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],3,1,4,3);
 
             //BLOQUE 007    
-            generateModelsWorkSpace(answ,2,7,7,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,7,7,3);
 
             //BLOQUE 021
-            generateModelsWorkSpace(answ,2,5,21,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,5,21,3);
 
             //BLOQUE 030   
-            generateModelsWorkSpace(answ,1,1,30,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,30,3);
 
             //BLOQUE 31
-            generateModelsWorkSpace(answ,2,2,31,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,2,31,3);
 
             //BLOQUE 035
-            generateModelsWorkSpace(answ,1,1,35,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,35,3);
 
             //BLOQUE 037 
-            generateModelsWorkSpace(answ,11,2,37,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],11,2,37,3);
 
             //BLOQUE 059
-            generateModelsWorkSpace(answ,4,2,59,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],4,2,59,3);
           
             //BLOQUE 067    
-            generateModelsWorkSpace(answ,1,3,67,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,3,67,3);
 
             //BLOQUE 070
-            generateModelsWorkSpace(answ,6,1,70,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],6,1,70,3);
 
             //BLOQUE 076
-            generateModelsWorkSpace(answ,4,1,76,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],4,1,76,3);
             
             ////////// PISO 19 //////////
             //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,5,1,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,5,1,2);
 
             // //BLOQUE 006
-            generateModelsWorkSpace(answ,1,1,6,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],1,1,6,2);
 
             // //BLOQUE 007
-            generateModelsWorkSpace(answ,5,1,7,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],5,1,7,2);
 
             //  //BLOQUE 012 
-            generateModelsWorkSpace(answ,6,2,12,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],6,2,12,2);
 
             //  //BLOQUE 024
-            generateModelsWorkSpace(answ,1,1,24,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,24,2);
 
             //  //BLOQUE 025 
-            generateModelsWorkSpace(answ,3,2,25,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],3,2,25,2);
             
             //  //BLOQUE 028
-            generateModelsWorkSpace(answ,1,1,28,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,28,2);
             
             // //BLOQUE 032
-            generateModelsWorkSpace(answ,4,2,32,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],4,2,32,2);
 
             // //BLOQUE 040
-            generateModelsWorkSpace(answ,5,2,40,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],5,2,40,2);
 
             //  //BLOQUE 050 
-            generateModelsWorkSpace(answ,1,1,50,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,50,2);
 
             // //BLOQUE 051
-            generateModelsWorkSpace(answ,4,2,51,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],4,2,51,2);
 
             // //BLOQUE 059   
-            generateModelsWorkSpace(answ,1,3,59,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,3,59,2);
 
             //  //BLOQUE 062 
-            generateModelsWorkSpace(answ,1,1,62,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,1,62,2);
 
             // //BLOQUE 063
-            generateModelsWorkSpace(answ,6,2,63,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],6,2,63,2);
 
             // //BLOQUE 074
-            generateModelsWorkSpace(answ,8,1,74,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],8,1,74,2);
 
             //  //BLOQUE 082        
-            generateModelsWorkSpace(answ,5,1,82,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,1,82,2);
 
             // //BLOQUE 087
-            generateModelsWorkSpace(answ,5,2,87,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,87,2);
 
             // //BLOQUE 097
-            generateModelsWorkSpace(answ,2,1,97,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],2,1,97,2);
 
             // //BLOQUE 099
-            generateModelsWorkSpace(answ,6,2,99,2);
+            matriz[1]=  generateModelsWorkSpace(matriz[1],6,2,99,2);
 
             // //BLOQUE 107
-            generateModelsWorkSpace(answ,1,1,107,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,107,2);
 
             // //BLOQUE 108
-            generateModelsWorkSpace(answ,5,2,108,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,108,2);
 
             //  //BLOQUE 117
-            generateModelsWorkSpace(answ,1,3,117,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,3,117,2);
 
             //  //BLOQUE 120           
-            generateModelsWorkSpace(answ,1,1,120,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,120,2);
 
             // ////////// PISO 18 /////////
             // //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,5,1,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],1,5,1,1);
 
             // //BLOQUE 006
-            generateModelsWorkSpace(answ,1,1,6,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,6,1);
 
             // //BLOQUE 007
-            generateModelsWorkSpace(answ,5,1,7,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,1,7,1);
 
             //  //BLOQUE 012 
-            generateModelsWorkSpace(answ,7,2,12,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,2,12,1);
 
             //  //BLOQUE 026
-            generateModelsWorkSpace(answ,1,1,26,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,26,1);
 
             //  //BLOQUE 027
-            generateModelsWorkSpace(answ,3,2,27,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],3,2,27,1);
 
             //  //BLOQUE 030
             //  for (let i = 0; i < 1; i++) {
-            generateModelsWorkSpace(answ,1,1,30,1);
+              matriz[0]= generateModelsWorkSpace(matriz[0],1,1,30,1);
 
             // //BLOQUE 034
-            generateModelsWorkSpace(answ,4,2,34,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,34,1);
 
             // //BLOQUE 042
-            generateModelsWorkSpace(answ,2,1,42,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,42,1);
 
             // //BLOQUE 044
-            generateModelsWorkSpace(answ,5,2,44,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,44,1);
 
             //  //BLOQUE 054 
-            generateModelsWorkSpace(answ,1,1,54,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,54,1);
 
             // //BLOQUE 055
-            generateModelsWorkSpace(answ,4,2,55,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,55,1);
 
             // //BLOQUE 063   
-            generateModelsWorkSpace(answ,1,3,63,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,63,1);
 
             // //BLOQUE 066
-            generateModelsWorkSpace(answ,6,2,66,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,66,1);
 
             // //BLOQUE 078
-            generateModelsWorkSpace(answ,8,1,78,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],8,1,78,1);
             
             //  //BLOQUE 085
-            generateModelsWorkSpace(answ,6,1,85,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,1,85,1);
 
 
             // //BLOQUE 091
-            generateModelsWorkSpace(answ,5,2,91,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,91,1);
 
             // //BLOQUE 101
-            generateModelsWorkSpace(answ,2,1,101,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],2,1,101,1);
 
             // //BLOQUE 103
-            generateModelsWorkSpace(answ,6,2,103,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,103,1);
 
             // //BLOQUE 111
-            generateModelsWorkSpace(answ,1,1,111,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,111,1);
 
             // //BLOQUE 112
-            generateModelsWorkSpace(answ,5,2,112,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,112,1);
 
             // //BLOQUE 121
-            generateModelsWorkSpace(answ,2,1,121,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,121,1);
 
             //  //BLOQUE 123
-            generateModelsWorkSpace(answ,9,1,123,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],9,1,123,1);
 
             // //BLOQUE 132   
-            generateModelsWorkSpace(answ,1,8,132,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,8,132,1);
 
             // //BLOQUE 140
-            generateModelsWorkSpace(answ,5,2,140,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,140,1);
 
             //  //BLOQUE 150
-            generateModelsWorkSpace(answ,1,3,150,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,150,1);
 
             // //BLOQUE 153
-            generateModelsWorkSpace(answ,3,2,153,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],3,2,153,1);
 
             // //BLOQUE 158
-            generateModelsWorkSpace(answ,1,1,158,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,158,1);
+              console.log("longitund matriz[0]", matriz[0].length);
+              console.log("longitund matriz[1]", matriz[1].length);
+              console.log("longitund matriz[2]", matriz[2].length);
+              
+              console.log("estos son los pisos", sceneInfo.floors );
+              console.log('estas son las sillas', sceneInfo.workSpaces);
 
+              
+              
+              
           }, undefined, function ( e ) {
       
             console.error( e );
