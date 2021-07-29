@@ -142,7 +142,7 @@ export class SceneComponent implements OnInit {
 
   function onClick(event: MouseEvent) {
 
-    idPiso++;
+    //idPiso++;
     
     raycaster.setFromCamera(pointer, camera);
     let intersects = raycaster.intersectObjects(scene.children, true);
@@ -220,6 +220,7 @@ export class SceneComponent implements OnInit {
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
       model3.userData = { "info": answ.data[floorNumber-1] };
+      model3.visible = model3.userData.info.idPiso == idPiso;
       sceneInfo.floors.push( model3 );
       scene.add( model3 );
 
@@ -269,8 +270,8 @@ export class SceneComponent implements OnInit {
               piece.children[2].userData = {"info" : answ.data[0]};
               piece.children[3].userData = {"info" : answ.data[0]};
               piece.children[4].userData = {"info" : answ.data[0]};
+             
               answ.data.shift();
-
               n++;
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -442,6 +443,8 @@ export class SceneComponent implements OnInit {
                 case 150:
                   piece.position.set((model5.position.x+11.28)-(0.34*j),0,(model5.position.z+5.59)+(0.28*j));
                   piece.rotation.y += -0.01;
+               
+                  
                   break;   
                 case 153:
                   if (i ===2 && j === 1) {
@@ -808,6 +811,7 @@ export class SceneComponent implements OnInit {
 
     
   }
+
   
   function loadRooms(urlPlugin: string, reservationsService: ReservationsService, query: string,){
     urlPlugin = '/sala/salasPorPiso';
@@ -874,7 +878,8 @@ export class SceneComponent implements OnInit {
       reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
-          console.log(answ.data);
+          //console.log(answ.data);
+
           
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
@@ -1095,7 +1100,16 @@ export class SceneComponent implements OnInit {
       const child = model.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
       //console.log("el material de las escaleras es: ", childMaterial);
-      childMaterial.color = new THREE.Color(0xf25922);
+      childMaterial.color = new THREE.Color(0xbf);
+      childMaterial.opacity = 0.49;
+      childMaterial.roughness = 0.9;
+      childMaterial.metalness = 0;
+      childMaterial.fog= false;
+      childMaterial.transparent= true;
+      childMaterial.depthTest = true;
+      childMaterial.depthWrite = true;
+      childMaterial.side = THREE.FrontSide;
+
   
       model.position.set( 4.6, 0, -0.57 );
       model.scale.set( model.scale.x*0.5, model.scale.y*0.5, model.scale.z*0.5);
