@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CalendarComponent } from '../../reservations/components/calendar/calendar.component';
 import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
@@ -45,7 +44,7 @@ export class ReservationFormComponent implements OnInit {
       //Puesto - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: ['', Validators.required],
+        reserva: [1, Validators.required],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([]),
         medioTransporte: [null],

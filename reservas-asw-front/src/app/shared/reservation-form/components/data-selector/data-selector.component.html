@@ -1,0 +1,17 @@
+<div class="p-d-flex">
+    <button
+        pButton
+        type="button"
+        icon="pi pi-chevron-left"
+        (click)="changeValue( -1 )"
+        [disabled]="!showPreviewValue">
+    </button>
+    <span class="select-label font-size-body">{{ currentValue }}</span>
+    <button
+        pButton
+        type="button"
+        icon="pi pi-chevron-right"
+        (click)="changeValue( 1 )"
+        [disabled]="!showNextValue">
+    </button>
+</div>
