@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -14,6 +14,7 @@ export class ReservationSummaryComponent implements OnInit {
 
   prueba: string = 'Puesto Reserva';
   fecha : string ='Fecha de Reserva';
+  sintomas: string ='Información del Asistente';
   piso: number = 0;
   continuar: boolean = false;
   peopleNumber: number = 0;
@@ -21,6 +22,7 @@ export class ReservationSummaryComponent implements OnInit {
   meanOfTransport: number | null = 0;
   nameTransport: string = "";
   selectedDateSummary : Date =new Date;
+  symptoms: string ="";
  /* meses = [
     "Enero",
     "Febrero",
@@ -41,8 +43,8 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary}) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary });
+      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary, symptoms}) => {
+        console.log('data from store ngrx', { floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary, symptoms });
         this.setFloorNumber(floorNumber);
         this.setContinue(continuar);
         this.setPeopleNumber(peopleNumber);
@@ -51,6 +53,8 @@ export class ReservationSummaryComponent implements OnInit {
         this.setPrueba();
         this.setSelectedDate(selectedDateSummary);
         this.setFecha();
+        this.setSymptoms(symptoms);
+        this.setInfoAssitent();
       });
 
   }
@@ -89,8 +93,22 @@ export class ReservationSummaryComponent implements OnInit {
     this.continuar===false;
   }
 
+  setInfoAssitent() {
+    if (this.continuar === true) {
+     
+        this.sintomas = `Ha tenido sintomas : ${this.symptoms} `;
+     
+    }
+    this.continuar===false;
+  }
+
   setSelectedDate(selectedDateSummary : Date){
     this.selectedDateSummary = selectedDateSummary;
+
+  }
+
+  setSymptoms(symptoms:string){
+    this.symptoms=symptoms;
 
   }
 

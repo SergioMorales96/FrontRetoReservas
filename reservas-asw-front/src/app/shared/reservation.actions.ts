@@ -35,3 +35,9 @@ export const setSelectedDate = createAction(
     props<{ selectedDateSummary: Date}>()
 
 )
+
+export const setSymptoms = createAction(
+    '[Reservations Component] setSymptoms',
+    props<{ symptoms: string}>()
+
+)
