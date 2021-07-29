@@ -83,7 +83,6 @@ export class FormWorkstationComponent implements OnInit {
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
-
   }
 
   get transportModeName(): string {
@@ -150,6 +149,10 @@ export class FormWorkstationComponent implements OnInit {
     this.store.dispatch( actions.setReservationId({ reservationId: this.reservationId}) );
 
   }
+  // verReserva(){
+  //   this.formControls['reserva'].setValue(this.reserva);
+  //   this.store.dispatch(actions.setWorkstation({ workstation: this.reserva}));
+  // }
 
   onChangePeople( selectedPeople: EmittedValue ): void {
 
@@ -162,7 +165,6 @@ export class FormWorkstationComponent implements OnInit {
     } else {
       this.removePeople();
     }
-
   }
 
   onChangeTransport( selectedTransport: EmittedValue ): void {
@@ -180,5 +182,5 @@ export class FormWorkstationComponent implements OnInit {
     }
 
   }
-
+ 
 }

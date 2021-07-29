@@ -15,7 +15,9 @@ import { SharedService } from '../../../shared/services/shared.service';
 import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-
+import { Subscription } from 'rxjs';
+import { DataService } from '../../../services/data.service';
+import { setSelectedDate } from 'src/app/shared/reservation.actions';
 
 @Component({
   selector: 'app-calendar',
@@ -200,10 +202,15 @@ export class CalendarComponent {
 
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
-
+    console.log(selectedDate);
+    this.store.dispatch( setSelectedDate({ selectedDateSummary: this.selectedDate}) );
   }
 
   callMethodPerDateValidationType(): void {
+    console.log(
+      'Desde callMethodPerDateValidationType, validType = ',
+      this.dateValidationType
+    );
 
     this.getCapacity();
 
@@ -242,7 +249,6 @@ export class CalendarComponent {
     this.reservationsService
       .getCapacity(selectedDate, this.floorNumber)
       .subscribe((dataResponse: DataResponse) => {
-        console.log(dataResponse);
         this.validateDayCapacity(dataResponse.data);
       });
   }
@@ -259,10 +265,14 @@ export class CalendarComponent {
   }
 
   validateDayCapacity(data: number | any): void {
-    if (data > 0) {
+    if (data > 1) {
       this.onDayCapacity.emit(true);
-      this.toastService.showToastInfo({ summary: 'Aforo Disponible:', detail: `El aforo disponible para esta fecha es de ${data} personas` })
-    } else {
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} personas`})
+    } else if(data === 1){
+      this.onDayCapacity.emit(true);
+      this.toastService.showToastInfo({summary:'Aforo Disponible:',detail:`El aforo disponible para esta fecha es de ${data} persona`})
+
+    }else{  
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
         summary: 'No hay aforo disponible',
