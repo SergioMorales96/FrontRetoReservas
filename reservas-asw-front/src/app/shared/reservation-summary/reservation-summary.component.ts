@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -23,6 +23,8 @@ export class ReservationSummaryComponent implements OnInit {
   selectedDateSummary : Date =new Date;
   symptoms: string = '';
   step: number = 0;
+  timePeriod: number=0;
+  startTime:string="";
  /* meses = [
     "Enero",
     "Febrero",
@@ -43,14 +45,14 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step}) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step });
+      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime }) => {
+        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime });
         this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
         this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
         this.setPrueba();
-        this.setSelectedDate(selectedDateSummary);
+        this.setSelectedDate(selectedDateSummary, timePeriod, startTime);
         this.setFecha();
         this.setSymptoms(symptoms);
         this.setInfoAssitent();
@@ -100,8 +102,10 @@ export class ReservationSummaryComponent implements OnInit {
     }
   }
 
-  setSelectedDate(selectedDateSummary : Date){
+  setSelectedDate(selectedDateSummary : Date, timePeriod: number, startTime : string){
     this.selectedDateSummary = selectedDateSummary;
+    this.timePeriod=timePeriod;
+    this.startTime=startTime;
 
   }
 
@@ -116,7 +120,7 @@ export class ReservationSummaryComponent implements OnInit {
     if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
-          this.fecha='';
+          this.fecha= `, ${this.startTime},  ( ${this.timePeriod*60} )`;
     }
 
   }

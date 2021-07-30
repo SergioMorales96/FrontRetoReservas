@@ -48,3 +48,9 @@ export const setContinue = createAction(
     '[Reservations Component] setContinue',
     props<{ continuar : boolean}>()
 )
+
+export const setStartTime = createAction(
+    '[Reservations Component] setStartTime',
+    props<{ startTime : string}>()
+
+)
