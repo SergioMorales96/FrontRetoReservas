@@ -14,6 +14,7 @@ import { DataResponse } from '../../interfaces/reservations.interface';
 import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
+import { OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
 import { setSelectedDate } from 'src/app/shared/reservation.actions';
@@ -23,7 +24,7 @@ import { setSelectedDate } from 'src/app/shared/reservation.actions';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit{
 
   @Output() onDayCapacity: EventEmitter<boolean>;
   @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean>;
@@ -71,6 +72,9 @@ export class CalendarComponent {
       this.reservations = [];
       this.dateValidationType = DateValidationType.DayCapacity;
   }
+  ngOnInit(): void {
+    this.consultReservations();
+  }
 
   isInvalidAfternoonDate (day: number): boolean {
     return this.invalidAfternoonDates.includes(day);
@@ -102,6 +106,8 @@ export class CalendarComponent {
   }
 
   consultReservations(): void {
+    console.log(this.peopleNumber);
+    console.log(this.reservationId);
     this.setDates(this.tempDate);
     let urlPlugin: string =
       this.peopleNumber > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
@@ -153,14 +159,6 @@ export class CalendarComponent {
   private invalidTotalDatesDay(rev: Reservation, checked: string[]): void {
     this.invalidTotalDates.push(parseInt(rev.dia));
     checked.push(rev.dia);
-  }
-
-  set numberOfPeople(numOfPeople: number) {
-    this.peopleNumber = numOfPeople;
-  }
-
-  set id(id: number) {
-    this.reservationId = id;
   }
 
   private oninvalidMorningDates(reservation: Reservation): boolean {

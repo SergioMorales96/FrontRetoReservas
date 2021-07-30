@@ -50,13 +50,6 @@ export class ReservationFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.dataService.floorId$
-      .subscribe( ( floorId: number ) => this.floorId = floorId );
-    this.dataService.numberPersons$
-      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
-    this.dataService.validationType$
-      .subscribe( ( validationType: number ) => this.validationType = validationType );
-
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
       puestoInfo: this.fb.group({
