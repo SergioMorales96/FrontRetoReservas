@@ -20,6 +20,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reservation-form',
@@ -75,7 +76,7 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Fecha - Step 2
       fechaInfo: this.fb.group({
-        periodoTiempo: [''],
+        periodoTiempo: [null],
         fecha: [null,Validators.required],
       }),
       //Fecha - Step 3
@@ -102,9 +103,10 @@ export class ReservationFormComponent implements OnInit {
 
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
+      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
       this.timePeriod = reservation.timePeriod;
 
-      this.dateInfo.controls['fecha'].setValue(this.selectedDate);
+      this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
     });
     
@@ -122,6 +124,8 @@ export class ReservationFormComponent implements OnInit {
         return 'NA';
     }
   }
+
+  
 
   reservation: Reservation = {
     dia: '11-01-0020',
