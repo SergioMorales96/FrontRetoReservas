@@ -4,7 +4,22 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setWorkstation } from '../reservation.actions';
+import {
+  setFloorNumber,
+  setPeopleNumber,
+  setContinue,
+  setWorkstation,
+  setReservationId,
+} from '../reservation.actions';
+import {
+  Reservation,
+  ReservationResponse,
+} from 'src/app/reservations/interfaces/reservations.interface';
+import { Router } from '@angular/router';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ReservationsService } from 'src/app/reservations/services/reservations.service';
+import { AlertsService } from 'src/app/services/alerts.service';
+import { ToastsService } from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-reservation-form',
@@ -16,30 +31,30 @@ export class ReservationFormComponent implements OnInit {
   step: number;
   submitted: boolean;
   numPersonas!: number;
-
+  meanOfTransportStr!: string;
   public floorId!: number;
   public numberPersons!: number;
   public validationType!: DateValidationType;
+  workstationInfo!: FormGroup;
+  dateInfo!: FormGroup;
+  assistantInfo!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
-    private store: Store<AppState>
-    ) {
+    private store: Store<AppState>,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private reservationService: ReservationsService,
+    private router: Router,
+    private toastService: ToastsService,
+    private alertsService: AlertsService
+  ) {
     this.step = 1;
     this.submitted = false;
-    
   }
 
   ngOnInit(): void {
-
-    this.dataService.floorId$
-      .subscribe( ( floorId: number ) => this.floorId = floorId );
-    this.dataService.numberPersons$
-      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
-    this.dataService.validationType$
-      .subscribe( ( validationType: number ) => this.validationType = validationType );
-
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
       puestoInfo: this.fb.group({
@@ -71,36 +86,97 @@ export class ReservationFormComponent implements OnInit {
         descripcion: ['', Validators.required],
       }),
     });
-    //console.log(this.reservaForm.get('personasReserva')?.value);
-    this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
-    this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
+    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
+    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
+    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
+
+    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
+    this.store.dispatch(
+      setReservationId({
+        reservationId: this.workstationInfo.controls['reserva'].value,
+      })
+    );
   }
 
-  
-
-
-  get puestoInfo() {
-    return this.reservaForm.get('puestoInfo');
+  get transportModeName(): string {
+    switch (this.workstationInfo.controls['medioTransporte'].value) {
+      case DateValidationType.ParkingAvailabilityPerBicycle:
+        return 'B';
+      case DateValidationType.ParkingAvailabilityPerCar:
+        return 'C';
+      case DateValidationType.ParkingAvailabilityPerMotorcycle:
+        return 'M';
+      default:
+        return 'NA';
+    }
   }
 
-  get asistenteInfo() {
-    return this.reservaForm.get('asistenteInfo');
+  reservation: Reservation = {
+    dia: '11-01-0020',
+    horaInicio: '8:00',
+    horaFin: '10:00',
+    totalHoras: 8,
+    dominioTipoVehiculo: 'M',
+    placa: 'ATA004',
+    emailUsuario: 'correo@correo.com',
+    proyecto: 'SEMILLA_2021_2',
+    idPuestoTrabajo: 5,
+    idRelacion: 1,
+    tipoReserva: 'PUESTO',
+    emailsAsistentes: 'prueba@gmail.com, con@con.con, testeoeo@asw.xx',
+  };
+
+  addReservation(reservation: Reservation) {
+    this.reservationService
+      .addReservation(reservation)
+      .subscribe((reservationResponse: ReservationResponse) => {
+        if (reservationResponse.status === `OK`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+              header: 'Creación de reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastSuccess({
+                  summary: 'Reserva creada',
+                  detail: `Se creó la reserva exitosamente`,
+                });
+              else {
+                return;
+              }
+            })
+            .catch(console.log);
+        } else if (reservationResponse.status === `INTERNAL_SERVER_ERROR`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Ups... No fue posible crear la reserva :(`,
+              header: 'Error en la creación de la reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastDanger({
+                  summary: 'Reserva NO creada',
+                  detail: `No se pudo crear la reserva`,
+                });
+              else {
+                return;
+              }
+            });
+        }
+      });
   }
 
   submit() {
     this.submitted = true;
-    this.store.dispatch( setContinue({ continuar: true}) );
+    this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {          
+        if (this.reservaForm.controls.puestoInfo.invalid) {
           return;
         } else {
           this.submitted = false;
-          /*if(this.reservaForm.get('personasReserva')?.value != null){
-            this.calendario.numberOfPeople(this.reservaForm.get('personasReserva')?.value);
-          }*/
-         // this.numPersonas = this.reservaForm.get('personasReserva')?.value;
-         // console.log(this.reservaForm.get('personasReserva')?.value);
         }
         break;
       case 2:
@@ -117,19 +193,10 @@ export class ReservationFormComponent implements OnInit {
         break;
     }
     this.step += 1;
-    
-    /*if (this.reservaForm.controls.puestoInfo.invalid && this.step == 1){
-      return;
-    }
-    if (this.reservaForm.controls.fechaInfo.invalid && this.step == 2) {
-      return;
-    }
-    this.step = this.step + 1;
-    console.log(this.step);*/
 
-    /*if(this.step == 4) {
-      MOSTRAR EL TOAST
-  }*/
+    if (this.step == 4) {
+      this.addReservation(this.reservation);
+    }
   }
 
   previous() {

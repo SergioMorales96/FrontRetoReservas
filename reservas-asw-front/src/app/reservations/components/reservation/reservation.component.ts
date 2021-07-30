@@ -14,12 +14,11 @@ import { ReservationsService } from '../../services/reservations.service';
   styleUrls: ['./reservation.component.scss'],
   providers:[MessageService, ConfirmationService]
 })
-export class ReservationComponent {
 
-  hasEditing: boolean = false;
-  currentReservation!: DatesReservation;
+export class ReservationComponent{
   resp: boolean= true
-  reservation: Reservation = {
+  hasEditing!: boolean;
+  reservation:Reservation={
     dia: "11-01-0020",
     horaInicio:"8:00",
     horaFin:"10:00",
@@ -39,13 +38,9 @@ export class ReservationComponent {
   }
 
   constructor(
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private reservationService: ReservationsService,
-    private router: Router,
     private toastService: ToastsService,
-    private alertsService: AlertsService
-  ){}
+    private alertsService: AlertsService  ){}
 
   addReservation(){
       this.reservationService.addReservation(this.reservation)
