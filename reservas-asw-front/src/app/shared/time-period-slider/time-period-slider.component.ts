@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as moment from 'moment';
+import { AppState } from 'src/app/app.reducer';
 import { ToastsService } from '../../services/toasts.service';
+import { setTimePeriod } from '../reservation.actions';
 
 @Component({
   selector: 'app-time-period-slider',
@@ -20,6 +23,7 @@ export class TimePeriodSliderComponent {
 
   constructor(
     private toastService: ToastsService,
+    private store: Store<AppState>
   ) {
     this.startTime = '08:00 AM';
     this.endTime = '08:00 AM';
@@ -41,6 +45,7 @@ export class TimePeriodSliderComponent {
       const valitionHour2 = range + 0.5 == 1 ? 'hora' : 'horas';
       this.thirdHour = range + 0.5 + valitionHour2;
     }
+    this.store.dispatch( setTimePeriod({ timePeriod: range}) );
   }
 
 
@@ -54,6 +59,9 @@ export class TimePeriodSliderComponent {
     this.startTime = startDate.add( this.minValue, 'minutes' ).format( 'hh:mm A' );
     this.endTime = startDate.add( this.maxValue, 'minutes' ).format( 'hh:mm A' );
     this.functionHour(rangeValues[1],rangeValues[0]);
+    
+
+
   }
 
 }

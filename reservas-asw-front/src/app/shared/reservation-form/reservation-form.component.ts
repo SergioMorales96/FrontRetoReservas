@@ -39,6 +39,7 @@ export class ReservationFormComponent implements OnInit {
   dateInfo!: FormGroup;
   assistantInfo!: FormGroup;
   selectedDate!: Date;
+  timePeriod!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -101,7 +102,10 @@ export class ReservationFormComponent implements OnInit {
 
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
+      this.timePeriod = reservation.timePeriod;
+
       this.dateInfo.controls['fecha'].setValue(this.selectedDate);
+      this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
     });
     
   }

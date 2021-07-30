@@ -35,3 +35,8 @@ export const setSelectedDate = createAction(
     props<{ selectedDateSummary: Date}>()
 
 )
+
+export const setTimePeriod = createAction(
+    '[Reservations Component] setTimePeriod',
+    props<{ timePeriod : number}>()
+)
