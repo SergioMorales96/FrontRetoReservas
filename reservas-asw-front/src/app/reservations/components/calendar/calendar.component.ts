@@ -72,6 +72,7 @@ export class CalendarComponent implements OnInit {
     this.reservations = [];
     this.dateValidationType = DateValidationType.DayCapacity;
   }
+
   ngOnInit(): void {
     this.consultReservations();
   }
