@@ -240,6 +240,23 @@ export class CalendarComponent implements OnInit{
       .getCarParkingAvailability(selectedDate)
       .subscribe((dataResponse: DataResponse) => this.validateParkingAvailabilityPerCar(dataResponse.data));
   }
+  validateParkingAvailabilityPerCar(data: number | any[]): void {
+    if (data > 0) {
+      this.onDayParkingAvailabilityPerCar.emit(true);
+      const menssage = data!=1 ? "parqueaderos disponibles" : "parqueadero disponible";
+      this.toastService.showToastSuccess({
+        summary: `Parqueadero de carro disponible:`,
+        detail: ` ${data} ${menssage}`,
+      });
+      
+    } else {
+      this.onDayParkingAvailabilityPerCar.emit(false);
+      this.toastService.showToastDanger({
+        summary: 'No hay parqueaderos para carro disponibles ',
+        detail: '',
+      });
+    }
+  }
 
   validateDayCapacity(data: number | any): void {
     if (data > 1) {
@@ -283,17 +300,7 @@ export class CalendarComponent implements OnInit{
     }
   }
 
-  validateParkingAvailabilityPerCar(data: number | any): void {
-    if (data > 0) {
-      this.onDayParkingAvailabilityPerCar.emit(true);
-    } else {
-      this.onDayParkingAvailabilityPerCar.emit(false);
-      this.toastService.showToastDanger({
-        summary: 'No hay parqueaderos para carro disponibles ',
-        detail: '',
-      });
-    }
-  }
+  
   getParkingMotorcycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
     this.reservationsService
