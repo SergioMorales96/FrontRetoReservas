@@ -35,6 +35,7 @@ export class FormWorkstationComponent implements OnInit {
   reservationId!: number;
   showLicensePlate!: boolean;
 
+
   private vehiclesWithLicensePlates: { key: string, value: number } [];
 
   constructor(
@@ -171,6 +172,7 @@ export class FormWorkstationComponent implements OnInit {
 
     this.meanOfTransport = selectedTransport.value;
     this.formControls['medioTransporte'].setValue( this.meanOfTransport );
+    
     this.store.dispatch( actions.setMeanOfTransport({ meanOfTransportId: this.meanOfTransport || 0 }) );
 
     this.showLicensePlate = this.vehiclesWithLicensePlates

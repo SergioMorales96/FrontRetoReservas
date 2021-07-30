@@ -38,6 +38,7 @@ export class ReservationFormComponent implements OnInit {
   workstationInfo!: FormGroup;
   dateInfo!: FormGroup;
   assistantInfo!: FormGroup;
+  selectedDate!: Date;
 
   constructor(
     private fb: FormBuilder,
@@ -74,7 +75,7 @@ export class ReservationFormComponent implements OnInit {
       //Fecha - Step 2
       fechaInfo: this.fb.group({
         periodoTiempo: [''],
-        fecha: [''],
+        fecha: [null,Validators.required],
       }),
       //Fecha - Step 3
       asistenteInfo: this.fb.group({
@@ -97,6 +98,12 @@ export class ReservationFormComponent implements OnInit {
         reservationId: this.workstationInfo.controls['reserva'].value,
       })
     );
+
+    this.store.select('reservation').subscribe((reservation) => {
+      this.selectedDate = reservation.selectedDateSummary;
+      this.dateInfo.controls['fecha'].setValue(this.selectedDate);
+    });
+    
   }
 
   get transportModeName(): string {

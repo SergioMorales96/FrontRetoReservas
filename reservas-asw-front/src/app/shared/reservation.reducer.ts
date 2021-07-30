@@ -7,7 +7,7 @@ export interface State {
     reservationId: number;
     continuar: boolean;
     workstation: string;
-    meanOfTransport: number | null;
+    meanOfTransport: number;
     selectedDateSummary: Date;
 }
 

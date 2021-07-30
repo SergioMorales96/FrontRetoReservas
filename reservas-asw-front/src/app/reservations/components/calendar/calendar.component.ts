@@ -16,7 +16,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DataService } from '../../../services/data.service';
 import { setSelectedDate } from 'src/app/shared/reservation.actions';
 
 @Component({
@@ -44,7 +43,7 @@ export class CalendarComponent implements OnInit{
   floorNumber!: number;
   peopleNumber!: number;
   reservationId!: number;
-  dateValidationType: DateValidationType;
+  dateValidationType!: DateValidationType;
   currentMonth: number;
 
   constructor(
@@ -58,6 +57,7 @@ export class CalendarComponent implements OnInit{
         this.floorNumber = reservation.floorNumber;
         this.peopleNumber = reservation.peopleNumber;
         this.reservationId = reservation.reservationId;
+        this.dateValidationType = reservation.meanOfTransport;
       } );
     
       this.onDayCapacity = new EventEmitter<boolean>();
@@ -69,8 +69,7 @@ export class CalendarComponent implements OnInit{
       this.invalidMorningDates = [];
       this.invalidAfternoonDates = [];
       this.invalidTotalDates = [];
-      this.reservations = [];
-      this.dateValidationType = DateValidationType.DayCapacity;
+      this.reservations = [];    
   }
   ngOnInit(): void {
     this.consultReservations();
@@ -185,6 +184,7 @@ export class CalendarComponent implements OnInit{
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
     console.log(selectedDate);
+    
     this.store.dispatch( setSelectedDate({ selectedDateSummary: this.selectedDate}) );
   }
 
