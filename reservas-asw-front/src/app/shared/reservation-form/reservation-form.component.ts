@@ -33,7 +33,7 @@ export class ReservationFormComponent implements OnInit {
   workstationInfo!: FormGroup;
   dateInfo!: FormGroup;
   assistantInfo!: FormGroup;
-  selectedDate!: Date;
+  selectedDate!: Date | string;
   timePeriod!: number;
 
   constructor(

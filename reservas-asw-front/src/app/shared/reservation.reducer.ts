@@ -8,7 +8,7 @@ export interface State {
     reservationId: number;
     workstation: string;
     meanOfTransport: number;
-    selectedDateSummary: Date;
+    selectedDateSummary: Date | string;
     symptoms: string;
     step: number;
     timePeriod: number;
@@ -21,7 +21,7 @@ export const initialState: State = {
    reservationId: 0,
    workstation: "",
    meanOfTransport: 0,
-   selectedDateSummary: new Date,
+   selectedDateSummary: '',
    symptoms:"",
    step: 0,
    timePeriod: 0,

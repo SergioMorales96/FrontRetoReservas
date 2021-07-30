@@ -20,7 +20,7 @@ export class ReservationSummaryComponent implements OnInit {
   workstation: number = 0;
   meanOfTransport: number | null = 0;
   nameTransport: string = "";
-  selectedDateSummary : Date =new Date;
+  selectedDateSummary : Date | string =new Date;
   symptoms: string = '';
   step: number = 0;
   timePeriod: number=0;
@@ -102,7 +102,7 @@ export class ReservationSummaryComponent implements OnInit {
     }
   }
 
-  setSelectedDate(selectedDateSummary : Date, timePeriod: number, startTime : string){
+  setSelectedDate(selectedDateSummary : Date | string, timePeriod: number, startTime : string){
     this.selectedDateSummary = selectedDateSummary;
     this.timePeriod=timePeriod;
     this.startTime=startTime;
@@ -121,6 +121,9 @@ export class ReservationSummaryComponent implements OnInit {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
           this.fecha= `, ${this.startTime},  ( ${this.timePeriod*60} )`;
+          if(this.selectedDateSummary===''){
+            this.selectedDateSummary=new Date;
+          }
     }
 
   }
