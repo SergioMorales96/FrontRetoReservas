@@ -12,6 +12,7 @@ import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspa
 import { Reservation } from '../../interfaces/reservations.interface';
 import { Floors } from '../../interfaces/floors.interface';
 import { Floor } from '../../../admin/interfaces/admin.interfaces';
+import { MeshStandardMaterial } from 'three';
 
 
 @Component({
@@ -54,6 +55,12 @@ export class SceneComponent implements OnInit {
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
 
+    const CHAIR_SADDLE_COLOR = 0x444b93;
+    const CHAIR_BACK_COLOR = 0x444b93;
+    const CHAIR_UNION_COLOR = 0x1e;
+    const CHAIR_WHEELS_COLOR = 0x1e;
+    const TABLE_COLOR = 0xffffff;
+
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
@@ -61,7 +68,7 @@ export class SceneComponent implements OnInit {
     document.addEventListener( 'mousemove', onPointerMove );
     //window.addEventListener('click', onClick);
 
-    scene.background = new THREE.Color( 0x000000 );
+    scene.background = new THREE.Color( 0xFFFFFF );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
@@ -76,6 +83,14 @@ export class SceneComponent implements OnInit {
     //scene.add( axesHelper );
     var grid = new THREE.GridHelper(20, 100);
     //scene.add(grid);
+
+    const arrowHelper = new THREE.ArrowHelper(
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      5.25,
+      0xffff00
+  )
+  scene.add(arrowHelper)
     
 
     loader.setDRACOLoader( dracoLoader );
@@ -233,7 +248,70 @@ export class SceneComponent implements OnInit {
       const child = model3.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
      // console.log("el material del piso es: ", childMaterial , 'el Child es: ', child);
-      childMaterial.color = new THREE.Color(0x4f1245);
+      const objects = [child];
+      //childMaterial.color = new THREE.Color(0x4f1245);
+
+      
+    //  childMaterial.color = new THREE.Color( 0x3131ff);
+    //  childMaterial.opacity = 1;
+    //  childMaterial.roughness = 0.9;
+    //  childMaterial.metalness = 0;
+    //  childMaterial.fog= true;
+    //  childMaterial.transparent= false;
+    //  childMaterial.depthTest = true;
+    //  childMaterial.depthWrite = true;
+    //  childMaterial.side = THREE.FrontSide;
+
+        renderer.domElement.addEventListener( 'click', onMove );
+        function onMove(event: MouseEvent){
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(objects);
+        if (intersects.length > 0) {
+
+          childMaterial.color = new THREE.Color( 0x3131ff );
+          childMaterial.opacity = 1;
+          childMaterial.roughness = 0.9;
+          childMaterial.metalness = 0;
+          childMaterial.fog= false;
+          childMaterial.transparent= true;
+          childMaterial.depthTest = true;
+          childMaterial.depthWrite = true;
+          childMaterial.side = THREE.FrontSide;
+
+          const n = new THREE.Vector3()
+          n.copy((intersects[0].face as THREE.Face).normal)
+          n.transformDirection(intersects[0].object.matrixWorld)
+
+          arrowHelper.setDirection(n)
+          arrowHelper.position.copy(intersects[0].point)
+        
+        }else {
+
+          childMaterial.color = new THREE.Color( 0xbf);
+          childMaterial.opacity = 0.49;
+          childMaterial.roughness = 0.9;
+          childMaterial.metalness = 0;
+          childMaterial.fog= false;
+          childMaterial.transparent= true;
+          childMaterial.depthTest = true;
+          childMaterial.depthWrite = true;
+          childMaterial.side = THREE.FrontSide;
+
+          const n = new THREE.Vector3()
+          n.copy((intersects[0].face as THREE.Face).normal)
+          n.transformDirection(intersects[0].object.matrixWorld)
+
+          arrowHelper.setDirection(n)
+          arrowHelper.position.copy(intersects[0].point)
+
+        }
+      
+
+        }
+
+        
+    
+     
       model3.position.set( 0,0,0 );
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
@@ -269,9 +347,88 @@ export class SceneComponent implements OnInit {
     return pisoActual === idPiso;
   }
 
+  function generateTextureModels(model: THREE.Group){
+    const modelPS_silla = model.children[3] as THREE.Mesh;
+    const modelPS_mesa = model.children[4] as THREE.Mesh;
+
+    const INITIAL_MAP_silla = [
+      {childID: "Cube024",
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_SADDLE_COLOR,
+        opacity: 1,
+        roughness: 1,
+        metalness: 0,
+        fog: true,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide} )
+      },
+      {childID: "Cube024_1", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_UNION_COLOR, 
+        opacity: 1,
+        roughness: 0.3,
+        metalness: 1,
+        fog: false,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      },
+      {childID: "Cube017", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_WHEELS_COLOR,
+        opacity: 1,
+        roughness: 0.3,
+        metalness: 1,
+        fog: false,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      },
+      {childID: "Cube018", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_BACK_COLOR, 
+        opacity: 1,
+        roughness: 1,
+        metalness: 0,
+        fog: true,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      }
+    ];
+
+    const INITIAL_MAP_mesa = [
+      {childID: "Cube020", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: TABLE_COLOR, 
+        opacity: 0.5,
+        roughness: 0,
+        metalness: 1,
+        fog: false,
+        transparent: true,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      }
+    ];
+
+    for (let object of INITIAL_MAP_silla) {
+      initColor(modelPS_silla, object.childID, object.mtl);
+    }
+
+    for (let object of INITIAL_MAP_mesa) {      
+      initColor(modelPS_mesa, object.childID, object.mtl);
+    }
+  }
+
   function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number): workSpaceW[]{
     loader.load('assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ){
-      let model5 = gltf.scene;
+      const model5 = gltf.scene;
       let n = 0;
 
       if (piso === 1) {
@@ -288,6 +445,8 @@ export class SceneComponent implements OnInit {
               piece.children[2].userData = {"info" : workPlaces[0]};
               piece.children[3].userData = {"info" : workPlaces[0]};
               piece.children[4].userData = {"info" : workPlaces[0]};
+
+              generateTextureModels(piece);
               
               workPlaces.shift();
               n++;
@@ -512,7 +671,7 @@ export class SceneComponent implements OnInit {
               piece.children[3].userData = {"info" : workPlaces[0]};
               piece.children[4].userData = {"info" : workPlaces[0]};
               
-              
+              generateTextureModels(piece);
               workPlaces.shift();
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -707,7 +866,8 @@ export class SceneComponent implements OnInit {
                 piece.children[2].userData = {"info" : workPlaces[0]};
                 piece.children[3].userData = {"info" : workPlaces[0]};
                 piece.children[4].userData = {"info" : workPlaces[0]};
-
+                generateTextureModels(piece);
+              
                 
                 workPlaces.shift();
     
@@ -1195,6 +1355,17 @@ export class SceneComponent implements OnInit {
       //checkOnObject();
 
       renderer.render( scene, camera );
+    }
+
+    function initColor(parent: THREE.Mesh, type: string, mtl: MeshStandardMaterial) {
+      parent.traverse((o: any) => {
+       if (o.isMesh) {
+         if (o.name.includes(type)) {
+            o.material = mtl;
+            o.nameID = type;
+          }
+        }
+      });
     }
 
 
