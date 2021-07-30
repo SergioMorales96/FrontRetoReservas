@@ -4,10 +4,8 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber } from '../reservation.actions';
-import { Reservation, ReservationResponse } from '../../reservations/interfaces/reservations.interface';
-import { SharedService } from '../services/shared.service';
-import { ReservationComponent } from '../../reservations/components/reservation/reservation.component';
+import { setFloorNumber, setPeopleNumber, setContinue, setWorkstation } from '../reservation.actions';
+import { Reservation, ReservationResponse } from 'src/app/reservations/interfaces/reservations.interface';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
@@ -37,7 +35,6 @@ export class ReservationFormComponent implements OnInit {
     private fb: FormBuilder,
     private dataService: DataService,
     private store: Store<AppState>,
-    private sharedService: SharedService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private reservationService: ReservationsService,
@@ -91,7 +88,6 @@ export class ReservationFormComponent implements OnInit {
         descripcion: ['', Validators.required],
       }),
     });
-
     this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
     this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
 
@@ -165,9 +161,10 @@ export class ReservationFormComponent implements OnInit {
   submit() {
     
     this.submitted = true;
+    this.store.dispatch( setContinue({ continuar: true}) );
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {
+        if (this.reservaForm.controls.puestoInfo.invalid) {          
           return;
         } else {
           this.submitted = false;

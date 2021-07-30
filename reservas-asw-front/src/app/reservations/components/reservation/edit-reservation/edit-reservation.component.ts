@@ -1,15 +1,157 @@
-import { Component, OnInit } from '@angular/core';
+import { AlertsService } from '../../../../services/cancelReservation.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
+import { ReservationAction } from 'src/utils/enums';
+import { ReservationsService } from '../../../../admin/services/reservation.service';
+import { RouteName } from '../../../../../utils/enums';
+import { tap } from 'rxjs/operators';
+import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
   selector: 'app-edit-reservation',
   templateUrl: './edit-reservation.component.html',
   styleUrls: ['./edit-reservation.component.scss']
 })
-export class EditReservationComponent implements OnInit {
+export class EditReservationComponent {
 
-  constructor() { }
+  @Input() currentReservation!: DatesReservation;
+  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
+  
+  datesReservation: DatesReservation[] = [];
+  currentPosition: number = 0;
+  routeName = RouteName;
+  usersMap = {
+    '=0': 'No hay personas',
+    '=1': '1 persona',
+    'other': '# personas',
+  };
 
-  ngOnInit(): void {
+  get brandOrPlate(): string {
+    const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
+
+    if(typeDomainVehicle === 'M' || typeDomainVehicle === 'C'){
+      return 'Placa'
+    }
+    else if(typeDomainVehicle === 'B'){
+      return 'N/A'
+    }
+    else {
+      return 'No se registró vehiculo'
+    }
   }
 
+  get reservationDate(): string {
+    const date = this.currentReservation?.dia?.split('-');
+    return `${date[0]}/${date[1]}/${date[2]}`;
+  }
+
+  get salaOrJob(): string {
+    return this.currentReservation.idSala
+      ? this.currentReservation.nombreSala
+      : this.currentReservation.nombrePuesTrabajo;
+  }
+
+  get transportMedia(): string {
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
+    switch (vehicleType) {
+      case 'B':
+        return 'assets/images/icons/bicycle.svg';
+      case 'M':
+        return 'assets/images/icons/motorcycle.svg';
+      case 'C':
+        return 'assets/images/icons/car.svg';
+      default:
+        return ' ';
+    }
+  }
+
+  get typeVehicle(): string {
+    const vehicleType = this.currentReservation.dominioTipoVehiculo;
+    switch (vehicleType) {
+      case 'B':
+        return 'Bicicleta';
+      case 'M':
+        return 'Moto'
+      case 'C':
+        return 'Carro'
+      default:
+        return 'N/A'
+    }
+  }
+
+  get workStationMedia(): string {
+    const asistentsNumber = this.currentReservation.numeroAsistentes;
+    if (asistentsNumber > 1) {
+      return 'workbench.svg'
+    }
+    else {
+      return 'workstation.svg'
+    }
+  }
+
+  constructor(
+    private cancelReservationService: AlertsService,
+    private reservationsService: ReservationsService,
+    private toastService: ToastsService 
+  ) { }
+
+  ngOnInit(): void {
+    this.getRervations(this.getData());
+  }
+
+  getData() {
+    return {
+      startDate: '11-07-2021',
+      endDate: '14-07-2021',
+      // startDate: moment().format('DD-MM-YYYY'),
+      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+      email: 'user4@asesoftware.com'
+    }
+  }
+
+  getRervations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
+    this.reservationsService.getReservations(startDate, endDate, email)
+      .pipe(
+        tap(console.log)
+      )
+      .subscribe(
+        (ReservationResponse: ReservationResponse) => this.datesReservation = ReservationResponse.data
+      )
+  }
+
+
+  cancelReservation():void{
+    this.cancelReservationService.showConfirmDialog({
+      message: '¿Desea cancelar la reserva, esta acción no se podrá revertir?',
+      header: 'Cancelar reserva',
+    })
+      .then(resp => {
+        if (resp) {
+          this.reservationsService.cancelReservation(this.currentReservation.numeroReserva)
+            .subscribe(
+              (reservationReponse: ReservationResponse) => {
+                this.datesReservation = this.datesReservation.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
+                this.toastService.showToastSuccess({ summary: 'Reserva cancelada', detail: 'La reserva ha sido cancelada correctamente.' });
+                this.showReservation1();
+              }
+            );
+        } else {
+          return;
+        }
+      })
+    .catch(console.log);
+  }
+
+  showEditReservation(): void {
+    this.onAction.emit(ReservationAction.Edit);
+  }
+
+  showReservation(value: number): void {
+    this.currentPosition = this.currentPosition + value;
+  }
+
+  showReservation1(): void {
+    this.onAction.emit( ReservationAction.ViewSummary );
+    
+  }
 }
