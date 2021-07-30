@@ -106,8 +106,8 @@ export class CalendarComponent implements OnInit{
   }
 
   consultReservations(): void {
-    console.log(this.peopleNumber);
-    console.log(this.reservationId);
+    console.log('Id Puesto de Trabajo:', this.reservationId);
+    console.log('Número de personas', this.peopleNumber);
     this.setDates(this.tempDate);
     let urlPlugin: string =
       this.peopleNumber > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
