@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -16,13 +16,13 @@ export class ReservationSummaryComponent implements OnInit {
   fecha : string ='Fecha de Reserva';
   sintomas: string ='Información del Asistente';
   piso: number = 0;
-  continuar: boolean = false;
   peopleNumber: number = 0;
-  workstation: string = "";
+  workstation: number = 0;
   meanOfTransport: number | null = 0;
   nameTransport: string = "";
   selectedDateSummary : Date =new Date;
-  symptoms: string ="";
+  symptoms: string = '';
+  step: number = 0;
  /* meses = [
     "Enero",
     "Febrero",
@@ -43,12 +43,11 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary, symptoms}) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary, symptoms });
-        this.setFloorNumber(floorNumber);
-        this.setContinue(continuar);
+      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step}) => {
+        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step });
+        this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
-        this.setWorkstation(workstation);
+        this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
         this.setPrueba();
         this.setSelectedDate(selectedDateSummary);
@@ -66,15 +65,16 @@ export class ReservationSummaryComponent implements OnInit {
     this.piso = floor;
   }
 
-  setContinue(continuar: boolean) {
-    this.continuar = continuar;
-    console.log(continuar);
+  setSteps(step: number){
+    this.step=step;
+    console.log('step ', step);
   }
+
   setPeopleNumber(peopleNumber: number) {
     this.peopleNumber = peopleNumber;
   }
 
-  setWorkstation(workstation: string) {
+  setWorkstation(workstation: number) {
     this.workstation = workstation;
   }
 
@@ -83,23 +83,21 @@ export class ReservationSummaryComponent implements OnInit {
 
   }
   setPrueba() {
-    if (this.continuar === true) {
+    if (this.step >= 2) {
       if (this.peopleNumber === 1) {
-        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} persona , ${this.nameOfTransport}`;
+        this.prueba = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
       } else {
-        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} personas , ${this.nameOfTransport}`;
+        this.prueba = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
     }
-    this.continuar===false;
   }
 
   setInfoAssitent() {
-    if (this.continuar === true) {
+    if (this.step >= 4) {
      
         this.sintomas = `Ha tenido sintomas : ${this.symptoms} `;
      
     }
-    this.continuar===false;
   }
 
   setSelectedDate(selectedDateSummary : Date){
@@ -115,12 +113,11 @@ export class ReservationSummaryComponent implements OnInit {
   setFecha(){
     //const selectedDate = moment(this.selectedDateSummary).format('DD-MM-yyyy');
     //console.log(selectedDate);
-    if (this.continuar === true) {
+    if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
           this.fecha='';
     }
-    this.continuar===false;
 
   }
 
