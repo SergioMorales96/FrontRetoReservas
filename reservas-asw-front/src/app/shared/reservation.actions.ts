@@ -39,3 +39,12 @@ export const setSteps = createAction(
     '[Reservations Component] setSteps',
     props<{ step: number}>()
 )
+export const setTimePeriod = createAction(
+    '[Reservations Component] setTimePeriod',
+    props<{ timePeriod : number}>()
+)
+
+export const setContinue = createAction(
+    '[Reservations Component] setContinue',
+    props<{ continuar : boolean}>()
+)

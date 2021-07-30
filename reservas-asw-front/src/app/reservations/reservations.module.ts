@@ -36,7 +36,8 @@ import { EditReservationComponent } from './components/reservation/edit-reservat
     ReservationsRoutingModule,
   ], 
   exports: [
-    CalendarComponent
+    CalendarComponent,
+    ReservationComponent
   ]
 })
 export class ReservationsModule { }

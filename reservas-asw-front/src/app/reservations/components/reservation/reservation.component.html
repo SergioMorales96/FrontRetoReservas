@@ -1,20 +1,3 @@
-<!-- *ngFor="let dia of datosReservation" -->
-<app-view-reservation
-    (onCurrentReservation)="currentReservation = $event"
-    (onAction)="showComponent( $event )"
-    *ngIf="!hasEditing; else showEditing">
-</app-view-reservation>
-
-<ng-template #showEditing>
-    <app-edit-reservation
-        [currentReservation]="currentReservation"
-        (onAction)="showComponent( $event )">
-    </app-edit-reservation>
-</ng-template>
-
-
-
-
 <div class="p-grid p-flex-column" [ngStyle]="{ 'width': '24rem', 'height': '22rem' }">
     <div class="p-col p-grid p-flex-column p-p-2" [ngStyle]="{ 'height': '11rem' }">
         <div class="p-col p-grid" [ngStyle]="{ 'height': '7rem' }">
@@ -48,7 +31,6 @@
 <p>reservation works!</p>
 <a
     pButton
-    (click)= "addReservation()"
     class="button-link p-button-success"
     icon="pi pi-plus"
     pTooltip="Agregar"

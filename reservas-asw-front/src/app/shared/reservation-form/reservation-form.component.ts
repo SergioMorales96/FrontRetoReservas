@@ -4,7 +4,17 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setWorkstation, setSymptoms, setSteps } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setWorkstation,setContinue, setSymptoms, setSteps, setReservationId } from '../reservation.actions';
+import {
+  Reservation,
+  ReservationResponse,
+} from 'src/app/reservations/interfaces/reservations.interface';
+import { Router } from '@angular/router';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { ReservationsService } from 'src/app/reservations/services/reservations.service';
+import { AlertsService } from 'src/app/services/alerts.service';
+import { ToastsService } from 'src/app/services/toasts.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reservation-form',
@@ -16,30 +26,33 @@ export class ReservationFormComponent implements OnInit {
   step: number;
   submitted: boolean;
   numPersonas!: number;
-
+  meanOfTransportStr!: string;
   public floorId!: number;
   public numberPersons!: number;
   public validationType!: DateValidationType;
+  workstationInfo!: FormGroup;
+  dateInfo!: FormGroup;
+  assistantInfo!: FormGroup;
+  selectedDate!: Date;
+  timePeriod!: number;
 
   constructor(
     private fb: FormBuilder,
     private dataService: DataService,
-    private store: Store<AppState>
-    ) {
+    private store: Store<AppState>,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private reservationService: ReservationsService,
+    private router: Router,
+    private toastService: ToastsService,
+    private alertsService: AlertsService
+  ) {
     this.step = 1;
     this.submitted = false;
     this.store.dispatch( setSteps({step: this.step}) );
   }
 
   ngOnInit(): void {
-
-    this.dataService.floorId$
-      .subscribe( ( floorId: number ) => this.floorId = floorId );
-    this.dataService.numberPersons$
-      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
-    this.dataService.validationType$
-      .subscribe( ( validationType: number ) => this.validationType = validationType );
-
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
       puestoInfo: this.fb.group({
@@ -58,8 +71,8 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Fecha - Step 2
       fechaInfo: this.fb.group({
-        periodoTiempo: [''],
-        fecha: [''],
+        periodoTiempo: [null],
+        fecha: [null,Validators.required],
       }),
       //Fecha - Step 3
       asistenteInfo: this.fb.group({
@@ -76,32 +89,110 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
     this.store.dispatch( setSymptoms({ symptoms: 'No'}) );
 
+  
+    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
+    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
+    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
+
+    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
+    this.store.dispatch(
+      setReservationId({
+        reservationId: this.workstationInfo.controls['reserva'].value,
+      })
+    );
+
+    this.store.select('reservation').subscribe((reservation) => {
+      this.selectedDate = reservation.selectedDateSummary;
+      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+      this.timePeriod = reservation.timePeriod;
+
+      this.dateInfo.controls['fecha'].setValue(selectedDate);
+      this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
+    });
+    
+  }
+
+  get transportModeName(): string {
+    switch (this.workstationInfo.controls['medioTransporte'].value) {
+      case DateValidationType.ParkingAvailabilityPerBicycle:
+        return 'B';
+      case DateValidationType.ParkingAvailabilityPerCar:
+        return 'C';
+      case DateValidationType.ParkingAvailabilityPerMotorcycle:
+        return 'M';
+      default:
+        return 'NA';
+    }
   }
 
   
 
+  reservation: Reservation = {
+    dia: '11-01-0020',
+    horaInicio: '8:00',
+    horaFin: '10:00',
+    totalHoras: 8,
+    dominioTipoVehiculo: 'M',
+    placa: 'ATA004',
+    emailUsuario: 'correo@correo.com',
+    proyecto: 'SEMILLA_2021_2',
+    idPuestoTrabajo: 5,
+    idRelacion: 1,
+    tipoReserva: 'PUESTO',
+    emailsAsistentes: 'prueba@gmail.com, con@con.con, testeoeo@asw.xx',
+  };
 
-  get puestoInfo() {
-    return this.reservaForm.get('puestoInfo');
-  }
-
-  get asistenteInfo() {
-    return this.reservaForm.get('asistenteInfo');
+  addReservation(reservation: Reservation) {
+    this.reservationService
+      .addReservation(reservation)
+      .subscribe((reservationResponse: ReservationResponse) => {
+        if (reservationResponse.status === `OK`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+              header: 'Creación de reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastSuccess({
+                  summary: 'Reserva creada',
+                  detail: `Se creó la reserva exitosamente`,
+                });
+              else {
+                return;
+              }
+            })
+            .catch(console.log);
+        } else if (reservationResponse.status === `INTERNAL_SERVER_ERROR`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Ups... No fue posible crear la reserva :(`,
+              header: 'Error en la creación de la reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastDanger({
+                  summary: 'Reserva NO creada',
+                  detail: `No se pudo crear la reserva`,
+                });
+              else {
+                return;
+              }
+            });
+        }
+      });
   }
 
   submit() {
     this.submitted = true;
+    this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {          
+        if (this.reservaForm.controls.puestoInfo.invalid) {
           return;
         } else {
           this.submitted = false;
-          /*if(this.reservaForm.get('personasReserva')?.value != null){
-            this.calendario.numberOfPeople(this.reservaForm.get('personasReserva')?.value);
-          }*/
-         // this.numPersonas = this.reservaForm.get('personasReserva')?.value;
-         // console.log(this.reservaForm.get('personasReserva')?.value);
         }
         break;
       case 2:
@@ -129,9 +220,9 @@ export class ReservationFormComponent implements OnInit {
     this.step = this.step + 1;
     console.log(this.step);*/
 
-    /*if(this.step == 4) {
-      MOSTRAR EL TOAST
-  }*/
+    if (this.step == 4) {
+      this.addReservation(this.reservation);
+    }
   }
 
   previous() {
