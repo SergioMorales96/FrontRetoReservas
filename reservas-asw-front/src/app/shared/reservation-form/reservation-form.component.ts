@@ -21,6 +21,8 @@ import { ReservationsService } from 'src/app/reservations/services/reservations.
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
+import { JsonpClientBackend } from '@angular/common/http';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-reservation-form',
@@ -41,6 +43,8 @@ export class ReservationFormComponent implements OnInit {
   assistantInfo!: FormGroup;
   selectedDate!: Date;
   timePeriod!: number;
+  firstHour!: number;
+  endHour!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -60,7 +64,7 @@ export class ReservationFormComponent implements OnInit {
   ngOnInit(): void {
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
-      puestoInfo: this.fb.group({
+        puestoInfo: this.fb.group({
         piso: [18, Validators.required],
         reserva: [1, Validators.required],
         personasReserva: [1, Validators.required],
@@ -105,9 +109,13 @@ export class ReservationFormComponent implements OnInit {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
       this.timePeriod = reservation.timePeriod;
+      //this.firstHour = reservation.
+
 
       this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
+      //this.dateInfo.controls['startTime'].setValue(this.firstHour);
+      //this.dateInfo.controls['endTime'].setValue(this.endHour);
     });
     
   }
@@ -142,9 +150,9 @@ export class ReservationFormComponent implements OnInit {
     emailsAsistentes: 'prueba@gmail.com, con@con.con, testeoeo@asw.xx',
   };
 
-  addReservation(reservation: Reservation) {
+  addReservation() {
     this.reservationService
-      .addReservation(reservation)
+      .addReservation(this.getReservationFormValue())
       .subscribe((reservationResponse: ReservationResponse) => {
         if (reservationResponse.status === `OK`) {
           this.alertsService
@@ -183,6 +191,7 @@ export class ReservationFormComponent implements OnInit {
       });
   }
 
+
   submit() {
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
@@ -210,12 +219,30 @@ export class ReservationFormComponent implements OnInit {
     this.step += 1;
 
     if (this.step == 4) {
-      this.addReservation(this.reservation);
+      this.addReservation();
     }
   }
 
   previous() {
     this.step = this.step - 1;
+    console.log('mail: '+this.reservaForm.value.puestoInfo.placa.replace('-', ''));
+  }
+
+  getReservationFormValue(): Reservation {
+    return {
+      dia: this.reservaForm.value.fechaInfo.fecha,
+      horaInicio: '8:00',
+      horaFin: '10:00',
+      totalHoras: this.reservaForm.value.fechaInfo.periodoTiempo,
+      dominioTipoVehiculo: this.transportModeName,
+      placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
+      emailUsuario: 'correo@correo.com',//no hay campo de correo personal
+      proyecto: 'SEMILLA_2021_2',// no hay opcion de seleccionar proyecto
+      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
+      idRelacion: 1,//Llave sin padre
+      tipoReserva: 'PUESTO',// no hay donde seleccionar puesto o sala,
+      emailsAsistentes: this.reservaForm.value.puestoInfo.datosAcompanante[0].correo//falta hacer la separacion de correos con comas.
+    }
   }
 
   /*next() {
