@@ -55,6 +55,11 @@ export class SceneComponent implements OnInit {
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
 
+    let jocker1: workSpaceW[] = [];
+    let jocker2: workSpaceW[] = [];
+    let jocker3: workSpaceW[] = [];
+    let matriz: (workSpaceW[])[] = [jocker1, jocker2, jocker3];
+
     const CHAIR_SADDLE_COLOR = 0x444b93;
     const CHAIR_BACK_COLOR = 0x444b93;
     const CHAIR_UNION_COLOR = 0x1e;
@@ -101,47 +106,28 @@ export class SceneComponent implements OnInit {
       loadRooms(this.urlPlugin, this.reservationsService, this.query);
     }else{
       loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
+    
       renderer.domElement.addEventListener( 'click', onClick );
       function onClick(event: MouseEvent) {
-
-        //idPiso++;
-        
         raycaster.setFromCamera(pointer, camera);
         let intersects = raycaster.intersectObjects(scene.children, true);
-        console.log('El intersecado es: ', intersects[0].object.userData.info);
-        
-    
-            
+        if( !intersects[0] ){
+          if( idPiso == 3 ){
+            idPiso--;
+          }else{
+            idPiso++;
+          }
+        }
             if( intersects[0] && intersects[0].object.userData.info  ){
-              
-              if( selectedObject && selectedObject != intersects[0].object ){
-               // console.log( selectedObject.userData.currentColor == selectedObjectColor );
-                //Cambia color al anterior por cambio de selecciÃ³n
-                (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject.userData.currentColor;
-                for (let ob of scene.children) {
-                  if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject.userData.info.idPuestoTrabajo ){
-                    ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
-                  }
-                }
-                
+              if( numeroPersonas == 1 ){
+                if( selectedObject && selectedObject != intersects[0].object ){
+                   setColorSelectedObject( );
+                   changeToChairCurrentColor()
+                 }
+              }else {
+                //lógica salas de trabajo
               }
-    
-              for (let ob of scene.children) {
-               /*  console.log('Los children del scene', scene.children); */
-                
-                /* console.log( 'El obejtito ome', ob.children[4].userData ); */
-                
-                //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-                if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
-
-                  ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
-                  console.log( 'Color ACtual de la silla', ob.userData.chairCurrentColor );
-                  
-                  ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-                  console.log( 'Color rojo de la silla', ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color );
-                }            
-              }
-              
+              selectChair(intersects);  
               selectedObject = intersects[0].object;
               if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
                 selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
@@ -149,17 +135,10 @@ export class SceneComponent implements OnInit {
                 selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
               }
               (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-    
-              INTERSECTED = null;
-               
+              INTERSECTED = null; 
             }
-            console.log('El selected: ', selectedObject);
-    
-            
-        
+            console.log('El selected: ', selectedObject);   
       }  
-
-
     }
     
     loadStairs();
@@ -279,7 +258,7 @@ export class SceneComponent implements OnInit {
           childMaterial.side = THREE.FrontSide;
 
           const n = new THREE.Vector3()
-          n.copy((intersects[0].face as THREE.Face).normal)
+          n.copy((intersects[0]?.face as THREE.Face)?.normal)
           n.transformDirection(intersects[0].object.matrixWorld)
 
           arrowHelper.setDirection(n)
@@ -297,12 +276,12 @@ export class SceneComponent implements OnInit {
           childMaterial.depthWrite = true;
           childMaterial.side = THREE.FrontSide;
 
-          const n = new THREE.Vector3()
-          n.copy((intersects[0].face as THREE.Face).normal)
-          n.transformDirection(intersects[0].object.matrixWorld)
+          /* const n = new THREE.Vector3()
+          n.copy((intersects[0]?.face as THREE.Face)?.normal)
+          n.transformDirection(intersects[0].object.matrixWorld) */
 
-          arrowHelper.setDirection(n)
-          arrowHelper.position.copy(intersects[0].point)
+          //arrowHelper.setDirection(n)
+          //arrowHelper.position.copy(intersects[0].point)
 
         }
       
@@ -426,7 +405,7 @@ export class SceneComponent implements OnInit {
     }
   }
 
-  function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number): workSpaceW[]{
+  function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number, index: number): workSpaceW[]{
     loader.load('assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ){
       const model5 = gltf.scene;
       let n = 0;
@@ -440,16 +419,17 @@ export class SceneComponent implements OnInit {
             
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
-              piece.children[0].userData = {"info" : workPlaces[0]};
-              piece.children[1].userData = {"info" : workPlaces[0]};
-              piece.children[2].userData = {"info" : workPlaces[0]};
-              piece.children[3].userData = {"info" : workPlaces[0]};
-              piece.children[4].userData = {"info" : workPlaces[0]};
-
+              piece.children[0].userData = {"info" : workPlaces[index]};
+              piece.children[1].userData = {"info" : workPlaces[index]};
+              piece.children[2].userData = {"info" : workPlaces[index]};
+              piece.children[3].userData = {"info" : workPlaces[index]};
+              piece.children[4].userData = {"info" : workPlaces[index]};
+              if( !workPlaces[index] ){
+                console.log('Se dañó', workPlaces, index);
+                
+              }
+              index++;
               generateTextureModels(piece);
-              
-              workPlaces.shift();
-              n++;
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -570,15 +550,30 @@ export class SceneComponent implements OnInit {
                   break;   
                 case 103:
                   if (j === 0) {
+
+                    if (i > 1) {
+
+                      return;
+
+                    }else{
+
                     piece.position.set((model5.position.x+11.76)+(0.46*i),0,(model5.position.z+2.15)+(0.46*j));
-                    piece.rotation.y += -0.69;
+
+                    piece.rotation.y += -0.69;}
+
                   }else if (i > 2 && j ===  1 ) {
+
                     piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+1.86)+(0.46*j));
+
                     piece.rotation.y += 2.45;
+
                   }else{
+
                     piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+2.01)+(0.46*j));
+
                     piece.rotation.y += 2.45;
-                  } 
+
+                  }
                   break; 
                 case 111:
                   piece.position.set((model5.position.x+14.10)+(0.46*i),0,(model5.position.z+3)+(0.46*j));
@@ -670,7 +665,7 @@ export class SceneComponent implements OnInit {
               piece.children[2].userData = {"info" : workPlaces[0]};
               piece.children[3].userData = {"info" : workPlaces[0]};
               piece.children[4].userData = {"info" : workPlaces[0]};
-              
+
               generateTextureModels(piece);
               workPlaces.shift();
 
@@ -842,8 +837,6 @@ export class SceneComponent implements OnInit {
               piece.visible = invisibleModels(piso);
               scene.add(piece);
               sceneInfo.workSpaces.push(piece);
-              n++;
-          
             }, undefined, function ( e ) {
     
                 console.error( e );
@@ -867,8 +860,6 @@ export class SceneComponent implements OnInit {
                 piece.children[3].userData = {"info" : workPlaces[0]};
                 piece.children[4].userData = {"info" : workPlaces[0]};
                 generateTextureModels(piece);
-              
-                
                 workPlaces.shift();
     
                 piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
@@ -939,8 +930,7 @@ export class SceneComponent implements OnInit {
                     }  
                     break; 
                   case 59:
-                    (<THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[4]).material).color = selectedObjectColor;
-                    (<THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[3].children[0]).material).color = selectedObjectColor;      
+                    
                     if (j === 0) {
                         piece.position.set((model5.position.x+4.60)+(0.46*i),0,(model5.position.z+5.12)+(0.46*j));
                         piece.rotation.y += -0.69;
@@ -1077,10 +1067,7 @@ export class SceneComponent implements OnInit {
   function loadWorkSpaces( urlPlugin: string, reservationsService: ReservationsService, query: string ): void{
     urlPlugin = '/puestoTrabajo/todas';
     query = '';
-    let jocker1: workSpaceW[] = [];
-    let jocker2: workSpaceW[] = [];
-    let jocker3: workSpaceW[] = [];
-    let matriz: (workSpaceW[])[] = [jocker1, jocker2, jocker3];
+    
       reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
@@ -1096,208 +1083,208 @@ export class SceneComponent implements OnInit {
                         
             ////////// PISO 20 //////////
             //BLOQUE 001    
-            matriz[2] = generateModelsWorkSpace(matriz[2],1,1,1,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,1,1,3, 0);
             
             //BLOQUE 002    
-             matriz[2] =generateModelsWorkSpace(matriz[2],2,1,2,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,1,2,3, 1);
 
             //BLOQUE 004
-             matriz[2] =generateModelsWorkSpace(matriz[2],3,1,4,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],3,1,4,3, 3);
 
             //BLOQUE 007    
-             matriz[2] =generateModelsWorkSpace(matriz[2],2,7,7,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,7,7,3, 6);
 
             //BLOQUE 021
-             matriz[2] =generateModelsWorkSpace(matriz[2],2,5,21,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,5,21,3, 20);
 
             //BLOQUE 030   
-             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,30,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,30,3, 30);
 
             //BLOQUE 31
-             matriz[2] =generateModelsWorkSpace(matriz[2],2,2,31,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,2,31,3, 31);
 
             //BLOQUE 035
-             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,35,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,35,3, 35);
 
             //BLOQUE 037 
-             matriz[2] =generateModelsWorkSpace(matriz[2],11,2,37,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],11,2,37,3, 36);
 
             //BLOQUE 059
-             matriz[2] =generateModelsWorkSpace(matriz[2],4,2,59,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],4,2,59,3, 58);
           
             //BLOQUE 067    
-            matriz[2] = generateModelsWorkSpace(matriz[2],1,3,67,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,3,67,3, 66);
 
             //BLOQUE 070
-            matriz[2] =generateModelsWorkSpace(matriz[2],6,1,70,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],6,1,70,3, 69);
 
             //BLOQUE 076
-            matriz[2] =generateModelsWorkSpace(matriz[2],4,1,76,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],4,1,76,3, 75);
             
             ////////// PISO 19 //////////
             //BLOQUE 001    
-            matriz[1] =generateModelsWorkSpace(matriz[1],1,5,1,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,5,1,2, 0);
 
             // //BLOQUE 006
-            matriz[1] = generateModelsWorkSpace(matriz[1],1,1,6,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],1,1,6,2, 0);
 
             // //BLOQUE 007
-            matriz[1] = generateModelsWorkSpace(matriz[1],5,1,7,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],5,1,7,2, 0);
 
             //  //BLOQUE 012 
-             matriz[1] =generateModelsWorkSpace(matriz[1],6,2,12,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],6,2,12,2, 0);
 
             //  //BLOQUE 024
-             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,24,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,24,2, 0);
 
             //  //BLOQUE 025 
-             matriz[1] =generateModelsWorkSpace(matriz[1],3,2,25,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],3,2,25,2, 0);
             
             //  //BLOQUE 028
-             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,28,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,28,2, 0);
             
             // //BLOQUE 032
-            matriz[1] = generateModelsWorkSpace(matriz[1],4,2,32,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],4,2,32,2, 0);
 
             // //BLOQUE 040
-             matriz[1] =generateModelsWorkSpace(matriz[1],5,2,40,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],5,2,40,2, 0);
 
             //  //BLOQUE 050 
-             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,50,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,50,2, 0);
 
             // //BLOQUE 051
-             matriz[1] =generateModelsWorkSpace(matriz[1],4,2,51,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],4,2,51,2, 0);
 
             // //BLOQUE 059   
-             matriz[1] =generateModelsWorkSpace(matriz[1],1,3,59,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,3,59,2, 0);
 
             //  //BLOQUE 062 
-            matriz[1] =generateModelsWorkSpace(matriz[1],1,1,62,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,1,62,2, 0);
 
             // //BLOQUE 063
-            matriz[1]= generateModelsWorkSpace(matriz[1],6,2,63,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],6,2,63,2, 0);
 
             // //BLOQUE 074
-            matriz[1]= generateModelsWorkSpace(matriz[1],8,1,74,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],8,1,74,2, 0);
 
             //  //BLOQUE 082        
-            matriz[1]= generateModelsWorkSpace(matriz[1],5,1,82,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,1,82,2, 0);
 
             // //BLOQUE 087
-            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,87,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,87,2, 0);
 
             // //BLOQUE 097
-            matriz[1]= generateModelsWorkSpace(matriz[1],2,1,97,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],2,1,97,2, 0);
 
             // //BLOQUE 099
-            matriz[1]=  generateModelsWorkSpace(matriz[1],6,2,99,2);
+            matriz[1]=  generateModelsWorkSpace(matriz[1],6,2,99,2, 0);
 
             // //BLOQUE 107
-            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,107,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,107,2, 0);
 
             // //BLOQUE 108
-            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,108,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,108,2, 0);
 
             //  //BLOQUE 117
-            matriz[1]= generateModelsWorkSpace(matriz[1],1,3,117,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,3,117,2, 0);
 
             //  //BLOQUE 120           
-            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,120,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,120,2, 0);
 
             // ////////// PISO 18 /////////
             // //BLOQUE 001    
-            matriz[0]=  generateModelsWorkSpace(matriz[0],1,5,1,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],1,5,1,1, 0);
 
             // //BLOQUE 006
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,6,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,6,1, 5);
 
             // //BLOQUE 007
-            matriz[0]= generateModelsWorkSpace(matriz[0],5,1,7,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,1,7,1, 6);
 
             //  //BLOQUE 012 
-            matriz[0]= generateModelsWorkSpace(matriz[0],7,2,12,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,2,12,1, 11);
 
             //  //BLOQUE 026
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,26,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,26,1, 25);
 
             //  //BLOQUE 027
-            matriz[0]=  generateModelsWorkSpace(matriz[0],3,2,27,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],3,2,27,1, 26);
 
             //  //BLOQUE 030
             //  for (let i = 0; i < 1; i++) {
-              matriz[0]= generateModelsWorkSpace(matriz[0],1,1,30,1);
+              matriz[0]= generateModelsWorkSpace(matriz[0],1,1,30,1, 32);
 
             // //BLOQUE 034
-            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,34,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,34,1, 33);
 
             // //BLOQUE 042
-            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,42,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,42,1, 41);
 
             // //BLOQUE 044
-            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,44,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,44,1, 43);
 
             //  //BLOQUE 054 
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,54,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,54,1, 53);
 
             // //BLOQUE 055
-            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,55,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,55,1, 54);
 
             // //BLOQUE 063   
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,63,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,63,1, 62);
 
             // //BLOQUE 066
-            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,66,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,66,1, 65);
 
             // //BLOQUE 078
-            matriz[0]= generateModelsWorkSpace(matriz[0],8,1,78,1);
-            
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,1,78,1, 77);
             //  //BLOQUE 085
-            matriz[0]= generateModelsWorkSpace(matriz[0],6,1,85,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,1,85,1, 84);
 
 
             // //BLOQUE 091
-            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,91,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,91,1, 90);
 
             // //BLOQUE 101
-            matriz[0]=  generateModelsWorkSpace(matriz[0],2,1,101,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],2,1,101,1, 100);
 
-            // //BLOQUE 103
-            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,103,1);
+            // //BLOQUE 103 - SOLO SE USAN 8 SILLAS
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,103,1, 102);
 
             // //BLOQUE 111
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,111,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,111,1, 110);
 
             // //BLOQUE 112
-            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,112,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,112,1, 111);
 
             // //BLOQUE 121
-            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,121,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,121,1, 121);
 
             //  //BLOQUE 123
-            matriz[0]= generateModelsWorkSpace(matriz[0],9,1,123,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],9,1,123,1, 123);
 
             // //BLOQUE 132   
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,8,132,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,8,132,1, 132);
 
             // //BLOQUE 140
-            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,140,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,140,1, 140);
 
             //  //BLOQUE 150
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,150,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,150,1, 150);
 
             // //BLOQUE 153
-            matriz[0]= generateModelsWorkSpace(matriz[0],3,2,153,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],3,2,153,1, 153);
 
             // //BLOQUE 158
-            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,158,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,158,1, 158);
+            
+            
               console.log("longitund matriz[0]", matriz[0].length);
               console.log("longitund matriz[1]", matriz[1].length);
               console.log("longitund matriz[2]", matriz[2].length);
               
               console.log("estos son los pisos", sceneInfo.floors );
               console.log('estas son las sillas', sceneInfo.workSpaces);
-
-              
+              console.log( 'Scene children', scene.children );
               
               
           }, undefined, function ( e ) {
@@ -1372,7 +1359,8 @@ export class SceneComponent implements OnInit {
     function updateModels(){
 
       for (let ws of sceneInfo.workSpaces) {
-        ws.visible = ws.children[0].userData.info.idPiso == idPiso ? true : false;
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso ? true : false;  
+        
       }
 
       for (let f of sceneInfo.floors) {
@@ -1392,6 +1380,39 @@ export class SceneComponent implements OnInit {
 
     function infoHasChanged(): boolean{
       return idPiso != idPisoActual;
+    }
+
+
+
+    function changeToChairCurrentColor(): void{
+      for (let ob of scene.children) {
+        if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject?.userData.info.idPuestoTrabajo ){
+          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
+          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairCurrentColor;
+        }
+      }
+    }
+
+    function selectChair(intersects: THREE.Intersection[]){
+      for (let ob of scene.children) {
+                
+        //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+
+          ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+          ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+
+          console.log( 'Color ACtual de la silla', ob.userData.chairCurrentColor );
+          
+          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
+          console.log( 'Color rojo de la silla', ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color );
+        }            
+      }
+    }
+
+    function setColorSelectedObject():  void {
+      (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
     }
   }
 
