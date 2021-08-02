@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from 'src/app/app.reducer';
 import { ToastsService } from '../../services/toasts.service';
-import { setTimePeriod, setStartTime } from '../reservation.actions';
+import { setTimePeriod, setStartTime, setEndTime } from '../reservation.actions';
 
 @Component({
   selector: 'app-time-period-slider',
@@ -62,6 +62,7 @@ export class TimePeriodSliderComponent {
     this.functionHour(rangeValues[1],rangeValues[0]);
     console.log(this.startTime);
     this.store.dispatch( setStartTime({ startTime: this.startTime}));
+    this.store.dispatch(setEndTime({endTime: this.endTime}));
   }
   
 

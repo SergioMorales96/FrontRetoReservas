@@ -25,6 +25,7 @@ export class ReservationSummaryComponent implements OnInit {
   step: number = 0;
   timePeriod: number=0;
   startTime:string="";
+  endTime:string="";
  /* meses = [
     "Enero",
     "Febrero",
@@ -45,14 +46,14 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime }) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime });
+      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime }) => {
+        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
         this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
         this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
         this.setPrueba();
-        this.setSelectedDate(selectedDateSummary, timePeriod, startTime);
+        this.setSelectedDate(selectedDateSummary, timePeriod, startTime, endTime);
         this.setFecha();
         this.setSymptoms(symptoms);
         this.setInfoAssitent();
@@ -102,10 +103,11 @@ export class ReservationSummaryComponent implements OnInit {
     }
   }
 
-  setSelectedDate(selectedDateSummary : Date | string, timePeriod: number, startTime : string){
+  setSelectedDate(selectedDateSummary : Date | string, timePeriod: number, startTime : string, endTime:string){
     this.selectedDateSummary = selectedDateSummary;
     this.timePeriod=timePeriod;
     this.startTime=startTime;
+    this.endTime=endTime;
 
   }
 
@@ -120,7 +122,7 @@ export class ReservationSummaryComponent implements OnInit {
     if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
-          this.fecha= `, ${this.startTime},  ( ${this.timePeriod*60} )`;
+          this.fecha= ` ${this.startTime.toLowerCase()} - ${this.endTime.toLowerCase()} ( ${this.timePeriod*60} )`;
           if(this.selectedDateSummary===''){
             this.selectedDateSummary=new Date;
           }

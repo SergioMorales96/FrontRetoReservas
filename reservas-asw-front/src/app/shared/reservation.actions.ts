@@ -54,3 +54,8 @@ export const setStartTime = createAction(
     props<{ startTime : string}>()
 
 )
+
+export const setEndTime = createAction(
+    '[Reservations Component] setEndTime',
+    props<{ endTime : string}>()
+)

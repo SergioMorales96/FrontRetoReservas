@@ -13,6 +13,7 @@ export interface State {
     step: number;
     timePeriod: number;
     startTime: string;
+    endTime : string;
 }
 
 export const initialState: State = {
@@ -25,7 +26,8 @@ export const initialState: State = {
    symptoms:"",
    step: 0,
    timePeriod: 0,
-   startTime:""
+   startTime:"",
+   endTime:"",
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -40,7 +42,8 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setSymptoms,(state, { symptoms }) => ({ ...state, symptoms: symptoms})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setTimePeriod,(state, { timePeriod }) => ({ ...state, timePeriod: timePeriod})),
-    on(actions.setStartTime,(state, { startTime }) => ({ ...state, startTime: startTime}))
+    on(actions.setStartTime,(state, { startTime }) => ({ ...state, startTime: startTime})),
+    on(actions.setEndTime,(state, { endTime }) => ({ ...state, endTime: endTime}))
 );
 
 export function reservationReducer(state: any, action: any) {
