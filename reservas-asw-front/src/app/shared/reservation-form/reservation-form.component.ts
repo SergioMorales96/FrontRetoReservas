@@ -43,8 +43,8 @@ export class ReservationFormComponent implements OnInit {
   assistantInfo!: FormGroup;
   selectedDate!: Date;
   timePeriod!: number;
-  firstHour!: number;
-  endHour!: number;
+  startTime!: string;
+  endTime!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +64,7 @@ export class ReservationFormComponent implements OnInit {
   ngOnInit(): void {
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
-        puestoInfo: this.fb.group({
+      puestoInfo: this.fb.group({
         piso: [18, Validators.required],
         reserva: [1, Validators.required],
         personasReserva: [1, Validators.required],
@@ -81,7 +81,7 @@ export class ReservationFormComponent implements OnInit {
       //Fecha - Step 2
       fechaInfo: this.fb.group({
         periodoTiempo: [null],
-        fecha: [null,Validators.required],
+        fecha: [null, Validators.required],
       }),
       //Fecha - Step 3
       asistenteInfo: this.fb.group({
@@ -108,16 +108,13 @@ export class ReservationFormComponent implements OnInit {
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-      this.timePeriod = reservation.timePeriod;
-      //this.firstHour = reservation.
-
-
+      this.timePeriod = reservation.timePeriod;    
+      this.startTime = reservation.startTime;
+      this.endTime = reservation.endTime;
+      
       this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
-      //this.dateInfo.controls['startTime'].setValue(this.firstHour);
-      //this.dateInfo.controls['endTime'].setValue(this.endHour);
     });
-    
   }
 
   get transportModeName(): string {
@@ -132,23 +129,6 @@ export class ReservationFormComponent implements OnInit {
         return 'NA';
     }
   }
-
-  
-
-  reservation: Reservation = {
-    dia: '11-01-0020',
-    horaInicio: '8:00',
-    horaFin: '10:00',
-    totalHoras: 8,
-    dominioTipoVehiculo: 'M',
-    placa: 'ATA004',
-    emailUsuario: 'correo@correo.com',
-    proyecto: 'SEMILLA_2021_2',
-    idPuestoTrabajo: 5,
-    idRelacion: 1,
-    tipoReserva: 'PUESTO',
-    emailsAsistentes: 'prueba@gmail.com, con@con.con, testeoeo@asw.xx',
-  };
 
   addReservation() {
     this.reservationService
@@ -191,7 +171,6 @@ export class ReservationFormComponent implements OnInit {
       });
   }
 
-
   submit() {
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
@@ -225,24 +204,28 @@ export class ReservationFormComponent implements OnInit {
 
   previous() {
     this.step = this.step - 1;
-    console.log('mail: '+this.reservaForm.value.puestoInfo.placa.replace('-', ''));
   }
 
   getReservationFormValue(): Reservation {
     return {
       dia: this.reservaForm.value.fechaInfo.fecha,
-      horaInicio: '8:00',
-      horaFin: '10:00',
-      totalHoras: this.reservaForm.value.fechaInfo.periodoTiempo,
+      horaInicio: this.startTime,
+      horaFin: this.endTime,
+      totalHoras: this.timePeriod, //this.dateInfo.controls['periodoTiempo'].value,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
-      emailUsuario: 'correo@correo.com',//no hay campo de correo personal
-      proyecto: 'SEMILLA_2021_2',// no hay opcion de seleccionar proyecto
+      emailUsuario: 'correoJuan@correo.com', //no hay campo de correo personal
+      proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
-      idRelacion: 1,//Llave sin padre
-      tipoReserva: 'PUESTO',// no hay donde seleccionar puesto o sala,
-      emailsAsistentes: this.reservaForm.value.puestoInfo.datosAcompanante[0].correo//falta hacer la separacion de correos con comas.
-    }
+      idRelacion: 1, //Llave sin padre
+      tipoReserva: 'PUESTO', // no hay donde seleccionar puesto o sala,
+      emailsAsistentes: 'prueba@gmail.com,con@con.con,testeoeo@asw.xx'
+
+      //this.reservaForm.value.puestoInfo.datosAcompanante[0].correo, //falta hacer la separacion de correos con comas.
+
+      //
+        
+    };
   }
 
   /*next() {

@@ -36,6 +36,18 @@ export const setSelectedDate = createAction(
 
 )
 
+export const setStartTime= createAction(
+    '[Reservations Component] setStartTime',
+    props<{ startTime: string}>()
+
+)
+
+export const setEndTime = createAction(
+    '[Reservations Component] setEndTime',
+    props<{ endTime: string}>()
+
+)
+
 export const setTimePeriod = createAction(
     '[Reservations Component] setTimePeriod',
     props<{ timePeriod : number}>()
