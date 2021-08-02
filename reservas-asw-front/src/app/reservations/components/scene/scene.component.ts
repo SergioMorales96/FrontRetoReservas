@@ -36,7 +36,7 @@ export class SceneComponent implements OnInit {
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 100 );
+    const camera = new THREE.PerspectiveCamera( 40, 1, 1, 100 );
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
@@ -62,10 +62,11 @@ export class SceneComponent implements OnInit {
     const TABLE_COLOR = 0xffffff;
 
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( 500, 500 );
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild( renderer.domElement );
-    document.addEventListener( 'mousemove', onPointerMove );
+    //document.addEventListener( 'mousemove', onPointerMove );
+    renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     //window.addEventListener('click', onClick);
 
     scene.background = new THREE.Color( 0xFFFFFF );
@@ -169,21 +170,23 @@ export class SceneComponent implements OnInit {
 
     updateModels();
 
-    window.onresize = function () {
+    // window.onresize = function () {
 
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+    //   camera.aspect = window.innerWidth / window.innerHeight;
+    //   camera.updateProjectionMatrix();
 
-      renderer.setSize( window.innerWidth, window.innerHeight );
+    //   renderer.setSize( window.innerWidth, window.innerHeight );
 
-    };
+    // };
 
+      
     
 
   function onPointerMove( event: MouseEvent ) {
-
-      pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-      pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      console.log('PointerX', pointer.x);
+      console.log('pointerY', pointer.y);
+      pointer.x = ( event.clientX / 500 ) * 2 - 1;
+      pointer.y = - ( event.clientY / 700 ) * 2 + 1;
       checkOnObject();
   
   }
@@ -570,8 +573,11 @@ export class SceneComponent implements OnInit {
                   break;   
                 case 103:
                   if (j === 0) {
+                    if (i > 1) {
+                      return;
+                    }else{
                     piece.position.set((model5.position.x+11.76)+(0.46*i),0,(model5.position.z+2.15)+(0.46*j));
-                    piece.rotation.y += -0.69;
+                    piece.rotation.y += -0.69;}
                   }else if (i > 2 && j ===  1 ) {
                     piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+1.86)+(0.46*j));
                     piece.rotation.y += 2.45;
@@ -1249,7 +1255,7 @@ export class SceneComponent implements OnInit {
             matriz[0]= generateModelsWorkSpace(matriz[0],6,2,66,1);
 
             // //BLOQUE 078
-            matriz[0]= generateModelsWorkSpace(matriz[0],8,1,78,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,1,78,1);
             
             //  //BLOQUE 085
             matriz[0]= generateModelsWorkSpace(matriz[0],6,1,85,1);
