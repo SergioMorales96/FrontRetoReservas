@@ -17,6 +17,12 @@
       </label>
       <div class="p-col">
         <app-time-period-slider></app-time-period-slider>
+        <small
+      *ngIf="submitted && form.controls.periodoTiempo.errors"
+      class="p-error">
+      Seleccione su tiempo de estadía
+    </small>
+    <!-- submitted && formControls.nombres.errors?.required -->
       </div>
     </div>
 
