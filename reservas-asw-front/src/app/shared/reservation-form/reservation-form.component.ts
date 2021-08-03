@@ -23,6 +23,7 @@ import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
 import { JsonpClientBackend } from '@angular/common/http';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ViewAdminComponent } from '../../admin/pages/admins/view/view-admin.component';
 
 @Component({
   selector: 'app-reservation-form',
@@ -67,7 +68,7 @@ export class ReservationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.reservaForm = this.fb.group({
-      //Puesto - Step 1
+      //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
         reserva: [1, Validators.required],
@@ -94,12 +95,12 @@ export class ReservationFormComponent implements OnInit {
           ],
         ],
       }),
-      //Fecha - Step 2
+      //Date - Step 2
       fechaInfo: this.fb.group({
         periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
         fecha: [null, Validators.required],
       }),
-      //Fecha - Step 3
+      //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
         nombres: ['A', Validators.required],
         identificacion: ['A', Validators.required],
@@ -125,15 +126,11 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      
-
+  
       this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
     });
-
-    this.workstationInfo.controls['personasReserva'].value  > 1 ? 
-    this.reservationType = 'SALA' : 
-    this.reservationType = 'PUESTO'
+    
   }
 
   get transportModeName(): string {
@@ -159,11 +156,14 @@ export class ReservationFormComponent implements OnInit {
       const a = i.get('correo') as FormControl;
       this.emailString = this.emailString+a.value+',';
     }
-    console.log(this.emailString);
   }
 
   getReservationFormValue(): Reservation {
-  
+    
+    Number(this.workstationInfo.controls['personasReserva'].value) === 1 ? 
+    this.reservationType = 'PUESTO' : 
+    this.reservationType = 'SALA'
+
     return {
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
@@ -174,8 +174,8 @@ export class ReservationFormComponent implements OnInit {
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
-      idRelacion: 1, //Llave sin padre
-      tipoReserva: this.reservationType, // no hay donde seleccionar puesto o sala, ARREGLAR
+      idRelacion: 1, 
+      tipoReserva: this.reservationType,
       emailsAsistentes: this.emailString
     };
 
@@ -230,7 +230,7 @@ export class ReservationFormComponent implements OnInit {
         if (this.reservaForm.controls.puestoInfo.invalid) {
           return;
         } else {
-          this.submitted = false;
+          this.submitted = false;         
         }
         break;
       case 2:

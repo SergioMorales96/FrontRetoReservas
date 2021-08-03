@@ -150,10 +150,6 @@ export class FormWorkstationComponent implements OnInit {
     this.store.dispatch( actions.setReservationId({ reservationId: this.reservationId}) );
 
   }
-  // verReserva(){
-  //   this.formControls['reserva'].setValue(this.reserva);
-  //   this.store.dispatch(actions.setWorkstation({ workstation: this.reserva}));
-  // }
 
   onChangePeople( selectedPeople: EmittedValue ): void {
 

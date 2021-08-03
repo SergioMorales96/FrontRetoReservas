@@ -1531,7 +1531,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
   }
 
     function animate() {
-      console.log(numeroPersonas);
+      //console.log(numeroPersonas);
       requestAnimationFrame( animate );
 
       checkChanges();
