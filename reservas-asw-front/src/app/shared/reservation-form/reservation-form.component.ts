@@ -47,6 +47,8 @@ export class ReservationFormComponent implements OnInit {
   endTime!: string;
   emails!: string;
   emailString: string = '';
+  reservationType!: string;
+  reservationId!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -122,10 +124,16 @@ export class ReservationFormComponent implements OnInit {
       this.timePeriod = reservation.timePeriod;
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
+      this.reservationId = reservation.reservationId;
+      
 
       this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
     });
+
+    this.workstationInfo.controls['personasReserva'].value  > 1 ? 
+    this.reservationType = 'SALA' : 
+    this.reservationType = 'PUESTO'
   }
 
   get transportModeName(): string {
@@ -167,7 +175,7 @@ export class ReservationFormComponent implements OnInit {
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
       idRelacion: 1, //Llave sin padre
-      tipoReserva: 'SALA', // no hay donde seleccionar puesto o sala,
+      tipoReserva: this.reservationType, // no hay donde seleccionar puesto o sala, ARREGLAR
       emailsAsistentes: this.emailString
     };
 

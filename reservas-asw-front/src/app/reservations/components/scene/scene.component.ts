@@ -13,6 +13,9 @@ import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspa
 import { Reservation } from '../../interfaces/reservations.interface';
 import { Floors } from '../../interfaces/floors.interface';
 import { Floor } from '../../../admin/interfaces/admin.interfaces';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { setReservationId } from '../../../shared/reservation.actions';
 
 
 const CAMERA_FOV = 40;
@@ -80,16 +83,30 @@ const MOUSE_VAL2 = 2;
 })
 export class SceneComponent implements OnInit {
 
-  @Input() idpiso: number = 0;
-  @Input() numOfPeople: number = 2;
+  //@Input() idpiso: number = 0;
+  //@Input() numOfPeople: number = 1;
 
   path3D : string = '';
   urlPlugin : string = '';
   query: string = '/';
 
-  constructor( private reservationsService: ReservationsService ){} 
+  constructor( 
+    private reservationsService: ReservationsService,
+    private store: Store<AppState>
+    
+    ){} 
 
   main(){
+    let idPiso = 0;
+    let numeroPersonas = 0;
+    let myStore = this.store;
+
+
+    this.store.select('reservation').subscribe((reservation) => {
+      idPiso = reservation.floorNumber;
+      numeroPersonas = reservation.peopleNumber;      
+    });
+
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
@@ -104,20 +121,22 @@ export class SceneComponent implements OnInit {
     const onObjectColor = new THREE.Color ( 0xEAA525 );
     const smallChairColor = new THREE.Color ( 0x65FC17 );
     let selectedObject: Object3D | null;
-    let idPiso = this.idpiso;
-    let idPisoActual = idPiso;
-    let numeroPersonas = this.numOfPeople;
+    
     let floorsList: THREE.Group[] = [];
     let workSpacesList: THREE.Group[] = [];
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
-    let numeroPersonasActual: number = numeroPersonas;
+    
 
     let jocker1: workSpaceW[] = [];
     let jocker2: workSpaceW[] = [];
     let jocker3: workSpaceW[] = [];
     let matriz: (workSpaceW[])[] = [jocker1, jocker2, jocker3];
 
+    let idPisoActual = idPiso;
+    let numeroPersonasActual: number = numeroPersonas;
+    console.log("El piso Actual es: ", idPiso);
+    
     const CHAIR_SADDLE_COLOR = 0x444b93;
     const CHAIR_BACK_COLOR = 0x444b93;
     const CHAIR_UNION_COLOR = 0x1e;
@@ -158,33 +177,35 @@ export class SceneComponent implements OnInit {
     
 
     loader.setDRACOLoader( dracoLoader );
-    loadFloor(this.idpiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
+    loadFloor(idPiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
 
-    this.query = this.query + this.idpiso ;
+    this.query = this.query + idPiso ;
     
       loadRooms(this.urlPlugin, this.reservationsService, this.query);
    
       loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
     
       renderer.domElement.addEventListener( 'click', onClick );
-      function onClick(event: MouseEvent) {
+    
+      function onClick(event: MouseEvent ) {
+        myStore.dispatch(setReservationId({ reservationId: 999 }));  // Modificame
         raycaster.setFromCamera(pointer, camera);
         let intersects = raycaster.intersectObjects(scene.children, true);
     
         if( !intersects[0] ){
-          // if( idPiso == 3 ){
-          //   idPiso--;
-          // }else{
-          //   idPiso++;
-          // }
-          if (numeroPersonas == 2) {
+           if( idPiso == 3 ){
+             idPiso--;
+           }else{
+             idPiso++;
+           }
+          /*if (numeroPersonas == 2) {
             numeroPersonas--;  
           } else{
             numeroPersonas++;
-          }
+          }*/
           
           console.log("el numero de personas es:", numeroPersonas);
-
+    
           
         }
             if( intersects[0] && intersects[0].object.userData.info  ){
@@ -209,7 +230,6 @@ export class SceneComponent implements OnInit {
             console.log('El selected: ', selectedObject);   
       }  
     
-    
     loadStairs();
 
     animate();
@@ -230,14 +250,14 @@ export class SceneComponent implements OnInit {
     
 
   function onPointerMove( event: MouseEvent ) {
-      console.log('PointerX', pointer.x);
-      console.log('pointerY', pointer.y);
       pointer.x = ( event.clientX / 500 ) * 2 - 1;
       pointer.y = - ( event.clientY / 700 ) * 2 + 1;
       checkOnObject();
-  
   }
+  
 
+
+  
   function checkOnObject(  ){
     
     raycaster.setFromCamera(pointer, camera);
@@ -596,10 +616,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
               piece.children[2].userData = {"info" : workPlaces[index]};
               piece.children[3].userData = {"info" : workPlaces[index]};
               piece.children[4].userData = {"info" : workPlaces[index]};
-              if( !workPlaces[index] ){
-                console.log('Se dañó', workPlaces, index);
-                
-              }
+              
               index++;
               generateTextureModels(piece);
 
@@ -1468,16 +1485,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
             // //BLOQUE 158
             matriz[0]= generateModelsWorkSpace(matriz[0],1,1,158,1, 158);
-            
-            
-              console.log("longitund matriz[0]", matriz[0].length);
-              console.log("longitund matriz[1]", matriz[1].length);
-              console.log("longitund matriz[2]", matriz[2].length);
-              
-              console.log("estos son los pisos", sceneInfo.floors );
-              console.log('estas son las sillas', sceneInfo.workSpaces);
-              console.log( 'Scene children', scene.children );
-              
+             
               
           }, undefined, function ( e ) {
       
@@ -1490,7 +1498,6 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
 
   function loadStairs(){
-    console.log( scene.children );
     
      loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
@@ -1524,7 +1531,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
   }
 
     function animate() {
-
+      console.log(numeroPersonas);
       requestAnimationFrame( animate );
 
       checkChanges();
