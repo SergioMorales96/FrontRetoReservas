@@ -14,6 +14,7 @@ export class ReservationSummaryComponent implements OnInit {
 
   info: string = 'Puesto Reserva';
   fecha : string ='Fecha de Reserva';
+  timeMinutes:string='';
   sintomas: string ='Información del Asistente';
   piso: number = 0;
   peopleNumber: number = 0;
@@ -122,7 +123,8 @@ export class ReservationSummaryComponent implements OnInit {
     if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
-          this.fecha= ` ${this.startTime.toLowerCase()} - ${this.endTime.toLowerCase()} ( ${this.timePeriod*60} )`;
+          this.fecha= ` ${this.startTime.toLowerCase()} - ${this.endTime.toLowerCase()} `;
+          this.timeMinutes=`( ${this.timePeriod*60} )`;
           if(this.selectedDateSummary===''){
             this.selectedDateSummary=new Date;
           }
