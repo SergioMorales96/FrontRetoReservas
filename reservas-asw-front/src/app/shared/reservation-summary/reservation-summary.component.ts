@@ -12,7 +12,7 @@ import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, s
 })
 export class ReservationSummaryComponent implements OnInit {
 
-  prueba: string = 'Puesto Reserva';
+  info: string = 'Puesto Reserva';
   fecha : string ='Fecha de Reserva';
   sintomas: string ='Información del Asistente';
   piso: number = 0;
@@ -52,7 +52,7 @@ export class ReservationSummaryComponent implements OnInit {
         this.setPeopleNumber(peopleNumber);
         this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
-        this.setPrueba();
+        this.setInfo();
         this.setSelectedDate(selectedDateSummary, timePeriod, startTime, endTime);
         this.setFecha();
         this.setSymptoms(symptoms);
@@ -85,12 +85,12 @@ export class ReservationSummaryComponent implements OnInit {
     this.meanOfTransport = meanOfTransport;
 
   }
-  setPrueba() {
+  setInfo() {
     if (this.step >= 2) {
       if (this.peopleNumber === 1) {
-        this.prueba = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
       } else {
-        this.prueba = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
     }
   }
