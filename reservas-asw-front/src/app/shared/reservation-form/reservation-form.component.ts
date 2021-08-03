@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
@@ -45,6 +45,8 @@ export class ReservationFormComponent implements OnInit {
   timePeriod!: number;
   startTime!: string;
   endTime!: string;
+  emails!: string;
+  emailString: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +70,19 @@ export class ReservationFormComponent implements OnInit {
         piso: [18, Validators.required],
         reserva: [1, Validators.required],
         personasReserva: [1, Validators.required],
-        datosAcompanante: this.fb.array([]),
+        datosAcompanante: this.fb.array([
+          this.fb.group({
+            correo: [
+              'correousuario@correo.com',
+              [
+                Validators.required,
+                Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+              ],
+            ],
+            miembroOrganizacion: [true, Validators.required],
+          })
+          
+        ]),
         medioTransporte: [null],
         placa: [
           '',
@@ -80,38 +94,35 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Fecha - Step 2
       fechaInfo: this.fb.group({
-        periodoTiempo: [null],
+        periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
         fecha: [null, Validators.required],
       }),
       //Fecha - Step 3
       asistenteInfo: this.fb.group({
-        nombres: ['', Validators.required],
-        identificacion: ['', Validators.required],
+        nombres: ['A', Validators.required],
+        identificacion: ['A', Validators.required],
         grupoRiesgo: ['No Aplica', Validators.required],
         convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
-        descripcion: ['', Validators.required],
+        descripcion: ['A', Validators.required],
       }),
     });
+
     this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
+    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;    
 
-    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
-    this.store.dispatch(
-      setReservationId({
-        reservationId: this.workstationInfo.controls['reserva'].value,
-      })
-    );
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationInfo.controls['piso'].value }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationInfo.controls['personasReserva'].value }));
+    this.store.dispatch(setReservationId({reservationId: this.workstationInfo.controls['reserva'].value}));
 
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
-      this.timePeriod = reservation.timePeriod;    
+      this.timePeriod = reservation.timePeriod;
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
-      
+
       this.dateInfo.controls['fecha'].setValue(selectedDate);
       this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
     });
@@ -130,6 +141,38 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
+  get peopleData(): FormArray {
+    return this.workstationInfo.controls['datosAcompanante'] as FormArray;
+  }
+
+  getEmails(){
+    for(let i of this.peopleData.controls)
+    {
+      const a = i.get('correo') as FormControl;
+      this.emailString = this.emailString+a.value+',';
+    }
+    console.log(this.emailString);
+  }
+
+  getReservationFormValue(): Reservation {
+  
+    return {
+      dia: this.reservaForm.value.fechaInfo.fecha,
+      horaInicio: this.startTime,
+      horaFin: this.endTime,
+      totalHoras: this.timePeriod,  
+      dominioTipoVehiculo: this.transportModeName,
+      placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
+      emailUsuario: 'correoJuan@correo.com', // Dato por SESION
+      proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
+      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
+      idRelacion: 1, //Llave sin padre
+      tipoReserva: 'SALA', // no hay donde seleccionar puesto o sala,
+      emailsAsistentes: this.emailString
+    };
+
+  }
+  
   addReservation() {
     this.reservationService
       .addReservation(this.getReservationFormValue())
@@ -197,7 +240,8 @@ export class ReservationFormComponent implements OnInit {
     }
     this.step += 1;
 
-    if (this.step == 4) {
+    if (this.step == 4) {    
+      this.getEmails(); 
       this.addReservation();
     }
   }
@@ -206,29 +250,4 @@ export class ReservationFormComponent implements OnInit {
     this.step = this.step - 1;
   }
 
-  getReservationFormValue(): Reservation {
-    return {
-      dia: this.reservaForm.value.fechaInfo.fecha,
-      horaInicio: this.startTime,
-      horaFin: this.endTime,
-      totalHoras: this.timePeriod, //this.dateInfo.controls['periodoTiempo'].value,
-      dominioTipoVehiculo: this.transportModeName,
-      placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
-      emailUsuario: 'correoJuan@correo.com', //no hay campo de correo personal
-      proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
-      idRelacion: 1, //Llave sin padre
-      tipoReserva: 'PUESTO', // no hay donde seleccionar puesto o sala,
-      emailsAsistentes: 'prueba@gmail.com,con@con.con,testeoeo@asw.xx'
-
-      //this.reservaForm.value.puestoInfo.datosAcompanante[0].correo, //falta hacer la separacion de correos con comas.
-
-      //
-        
-    };
-  }
-
-  /*next() {
-  this.step = this.step + 1;
-}*/
 }
