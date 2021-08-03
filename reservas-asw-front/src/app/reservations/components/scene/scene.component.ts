@@ -24,7 +24,7 @@ import { MeshStandardMaterial } from 'three';
 export class SceneComponent implements OnInit {
 
   @Input() idpiso: number = 0;
-  @Input() numOfPeople: number = 1;
+  @Input() numOfPeople: number = 2;
 
   path3D : string = '';
   urlPlugin : string = '';
@@ -54,6 +54,7 @@ export class SceneComponent implements OnInit {
     let workSpacesList: THREE.Group[] = [];
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
+    let numeroPersonasActual: number = numeroPersonas;
 
     let jocker1: workSpaceW[] = [];
     let jocker2: workSpaceW[] = [];
@@ -103,21 +104,31 @@ export class SceneComponent implements OnInit {
     loadFloor(this.idpiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
 
     this.query = this.query + this.idpiso ;
-    if( this.numOfPeople > 1 ){
+    
       loadRooms(this.urlPlugin, this.reservationsService, this.query);
-    }else{
+   
       loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
     
       renderer.domElement.addEventListener( 'click', onClick );
       function onClick(event: MouseEvent) {
         raycaster.setFromCamera(pointer, camera);
         let intersects = raycaster.intersectObjects(scene.children, true);
+    
         if( !intersects[0] ){
-          if( idPiso == 3 ){
-            idPiso--;
-          }else{
-            idPiso++;
+          // if( idPiso == 3 ){
+          //   idPiso--;
+          // }else{
+          //   idPiso++;
+          // }
+          if (numeroPersonas == 2) {
+            numeroPersonas--;  
+          } else{
+            numeroPersonas++;
           }
+          
+          console.log("el numero de personas es:", numeroPersonas);
+
+          
         }
             if( intersects[0] && intersects[0].object.userData.info  ){
               if( numeroPersonas == 1 ){
@@ -140,7 +151,7 @@ export class SceneComponent implements OnInit {
             }
             console.log('El selected: ', selectedObject);   
       }  
-    }
+    
     
     loadStairs();
 
@@ -328,6 +339,107 @@ export class SceneComponent implements OnInit {
   function invisibleModels(pisoActual: number ): boolean{
     return pisoActual === idPiso;
   }
+
+ 
+
+  function generateChairRoomTextureModels(model: THREE.Group){
+    
+      const modelPT1 = model.children[0] as THREE.Mesh;
+      const modelPT2 = model.children[1] as THREE.Mesh;
+      const modelPT3 = model.children[2] as THREE.Mesh;
+      const modelPT4 = model.children[3] as THREE.Mesh;
+      console.log(model);
+
+      const modelsChair = [modelPT1, modelPT2, modelPT3, modelPT4];
+      const chairs = [["Cube024","Cube024_1","Cube017","Cube018","Cube020"],
+                      ["Cube001_1","Cube001_2","Cube003","Cube002"],
+                      ["Cube006_1","Cube006_2","Cube004","Cube005"],
+                      ["Cube007_1","Cube007_2","Cube009","Cube008"]];
+
+      const INITIAL_MAP = [
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_SADDLE_COLOR,
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide} )
+        },
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_UNION_COLOR, 
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        { 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_WHEELS_COLOR,
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        { 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_BACK_COLOR, 
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: TABLE_COLOR, 
+          opacity: 0.5,
+          roughness: 0,
+          metalness: 1,
+          fog: false,
+          transparent: true,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )}
+      ];
+      
+      textures(modelsChair, chairs, INITIAL_MAP);
+  }  
+
+  
+function textures(models: THREE.Mesh[], chair: string[][], map: any){
+  for (let n = 0; n <= 3; n ++ ){
+    if (n == 0){
+      for (let i = 0 ; i < 5; i++){
+        initColor(models[0], chair[0][i], map[i].mtl);
+      }
+    }else {
+      for (let i = 1 ; i < 4; i++){
+        for (let m = 0; m < 4; m ++){
+          initColor(models[i], chair[i][m], map[m].mtl);
+        }
+      }
+    }
+  }
+}    
+
+
+  
 
   function generateTextureModels(model: THREE.Group){
     const modelPS_silla = model.children[3] as THREE.Mesh;
@@ -635,7 +747,7 @@ export class SceneComponent implements OnInit {
                   break;  
               }
               
-              piece.visible = invisibleModels(piso);
+              piece.visible = invisibleModels(piso) && numeroPersonas == 1;
               scene.add(piece);
               sceneInfo.workSpaces.push(piece);
               
@@ -831,7 +943,7 @@ export class SceneComponent implements OnInit {
                   break;  
               }
               
-              piece.visible = invisibleModels(piso);
+              piece.visible = invisibleModels(piso) && numeroPersonas == 1;
               scene.add(piece);
               sceneInfo.workSpaces.push(piece);
             }, undefined, function ( e ) {
@@ -958,7 +1070,7 @@ export class SceneComponent implements OnInit {
                     break;
                 }
                                            
-                piece.visible = invisibleModels(piso);
+                piece.visible = invisibleModels(piso) && numeroPersonas == 1;
                 scene.add(piece);
                 sceneInfo.workSpaces.push(piece);
                 n++;
@@ -989,6 +1101,7 @@ export class SceneComponent implements OnInit {
   
   function loadRooms(urlPlugin: string, reservationsService: ReservationsService, query: string,){
     urlPlugin = '/sala/salasPorPiso';
+    query = '1';
     //  reservationsService.sendRequest( this.urlPlugin, this.query );
       reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
@@ -1014,11 +1127,36 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    piece.userData = {"info" : answ.data[j]};
+                    
+                    piece.children[0].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[3].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[4].userData = {"info" : answ.data[i]};
+
+                    piece.children[1].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[3].userData = {"info" : answ.data[i]};
+
+                    piece.children[2].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[3].userData = {"info" : answ.data[i]};
+
+                    piece.children[3].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[3].userData = {"info" : answ.data[i]};
+
+
                     let child1 = piece.children[0].children[0] as THREE.Mesh;
                     let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
                     childMaterial1.color = smallChairColor;
                     console.log(piece.userData = {"info" : answ.data[j]});
+                    generateChairRoomTextureModels(piece);
+                    console.log("la mesa es:",piece);
+                    
                     piece.scale.set( piece.scale.x*0.39, piece.scale.y*0.39, piece.scale.z*0.39);
                    
                     if (j === 0) {
@@ -1356,7 +1494,7 @@ export class SceneComponent implements OnInit {
     function updateModels(){
 
       for (let ws of sceneInfo.workSpaces) {
-        ws.visible = ws.children[0].userData.info.idPiso == idPiso ? true : false;  
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso && numeroPersonas == 1 ? true : false;  
         
       }
 
@@ -1365,18 +1503,23 @@ export class SceneComponent implements OnInit {
         console.log( f.visible );
         
       }
+
+      for (let r of sceneInfo.room) {
+        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso && numeroPersonas > 1;
+      }
     }
 
     function checkChanges(): void{
       if( infoHasChanged() ){
          updateModels() 
          idPisoActual = idPiso;
+         numeroPersonasActual =  numeroPersonas;
         }  
     }
 
 
     function infoHasChanged(): boolean{
-      return idPiso != idPisoActual;
+      return idPiso != idPisoActual || numeroPersonas != numeroPersonasActual;
     }
 
 
