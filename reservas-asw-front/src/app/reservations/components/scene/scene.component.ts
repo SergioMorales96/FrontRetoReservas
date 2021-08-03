@@ -110,7 +110,20 @@ export class SceneComponent implements OnInit {
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 40, 1, 1, 100 );
+    
+    const sceneContainer = document.getElementById( 'sceneContainer' );
+    //renderer.setPixelRatio( window.devicePixelRatio );
+     
+    if( sceneContainer ){
+      
+      renderer.setSize( sceneContainer.clientWidth, sceneContainer.clientHeight );
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      sceneContainer.appendChild( renderer.domElement );
+    }
+    const rect: DOMRect = renderer.domElement.getBoundingClientRect();
+    console.log('El rect papi', rect);
+    
+    const camera = new THREE.PerspectiveCamera( 40, renderer.domElement.width/renderer.domElement.height, 1, 100 );
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
@@ -127,7 +140,7 @@ export class SceneComponent implements OnInit {
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
     
-
+    
     let jocker1: workSpaceW[] = [];
     let jocker2: workSpaceW[] = [];
     let jocker3: workSpaceW[] = [];
@@ -142,21 +155,22 @@ export class SceneComponent implements OnInit {
     const CHAIR_UNION_COLOR = 0x1e;
     const CHAIR_WHEELS_COLOR = 0x1e;
     const TABLE_COLOR = 0xffffff;
+    
 
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( 500, 500 );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    document.body.appendChild( renderer.domElement );
+
+    
+    
     //document.addEventListener( 'mousemove', onPointerMove );
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     //window.addEventListener('click', onClick);
 
-    scene.background = new THREE.Color( 0xFFFFFF );
+    /* scene.background = new THREE.Color( 0xFFFFFF ); */
+    scene.background = new THREE.Color( 0x000000 );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
 
-    controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
+    //controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
     controls.update();
     //controls.enablePan = false;
     controls.enableDamping = true;
@@ -190,8 +204,14 @@ export class SceneComponent implements OnInit {
       function onClick(event: MouseEvent ) {
         myStore.dispatch(setReservationId({ reservationId: 999 }));  // Modificame
         raycaster.setFromCamera(pointer, camera);
+        
         let intersects = raycaster.intersectObjects(scene.children, true);
-    
+        const n = new THREE.Vector3()
+          n.copy((intersects[0]?.face as THREE.Face)?.normal)
+          n.transformDirection(intersects[0].object.matrixWorld)
+
+          arrowHelper.setDirection(n)
+          arrowHelper.position.copy(intersects[0].point)
         if( !intersects[0] ){
            if( idPiso == 3 ){
              idPiso--;
@@ -250,8 +270,18 @@ export class SceneComponent implements OnInit {
     
 
   function onPointerMove( event: MouseEvent ) {
-      pointer.x = ( event.clientX / 500 ) * 2 - 1;
-      pointer.y = - ( event.clientY / 700 ) * 2 + 1;
+      /* pointer.x = ( event.clientX / 505 ) * 2 - 1;
+      pointer.y = - ( event.clientY / 1000 ) * 2 + 1; */
+      
+      console.log('ClientX: ', event.clientX, 'ClientY: ', event.clientY);
+      
+      /* pointer.x = ( event.clientX + rect.left + ( rect.width/2 ) )* 2 - 1;
+      pointer.y = ( event.clientY + rect.top + ( rect.height/2 ) )* 2 + 1; */
+      
+      pointer.x = ( ( event.clientX - rect.left ) / ( rect.right  - rect.left ) ) * 2 - 1;
+      pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+      console.log( 'Coordenada x :', pointer.x, 'Coordenada y', pointer.y );
+      console.log('rect.left', rect.left, 'Rect.right', rect.right);  
       checkOnObject();
   }
   
@@ -414,7 +444,7 @@ export class SceneComponent implements OnInit {
   }
 
   function invisibleModels(pisoActual: number ): boolean{
-    return pisoActual === idPiso;
+    return pisoActual === idPiso - 17;
   }
 
  
@@ -1531,7 +1561,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
   }
 
     function animate() {
-      console.log(numeroPersonas);
+      //console.log('Las personas: ', numeroPersonas, 'El piso: ', idPiso);
       requestAnimationFrame( animate );
 
       checkChanges();
@@ -1558,18 +1588,18 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     function updateModels(){
 
       for (let ws of sceneInfo.workSpaces) {
-        ws.visible = ws.children[0].userData.info.idPiso == idPiso && numeroPersonas == 1 ? true : false;  
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso -17 && numeroPersonas == 1 ? true : false;  
         
       }
 
       for (let f of sceneInfo.floors) {
-        f.visible = f.userData.info.idPiso == idPiso ? true : false; 
+        f.visible = f.userData.info.idPiso == idPiso - 17 ? true : false; 
         console.log( f.visible );
         
       }
 
       for (let r of sceneInfo.room) {
-        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso && numeroPersonas > 1;
+        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso - 17 && numeroPersonas > 1;
       }
     }
 
