@@ -16,11 +16,13 @@
         Periodo de tiempo por bloques
       </label>
       <div class="p-col">
-        <p-calendar
-          [timeOnly]="true"
-          inputId="timeonly"
-          formControlName="periodoTiempo">
-        </p-calendar>
+        <app-time-period-slider></app-time-period-slider>
+        <small
+      *ngIf="submitted && form.controls.periodoTiempo.errors"
+      class="p-error">
+      Seleccione su tiempo de estadía
+    </small>
+    <!-- submitted && formControls.nombres.errors?.required -->
       </div>
     </div>
 

@@ -16,6 +16,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { appReducers } from './app.reducer';
 import { CLoadService } from './auth/c-load.service';
+import { ReservationsModule } from './reservations/reservations.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CLoadService } from './auth/c-load.service';
     AppRoutingModule,
     PrimeNgModule,
     SharedModule,
+    ReservationsModule,
     StoreModule.forRoot( appReducers )
   ],
   providers: [

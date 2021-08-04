@@ -7,8 +7,11 @@ export interface State {
     reservationId: number;
     continuar: boolean;
     workstation: string;
-    meanOfTransport: number | null;
+    meanOfTransport: number;
     selectedDateSummary: Date;
+    timePeriod: number;
+    startTime: string;
+    endTime: string;
 }
 
 export const initialState: State = {
@@ -18,7 +21,10 @@ export const initialState: State = {
    continuar: false,
    workstation: "",
    meanOfTransport: 0,
-   selectedDateSummary: new Date
+   selectedDateSummary: new Date,
+   timePeriod: 0,
+   startTime: "",
+   endTime: ""
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -30,7 +36,11 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setContinue,(state, { continuar }) => ({ ...state, continuar: continuar})),
     on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
     on(actions.setMeanOfTransport,(state, { meanOfTransportId }) => ({ ...state, meanOfTransport: meanOfTransportId})),
-    on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary}))
+    on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
+    on(actions.setStartTime,(state, { startTime }) => ({ ...state, startTime: startTime})),
+    on(actions.setEndTime,(state, { endTime }) => ({ ...state, endTime: endTime})),
+    on(actions.setTimePeriod,(state, { timePeriod }) => ({ ...state, timePeriod: timePeriod}))
+
 );
 
 export function reservationReducer(state: any, action: any) {
