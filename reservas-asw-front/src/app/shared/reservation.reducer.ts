@@ -12,6 +12,8 @@ export interface State {
     timePeriod: number;
     startTime: string;
     endTime: string;
+    startSlider: number;
+    endSlider: number;
 }
 
 export const initialState: State = {
@@ -24,7 +26,9 @@ export const initialState: State = {
    selectedDateSummary: new Date,
    timePeriod: 0,
    startTime: "",
-   endTime: ""
+   endTime: "",
+   startSlider: 0,
+    endSlider: 0,
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -39,7 +43,12 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
     on(actions.setStartTime,(state, { startTime }) => ({ ...state, startTime: startTime})),
     on(actions.setEndTime,(state, { endTime }) => ({ ...state, endTime: endTime})),
-    on(actions.setTimePeriod,(state, { timePeriod }) => ({ ...state, timePeriod: timePeriod}))
+    on(actions.setTimePeriod,(state, { timePeriod }) => ({ ...state, timePeriod: timePeriod})),
+
+    on(actions.setStartSlider,(state, { startSlider }) => ({ ...state, startSlider: startSlider})),
+    on(actions.setEndSlider,(state, { endSlider }) => ({ ...state, endSlider: endSlider}))
+
+
 
 );
 

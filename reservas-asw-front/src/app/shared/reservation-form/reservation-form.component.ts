@@ -194,36 +194,6 @@ export class ReservationFormComponent implements OnInit {
     };
 
   }
-  
-  previous() {
-
-    this.step = this.step - 1;
-
-  }
-
-  submit() {
-
-    this.submitted = true;
-    this.store.dispatch(setContinue({ continuar: true }));
-    switch (this.step) {
-      case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false;      
-        break;
-      case 2:
-        if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;
-        break;
-      case 3:
-        if (this.reservaForm.controls.asistenteInfo.invalid) return; else this.submitted = false;
-        break;
-    }
-
-    this.step += 1;
-
-    if (this.step == 4) this.addReservation();
-
-  }
-
-
   addReservation() {
     this.reservationService
       .addReservation(this.getReservationFormValue())
