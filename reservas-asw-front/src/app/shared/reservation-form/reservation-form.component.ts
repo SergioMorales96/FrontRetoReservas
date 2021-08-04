@@ -180,7 +180,6 @@ export class ReservationFormComponent implements OnInit {
     };
 
   }
-  
   addReservation() {
     this.reservationService
       .addReservation(this.getReservationFormValue())

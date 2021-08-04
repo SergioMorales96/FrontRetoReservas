@@ -52,5 +52,11 @@ export const setTimePeriod = createAction(
     '[Reservations Component] setTimePeriod',
     props<{ timePeriod : number}>()
 );
-
-
+export const setStartSlider = createAction(
+    '[Reservations Component] setStartSlider',
+    props<{ startSlider: number}>()
+);
+export const setEndSlider = createAction(
+    '[Reservations Component] setEndSlider',
+    props<{ endSlider: number}>()
+);
