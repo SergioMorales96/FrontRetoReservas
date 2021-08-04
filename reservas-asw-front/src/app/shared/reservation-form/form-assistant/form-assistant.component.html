@@ -33,13 +33,9 @@
         for="identificacion">
         Identificación
       </label>
-      <input
-        type="text"
-        pInputText
-        class="p-inputtext"
-        formControlName="identificacion" />
+      <p-inputNumber class="p-inputtext" formControlName=identificacion ></p-inputNumber>
       <small
-        *ngIf="submitted && formControls.nombres.errors?.required"
+        *ngIf="submitted && formControls.identificacion.errors?.required" 
         class="p-error">
         Por favor ingresar su identificacion
       </small>
