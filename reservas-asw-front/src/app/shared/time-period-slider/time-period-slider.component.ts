@@ -42,9 +42,6 @@ export class TimePeriodSliderComponent {
       this.thirdHour = range + 0.5 + valitionHour2;
     }
   }
-
-
-
   onChange( { values }: { values: (number | string)[] } ): void {
 
     const startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );

@@ -76,9 +76,6 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
   }
 
-  
-
-
   get puestoInfo() {
     return this.reservaForm.get('puestoInfo');
   }
