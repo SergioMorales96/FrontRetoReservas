@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setdeleteReservation, setEditReservation, setReservationList } from '../../../../shared/reservation.actions';
+import { setEditReservation, setReservationList } from '../../../../shared/reservation.actions';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -140,13 +140,13 @@ export class EditReservationComponent {
           this.reservationsService.cancelReservation(this.currentReservation.numeroReserva)
             .subscribe(
               (reservationReponse: ReservationResponse) => {
-                this.datesReservation = this.datesReservation.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
+                this.datesReservationList = this.datesReservationList.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
                 this.toastService.showToastSuccess({ summary: 'Reserva cancelada', detail: 'La reserva ha sido cancelada correctamente.' });
+                this.store.dispatch(setReservationList({reservationList:this.datesReservationList}))
                 this.showReservation1();
               }
-            );
-            this.store.dispatch(setReservationList({reservationList: this.datesReservation}));  
-               console.log(this.datesReservation);
+            ); 
+
 
         } else {
           return;
@@ -163,3 +163,7 @@ export class EditReservationComponent {
     this.store.dispatch(setEditReservation({isEditReservation: false}));   
   }
 }
+function deleteReservation(arg0: { reservationList: DatesReservation[]; }): any {
+  throw new Error('Function not implemented.');
+}
+

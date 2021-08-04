@@ -28,6 +28,7 @@ export class ViewReservationComponent implements OnInit {
     'other': '# personas',
   };
   prueba!: boolean;
+  datesRList!: DatesReservation[];
 
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
@@ -126,12 +127,11 @@ export class ViewReservationComponent implements OnInit {
     .select('reservation')
     .subscribe( reservation =>{
       this.datesReservation = reservation.reservationList;
+      if(this.datesReservation.length == 0 ){
+        this.getReservations(this.getData());
+      }
     })    
-    if(this.datesReservation.length == 0 ){
-      this.getLockedUsers();
-      this.getReservations(this.getData());
-      console.log('if:')
-    }
+    this.getLockedUsers();
   }
 
   getCounterDays( dateLocked: string ): number {
@@ -168,11 +168,9 @@ export class ViewReservationComponent implements OnInit {
         (ReservationResponse: ReservationResponse) => {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
-        this.store.dispatch(setReservationList({reservationList: this.datesReservation}));  
-               console.log(this.datesReservation);
+          this.store.dispatch(setReservationList({reservationList: this.datesReservation}));
         }
       )
-     
   }
 
   showEditReservation(): void {    

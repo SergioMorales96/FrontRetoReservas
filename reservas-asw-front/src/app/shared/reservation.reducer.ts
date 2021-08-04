@@ -15,7 +15,6 @@ export interface State {
     reservation: DatesReservation | null;
     reservationAction: ReservationAction | number;
     isEditReservation: boolean;
-
 }
 
 export const initialState: State = {
@@ -29,11 +28,10 @@ export const initialState: State = {
    reservationList: [],
    reservation: null ,
    reservationAction: 0,
-   isEditReservation: false,
+   isEditReservation: false
 }
 
 const _reservationReducer = createReducer(initialState,
-
     on(actions.setFloorNumber , (state, { floorNumber }) => ({ ...state, floorNumber: floorNumber})),
     on(actions.setPeopleNumber, (state, { peopleNumber }) => ({ ...state, peopleNumber: peopleNumber})),
     on(actions.setReservationId, (state, { reservationId }) => ({ ...state, reservationId: reservationId})),
@@ -44,9 +42,7 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
     on(actions.setReservation,(state,{reservation})=>({...state, reservation: reservation})),
     on(actions.setReservationList,(state,{reservationList})=>({...state, reservationList: reservationList})),
-    on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
-    on(actions.setdeleteReservation,(state,{deleteReservation})=>({...state, deleteReservation: deleteReservation})),
-
+    on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation}))
 );
 
 export function reservationReducer(state: any, action: any) {

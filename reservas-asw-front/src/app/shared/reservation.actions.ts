@@ -51,9 +51,6 @@ export const setEditReservation = createAction(
     '[Reservations Component] setEditReservation',
     props<{isEditReservation: boolean }>()
 )
-export const setdeleteReservation= createAction(
-    '[Reservations Component] deleteReservation',
-    props<{deleteReservation: DatesReservation}>()
-)
+
 
 
