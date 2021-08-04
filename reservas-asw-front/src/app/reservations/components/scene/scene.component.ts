@@ -6,15 +6,16 @@ import { MeshStandardMaterial } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 
-const CAMERA_FOV = 40;
+
+const CAMERA_FOV = 60;
 const CAMERA_NEAR = 1;
-const CAMERA_FAR = 100;
-const BACKGROUND_COLOR = 0x000000;
+const CAMERA_FAR = 1000;
+const BACKGROUND_COLOR = 0xffffff;
 const SCENE_SIGMA = 0.04;
 const FOG_COLOR = 0x681453;
 const FOG_NEAR = 1;
 const FOG_FAR = 20;
-const CAMERA_X_INIT = 5;
+const CAMERA_X_INIT = 0;
 const CAMERA_Y_INIT = 2;
 const CAMERA_Z_INIT = 8;
 const CAMERA_TARGET_X = 0;
@@ -44,7 +45,7 @@ const STAIRS_POS_Z = 0;
 const STAIRS_SCALE_X = 1;
 const STAIRS_SCALE_Y = 1;
 const STAIRS_SCALE_Z = 1;
-const FLOOR_ACTIVE_COLOR = 0x3131ff;
+const FLOOR_ACTIVE_COLOR = 0x747bff;
 const FLOOR_INACTIVE_COLOR = 0xbf;
 const CHAIR_SADDLE_COLOR = 0x444b93;
 const CHAIR_BACK_COLOR = 0x444b93;
@@ -80,7 +81,8 @@ export class SceneComponent implements OnInit {
   }
 
   main(): void {
-    const renderer = new THREE.WebGLRenderer( { antialias: true } );
+
+    const renderer = new THREE.WebGLRenderer( { alpha: true ,antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera( CAMERA_FOV, window.innerWidth / window.innerHeight, CAMERA_NEAR, CAMERA_FAR );
@@ -91,15 +93,28 @@ export class SceneComponent implements OnInit {
     const mouse = new THREE.Vector2();
     let intersects = [];
     let floor: string = '';
+    let cloudParticles: any = [];
 
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    document.body.appendChild( renderer.domElement );
+    let ambient = new THREE.AmbientLight(0x555555);
+    scene.add(ambient);
 
-    scene.background = new THREE.Color( BACKGROUND_COLOR );
+    let directionalLight = new THREE.DirectionalLight(0xbf, 50);
+    directionalLight.position.set(0,0,1);
+    scene.add(directionalLight);
+
+    let blueLight = new THREE.PointLight(0x3677ac,50,450,1.7);
+    blueLight.position.set(300,300,200);
+    scene.add(blueLight);
+
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
-    //scene.fog = new THREE.Fog(FOG_COLOR, FOG_NEAR, FOG_FAR);
+
+    //let renderer = new THREE.WebGLRenderer();
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    scene.fog = new THREE.FogExp2(0xffffff, 0.001);
+    renderer.setClearColor(scene.fog.color);
+    //renderer.outputEncoding = THREE.sRGBEncoding;
+    document.body.appendChild(renderer.domElement);
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT );
 
@@ -108,6 +123,51 @@ export class SceneComponent implements OnInit {
     controls.enablePan = false;
     controls.enableDamping = true;
 
+    const textures: any = {
+      refraction: 'assets/models/smoke.png',
+      reflection: '//cdn.wtlstudio.com/sample.wtlstudio.com/de8e4a51-dcdd-4b6a-9b40-e42b4ea1b7c5.jpg'
+    };
+    
+    const createEnvMap = (type = 'reflection', onReady = () => {}) => {
+      return new THREE.TextureLoader().load(textures[type], (texture) => {
+        if (type === 'reflection') {
+          texture.mapping = THREE.EquirectangularReflectionMapping;
+        } else {
+          texture.mapping = THREE.EquirectangularRefractionMapping;
+        }
+    
+        texture.encoding = THREE.sRGBEncoding;
+        texture.magFilter = THREE.LinearFilter;
+        texture.minFilter = THREE.NearestFilter;
+        
+        onReady();
+      });
+    }
+    
+    let loader2 = new THREE.TextureLoader();
+    loader2.load("assets/models/smoke.png", function(texture){
+      const cloudGeo = new THREE.PlaneBufferGeometry(1000,500);
+      const cloudMaterial = new THREE.MeshLambertMaterial({
+        map:texture,
+        transparent: true,
+      });
+
+      for(let p=0; p<50; p++) {
+        let cloud = new THREE.Mesh(cloudGeo, cloudMaterial);
+        cloud.position.set(
+          Math.random()*800-400,
+          -100,
+          Math.random()*500-800
+        );
+        //cloud.rotation.x = 1.16;
+        //cloud.rotation.y = -0.12;
+        //cloud.rotation.z = Math.random()*2*Math.PI;
+        cloud.material.opacity = 0.4;
+        cloudParticles.push(cloud);
+        scene.add(cloud);
+      }
+    });
+
     loader.setDRACOLoader( dracoLoader );
 
     floor = selectFloor(this.idFloor);
@@ -115,7 +175,7 @@ export class SceneComponent implements OnInit {
     loader.load( floor, function ( gltf ) {
 
       const modelFloor = gltf.scene.children[0] as THREE.Mesh;
-      const materialFloor = modelFloor.material as THREE.MeshStandardMaterial;
+      const materialFloor = modelFloor.material as THREE.MeshPhysicalMaterial;
       const objects = [modelFloor];
 
       modelFloor.position.set( FLOOR_POS_X, FLOOR_POS_Y, FLOOR_POS_Z );
@@ -128,11 +188,27 @@ export class SceneComponent implements OnInit {
       function onClick(event:any) {
 
         mouse.x = event.clientX / window.innerWidth * MOUSE_VAL2 - MOUSE_VAL1;
-        mouse.y = -(event.clientY / window.innerHeight) * MOUSE_VAL2 + MOUSE_VAL1;
+        mouse.y = -(event.clientY / window.innerHeight) * MOUSE_VAL2  + MOUSE_VAL1;
         raycaster.setFromCamera(mouse, camera);
         intersects = raycaster.intersectObjects(objects);
 
         if (intersects.length > 0) {
+
+          materialFloor.color = new THREE.Color( FLOOR_INACTIVE_COLOR );
+          materialFloor.clearcoat = 1.0;
+          materialFloor.clearcoatRoughness = 0.1;
+          materialFloor.opacity = 0.49;
+          materialFloor.roughness = 0.1;
+          materialFloor.metalness = 1.0;
+          materialFloor.fog= false;
+          materialFloor.transparent= true;
+          materialFloor.depthTest = true;
+          materialFloor.depthWrite = true;
+          materialFloor.envMap = createEnvMap('refraccion')
+      
+          //materialFloor.side = THREE.FrontSide;
+        
+        }else {
 
           materialFloor.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
           materialFloor.opacity = 1;
@@ -143,18 +219,16 @@ export class SceneComponent implements OnInit {
           materialFloor.depthTest = true;
           materialFloor.depthWrite = true;
           materialFloor.side = THREE.FrontSide;
-        
-        }else {
-
-          materialFloor.color = new THREE.Color( FLOOR_INACTIVE_COLOR );
-          materialFloor.opacity = 0.49;
-          materialFloor.roughness = 0.9;
-          materialFloor.metalness = 0;
+          materialFloor.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
+          materialFloor.clearcoat = 1.0;
+          materialFloor.clearcoatRoughness = 0.1;
+          materialFloor.roughness = 0.5;
+          materialFloor.metalness = 0.3;
           materialFloor.fog= false;
+          materialFloor.opacity = 1;
           materialFloor.transparent= true;
           materialFloor.depthTest = true;
           materialFloor.depthWrite = true;
-          materialFloor.side = THREE.FrontSide;
 
         }
       }
@@ -165,228 +239,7 @@ export class SceneComponent implements OnInit {
 
     } );
 
-    loader.load( `${PATH}${PATH_CHAIRS}` , function ( gltf ) {
-
-      const modelPT = gltf.scene.children[0] as THREE.Mesh;
-      console.log(modelPT);
-
-      modelPT.position.set( CHAIRS_POS_X, CHAIRS_POS_Y, CHAIRS_POS_Z );
-      modelPT.scale.set( CHAIRS_SCALE_X, CHAIRS_SCALE_Y, CHAIRS_SCALE_Z);
-      
-      const INITIAL_MAP = [
-        {childID: "Cube024", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_SADDLE_COLOR,
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide} )
-        },
-        {childID: "Cube024_1", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_UNION_COLOR, 
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {childID: "Cube017", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_WHEELS_COLOR,
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {childID: "Cube018", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_BACK_COLOR, 
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {childID: "Cube020", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: TABLE_COLOR, 
-          opacity: 0.5,
-          roughness: 0,
-          metalness: 1,
-          fog: false,
-          transparent: true,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )}
-      ];
-
-      for (let object of INITIAL_MAP) {
-        initColor(modelPT, object.childID, object.mtl);
-      }
-      
-
-      scene.add( modelPT );
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );
-
-    loader.load( `${PATH}${PATH_ROOMS}` , function ( gltf ) {
-
-      const modelPS = gltf.scene ;
-      console.log(modelPS);
-
-      modelPS.position.set( ROOMS_POS_X, ROOMS_POS_Y, ROOMS_POS_Z );
-      modelPS.scale.set( ROOMS_SCALE_X, ROOMS_SCALE_Y, ROOMS_SCALE_Z);
-
-      const modelPS_silla = modelPS.children[3] as THREE.Mesh;
-      const modelPS_mesa = modelPS.children[4] as THREE.Mesh;
-
-      const INITIAL_MAP_silla = [
-        {childID: "Cube024",
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_SADDLE_COLOR,
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide} )
-        },
-        {childID: "Cube024_1", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_UNION_COLOR, 
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {childID: "Cube017", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_WHEELS_COLOR,
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {childID: "Cube018", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_BACK_COLOR, 
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        }
-      ];
-
-      const INITIAL_MAP_mesa = [
-        {childID: "Cube020", 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: TABLE_COLOR, 
-          opacity: 0.5,
-          roughness: 0,
-          metalness: 1,
-          fog: false,
-          transparent: true,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        }
-      ];
-
-      for (let object of INITIAL_MAP_silla) {
-        initColor(modelPS_silla, object.childID, object.mtl);
-      }
-
-      for (let object of INITIAL_MAP_mesa) {
-        initColor(modelPS_mesa, object.childID, object.mtl);
-      }
-
-      scene.add( modelPS );
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );
-
-    loader.load( `${PATH}${PATH_STAIRS}` , function ( gltf ) {
-
-      const modelStairs = gltf.scene.children[0] as THREE.Mesh;
-      const materialStairs = modelStairs.material as THREE.MeshStandardMaterial;
-
-      modelStairs.position.set( STAIRS_POS_X, STAIRS_POS_Y, STAIRS_POS_Z );
-      //modelStairs.scale.set( STAIRS_SCALE_X, STAIRS_SCALE_Y, STAIRS_SCALE_Z);
-      
-      materialStairs.color = new THREE.Color( STAIRS_COLOR );
-      materialStairs.opacity = 0.49;
-      materialStairs.roughness = 0.9;
-      materialStairs.metalness = 0;
-      materialStairs.fog= false;
-      materialStairs.transparent= true;
-      materialStairs.depthTest = true;
-      materialStairs.depthWrite = true;
-      materialStairs.side = THREE.FrontSide;
-
-      scene.add( modelStairs );
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );
-
-    animate();
-
-    window.onresize = function () {
-
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize( window.innerWidth, window.innerHeight );
-
-    };
-
-
-    function animate() {
-
-      requestAnimationFrame( animate );
-
-      controls.update();
-
-      renderer.render( scene, camera );
-    }
+    render();
 
     function initColor(parent: THREE.Mesh, type: string, mtl: MeshStandardMaterial) {
       parent.traverse((o: any) => {
@@ -425,6 +278,16 @@ export class SceneComponent implements OnInit {
       return path3D;
 
     }
+
+    function render() {
+      for (let p of cloudParticles){
+         p.rotation.z -=0.001;
+      }
+
+      renderer.render(scene,camera);
+      requestAnimationFrame(render);
+    }
+
   }
 
 }
