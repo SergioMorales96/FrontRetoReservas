@@ -14,6 +14,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenubarModule } from 'primeng/menubar';
+import {MenuModule} from 'primeng/menu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { SplitterModule } from 'primeng/splitter';
@@ -46,6 +47,7 @@ import {SliderModule} from 'primeng/slider';
     InputTextModule,
     KeyFilterModule,
     ListboxModule,
+    MenuModule,
     MegaMenuModule,
     MenubarModule,
     PaginatorModule,

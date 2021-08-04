@@ -7,10 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../app.reducer';
-import * as actions from '../../reservation.actions';
-import { DateValidationType } from '../../../../utils/enums';
-import { EmittedValue } from '../../interfaces/shared.interfaces';
+import { AppState } from 'src/app/app.reducer';
+import { EmittedValue } from 'src/app/reservations/interfaces/shared.interfaces';
+import { DateValidationType } from 'src/utils/enums';
+import * as actions from '../../../reservation.actions';
 
 interface MeanOfTransport {
   label: string;

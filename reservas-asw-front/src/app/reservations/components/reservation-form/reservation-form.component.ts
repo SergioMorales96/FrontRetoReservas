@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setWorkstation } from '../reservation.actions';
+import { AppState } from 'src/app/app.reducer';
+import { DateValidationType } from 'src/utils/enums';
+import * as actions from '../../reservation.actions';
 
 @Component({
   selector: 'app-reservation-form',
@@ -23,7 +22,6 @@ export class ReservationFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService,
     private store: Store<AppState>
     ) {
     this.step = 1;
@@ -32,13 +30,6 @@ export class ReservationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.dataService.floorId$
-      .subscribe( ( floorId: number ) => this.floorId = floorId );
-    this.dataService.numberPersons$
-      .subscribe( ( numberPersons: number ) => this.numberPersons = numberPersons );
-    this.dataService.validationType$
-      .subscribe( ( validationType: number ) => this.validationType = validationType );
 
     this.reservaForm = this.fb.group({
       //Puesto - Step 1
@@ -72,8 +63,8 @@ export class ReservationFormComponent implements OnInit {
       }),
     });
     //console.log(this.reservaForm.get('personasReserva')?.value);
-    this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
-    this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
+    this.store.dispatch( actions.setFloorNumber({ floorNumber: 18}) );
+    this.store.dispatch( actions.setPeopleNumber({ peopleNumber: 1}) );
   }
 
   
@@ -89,7 +80,7 @@ export class ReservationFormComponent implements OnInit {
 
   submit() {
     this.submitted = true;
-    this.store.dispatch( setContinue({ continuar: true}) );
+    this.store.dispatch( actions.setContinue({ continuar: true}) );
     switch (this.step) {
       case 1:
         if (this.reservaForm.controls.puestoInfo.invalid) {          

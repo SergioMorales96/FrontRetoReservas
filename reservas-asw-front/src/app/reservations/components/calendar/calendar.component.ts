@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../../services/data.service';
-import { setSelectedDate } from 'src/app/shared/reservation.actions';
+import { setSelectedDate } from 'src/app/reservations/reservation.actions';
 
 @Component({
   selector: 'app-calendar',

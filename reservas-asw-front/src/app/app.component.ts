@@ -1,21 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  title = 'reservas-asw-front';
   display: boolean = false;
-  responsive: boolean = true;
 
-  items: MenuItem[] = [];
-
-  ngOnInit(): void {
-    this.items = [
-    ]
-  }
 }
