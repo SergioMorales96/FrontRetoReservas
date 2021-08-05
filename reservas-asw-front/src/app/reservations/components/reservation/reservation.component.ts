@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { AppState } from 'src/app/app.reducer';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { ReservationAction } from '../../../../utils/enums';
 import { DatesReservation, ReservationResponse } from '../../../admin/interfaces/reservation';
 import { Reservation } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
+
 
 @Component({
   selector: 'app-reservation',
@@ -15,7 +18,7 @@ import { ReservationsService } from '../../services/reservations.service';
   providers:[MessageService, ConfirmationService]
 })
 
-export class ReservationComponent{
+export class ReservationComponent implements OnInit{
   resp: boolean= true
   hasEditing!: boolean;
   reservation:Reservation={
@@ -33,14 +36,19 @@ export class ReservationComponent{
     emailsAsistentes: "prueba@gmail.com, con@con.con, testeoeo@asw.xx"
   }
 
-  showComponent( reservationAction: ReservationAction ): void {
-    this.hasEditing = reservationAction === ReservationAction.Edit;
-  }
-
   constructor(
     private reservationService: ReservationsService,
     private toastService: ToastsService,
-    private alertsService: AlertsService  ){}
+    private alertsService: AlertsService,
+    private store :Store<AppState>
+  ){ }
+  ngOnInit(): void {
+    this.store
+      .select('reservation')
+      .subscribe( reservation  =>{
+        this.hasEditing = reservation.isEditReservation;
+      });
+  }
 
   addReservation(){
       this.reservationService.addReservation(this.reservation)

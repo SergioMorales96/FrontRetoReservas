@@ -1,11 +1,14 @@
 import { AlertsService } from '../../../../services/cancelReservation.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DatesReservation, ReservationResponse } from '../../../../admin/interfaces/reservation';
+import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { setEditReservation, setReservationList } from '../../../../shared/reservation.actions';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -14,9 +17,8 @@ import { ToastsService } from '../../../../services/toasts.service';
 })
 export class EditReservationComponent {
 
-  @Input() currentReservation!: DatesReservation;
-  @Output() onAction: EventEmitter<ReservationAction> = new EventEmitter<ReservationAction>();
-  
+  currentReservation!: DatesReservation ;  
+  datesReservationList: DatesReservation[]=[];
   datesReservation: DatesReservation[] = [];
   currentPosition: number = 0;
   routeName = RouteName;
@@ -92,20 +94,28 @@ export class EditReservationComponent {
   constructor(
     private cancelReservationService: AlertsService,
     private reservationsService: ReservationsService,
-    private toastService: ToastsService 
+    private toastService: ToastsService,
+    private store :Store<AppState>
+
   ) { }
 
   ngOnInit(): void {
     this.getRervations(this.getData());
+    this.store
+      .select('reservation')
+      .subscribe( reservation =>{
+        this.currentReservation = reservation.reservation || new DatesReservationClass();
+        this.datesReservationList = reservation.reservationList;
+      })  
   }
 
   getData() {
     return {
-      startDate: '11-07-2021',
-      endDate: '14-07-2021',
+      startDate: '01-08-2021',
+      endDate: '14-08-2021',
       // startDate: moment().format('DD-MM-YYYY'),
       // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
-      email: 'user4@asesoftware.com'
+      email: 'correoJuan@correo.com'
     }
   }
 
@@ -130,11 +140,14 @@ export class EditReservationComponent {
           this.reservationsService.cancelReservation(this.currentReservation.numeroReserva)
             .subscribe(
               (reservationReponse: ReservationResponse) => {
-                this.datesReservation = this.datesReservation.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
+                this.datesReservationList = this.datesReservationList.filter((datesReservation: DatesReservation) => datesReservation.numeroReserva !== this.currentReservation.numeroReserva);
                 this.toastService.showToastSuccess({ summary: 'Reserva cancelada', detail: 'La reserva ha sido cancelada correctamente.' });
+                this.store.dispatch(setReservationList({reservationList:this.datesReservationList}))
                 this.showReservation1();
               }
-            );
+            ); 
+
+
         } else {
           return;
         }
@@ -142,16 +155,15 @@ export class EditReservationComponent {
     .catch(console.log);
   }
 
-  showEditReservation(): void {
-    this.onAction.emit(ReservationAction.Edit);
-  }
-
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;
   }
 
   showReservation1(): void {
-    this.onAction.emit( ReservationAction.ViewSummary );
-    
+    this.store.dispatch(setEditReservation({isEditReservation: false}));   
   }
 }
+function deleteReservation(arg0: { reservationList: DatesReservation[]; }): any {
+  throw new Error('Function not implemented.');
+}
+
