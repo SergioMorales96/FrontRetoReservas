@@ -13,7 +13,7 @@
 <!--button (click)="responsive = !responsive">Responsive</button-->
 
 <div class="p-grid">
-    <div class="p-col">
+    <div class="p-col-2">
         <p-sidebar
             [(visible)]="responsive"
             *ngIf = "responsive; else sidebar">
@@ -25,28 +25,25 @@
         </ng-template>
     </div>
 
-    <div class="p-col">
-        <div *ngIf = "display; else reservations">
-            <app-reservation-form></app-reservation-form>
-            <app-reservation-summary></app-reservation-summary>
-        </div>
-
-        <ng-template #reservations>
-            <div class="p-d-flex p-jc-center p-ai-center">
-                <div class="p-col">
-                    <app-reservation></app-reservation>
-                </div>
-                <div class="p-col">
-                    <app-calendar></app-calendar>
-                </div>
-            </div>
-        </ng-template>
+    
+    <div class="p-col-3" *ngIf = "display; else reservations">
+        <app-reservation-form></app-reservation-form>
+        <app-reservation-summary></app-reservation-summary>
     </div>
+
+        <ng-template class="p-col-5" #reservations>
+            <div class="p-d-flex p-jc-center p-ai-center">
+                <app-reservation></app-reservation>
+                <app-calendar></app-calendar>
+            </div>
+
+        </ng-template>
+    
+    
 </div>
+<!-- <div class="p-mt-2 position-relative">
 
-<div class="p-mt-2 position-relative">
-
-    <!-- <router-outlet></router-outlet> -->
+    <router-outlet></router-outlet>
 
     <app-scene></app-scene>
 
@@ -62,4 +59,4 @@
 </div>
 
 
-
+ -->
