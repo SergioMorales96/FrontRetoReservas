@@ -1,28 +1,15 @@
 <div class="p-fluid">
 
-  <div class="p-mb-4 p-d-flex jc-start-ai-center">
-    <p class="p-my-0 p-mr-4 description font-size-small">Fecha de reserva</p>
-    <img 
-      src="assets/images/icons/minus-gray.svg" 
-      alt="step icon" />
-  </div>
-
   <ng-container [formGroup]="form">
-
-    <div class="p-field">
-      <label 
-        class="label font-size-small" 
-        for="timeonly">
-        Periodo de tiempo por bloques
-      </label>
-      <div class="p-col">
-        <p-calendar
-          [timeOnly]="true"
-          inputId="timeonly"
-          formControlName="periodoTiempo">
-        </p-calendar>
+      <div class="">
+        <app-time-period-slider></app-time-period-slider>
+        <small
+      *ngIf="submitted && form.controls.periodoTiempo.errors"
+      class="p-error">
+      Seleccione su tiempo de estadía
+    </small>
+    <!-- submitted && formControls.nombres.errors?.required -->
       </div>
-    </div>
 
     <div class="p-my-5">
       <app-calendar></app-calendar>
