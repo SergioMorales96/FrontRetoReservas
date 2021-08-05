@@ -5,13 +5,14 @@
             <p class="p-mt-2 p-mb-0 resume">Resumen de reserva</p>
         </div>
         <div class="p-col-2 p-d-flex p-flex-column p-jc-center p-ai-center">
-            <p class="p-mt-2 p-mb-0" >{{prueba}}</p>
+            <p class="p-mt-2 p-mb-0" [ngClass]="{'color':step<2}">{{info}}</p>
         </div>
         <div class="p-col-2 p-d-flex p-flex-column p-jc-center p-ai-center">
-            <p class="p-mt-2 p-mb-0">{{fecha}}{{selectedDateSummary | date:'longDate'}}</p>
+            <p class="p-mt-2 p-mb-0" [ngClass]="{'color':step<3}">{{selectedDateSummary | date:'MMMM d, y' | titlecase}}<br>{{fecha}}
+            <span>{{timeMinutes}}</span></p>
         </div>
         <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
-            <p class="p-mt-2 p-mb-0">{{sintomas}}</p>
+            <p class="p-mt-2 p-mb-0" [ngClass]="{'color':step<4}">{{sintomas}}</p>
         </div>
         <div class="p-col-1 p-d-flex p-flex-column p-jc-center p-ai-center">
             <!--p class="p-mt-2 p-mb-0">Resumen de reserva</p-->

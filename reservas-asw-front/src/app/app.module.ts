@@ -1,7 +1,10 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID,NgModule } from '@angular/core';
+import localEs from '@angular/common/locales/es-CO';
+import {registerLocaleData} from '@angular/common';
+registerLocaleData(localEs,'es');
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -38,7 +41,8 @@ import { EditReservationComponent } from './reservations/components/reservation/
   providers: [
     ConfirmationService,
     MessageService,
-    CLoadService
+    CLoadService,
+    {provide: LOCALE_ID, useValue:'es-CO'}
   ],
   bootstrap: [AppComponent]
 })
