@@ -59,7 +59,7 @@
 
     <ng-container formArrayName="datosAcompanante">
       <ng-container *ngFor="let peopleReservation of peopleData.controls; let i = index">
-        <div class="p-field">
+        <div class="p-field" *ngIf="i > 0">
           <label 
             class="label font-size-small" 
             for="peopleReservation">

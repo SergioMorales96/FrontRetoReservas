@@ -33,7 +33,8 @@
         for="identificacion">
         Identificación
       </label>
-      <p-inputNumber class="p-inputtext" formControlName=identificacion ></p-inputNumber>
+      <p-inputNumber 
+      formControlName=identificacion ></p-inputNumber>
       <small
         *ngIf="submitted && formControls.identificacion.errors?.required" 
         class="p-error">
@@ -95,8 +96,7 @@
       <label 
         class="label font-size-small"
         for="piso">
-        ¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
-        de garganta, dificultad para identificar olores y sabores
+        Indica barrio donde vives y describe la ruta que realizarás
       </label>
       <textarea
         [rows]="2"
@@ -108,7 +108,7 @@
       <small
         *ngIf="submitted && formControls.descripcion.errors?.required"
         class="p-error">
-        Por favor descripa su trayecto
+        Descripción
       </small>
     </div>
 

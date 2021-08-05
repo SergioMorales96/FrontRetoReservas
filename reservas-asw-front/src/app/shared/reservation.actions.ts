@@ -21,11 +21,6 @@ export const setMeanOfTransport = createAction(
     '[Reservations Component] setMeanOfTransport',
     props<{ meanOfTransportId: number }>()    
 );
-export const setContinue = createAction(
-    '[Reservations Component] setContinue',
-    props<{ continuar: boolean }>()
-);
-
 
 export const setWorkstation = createAction(
     '[Reservations Component] setWorkstation',
@@ -35,7 +30,6 @@ export const setWorkstation = createAction(
 export const setSelectedDate = createAction(
     '[Reservations Component] setSelectedDate',
     props<{ selectedDateSummary: Date}>()
-
 )
 
 export const setSymptoms = createAction(
@@ -81,6 +75,16 @@ export const setReservation= createAction(
 export const setEditReservation = createAction(
     '[Reservations Component] setEditReservation',
     props<{isEditReservation: boolean }>()
+)
+
+export const setSteps = createAction(
+    '[Reservations Component] setSteps',
+    props<{ step: number}>()
+)
+
+export const setContinue = createAction(
+    '[Reservations Component] setContinue',
+    props<{ continuar : boolean}>()
 )
 
 export const setDisplay= createAction(
