@@ -10,28 +10,45 @@
 </p-confirmDialog>
 <app-menu></app-menu>
 
-<button (click)="responsive = !responsive">Responsive</button>
+<!--button (click)="responsive = !responsive">Responsive</button-->
 
-<p-sidebar
-    [(visible)]="responsive"
-    *ngIf = "responsive; else sidebar">
-    <app-sidebar></app-sidebar>
-</p-sidebar>
+<div class="p-grid">
+    <div class="p-col">
+        <p-sidebar
+            [(visible)]="responsive"
+            *ngIf = "responsive; else sidebar">
+            <app-sidebar></app-sidebar>
+        </p-sidebar>
 
-<ng-template #sidebar>
-    <app-sidebar></app-sidebar>
-</ng-template>
+        <ng-template #sidebar>
+            <app-sidebar></app-sidebar>
+        </ng-template>
+    </div>
+
+    <div class="p-col">
+        <div *ngIf = "display; else reservations">
+            <app-reservation-form></app-reservation-form>
+            <app-reservation-summary></app-reservation-summary>
+        </div>
+
+        <ng-template #reservations>
+            <div class="p-d-flex p-jc-center p-ai-center">
+                <div class="p-col">
+                    <app-reservation></app-reservation>
+                </div>
+                <div class="p-col">
+                    <app-calendar></app-calendar>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>
 
 <div class="p-mt-2 position-relative">
 
     <!-- <router-outlet></router-outlet> -->
 
-    <app-reservation-form></app-reservation-form>
-
-    <app-reservation-summary></app-reservation-summary>
-
     <app-scene></app-scene>
-
 
     <button 
         pButton 
@@ -45,6 +62,4 @@
 </div>
 
 
-<app-time-period-slider></app-time-period-slider>
 
-<app-reservation></app-reservation>

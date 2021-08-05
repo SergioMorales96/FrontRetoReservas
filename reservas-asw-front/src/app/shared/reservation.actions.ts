@@ -83,5 +83,8 @@ export const setEditReservation = createAction(
     props<{isEditReservation: boolean }>()
 )
 
-
+export const setDisplay= createAction(
+    '[Reservations Component] setDisplay',
+    props<{display: boolean }>()
+)
 

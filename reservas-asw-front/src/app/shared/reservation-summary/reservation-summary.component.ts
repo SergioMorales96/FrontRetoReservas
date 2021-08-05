@@ -43,7 +43,7 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary}) => {
+      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary, symptoms}) => {
         //console.log('data from store ngrx', { floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary });
         this.setFloorNumber(floorNumber);
         this.setContinue(continuar);
