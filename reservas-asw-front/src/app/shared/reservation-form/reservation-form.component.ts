@@ -80,7 +80,7 @@ export class ReservationFormComponent implements OnInit {
               'correousuario@correo.com',
               [
                 Validators.required,
-                Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+                Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'),
               ],
             ],
             miembroOrganizacion: [true, Validators.required],
@@ -103,12 +103,12 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
-        nombres: ['A', Validators.required],
-        identificacion: [, [Validators.required, Validators.minLength(5), Validators.maxLength(8)]],
+        nombres: ['NOMBRE APELLIDO', Validators.required],
+        identificacion: [123456789, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
         grupoRiesgo: ['No Aplica', Validators.required],
         convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
-        descripcion: ['A', Validators.required],
+        descripcion: ['Barrio XXX, Tomo transporte público en..', Validators.required],
       }),
     });
 
@@ -240,30 +240,22 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {
-          return;
-        } else {
-          this.submitted = false;         
-        }
+        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false; 
         break;
       case 2:
-        if (this.reservaForm.controls.fechaInfo.invalid) {
-          return;
-        } else this.submitted = false;
+        if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;
         break;
       case 3:
-        if (this.reservaForm.controls.asistenteInfo.invalid) {
-          return;
-        } else {
-          this.submitted = false;
-        }
+        if (this.reservaForm.controls.asistenteInfo.invalid) return; else this.submitted = false;
         break;
     }
+
     this.step += 1;
 
     if (this.step == 4) {    
       this.addReservation();
     }
+
   }
 
   previous() {
