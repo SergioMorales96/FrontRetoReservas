@@ -1,19 +1,26 @@
 <div class="p-fluid">
 
   <ng-container [formGroup]="form">
-      <div class="">
-        <app-time-period-slider></app-time-period-slider>
-        <small
+    <div class="p-field">
+      <app-time-period-slider></app-time-period-slider>
+      <small
       *ngIf="submitted && form.controls.periodoTiempo.errors"
       class="p-error">
       Seleccione su tiempo de estadía
     </small>
-    <!-- submitted && formControls.nombres.errors?.required -->
-      </div>
+    
+    </div>
 
     <div class="p-my-5">
       <app-calendar></app-calendar>
+      <small
+      *ngIf="submitted && form.controls.fecha.errors"
+      class="p-error">
+      Seleccione una fecha
+    </small>
     </div>
+
+    
 
     <label class="label font-size-small">Informacion del Aforo</label>
     <br />

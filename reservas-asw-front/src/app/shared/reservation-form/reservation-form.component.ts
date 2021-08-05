@@ -4,7 +4,7 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setWorkstation,setContinue, setSymptoms, setSteps, setReservationId } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setWorkstation, setContinue, setSymptoms, setSteps, setReservationId, setDisplay } from '../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -97,7 +97,7 @@ export class ReservationFormComponent implements OnInit {
       //Date - Step 2
       fechaInfo: this.fb.group({
         periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
-        fecha: [null, Validators.required],
+        fecha: [null, [Validators.required, Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])\-(0[1-9]|1[0-2])\-[0-9]{4}$/)]],
       }),
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
@@ -117,12 +117,7 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
     this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
     this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
-    //console.log(this.reservaForm.get('personasReserva')?.value);
-    // this.store.dispatch( setFloorNumber({ floorNumber: 18}) );
-    // this.store.dispatch( setPeopleNumber({ peopleNumber: 1}) );
-    // this.store.dispatch( setSymptoms({ symptoms: 'No'}) );
-
-  
+   
     this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
@@ -266,18 +261,10 @@ export class ReservationFormComponent implements OnInit {
     }
     this.step += 1;    
     this.store.dispatch( setSteps({step: this.step}) );
-    
-    /*if (this.reservaForm.controls.puestoInfo.invalid && this.step == 1){
-      return;
-    }
-    if (this.reservaForm.controls.fechaInfo.invalid && this.step == 2) {
-      return;
-    }
-    this.step = this.step + 1;
-    console.log(this.step);*/
 
     if (this.step == 4) {    
       this.addReservation();
+      this.store.dispatch( setDisplay({display: false}) );
     }
 
   }
