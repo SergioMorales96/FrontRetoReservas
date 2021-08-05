@@ -9,8 +9,13 @@ import { combineAll } from 'rxjs/operators';
 import { ACESFilmicToneMapping, Object3D } from 'three';
 import { ReservationsService } from '../../services/reservations.service';
 import { RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.interface';
-import { workSpacesPerFloorResponse } from '../../interfaces/workspaces-per-floor.interface';
+import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspaces-per-floor.interface';
 import { Reservation } from '../../interfaces/reservations.interface';
+import { Floors } from '../../interfaces/floors.interface';
+import { Floor } from '../../../admin/interfaces/admin.interfaces';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { setReservationId } from '../../../shared/reservation.actions';
 
 
 const CAMERA_FOV = 40;
@@ -78,20 +83,34 @@ const MOUSE_VAL2 = 2;
 })
 export class SceneComponent implements OnInit {
 
-  @Input() idpiso: number = 0;
-  @Input() numOfPeople: number = 1;
+  //@Input() idpiso: number = 0;
+  //@Input() numOfPeople: number = 1;
 
   path3D : string = '';
   urlPlugin : string = '';
   query: string = '/';
 
-  constructor( private reservationsService: ReservationsService ){} 
+  constructor( 
+    private reservationsService: ReservationsService,
+    private store: Store<AppState>
+    
+    ){} 
 
   main(){
+    let idPiso = 0;
+    let numeroPersonas = 0;
+    let myStore = this.store;
+
+
+    this.store.select('reservation').subscribe((reservation) => {
+      idPiso = reservation.floorNumber;
+      numeroPersonas = reservation.peopleNumber;      
+    });
+
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( CAMERA_FOV, window.innerWidth / window.innerHeight, CAMERA_NEAR, CAMERA_FAR );
+    const camera = new THREE.PerspectiveCamera( 40, 1, 1, 100 );
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
@@ -102,24 +121,38 @@ export class SceneComponent implements OnInit {
     const onObjectColor = new THREE.Color ( 0xEAA525 );
     const smallChairColor = new THREE.Color ( 0x65FC17 );
     let selectedObject: Object3D | null;
-    let idPiso = this.idpiso;
-    let idPisoActual = idPiso;
-    let numeroPersonas = this.numOfPeople;
+    
     let floorsList: THREE.Group[] = [];
     let workSpacesList: THREE.Group[] = [];
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
+    
+
+    let jocker1: workSpaceW[] = [];
+    let jocker2: workSpaceW[] = [];
+    let jocker3: workSpaceW[] = [];
+    let matriz: (workSpaceW[])[] = [jocker1, jocker2, jocker3];
+
+    let idPisoActual = idPiso;
+    let numeroPersonasActual: number = numeroPersonas;
+    console.log("El piso Actual es: ", idPiso);
+    
+    const CHAIR_SADDLE_COLOR = 0x444b93;
+    const CHAIR_BACK_COLOR = 0x444b93;
+    const CHAIR_UNION_COLOR = 0x1e;
+    const CHAIR_WHEELS_COLOR = 0x1e;
+    const TABLE_COLOR = 0xffffff;
 
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( 500, 500 );
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild( renderer.domElement );
-    document.addEventListener( 'mousemove', onPointerMove );
-    window.addEventListener('click', onClick);
+    //document.addEventListener( 'mousemove', onPointerMove );
+    renderer.domElement.addEventListener( 'mousemove', onPointerMove );
+    //window.addEventListener('click', onClick);
 
-    scene.background = new THREE.Color( BACKGROUND_COLOR );
-    scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
-    //scene.fog = new THREE.Fog(FOG_COLOR, FOG_NEAR, FOG_FAR);
+    scene.background = new THREE.Color( 0xFFFFFF );
+    scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
 
@@ -133,17 +166,69 @@ export class SceneComponent implements OnInit {
     //scene.add( axesHelper );
     var grid = new THREE.GridHelper(20, 100);
     //scene.add(grid);
+
+    const arrowHelper = new THREE.ArrowHelper(
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      5.25,
+      0xffff00
+  )
+  scene.add(arrowHelper)
     
 
     loader.setDRACOLoader( dracoLoader );
-    loadFloor(this.idpiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
+    loadFloor(idPiso, this.path3D, this.reservationsService, this.urlPlugin, this.query);    
 
-    this.query = this.query + this.idpiso ;
-    if( this.numOfPeople > 1 ){
+    this.query = this.query + idPiso ;
+    
       loadRooms(this.urlPlugin, this.reservationsService, this.query);
-    }else{
+   
       loadWorkSpaces( this.urlPlugin, this.reservationsService, this.query );
-    }
+    
+      renderer.domElement.addEventListener( 'click', onClick );
+    
+      function onClick(event: MouseEvent ) {
+        myStore.dispatch(setReservationId({ reservationId: 999 }));  // Modificame
+        raycaster.setFromCamera(pointer, camera);
+        let intersects = raycaster.intersectObjects(scene.children, true);
+    
+        if( !intersects[0] ){
+           if( idPiso == 3 ){
+             idPiso--;
+           }else{
+             idPiso++;
+           }
+          /*if (numeroPersonas == 2) {
+            numeroPersonas--;  
+          } else{
+            numeroPersonas++;
+          }*/
+          
+          console.log("el numero de personas es:", numeroPersonas);
+    
+          
+        }
+            if( intersects[0] && intersects[0].object.userData.info  ){
+              if( numeroPersonas == 1 ){
+                if( selectedObject && selectedObject != intersects[0].object ){
+                   setColorSelectedObject( );
+                   changeToChairCurrentColor()
+                 }
+              }else {
+                //lógica salas de trabajo
+              }
+              selectChair(intersects);  
+              selectedObject = intersects[0].object;
+              if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
+                selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
+              }else{
+                selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
+              }
+              (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
+              INTERSECTED = null; 
+            }
+            console.log('El selected: ', selectedObject);   
+      }  
     
     loadStairs();
 
@@ -152,31 +237,34 @@ export class SceneComponent implements OnInit {
 
     updateModels();
 
-    window.onresize = function () {
+    // window.onresize = function () {
 
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+    //   camera.aspect = window.innerWidth / window.innerHeight;
+    //   camera.updateProjectionMatrix();
 
-      renderer.setSize( window.innerWidth, window.innerHeight );
+    //   renderer.setSize( window.innerWidth, window.innerHeight );
 
-    };
+    // };
 
+      
     
 
   function onPointerMove( event: MouseEvent ) {
-
-      pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-      pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+      pointer.x = ( event.clientX / 500 ) * 2 - 1;
+      pointer.y = - ( event.clientY / 700 ) * 2 + 1;
       checkOnObject();
-  
   }
+  
 
+
+  
   function checkOnObject(  ){
     
     raycaster.setFromCamera(pointer, camera);
     
     
     let intersects = raycaster.intersectObjects(scene.children, true);
+
     
     if (intersects.length > 0 && intersects[0].object.userData.info && intersects[0].object != selectedObject) {
 
@@ -195,57 +283,13 @@ export class SceneComponent implements OnInit {
         INTERSECTED = null;
 
     }
+    }else if ( INTERSECTED ){
+      ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColro;
     }
 
   }
 
-  function onClick(event: MouseEvent) {
-
-    //idPiso++;
-    
-    raycaster.setFromCamera(pointer, camera);
-    let intersects = raycaster.intersectObjects(scene.children, true);
-    console.log(intersects);
-    
-
-        
-        if( intersects[0] && intersects[0].object.userData.info  ){
-          
-          if( selectedObject && selectedObject != intersects[0].object ){
-           // console.log( selectedObject.userData.currentColor == selectedObjectColor );
-            
-            
-            (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject.userData.currentColor;
-            
-          }
-
-          for (let ob of scene.children) {
-           /*  console.log('Los children del scene', scene.children); */
-            
-            /* console.log( 'El obejtito ome', ob.children[4].userData ); */
-            
-            //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-            if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
-              ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-            }            
-          }
-          
-          selectedObject = intersects[0].object;
-          if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
-            selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
-          }else{
-            selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
-          }
-          (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-
-          INTERSECTED = null;
-           
-        }
-        console.log('El selected: ', selectedObject);
-
-        
-    
-  }
+  
 
   function loadThisFloor( floorNumber: number, answ: RoomsPerFloorResponse ){
     let path: string = '';
@@ -274,7 +318,70 @@ export class SceneComponent implements OnInit {
       const child = model3.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
      // console.log("el material del piso es: ", childMaterial , 'el Child es: ', child);
-      childMaterial.color = new THREE.Color(0x4f1245);
+      const objects = [child];
+      //childMaterial.color = new THREE.Color(0x4f1245);
+
+      
+    //  childMaterial.color = new THREE.Color( 0x3131ff);
+    //  childMaterial.opacity = 1;
+    //  childMaterial.roughness = 0.9;
+    //  childMaterial.metalness = 0;
+    //  childMaterial.fog= true;
+    //  childMaterial.transparent= false;
+    //  childMaterial.depthTest = true;
+    //  childMaterial.depthWrite = true;
+    //  childMaterial.side = THREE.FrontSide;
+
+        renderer.domElement.addEventListener( 'click', onMove );
+        function onMove(event: MouseEvent){
+        raycaster.setFromCamera(pointer, camera);
+        const intersects = raycaster.intersectObjects(objects);
+        if (intersects.length > 0) {
+
+          childMaterial.color = new THREE.Color( 0x3131ff );
+          childMaterial.opacity = 1;
+          childMaterial.roughness = 0.9;
+          childMaterial.metalness = 0;
+          childMaterial.fog= false;
+          childMaterial.transparent= true;
+          childMaterial.depthTest = true;
+          childMaterial.depthWrite = true;
+          childMaterial.side = THREE.FrontSide;
+
+          const n = new THREE.Vector3()
+          n.copy((intersects[0]?.face as THREE.Face)?.normal)
+          n.transformDirection(intersects[0].object.matrixWorld)
+
+          arrowHelper.setDirection(n)
+          arrowHelper.position.copy(intersects[0].point)
+        
+        }else {
+
+          childMaterial.color = new THREE.Color( 0xbf);
+          childMaterial.opacity = 0.49;
+          childMaterial.roughness = 0.9;
+          childMaterial.metalness = 0;
+          childMaterial.fog= false;
+          childMaterial.transparent= true;
+          childMaterial.depthTest = true;
+          childMaterial.depthWrite = true;
+          childMaterial.side = THREE.FrontSide;
+
+          /* const n = new THREE.Vector3()
+          n.copy((intersects[0]?.face as THREE.Face)?.normal)
+          n.transformDirection(intersects[0].object.matrixWorld) */
+
+          //arrowHelper.setDirection(n)
+          //arrowHelper.position.copy(intersects[0].point)
+
+        }
+      
+
+        }
+
+        
+    
+     
       model3.position.set( 0,0,0 );
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
@@ -310,9 +417,189 @@ export class SceneComponent implements OnInit {
     return pisoActual === idPiso;
   }
 
-  function generateModelsWorkSpace(answ: workSpacesPerFloorResponse, columnas: number, filas: number, bloque: number, piso: number){
+ 
+
+  function generateChairRoomTextureModels(model: THREE.Group){
+    
+      const modelPT1 = model.children[0] as THREE.Mesh;
+      const modelPT2 = model.children[1] as THREE.Mesh;
+      const modelPT3 = model.children[2] as THREE.Mesh;
+      const modelPT4 = model.children[3] as THREE.Mesh;
+      console.log(model);
+
+      const modelsChair = [modelPT1, modelPT2, modelPT3, modelPT4];
+      const chairs = [["Cube024","Cube024_1","Cube017","Cube018","Cube020"],
+                      ["Cube001_1","Cube001_2","Cube003","Cube002"],
+                      ["Cube006_1","Cube006_2","Cube004","Cube005"],
+                      ["Cube007_1","Cube007_2","Cube009","Cube008"]];
+
+      const INITIAL_MAP = [
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_SADDLE_COLOR,
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide} )
+        },
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_UNION_COLOR, 
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        { 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_WHEELS_COLOR,
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        { 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_BACK_COLOR, 
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: TABLE_COLOR, 
+          opacity: 0.5,
+          roughness: 0,
+          metalness: 1,
+          fog: false,
+          transparent: true,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )}
+      ];
+      
+      textures(modelsChair, chairs, INITIAL_MAP);
+  }  
+
+  
+function textures(models: THREE.Mesh[], chair: string[][], map: any){
+  for (let n = 0; n <= 3; n ++ ){
+    if (n == 0){
+      for (let i = 0 ; i < 5; i++){
+        initColor(models[0], chair[0][i], map[i].mtl);
+      }
+    }else {
+      for (let i = 1 ; i < 4; i++){
+        for (let m = 0; m < 4; m ++){
+          initColor(models[i], chair[i][m], map[m].mtl);
+        }
+      }
+    }
+  }
+}    
+
+
+  
+
+  function generateTextureModels(model: THREE.Group){
+    const modelPS_silla = model.children[3] as THREE.Mesh;
+    const modelPS_mesa = model.children[4] as THREE.Mesh;
+
+    const INITIAL_MAP_silla = [
+      {childID: "Cube024",
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_SADDLE_COLOR,
+        opacity: 1,
+        roughness: 1,
+        metalness: 0,
+        fog: true,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide} )
+      },
+      {childID: "Cube024_1", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_UNION_COLOR, 
+        opacity: 1,
+        roughness: 0.3,
+        metalness: 1,
+        fog: false,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      },
+      {childID: "Cube017", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_WHEELS_COLOR,
+        opacity: 1,
+        roughness: 0.3,
+        metalness: 1,
+        fog: false,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      },
+      {childID: "Cube018", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: CHAIR_BACK_COLOR, 
+        opacity: 1,
+        roughness: 1,
+        metalness: 0,
+        fog: true,
+        transparent: false,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      }
+    ];
+
+    const INITIAL_MAP_mesa = [
+      {childID: "Cube020", 
+      mtl: new THREE.MeshStandardMaterial( { 
+        color: TABLE_COLOR, 
+        opacity: 0.5,
+        roughness: 0,
+        metalness: 1,
+        fog: false,
+        transparent: true,
+        depthTest: true,
+        depthWrite: true,
+        side: THREE.FrontSide } )
+      }
+    ];
+
+    for (let object of INITIAL_MAP_silla) {
+      initColor(modelPS_silla, object.childID, object.mtl);
+    }
+
+    for (let object of INITIAL_MAP_mesa) {      
+      initColor(modelPS_mesa, object.childID, object.mtl);
+    }
+  }
+
+  function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number, index: number): workSpaceW[]{
     loader.load('assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ){
-      let model5 = gltf.scene;
+      const model5 = gltf.scene;
       let n = 0;
 
       if (piso === 1) {
@@ -324,14 +611,14 @@ export class SceneComponent implements OnInit {
             
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
-              piece.children[0].userData = {"info" : answ.data[0]};
-              piece.children[1].userData = {"info" : answ.data[0]};
-              piece.children[2].userData = {"info" : answ.data[0]};
-              piece.children[3].userData = {"info" : answ.data[0]};
-              piece.children[4].userData = {"info" : answ.data[0]};
-             
-              answ.data.shift();
-              n++;
+              piece.children[0].userData = {"info" : workPlaces[index]};
+              piece.children[1].userData = {"info" : workPlaces[index]};
+              piece.children[2].userData = {"info" : workPlaces[index]};
+              piece.children[3].userData = {"info" : workPlaces[index]};
+              piece.children[4].userData = {"info" : workPlaces[index]};
+              
+              index++;
+              generateTextureModels(piece);
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -452,15 +739,24 @@ export class SceneComponent implements OnInit {
                   break;   
                 case 103:
                   if (j === 0) {
+                    if (i > 1) {
+                      return;
+                    }else{
                     piece.position.set((model5.position.x+11.76)+(0.46*i),0,(model5.position.z+2.15)+(0.46*j));
-                    piece.rotation.y += -0.69;
+                    piece.rotation.y += -0.69;}
                   }else if (i > 2 && j ===  1 ) {
+
                     piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+1.86)+(0.46*j));
+
                     piece.rotation.y += 2.45;
+
                   }else{
+
                     piece.position.set((model5.position.x+11.88)+(0.46*i),0,(model5.position.z+2.01)+(0.46*j));
+
                     piece.rotation.y += 2.45;
-                  } 
+
+                  }
                   break; 
                 case 111:
                   piece.position.set((model5.position.x+14.10)+(0.46*i),0,(model5.position.z+3)+(0.46*j));
@@ -525,8 +821,9 @@ export class SceneComponent implements OnInit {
                   break;  
               }
               
-              piece.visible = invisibleModels(piso);
+              piece.visible = invisibleModels(piso) && numeroPersonas == 1;
               scene.add(piece);
+              sceneInfo.workSpaces.push(piece);
               
             }, undefined, function ( e ) {
     
@@ -546,12 +843,14 @@ export class SceneComponent implements OnInit {
           for (let j = 0; j < filas; j++) {
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
               let piece = gltf.scene;
+              piece.children[0].userData = {"info" : workPlaces[0]};
+              piece.children[1].userData = {"info" : workPlaces[0]};
+              piece.children[2].userData = {"info" : workPlaces[0]};
+              piece.children[3].userData = {"info" : workPlaces[0]};
+              piece.children[4].userData = {"info" : workPlaces[0]};
 
-              piece.children[0].userData = {"info" : answ.data[n]};
-              piece.children[1].userData = {"info" : answ.data[n]};
-              piece.children[2].userData = {"info" : answ.data[n]};
-              piece.children[3].userData = {"info" : answ.data[n]};
-              piece.children[4].userData = {"info" : answ.data[n]};
+              generateTextureModels(piece);
+              workPlaces.shift();
 
               piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
               switch(bloque){
@@ -718,9 +1017,9 @@ export class SceneComponent implements OnInit {
                   break;  
               }
               
-              piece.visible = invisibleModels(piso);
+              piece.visible = invisibleModels(piso) && numeroPersonas == 1;
               scene.add(piece);
-              n++;
+              sceneInfo.workSpaces.push(piece);
             }, undefined, function ( e ) {
     
                 console.error( e );
@@ -738,11 +1037,13 @@ export class SceneComponent implements OnInit {
               loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
                 let piece = gltf.scene;
                 
-                piece.children[0].userData = {"info" : answ.data[n]};
-                piece.children[1].userData = {"info" : answ.data[n]};
-                piece.children[2].userData = {"info" : answ.data[n]};
-                piece.children[3].userData = {"info" : answ.data[n]};
-                piece.children[4].userData = {"info" : answ.data[n]};
+                piece.children[0].userData = {"info" : workPlaces[0]};
+                piece.children[1].userData = {"info" : workPlaces[0]};
+                piece.children[2].userData = {"info" : workPlaces[0]};
+                piece.children[3].userData = {"info" : workPlaces[0]};
+                piece.children[4].userData = {"info" : workPlaces[0]};
+                generateTextureModels(piece);
+                workPlaces.shift();
     
                 piece.scale.set( piece.scale.x*0.49, piece.scale.y*0.49, piece.scale.z*0.49);
                             
@@ -812,8 +1113,7 @@ export class SceneComponent implements OnInit {
                     }  
                     break; 
                   case 59:
-                    (<THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[4]).material).color = selectedObjectColor;
-                    (<THREE.MeshStandardMaterial> ( <THREE.Mesh> piece.children[3].children[0]).material).color = selectedObjectColor;      
+                    
                     if (j === 0) {
                         piece.position.set((model5.position.x+4.60)+(0.46*i),0,(model5.position.z+5.12)+(0.46*j));
                         piece.rotation.y += -0.69;
@@ -844,9 +1144,11 @@ export class SceneComponent implements OnInit {
                     break;
                 }
                                            
-                piece.visible = invisibleModels(piso);
+                piece.visible = invisibleModels(piso) && numeroPersonas == 1;
                 scene.add(piece);
+                sceneInfo.workSpaces.push(piece);
                 n++;
+               
               }, undefined, function ( e ) {
     
                 console.error( e );
@@ -858,14 +1160,13 @@ export class SceneComponent implements OnInit {
         return;
       }
     
-    
-
+      
     }, undefined, function ( e ) {
 
       console.error( e );
 
     });
-
+    return workPlaces;
     
 
     
@@ -874,6 +1175,7 @@ export class SceneComponent implements OnInit {
   
   function loadRooms(urlPlugin: string, reservationsService: ReservationsService, query: string,){
     urlPlugin = '/sala/salasPorPiso';
+    query = '1';
     //  reservationsService.sendRequest( this.urlPlugin, this.query );
       reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
@@ -899,11 +1201,36 @@ export class SceneComponent implements OnInit {
               for (let j = 0; j < 1; j++) {
                   loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {  
                     let piece = gltf.scene;
-                    piece.userData = {"info" : answ.data[j]};
+                    
+                    piece.children[0].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[3].userData = {"info" : answ.data[i]};
+                    piece.children[0].children[4].userData = {"info" : answ.data[i]};
+
+                    piece.children[1].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[1].children[3].userData = {"info" : answ.data[i]};
+
+                    piece.children[2].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[2].children[3].userData = {"info" : answ.data[i]};
+
+                    piece.children[3].children[0].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[1].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[2].userData = {"info" : answ.data[i]};
+                    piece.children[3].children[3].userData = {"info" : answ.data[i]};
+
+
                     let child1 = piece.children[0].children[0] as THREE.Mesh;
                     let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
                     childMaterial1.color = smallChairColor;
                     console.log(piece.userData = {"info" : answ.data[j]});
+                    generateChairRoomTextureModels(piece);
+                    console.log("la mesa es:",piece);
+                    
                     piece.scale.set( piece.scale.x*0.39, piece.scale.y*0.39, piece.scale.z*0.39);
                    
                     if (j === 0) {
@@ -932,214 +1259,234 @@ export class SceneComponent implements OnInit {
       );
   }
 
+
+  function loadChairWorkSpaces(answ: workSpacesPerFloorResponse, matriz: (workSpaceW[])[]): (workSpaceW[])[]{
+           for (let ws of answ.data) {
+              if (ws.idPiso == 1) {
+                matriz[0].push(ws);
+              } else if (ws.idPiso == 2) {
+                matriz[1].push(ws);
+              } else if (ws.idPiso == 3) {
+                matriz[2].push(ws);
+              }
+            }
+            return matriz;
+  }
+
   function loadWorkSpaces( urlPlugin: string, reservationsService: ReservationsService, query: string ): void{
-    urlPlugin = '/puestoTrabajo/id_Piso';
+    urlPlugin = '/puestoTrabajo/todas';
+    query = '';
+    
       reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
-          //console.log(answ.data);
-
+          console.log(answ.data);
+          matriz = loadChairWorkSpaces( answ, matriz );
+          console.log("matriz[0] es ",matriz[0]);
+          console.log("matriz[1] es ",matriz[1]);
+          console.log("matriz[2] es ",matriz[2]);
+          
           
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
                         
             ////////// PISO 20 //////////
             //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,1,1,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,1,1,3, 0);
             
             //BLOQUE 002    
-            generateModelsWorkSpace(answ,2,1,2,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,1,2,3, 1);
 
             //BLOQUE 004
-            generateModelsWorkSpace(answ,3,1,4,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],3,1,4,3, 3);
 
             //BLOQUE 007    
-            generateModelsWorkSpace(answ,2,7,7,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,7,7,3, 6);
 
             //BLOQUE 021
-            generateModelsWorkSpace(answ,2,5,21,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,5,21,3, 20);
 
             //BLOQUE 030   
-            generateModelsWorkSpace(answ,1,1,30,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,30,3, 30);
 
             //BLOQUE 31
-            generateModelsWorkSpace(answ,2,2,31,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],2,2,31,3, 31);
 
             //BLOQUE 035
-            generateModelsWorkSpace(answ,1,1,35,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],1,1,35,3, 35);
 
             //BLOQUE 037 
-            generateModelsWorkSpace(answ,11,2,37,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],11,2,37,3, 36);
 
             //BLOQUE 059
-            generateModelsWorkSpace(answ,4,2,59,3);
+             matriz[2] =generateModelsWorkSpace(matriz[2],4,2,59,3, 58);
           
             //BLOQUE 067    
-            generateModelsWorkSpace(answ,1,3,67,3);
+            matriz[2] = generateModelsWorkSpace(matriz[2],1,3,67,3, 66);
 
             //BLOQUE 070
-            generateModelsWorkSpace(answ,6,1,70,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],6,1,70,3, 69);
 
             //BLOQUE 076
-            generateModelsWorkSpace(answ,4,1,76,3);
+            matriz[2] =generateModelsWorkSpace(matriz[2],4,1,76,3, 75);
             
             ////////// PISO 19 //////////
             //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,5,1,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,5,1,2, 0);
 
             // //BLOQUE 006
-            generateModelsWorkSpace(answ,1,1,6,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],1,1,6,2, 0);
 
             // //BLOQUE 007
-            generateModelsWorkSpace(answ,5,1,7,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],5,1,7,2, 0);
 
             //  //BLOQUE 012 
-            generateModelsWorkSpace(answ,6,2,12,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],6,2,12,2, 0);
 
             //  //BLOQUE 024
-            generateModelsWorkSpace(answ,1,1,24,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,24,2, 0);
 
             //  //BLOQUE 025 
-            generateModelsWorkSpace(answ,3,2,25,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],3,2,25,2, 0);
             
             //  //BLOQUE 028
-            generateModelsWorkSpace(answ,1,1,28,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,28,2, 0);
             
             // //BLOQUE 032
-            generateModelsWorkSpace(answ,4,2,32,2);
+            matriz[1] = generateModelsWorkSpace(matriz[1],4,2,32,2, 0);
 
             // //BLOQUE 040
-            generateModelsWorkSpace(answ,5,2,40,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],5,2,40,2, 0);
 
             //  //BLOQUE 050 
-            generateModelsWorkSpace(answ,1,1,50,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,1,50,2, 0);
 
             // //BLOQUE 051
-            generateModelsWorkSpace(answ,4,2,51,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],4,2,51,2, 0);
 
             // //BLOQUE 059   
-            generateModelsWorkSpace(answ,1,3,59,2);
+             matriz[1] =generateModelsWorkSpace(matriz[1],1,3,59,2, 0);
 
             //  //BLOQUE 062 
-            generateModelsWorkSpace(answ,1,1,62,2);
+            matriz[1] =generateModelsWorkSpace(matriz[1],1,1,62,2, 0);
 
             // //BLOQUE 063
-            generateModelsWorkSpace(answ,6,2,63,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],6,2,63,2, 0);
 
             // //BLOQUE 074
-            generateModelsWorkSpace(answ,8,1,74,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],8,1,74,2, 0);
 
             //  //BLOQUE 082        
-            generateModelsWorkSpace(answ,5,1,82,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,1,82,2, 0);
 
             // //BLOQUE 087
-            generateModelsWorkSpace(answ,5,2,87,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,87,2, 0);
 
             // //BLOQUE 097
-            generateModelsWorkSpace(answ,2,1,97,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],2,1,97,2, 0);
 
             // //BLOQUE 099
-            generateModelsWorkSpace(answ,6,2,99,2);
+            matriz[1]=  generateModelsWorkSpace(matriz[1],6,2,99,2, 0);
 
             // //BLOQUE 107
-            generateModelsWorkSpace(answ,1,1,107,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,107,2, 0);
 
             // //BLOQUE 108
-            generateModelsWorkSpace(answ,5,2,108,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],5,2,108,2, 0);
 
             //  //BLOQUE 117
-            generateModelsWorkSpace(answ,1,3,117,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,3,117,2, 0);
 
             //  //BLOQUE 120           
-            generateModelsWorkSpace(answ,1,1,120,2);
+            matriz[1]= generateModelsWorkSpace(matriz[1],1,1,120,2, 0);
 
             // ////////// PISO 18 /////////
             // //BLOQUE 001    
-            generateModelsWorkSpace(answ,1,5,1,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],1,5,1,1, 0);
 
             // //BLOQUE 006
-            generateModelsWorkSpace(answ,1,1,6,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,6,1, 5);
 
             // //BLOQUE 007
-            generateModelsWorkSpace(answ,5,1,7,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,1,7,1, 6);
 
             //  //BLOQUE 012 
-            generateModelsWorkSpace(answ,7,2,12,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,2,12,1, 11);
 
             //  //BLOQUE 026
-            generateModelsWorkSpace(answ,1,1,26,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,26,1, 25);
 
             //  //BLOQUE 027
-            generateModelsWorkSpace(answ,3,2,27,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],3,2,27,1, 26);
 
             //  //BLOQUE 030
             //  for (let i = 0; i < 1; i++) {
-            generateModelsWorkSpace(answ,1,1,30,1);
+              matriz[0]= generateModelsWorkSpace(matriz[0],1,1,30,1, 32);
 
             // //BLOQUE 034
-            generateModelsWorkSpace(answ,4,2,34,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,34,1, 33);
 
             // //BLOQUE 042
-            generateModelsWorkSpace(answ,2,1,42,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,42,1, 41);
 
             // //BLOQUE 044
-            generateModelsWorkSpace(answ,5,2,44,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,44,1, 43);
 
             //  //BLOQUE 054 
-            generateModelsWorkSpace(answ,1,1,54,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,54,1, 53);
 
             // //BLOQUE 055
-            generateModelsWorkSpace(answ,4,2,55,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],4,2,55,1, 54);
 
             // //BLOQUE 063   
-            generateModelsWorkSpace(answ,1,3,63,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,63,1, 62);
 
             // //BLOQUE 066
-            generateModelsWorkSpace(answ,6,2,66,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,66,1, 65);
 
             // //BLOQUE 078
-            generateModelsWorkSpace(answ,8,1,78,1);
-            
+            matriz[0]= generateModelsWorkSpace(matriz[0],7,1,78,1, 77);
             //  //BLOQUE 085
-            generateModelsWorkSpace(answ,6,1,85,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,1,85,1, 84);
 
 
             // //BLOQUE 091
-            generateModelsWorkSpace(answ,5,2,91,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,91,1, 90);
 
             // //BLOQUE 101
-            generateModelsWorkSpace(answ,2,1,101,1);
+            matriz[0]=  generateModelsWorkSpace(matriz[0],2,1,101,1, 100);
 
-            // //BLOQUE 103
-            generateModelsWorkSpace(answ,6,2,103,1);
+            // //BLOQUE 103 - SOLO SE USAN 8 SILLAS
+            matriz[0]= generateModelsWorkSpace(matriz[0],6,2,103,1, 102);
 
             // //BLOQUE 111
-            generateModelsWorkSpace(answ,1,1,111,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,111,1, 110);
 
             // //BLOQUE 112
-            generateModelsWorkSpace(answ,5,2,112,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,112,1, 111);
 
             // //BLOQUE 121
-            generateModelsWorkSpace(answ,2,1,121,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],2,1,121,1, 121);
 
             //  //BLOQUE 123
-            generateModelsWorkSpace(answ,9,1,123,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],9,1,123,1, 123);
 
             // //BLOQUE 132   
-            generateModelsWorkSpace(answ,1,8,132,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,8,132,1, 132);
 
             // //BLOQUE 140
-            generateModelsWorkSpace(answ,5,2,140,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],5,2,140,1, 140);
 
             //  //BLOQUE 150
-            generateModelsWorkSpace(answ,1,3,150,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,3,150,1, 150);
 
             // //BLOQUE 153
-            generateModelsWorkSpace(answ,3,2,153,1);
+            matriz[0]= generateModelsWorkSpace(matriz[0],3,2,153,1, 153);
 
             // //BLOQUE 158
-            generateModelsWorkSpace(answ,1,1,158,1);
-
+            matriz[0]= generateModelsWorkSpace(matriz[0],1,1,158,1, 158);
+             
+              
           }, undefined, function ( e ) {
       
             console.error( e );
@@ -1151,7 +1498,6 @@ export class SceneComponent implements OnInit {
 
 
   function loadStairs(){
-    console.log( scene.children );
     
      loader.load( 'assets/models/stairs/stairs.gltf', function ( gltf ) {
 
@@ -1185,7 +1531,7 @@ export class SceneComponent implements OnInit {
   }
 
     function animate() {
-
+      //console.log(numeroPersonas);
       requestAnimationFrame( animate );
 
       checkChanges();
@@ -1197,11 +1543,23 @@ export class SceneComponent implements OnInit {
       renderer.render( scene, camera );
     }
 
+    function initColor(parent: THREE.Mesh, type: string, mtl: MeshStandardMaterial) {
+      parent.traverse((o: any) => {
+       if (o.isMesh) {
+         if (o.name.includes(type)) {
+            o.material = mtl;
+            o.nameID = type;
+          }
+        }
+      });
+    }
+
 
     function updateModels(){
 
       for (let ws of sceneInfo.workSpaces) {
-        ws.visible = ws.children[0].userData.info.idPiso == idPiso ? true : false;
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso && numeroPersonas == 1 ? true : false;  
+        
       }
 
       for (let f of sceneInfo.floors) {
@@ -1209,18 +1567,56 @@ export class SceneComponent implements OnInit {
         console.log( f.visible );
         
       }
+
+      for (let r of sceneInfo.room) {
+        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso && numeroPersonas > 1;
+      }
     }
 
     function checkChanges(): void{
       if( infoHasChanged() ){
          updateModels() 
          idPisoActual = idPiso;
+         numeroPersonasActual =  numeroPersonas;
         }  
     }
 
 
     function infoHasChanged(): boolean{
-      return idPiso != idPisoActual;
+      return idPiso != idPisoActual || numeroPersonas != numeroPersonasActual;
+    }
+
+
+
+    function changeToChairCurrentColor(): void{
+      for (let ob of scene.children) {
+        if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject?.userData.info.idPuestoTrabajo ){
+          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
+          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairCurrentColor;
+        }
+      }
+    }
+
+    function selectChair(intersects: THREE.Intersection[]){
+      for (let ob of scene.children) {
+                
+        //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+
+          ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+          ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+
+          console.log( 'Color ACtual de la silla', ob.userData.chairCurrentColor );
+          
+          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
+          console.log( 'Color rojo de la silla', ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color );
+        }            
+      }
+    }
+
+    function setColorSelectedObject():  void {
+      (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
     }
   }
 

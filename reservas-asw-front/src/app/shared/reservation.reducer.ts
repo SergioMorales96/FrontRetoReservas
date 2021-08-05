@@ -7,9 +7,14 @@ export interface State {
     reservationId: number;
     continuar: boolean;
     workstation: string;
-    meanOfTransport: number | null;
+    meanOfTransport: number;
     selectedDateSummary: Date;
     symptoms:string;
+    timePeriod: number;
+    startTime: string;
+    endTime: string;
+    startSlider: number;
+    endSlider: number;
 }
 
 export const initialState: State = {
@@ -20,7 +25,12 @@ export const initialState: State = {
    workstation: "",
    meanOfTransport: 0,
    selectedDateSummary: new Date,
-   symptoms:""
+   symptoms:"",
+   timePeriod: 0,
+   startTime: "",
+   endTime: "",
+   startSlider: 0,
+    endSlider: 0,
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -33,7 +43,16 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
     on(actions.setMeanOfTransport,(state, { meanOfTransportId }) => ({ ...state, meanOfTransport: meanOfTransportId})),
     on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
-    on(actions.setSymptoms,(state, { symptoms }) => ({ ...state, symptoms: symptoms}))
+    on(actions.setSymptoms,(state, { symptoms }) => ({ ...state, symptoms: symptoms})),
+    on(actions.setStartTime,(state, { startTime }) => ({ ...state, startTime: startTime})),
+    on(actions.setEndTime,(state, { endTime }) => ({ ...state, endTime: endTime})),
+    on(actions.setTimePeriod,(state, { timePeriod }) => ({ ...state, timePeriod: timePeriod})),
+
+    on(actions.setStartSlider,(state, { startSlider }) => ({ ...state, startSlider: startSlider})),
+    on(actions.setEndSlider,(state, { endSlider }) => ({ ...state, endSlider: endSlider}))
+
+
+
 );
 
 export function reservationReducer(state: any, action: any) {

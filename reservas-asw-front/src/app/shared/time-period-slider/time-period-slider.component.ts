@@ -1,30 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as moment from 'moment';
+import { AppState } from 'src/app/app.reducer';
 import { ToastsService } from '../../services/toasts.service';
+import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../reservation.actions';
 
 @Component({
   selector: 'app-time-period-slider',
   templateUrl: './time-period-slider.component.html',
   styleUrls: ['./time-period-slider.component.scss']
 })
-export class TimePeriodSliderComponent {
+export class TimePeriodSliderComponent implements OnInit{
   
   rangeValues!: Array<string>;
-  firstHour = ' hora';
-  secondHour = ' hora';
-  thirdHour = ' hora';
+  firstHour = '-';
+  secondHour = '0horas';
+  thirdHour = '0.5horas';
   minValue!: number;
   maxValue!:number;
-  startTime: string;
-  endTime: string;
+  startTime!: string;
+  endTime!: string;
+  minvalue1!: number;
+  maxvalue1!: number;
 
   constructor(
     private toastService: ToastsService,
+    private store: Store<AppState>
   ) {
-    this.startTime = '08:00 AM';
-    this.endTime = '08:00 AM';
-    this.rangeValues = ['0', '0'];
-    console.log(this.rangeValues);
+    this.store
+    .select( 'reservation' )
+    .subscribe( reservation => {
+      this.startTime = reservation.startTime;
+      this.endTime = reservation.endTime;
+      this.maxvalue1 = reservation.endSlider;
+      this.minvalue1 = reservation.startSlider;
+    } );
+    if(this.startTime == ''){
+      this.store.dispatch( setStartTime({ startTime: '08:00 AM'}) );
+      this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
+    }
+    this.functionHour(this.maxvalue1,this.minvalue1);
+    this.rangeValues = [String(this.maxvalue1),String(this.minvalue1)];
+  }
+  ngOnInit(): void {
+    this.store
+    .select( 'reservation' )
+    .subscribe( reservation => {
+      this.startTime = reservation.startTime;
+      this.endTime = reservation.endTime;
+    } );
   }
 
   functionHour(maxValue:number,minValue:number): void {
@@ -41,10 +65,8 @@ export class TimePeriodSliderComponent {
       const valitionHour2 = range + 0.5 == 1 ? 'hora' : 'horas';
       this.thirdHour = range + 0.5 + valitionHour2;
     }
+    this.store.dispatch( setTimePeriod({ timePeriod: range}) );
   }
-
-
-
   onChange( { values }: { values: (number | string)[] } ): void {
 
     const startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
@@ -52,8 +74,12 @@ export class TimePeriodSliderComponent {
     this.minValue = rangeValues[0] * 30;
     this.maxValue = rangeValues[1] * 30;
     this.startTime = startDate.add( this.minValue, 'minutes' ).format( 'hh:mm A' );
+    this.store.dispatch( setStartTime({ startTime: this.startTime}) );
     this.endTime = startDate.add( this.maxValue, 'minutes' ).format( 'hh:mm A' );
+    this.store.dispatch( setEndTime({ endTime: this.endTime}) );
     this.functionHour(rangeValues[1],rangeValues[0]);
+    
+    this.store.dispatch( setStartSlider({ startSlider: rangeValues[0] }));
+    this.store.dispatch( setEndSlider({ endSlider: rangeValues[1] }));
   }
-
 }
