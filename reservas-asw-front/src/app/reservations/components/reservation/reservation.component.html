@@ -1,13 +1,9 @@
-<!-- *ngFor="let dia of datosReservation" -->
 <app-view-reservation
-    
     *ngIf="!hasEditing; else showEditing">
 </app-view-reservation>
-<!-- (onCurrentReservation)="currentReservation = $event"
-    (onAction)="showComponent( $event )" -->
+
 <ng-template #showEditing>
     <app-edit-reservation>
         
     </app-edit-reservation>
 </ng-template>
-<!-- (onAction)="showComponent( $event )"> -->
