@@ -1,22 +1,15 @@
 <p-toast></p-toast>
 
-<p-confirmDialog 
-    [style]="{width: '50vw'}" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar"
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success"
-    rejectButtonStyleClass="p-button-danger">
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
 <app-menu></app-menu>
 
 <!--button (click)="responsive = !responsive">Responsive</button-->
 
 <div class="p-grid" style="margin-top: 0px;">
-    <div  >
-        <p-sidebar
-            [(visible)]="responsive"
-            *ngIf = "responsive; else sidebar">
+    <div>
+        <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
             <app-sidebar></app-sidebar>
         </p-sidebar>
 
@@ -25,25 +18,23 @@
         </ng-template>
     </div>
 
-    
-    <div style="margin-left: 208px;" *ngIf = "display; else reservations">
-        <app-reservation-form></app-reservation-form>
-        <app-reservation-summary></app-reservation-summary>        
-    </div>
-    
-        <ng-template class="p-col-5" #reservations>
-            <div class="p-d-flex p-jc-center p-ai-center">
-                 <div style="margin-left: 228px;"> 
-                    <app-reservation></app-reservation>
-                </div> 
-                <app-calendar></app-calendar>
-            </div>
 
-        </ng-template>
-   
-        
-    
-    
+    <div style="margin-left: 208px;" *ngIf="display; else reservations">
+        <app-reservation-form></app-reservation-form>
+    </div>
+    <ng-template class="p-col-5" #reservations>
+        <div class="p-d-flex p-jc-center p-ai-center">
+            <div style="margin-left: 228px;">
+                <app-reservation></app-reservation>
+            </div>
+            <app-calendar></app-calendar>
+        </div>
+
+    </ng-template>
+
+
+
+
 </div>
 <!-- <div class="p-mt-2 position-relative">
 
