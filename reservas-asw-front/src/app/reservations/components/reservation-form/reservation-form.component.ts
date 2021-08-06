@@ -158,6 +158,8 @@ export class ReservationFormComponent implements OnInit {
         return 'NA';  
     }
 
+    //console.log(this.reservaForm.get('personasReserva')?.value);
+
   }
 
   get peopleData(): FormArray {

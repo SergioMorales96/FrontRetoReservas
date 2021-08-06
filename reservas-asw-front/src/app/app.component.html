@@ -69,3 +69,40 @@
 
 
  -->
+<p-confirmDialog 
+    [style]="{ width: '50vw' }" 
+    [baseZIndex]="10000" 
+    acceptLabel="Aceptar"
+    rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-success"
+    rejectButtonStyleClass="p-button-danger">
+</p-confirmDialog>
+
+<div class="flex">
+
+    <!-- <p-sidebar
+        [(visible)]="display"
+        *ngIf="display; else sidebar">
+        <app-sidebar></app-sidebar>
+    </p-sidebar>
+
+    <ng-template #sidebar>
+        <app-sidebar></app-sidebar>
+    </ng-template> -->
+
+    <div>
+        <!-- <app-menu></app-menu> -->
+        <p-menubar>
+            <ng-template pTemplate="end">
+                <button pButton pRipple type="button" class="p-button-rounded p-button-secondary p-button-text">
+                    <i class="pi pi-bell p-text-secondary" pBadge style="font-size: 1.25rem" value="2" severity="danger"></i>
+                </button>
+                <p-avatar image="assets/images/icons/calendar.svg" styleClass="p-mr-2" shape="circle"></p-avatar>
+            </ng-template>
+        </p-menubar>
+    
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
+

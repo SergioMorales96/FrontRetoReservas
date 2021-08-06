@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { EmittedValue } from 'src/app/shared/interfaces/shared.interfaces';
+import { EmittedValue } from '../../interfaces/shared.interfaces';
 
 @Component({
   selector: 'app-data-selector',
