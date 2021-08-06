@@ -22,12 +22,10 @@
 
     <div class="p-col" style="margin-left: 208px;" *ngIf="display; else reservations">
        <div> <app-reservation-form></app-reservation-form></div>
-        <div id="sceneContainer" style="width: 500px; height: 500px;">
+        <div id="sceneContainer" style="width: 500px; height: 500px; position: absolute;">
             <app-scene></app-scene>
         </div>
-        <div class="container">
-            <app-reservation-summary></app-reservation-summary>
-        </div>
+       
         
     </div>
     <ng-template class="p-col-5" #reservations>
@@ -40,7 +38,7 @@
 
     </ng-template>
 
-    <!-- <app-reservation-summary></app-reservation-summary> -->
+    
    
     
 
