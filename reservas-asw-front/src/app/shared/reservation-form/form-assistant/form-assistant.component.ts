@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { setSymptoms } from '../../reservation.actions';
 
 @Component({
   selector: 'app-form-assistant',
@@ -15,7 +18,8 @@ export class FormAssistantComponent implements OnInit {
   symptoms!: string;
 
   constructor(
-    private rootFormGroup: FormGroupDirective
+    private rootFormGroup: FormGroupDirective,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +39,7 @@ export class FormAssistantComponent implements OnInit {
 
     this.symptoms == 'No' ? (this.symptoms = 'Si') : (this.symptoms = 'No');
     this.formControls['sintomas'].setValue(this.symptoms );
+    this.store.dispatch( setSymptoms({ symptoms: this.symptoms}) );
 
   }
 

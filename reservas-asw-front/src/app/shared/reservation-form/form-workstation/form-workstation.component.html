@@ -28,7 +28,7 @@
         Reserva
       </label>
       <p class="description description_muted font-size-body">
-        Elija un puesto o sala de reuniones en el mapa.
+        Seleccione un puesto o sala de reuniones en el mapa.
       </p>
       <app-data-selector
         id="reserva"
@@ -39,7 +39,7 @@
       <small
         *ngIf="formControls.reserva.errors?.required && submitted"
         class="p-error">
-        Escoja un puesto o sala en el mapa
+        Seleccione un puesto o sala en el mapa
       </small>
     </div>
 
@@ -59,7 +59,7 @@
 
     <ng-container formArrayName="datosAcompanante">
       <ng-container *ngFor="let peopleReservation of peopleData.controls; let i = index">
-        <div class="p-field">
+        <div class="p-field" *ngIf="i > 0">
           <label 
             class="label font-size-small" 
             for="peopleReservation">

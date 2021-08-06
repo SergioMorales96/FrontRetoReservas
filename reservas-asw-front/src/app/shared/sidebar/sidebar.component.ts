@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { setDisplay } from '../reservation.actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.reducer';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,9 +26,16 @@ export class SidebarComponent {
     return `assets/images/icons/${ this.display ? 'arrow-right-white' : 'arrow-right-blue' }.svg`;
   }
 
-  constructor() {
+  constructor(
+    private store: Store<AppState>
+  ) {
     this.display = false;
     this.blocked = false;
+  }
+
+  changeDisplay(display: boolean){
+    this.display = display;
+    this.store.dispatch(setDisplay({ display : this.display }));
   }
 
 }

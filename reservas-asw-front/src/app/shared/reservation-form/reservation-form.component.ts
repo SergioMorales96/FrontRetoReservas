@@ -4,13 +4,7 @@ import { DataService } from '../../services/data.service';
 import { DateValidationType } from '../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
-import {
-  setFloorNumber,
-  setPeopleNumber,
-  setContinue,
-  setWorkstation,
-  setReservationId,
-} from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setWorkstation, setContinue, setSymptoms, setSteps, setReservationId, setDisplay } from '../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -39,10 +33,13 @@ export class ReservationFormComponent implements OnInit {
   public floorId!: number;
   public numberPersons!: number;
   public validationType!: DateValidationType;
+  workstationGroup!: FormGroup;
+  dateGroup!: FormGroup;
+  assistantGroup!: FormGroup;
   workstationInfo!: FormGroup;
   dateInfo!: FormGroup;
   assistantInfo!: FormGroup;
-  selectedDate!: Date;
+  selectedDate!: Date | string;
   timePeriod!: number;
   startTime!: string;
   endTime!: string;
@@ -64,9 +61,11 @@ export class ReservationFormComponent implements OnInit {
   ) {
     this.step = 1;
     this.submitted = false;
+    this.store.dispatch( setSteps({step: this.step}) );
   }
 
   ngOnInit(): void {
+
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
       puestoInfo: this.fb.group({
@@ -79,7 +78,7 @@ export class ReservationFormComponent implements OnInit {
               'correousuario@correo.com',
               [
                 Validators.required,
-                Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+                Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'),
               ],
             ],
             miembroOrganizacion: [true, Validators.required],
@@ -98,26 +97,38 @@ export class ReservationFormComponent implements OnInit {
       //Date - Step 2
       fechaInfo: this.fb.group({
         periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
-        fecha: [null, Validators.required],
+        fecha: [null, [Validators.required, Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])\-(0[1-9]|1[0-2])\-[0-9]{4}$/)]],
       }),
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
-        nombres: ['A', Validators.required],
-        identificacion: ['A', Validators.required],
+        nombres: ['NOMBRE APELLIDO', Validators.required],
+        identificacion: [123456789, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
         grupoRiesgo: ['No Aplica', Validators.required],
         convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
-        descripcion: ['A', Validators.required],
+        descripcion: ['Barrio XXX, Tomo transporte público en..', Validators.required],
       }),
     });
 
+    this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
+    this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
+    this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
+
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
+    this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
+   
     this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;    
+    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
 
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationInfo.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationInfo.controls['personasReserva'].value }));
-    this.store.dispatch(setReservationId({reservationId: this.workstationInfo.controls['reserva'].value}));
+    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
+    this.store.dispatch(
+      setReservationId({
+        reservationId: this.workstationInfo.controls['reserva'].value,
+      })
+    );
 
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
@@ -127,14 +138,15 @@ export class ReservationFormComponent implements OnInit {
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
   
-      this.dateInfo.controls['fecha'].setValue(selectedDate);
-      this.dateInfo.controls['periodoTiempo'].setValue(this.timePeriod);
+      this.dateGroup.controls['fecha'].setValue(selectedDate);
+      this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
     });
     
-  }
+  } 
 
   get transportModeName(): string {
-    switch (this.workstationInfo.controls['medioTransporte'].value) {
+
+    switch (this.workstationGroup.controls['medioTransporte'].value) {
       case DateValidationType.ParkingAvailabilityPerBicycle:
         return 'B';
       case DateValidationType.ParkingAvailabilityPerCar:
@@ -142,41 +154,53 @@ export class ReservationFormComponent implements OnInit {
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         return 'M';
       default:
-        return 'NA';
+        return 'NA';  
     }
+
   }
 
   get peopleData(): FormArray {
-    return this.workstationInfo.controls['datosAcompanante'] as FormArray;
+
+    return this.workstationGroup.controls['datosAcompanante'] as FormArray;
+
   }
 
-  getEmails(){
+  get Emails(){
+
     for(let i of this.peopleData.controls)
     {
       const a = i.get('correo') as FormControl;
       this.emailString = this.emailString+a.value+',';
     }
+    return this.emailString;
+
+  }
+
+  get ReservationType(): string{
+
+    Number(this.workstationGroup.controls['personasReserva'].value) === 1 ? 
+    this.reservationType = 'PUESTO' : 
+    this.reservationType = 'SALA';
+
+    return this.reservationType;
+
   }
 
   getReservationFormValue(): Reservation {
-    
-    Number(this.workstationInfo.controls['personasReserva'].value) === 1 ? 
-    this.reservationType = 'PUESTO' : 
-    this.reservationType = 'SALA'
-
+   
     return {
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
       horaFin: this.endTime,
-      totalHoras: this.timePeriod,  
+      totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
+      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva, // Enviar desde 3D
       idRelacion: 1, 
-      tipoReserva: this.reservationType,
-      emailsAsistentes: this.emailString
+      tipoReserva: this.ReservationType,
+      emailsAsistentes: this.Emails
     };
 
   }
@@ -226,35 +250,30 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) {
-          return;
-        } else {
-          this.submitted = false;         
-        }
+        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false; 
         break;
       case 2:
-        if (this.reservaForm.controls.fechaInfo.invalid) {
-          return;
-        } else this.submitted = false;
+        if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;
         break;
       case 3:
-        if (this.reservaForm.controls.asistenteInfo.invalid) {
-          return;
-        } else {
-          this.submitted = false;
-        }
+        if (this.reservaForm.controls.asistenteInfo.invalid) return; else this.submitted = false;
         break;
     }
-    this.step += 1;
+    this.step += 1;    
+    this.store.dispatch( setSteps({step: this.step}) );
 
     if (this.step == 4) {    
-      this.getEmails(); 
       this.addReservation();
+      this.store.dispatch( setDisplay({display: false}) );
     }
+
   }
 
   previous() {
     this.step = this.step - 1;
+    this.store.dispatch( setSteps({step: this.step}) );
   }
+
+  
 
 }

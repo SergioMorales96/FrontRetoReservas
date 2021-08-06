@@ -38,6 +38,8 @@ import { EditReservationComponent } from './components/reservation/edit-reservat
   exports: [
     CalendarComponent,
     ReservationComponent,
+    ViewReservationComponent,
+    EditReservationComponent,
     SceneComponent
   ]
 })

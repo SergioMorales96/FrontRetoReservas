@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate } from '../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime } from '../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -12,15 +12,21 @@ import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate } 
 })
 export class ReservationSummaryComponent implements OnInit {
 
-  prueba: string = 'Puesto Reserva';
+  info: string = 'Puesto Reserva';
   fecha : string ='Fecha de Reserva';
+  timeMinutes:string='';
+  sintomas: string ='Información del Asistente';
   piso: number = 0;
-  continuar: boolean = false;
   peopleNumber: number = 0;
-  workstation: string = "";
+  workstation: number = 0;
   meanOfTransport: number | null = 0;
   nameTransport: string = "";
-  selectedDateSummary : Date =new Date;
+  selectedDateSummary : Date | string =new Date;
+  symptoms: string = '';
+  step: number = 0;
+  timePeriod: number=0;
+  startTime:string="";
+  endTime:string="";
  /* meses = [
     "Enero",
     "Febrero",
@@ -41,16 +47,17 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary}) => {
-        //console.log('data from store ngrx', { floorNumber, peopleNumber, continuar, meanOfTransport, workstation, selectedDateSummary });
-        this.setFloorNumber(floorNumber);
-        this.setContinue(continuar);
+      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime }) => {
+        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
+        this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
-        this.setWorkstation(workstation);
+        this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
-        this.setPrueba();
-        this.setSelectedDate(selectedDateSummary);
+        this.setInfo();
+        this.setSelectedDate(selectedDateSummary, timePeriod, startTime, endTime);
         this.setFecha();
+        this.setSymptoms(symptoms);
+        this.setInfoAssitent();
       });
 
   }
@@ -62,15 +69,16 @@ export class ReservationSummaryComponent implements OnInit {
     this.piso = floor;
   }
 
-  setContinue(continuar: boolean) {
-    this.continuar = continuar;
-    //console.log(continuar);
+  setSteps(step: number){
+    this.step=step;
+    console.log('step ', step);
   }
+
   setPeopleNumber(peopleNumber: number) {
     this.peopleNumber = peopleNumber;
   }
 
-  setWorkstation(workstation: string) {
+  setWorkstation(workstation: number) {
     this.workstation = workstation;
   }
 
@@ -78,31 +86,49 @@ export class ReservationSummaryComponent implements OnInit {
     this.meanOfTransport = meanOfTransport;
 
   }
-  setPrueba() {
-    if (this.continuar === true) {
+  setInfo() {
+    if (this.step >= 2) {
       if (this.peopleNumber === 1) {
-        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} persona , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
       } else {
-        this.prueba = `Piso ${this.piso} , ${this.workstation}, ${this.peopleNumber} personas , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
     }
-    this.continuar===false;
   }
 
-  setSelectedDate(selectedDateSummary : Date){
+  setInfoAssitent() {
+    if (this.step >= 4) {
+     
+        this.sintomas = `Ha tenido sintomas : ${this.symptoms} `;
+     
+    }
+  }
+
+  setSelectedDate(selectedDateSummary : Date | string, timePeriod: number, startTime : string, endTime:string){
     this.selectedDateSummary = selectedDateSummary;
+    this.timePeriod=timePeriod;
+    this.startTime=startTime;
+    this.endTime=endTime;
+
+  }
+
+  setSymptoms(symptoms:string){
+    this.symptoms=symptoms;
 
   }
 
   setFecha(){
     //const selectedDate = moment(this.selectedDateSummary).format('DD-MM-yyyy');
     //console.log(selectedDate);
-    if (this.continuar === true) {
+    if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
-          this.fecha='';
+          this.fecha= ` ${this.startTime.toLowerCase()} - ${this.endTime.toLowerCase()} `;
+          this.timeMinutes=`( ${this.timePeriod*60} )`;
+          if(this.selectedDateSummary===''){
+            this.selectedDateSummary=new Date;
+          }
     }
-    this.continuar===false;
 
   }
 

@@ -1,7 +1,10 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID,NgModule } from '@angular/core';
+import localEs from '@angular/common/locales/es-CO';
+import {registerLocaleData} from '@angular/common';
+registerLocaleData(localEs,'es');
 
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -17,6 +20,8 @@ import { MessageService } from 'primeng/api';
 import { appReducers } from './app.reducer';
 import { CLoadService } from './auth/c-load.service';
 import { ReservationsModule } from './reservations/reservations.module';
+import { ViewReservationComponent } from './reservations/components/reservation/view-reservation/view-reservation.component';
+import { EditReservationComponent } from './reservations/components/reservation/edit-reservation/edit-reservation.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +35,14 @@ import { ReservationsModule } from './reservations/reservations.module';
     AppRoutingModule,
     PrimeNgModule,
     SharedModule,
-    ReservationsModule,
-    StoreModule.forRoot( appReducers )
+    StoreModule.forRoot( appReducers ),
+    ReservationsModule
   ],
   providers: [
     ConfirmationService,
     MessageService,
-    CLoadService
+    CLoadService,
+    {provide: LOCALE_ID, useValue:'es-CO'}
   ],
   bootstrap: [AppComponent]
 })

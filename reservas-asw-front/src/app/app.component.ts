@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Store } from '@ngrx/store';
+import { AppState } from './app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,15 @@ export class AppComponent implements OnInit {
 
   title = 'reservas-asw-front';
   display: boolean = false;
-  responsive: boolean = true;
+  responsive: boolean = false;
 
-  items: MenuItem[] = [];
+  constructor(
+    private store: Store<AppState>
+  ){}
 
   ngOnInit(): void {
-    this.items = [
-    ]
+    this.store.select('reservation').subscribe((reservation) => {
+      this.display = reservation.display;
+    });
   }
 }
