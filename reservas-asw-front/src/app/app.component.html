@@ -1,47 +1,44 @@
 <p-toast></p-toast>
 
-<p-confirmDialog 
-    [style]="{width: '50vw'}" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar"
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success"
-    rejectButtonStyleClass="p-button-danger">
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
 <app-menu></app-menu>
 
 <!--button (click)="responsive = !responsive">Responsive</button-->
 
-<div class="p-grid">
-    <div class="p-col-2">
-        <p-sidebar
-            [(visible)]="responsive"
-            *ngIf = "responsive; else sidebar">
+<div class="p-grid" style="margin-top: 0px;">
+    <div>
+        <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
             <app-sidebar></app-sidebar>
         </p-sidebar>
-
         <ng-template #sidebar>
             <app-sidebar></app-sidebar>
         </ng-template>
     </div>
 
-    
-    <div *ngIf = "display; else reservations">
-        <div class="p-col-3"> 
-            <app-reservation-form></app-reservation-form>
+
+    <div style="margin-left: 208px;" *ngIf="display; else reservations">
+        
+        <app-reservation-form></app-reservation-form>
+    </div>
+    <ng-template class="p-col-5" #reservations>
+        <div class="p-d-flex p-jc-center p-ai-center">
+            <div class="box1" style="margin-left: 228px;">
+                <h3>Mis Reservas</h3>
+                <app-reservation></app-reservation>
+            </div>
+            <div class="box2 ">
+                <app-calendar></app-calendar> 
+            </div>
+           
         </div>
-         <app-reservation-summary></app-reservation-summary>
-     </div>
- 
-     <ng-template class="p-col-5" #reservations>
-         <div class="p-d-flex p-jc-center p-ai-center">
-             <app-reservation></app-reservation>
-             <app-calendar></app-calendar>
-         </div>
-     </ng-template>
- 
-    
-    
+
+    </ng-template>
+
+
+
+
 </div>
 <!-- <div class="p-mt-2 position-relative">
 

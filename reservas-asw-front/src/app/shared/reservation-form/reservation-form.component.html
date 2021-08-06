@@ -1,27 +1,18 @@
-<p-card *ngIf="step < 4">
+<p-card *ngIf="step < 4" >
   <ng-container [formGroup]="reservaForm">
 
-    <app-form-workstation
-      formGroupName="puestoInfo"
-      *ngIf="step == 1"
-      [submitted]="submitted">
+    <app-form-workstation formGroupName="puestoInfo" *ngIf="step == 1" [submitted]="submitted">
     </app-form-workstation>
 
-    <app-form-date 
-      formGroupName="fechaInfo" 
-      *ngIf="step == 2" 
-      [submitted]="submitted">
+    <app-form-date formGroupName="fechaInfo" *ngIf="step == 2" [submitted]="submitted">
     </app-form-date>
 
-    <app-form-assistant
-      formGroupName="asistenteInfo"
-      *ngIf="step == 3"
-      [submitted]="submitted">
+    <app-form-assistant formGroupName="asistenteInfo" *ngIf="step == 3" [submitted]="submitted">
     </app-form-assistant>
 
   </ng-container>
 
-  <div class="p-d-flex">
+  <div class=" p-d-flex " >
     <p-button
       styleClass="description font-size-body"
       class="p-mr-2"
@@ -31,25 +22,15 @@
       *ngIf="step != 1"
       (click)="previous()">
     </p-button>
-    <p-button
-      styleClass="description font-size-body"
-      class="p-mr-2"
-      label="Continuar"
-      icon="pi pi-angle-right"
-      iconPos="right"
-      *ngIf="step != 3"
-      (click)="submit()">
+    <p-button styleClass="description font-size-body" class="p-mr-2" label="Continuar" icon="pi pi-angle-right"
+      iconPos="right" *ngIf="step != 3" (click)="submit()">
     </p-button>
-    <p-button
-      styleClass="description font-size-body"
-      [style]="{ color: 'rgb(156,248,134)' }"
-      class="p-mr-2"
-      label="Reservar"
-      icon="pi pi-check"
-      iconPos="right"
-      *ngIf="step == 3"
-      (click)="submit()">
+    <p-button styleClass="description font-size-body" [style]="{ color: 'rgb(156,248,134)' }" class="p-mr-2"
+      label="Reservar" icon="pi pi-check" iconPos="right" *ngIf="step == 3" (click)="submit()">
     </p-button>
+    
   </div>
-
+  <div style="margin-left: 145px ;">
+      <app-reservation-summary></app-reservation-summary>
+    </div>
 </p-card>
