@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setSymptoms } from '../../reservation.actions';
+import { setSymptoms } from '../../../reservation.actions';
 
 @Component({
   selector: 'app-form-assistant',

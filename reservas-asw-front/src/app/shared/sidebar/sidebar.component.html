@@ -1,13 +1,11 @@
-<!--p-sidebar [(visible)]="sid" position="right">
-    
-</p-sidebar-->
-
-<!--button (click)="blocked = !blocked">Bloquear</button-->
-
 <div 
     class="sidebar" 
     [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
-    
+    <h2 class="spaceLogo">
+        <img 
+            class="imageLogo" 
+            src="assets/images/logos/logo.svg">
+    </h2>
     <p-button 
         class="p-menuButton"
         [ngClass]="{'p-menuBlocked': blocked}" 
@@ -22,7 +20,8 @@
     <p-button 
         class="p-menuButton p-menuReservation" 
         [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
-        (onClick)="changeDisplay(false)">
+        (onClick)="changeDisplay(false)"
+        [disabled]="true">
         <img 
             class="image imageCalendar" 
             [src]="myReservationIconCalendar">
@@ -31,5 +30,14 @@
             class="imageArrow"
             [src]="myReservationIconArrow">
     </p-button>
-
+    <p-button 
+        class="p-menuButton p-menuReservation"
+        (click)="menu.toggle($event)">
+        <a class="text">Administración</a>
+    </p-button>
+    <p-menu 
+        #menu 
+        [popup]="true" 
+        [model]="items">
+    </p-menu>
 </div>

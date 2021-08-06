@@ -15,7 +15,7 @@ import { Floors } from '../../interfaces/floors.interface';
 import { Floor } from '../../../admin/interfaces/admin.interfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservationId } from '../../../shared/reservation.actions';
+import { setReservationId } from '../../../reservations/reservation.actions';
 
 
 const CAMERA_FOV = 40;

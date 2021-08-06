@@ -1,5 +1,5 @@
 import { ActionReducerMap } from '@ngrx/store';
-import * as reservation from './shared/reservation.reducer';
+import * as reservation from './reservations/reservation.reducer';
 
 
 export interface AppState {
