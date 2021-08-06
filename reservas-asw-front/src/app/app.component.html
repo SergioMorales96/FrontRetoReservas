@@ -7,12 +7,11 @@
 
 <!--button (click)="responsive = !responsive">Responsive</button-->
 
-<div class="p-grid" style="margin-top: 0px;">
+<div class="p-grid margin-sidebar">
     <div>
         <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
             <app-sidebar></app-sidebar>
         </p-sidebar>
-
         <ng-template #sidebar>
             <app-sidebar></app-sidebar>
         </ng-template>
@@ -20,20 +19,27 @@
     
 
 
-    <div class="p-col" style="margin-left: 208px;" *ngIf="display; else reservations">
-       <div> <app-reservation-form></app-reservation-form></div>
+    <div class="p-col margin-reservation" style="margin-left: 208px;" *ngIf="display; else reservations">
+       
+        <app-reservation-form></app-reservation-form>
+
         <div id="sceneContainer" style="width: 500px; height: 500px; position: absolute;">
             <app-scene></app-scene>
         </div>
-       
+        
         
     </div>
+    
     <ng-template class="p-col-5" #reservations>
         <div class="p-d-flex p-jc-center p-ai-center">
-            <div style="margin-left: 228px;">
+            <div class="box1" >
+                <h3>Mis Reservas</h3>
                 <app-reservation></app-reservation>
             </div>
-            <app-calendar></app-calendar>
+            <div class="box2 ">
+                <app-calendar></app-calendar> 
+            </div>
+           
         </div>
 
     </ng-template>
