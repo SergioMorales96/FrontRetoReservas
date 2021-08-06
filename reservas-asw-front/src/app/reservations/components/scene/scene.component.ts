@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ɵExtraLocaleDataIndex } from '@angular/core';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshStandardMaterial } from 'three';
@@ -206,48 +206,43 @@ export class SceneComponent implements OnInit {
         raycaster.setFromCamera(pointer, camera);
         
         let intersects = raycaster.intersectObjects(scene.children, true);
-        const n = new THREE.Vector3()
-          n.copy((intersects[0]?.face as THREE.Face)?.normal)
-          n.transformDirection(intersects[0].object.matrixWorld)
-
-          arrowHelper.setDirection(n)
-          arrowHelper.position.copy(intersects[0].point)
-        if( !intersects[0] ){
-          //  if( idPiso == 3 ){
-          //    idPiso--;
-          //  }else{
-          //    idPiso++;
-          //  }
-          /*if (numeroPersonas == 2) {
-            numeroPersonas--;  
-          } else{
-            numeroPersonas++;
-          }*/
+        console.log("el intersects dentro de onClick es: ", intersects);
+        let index: number = 0;
+        let flag: boolean = false;
+        do {
+          console.log("intersect[index] es: ", intersects[index], index);
           
-         
-    
-          
-        }
-            if( intersects[0] && intersects[0].object.userData.info && intersects[0].object.userData.info.idPiso == idPiso ){
-              if( numeroPersonas == 1 ){
-                if( selectedObject && selectedObject != intersects[0].object ){
-                   setColorSelectedObject( );
-                   changeToChairCurrentColor()
-                 }
-              }else {
-                //lógica salas de trabajo
-              }
-              selectChair(intersects);  
-              selectedObject = intersects[0].object;
-              myStore.dispatch(setReservationId({ reservationId: selectedObject.userData.info.idPuestoTrabajo })); 
-              if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
-                selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
-              }else{
-                selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
-              }
-              (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-              INTERSECTED = null; 
+          if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
+            console.log('entro al if');
+            
+            // if( numeroPersonas == 1 ){
+              if( selectedObject && selectedObject != intersects[index].object ){
+                 setColorSelectedObject( );
+                 changeToChairCurrentColor()
+               }
+            // }else {
+            //   //lógica salas de trabajo
+            //   setColorSelectedObject( );
+            //   changeToChairCurrentColor()
+            // }
+            selectChair(intersects, index);  
+            selectedObject = intersects[index].object;
+            console.log("el selectedObject es: ", selectedObject);
+            
+            myStore.dispatch(setReservationId({ reservationId: selectedObject.userData.info.idPuestoTrabajo })); 
+            if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
+              selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
+            }else{
+              selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
             }
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
+            INTERSECTED = null; 
+            flag = true;
+          }
+
+          index++;
+        } while ((!flag) && index<= intersects.length-1);
+            
               
       }  
     
@@ -279,9 +274,14 @@ export class SceneComponent implements OnInit {
       /* pointer.x = ( event.clientX + rect.left + ( rect.width/2 ) )* 2 - 1;
       pointer.y = ( event.clientY + rect.top + ( rect.height/2 ) )* 2 + 1; */
       
-      pointer.x = ( ( event.clientX - rect.left ) / ( rect.right  - rect.left ) ) * 2 - 1;
-      pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+      // pointer.x = ( ( event.clientX - rect.left ) / ( rect.right  - rect.left ) ) * 2 - 1;
+      // pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
      
+      pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) * 2 - 1;
+      pointer.y = - ( ( event.clientY - (rect.top + 50) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
+      
+     
+
       checkOnObject();
   }
   
@@ -345,19 +345,8 @@ export class SceneComponent implements OnInit {
       const child = model3.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
      
-      const objects = [child];
-      //childMaterial.color = new THREE.Color(0x4f1245);
-
-      
-    //  childMaterial.color = new THREE.Color( 0x3131ff);
-    //  childMaterial.opacity = 1;
-    //  childMaterial.roughness = 0.9;
-    //  childMaterial.metalness = 0;
-    //  childMaterial.fog= true;
-    //  childMaterial.transparent= false;
-    //  childMaterial.depthTest = true;
-    //  childMaterial.depthWrite = true;
-    //  childMaterial.side = THREE.FrontSide;
+      const objects = [child];  
+  
 
         renderer.domElement.addEventListener( 'click', onMove );
         function onMove(event: MouseEvent){
@@ -413,7 +402,9 @@ export class SceneComponent implements OnInit {
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
       model3.userData = { "info": answ.data[floorNumber-1] };
-      model3.visible = model3.userData.info.idPiso == idPiso;
+      console.log("id piso: ", model3.userData.info.idPiso, idPiso);
+      
+      model3.visible = model3.userData.info.idPiso == idPiso - 17;
       sceneInfo.floors.push( model3 );
       scene.add( model3 );
 
@@ -1621,11 +1612,12 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       }
     }
 
-    function selectChair(intersects: THREE.Intersection[]){
+    function selectChair(intersects: THREE.Intersection[], index: number){
       for (let ob of scene.children) {
                 
         //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
+          && ob.children[4].userData.info.idPiso == idPiso - 17){
 
           ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
           ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
