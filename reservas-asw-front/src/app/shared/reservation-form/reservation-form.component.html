@@ -1,4 +1,4 @@
-<p-card *ngIf="step < 4">
+<p-card *ngIf="step < 4" >
   <ng-container [formGroup]="reservaForm">
 
     <app-form-workstation formGroupName="puestoInfo" *ngIf="step == 1" [submitted]="submitted">
@@ -12,7 +12,7 @@
 
   </ng-container>
 
-  <div class="buttons p-d-flex" >
+  <div class=" p-d-flex " >
     <p-button
       styleClass="description font-size-body"
       class="p-mr-2"
@@ -28,10 +28,9 @@
     <p-button styleClass="description font-size-body" [style]="{ color: 'rgb(156,248,134)' }" class="p-mr-2"
       label="Reservar" icon="pi pi-check" iconPos="right" *ngIf="step == 3" (click)="submit()">
     </p-button>
+    
   </div>
-
-  
-  <div class="container">
-    <app-reservation-summary></app-reservation-summary>
-  </div>
+  <div style="margin-left: 145px ;">
+      <app-reservation-summary></app-reservation-summary>
+    </div>
 </p-card>
