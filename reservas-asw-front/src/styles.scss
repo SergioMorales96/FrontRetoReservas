@@ -91,6 +91,7 @@ body {
   position: absolute;
   width: 208px;
   height: 100%;
+  margin-top: -54px;
 }
 
 .sidebarInactive{
@@ -108,6 +109,10 @@ body {
   background: #fff;
   height: 54px;
   line-height: 2.7;
+}
+
+.imageLogo{
+  transform: scale(0.7);
 }
 
 .p-menuButton .p-button{
