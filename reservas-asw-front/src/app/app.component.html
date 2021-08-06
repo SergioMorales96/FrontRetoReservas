@@ -3,9 +3,32 @@
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
     acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
-<!-- <app-menu></app-menu> -->
 
-<!--button (click)="responsive = !responsive">Responsive</button-->
+<div class="flex">
+    <div>
+        <p-menubar>
+            <ng-template pTemplate="end">
+                <button pButton pRipple type="button" class="p-button-rounded p-button-secondary p-button-text">
+                    <i class="pi pi-bell p-text-secondary" pBadge style="font-size: 1.25rem" value="2" severity="danger"></i>
+                </button>
+                <p-avatar image="assets/images/icons/calendar.svg" styleClass="p-mr-2" shape="circle"></p-avatar>
+            </ng-template>
+        </p-menubar>
+    
+        <router-outlet></router-outlet>
+    </div>
+
+</div>
+
+<p-confirmDialog 
+    [style]="{ width: '50vw' }" 
+    [baseZIndex]="10000" 
+    acceptLabel="Aceptar"
+    rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-success"
+    rejectButtonStyleClass="p-button-danger">
+</p-confirmDialog>
+
 
 <div class="p-grid margin-sidebar">
     <div>
@@ -15,10 +38,8 @@
         <ng-template #sidebar>
             <app-sidebar></app-sidebar>
         </ng-template>
-    </div>
+</div>
     
-
-
     <div class="p-col margin-reservation" *ngIf="display; else reservations">    
         <app-add></app-add>
     </div>
@@ -34,7 +55,6 @@
             </div>
            
         </div>
-
     </ng-template>
 
     
@@ -43,59 +63,7 @@
 
 
 </div>
-<!-- <div class="p-mt-2 position-relative">
-
-    <router-outlet></router-outlet>
-
-    <app-scene></app-scene>
-
-    <button 
-        pButton 
-        pRipple 
-        type="button" 
-        icon="pi pi-bars"
-        class="p-button-rounded p-button-secondary button-sticky-bottom p-my-2"
-        (click)="display = true">
-    </button>
-
-</div>
 
 
- -->
-<p-confirmDialog 
-    [style]="{ width: '50vw' }" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar"
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success"
-    rejectButtonStyleClass="p-button-danger">
-</p-confirmDialog>
 
-<div class="flex">
-
-    <!-- <p-sidebar
-        [(visible)]="display"
-        *ngIf="display; else sidebar">
-        <app-sidebar></app-sidebar>
-    </p-sidebar>
-
-    <ng-template #sidebar>
-        <app-sidebar></app-sidebar>
-    </ng-template> -->
-
-    <div>
-        <!-- <app-menu></app-menu> -->
-        <p-menubar>
-            <ng-template pTemplate="end">
-                <button pButton pRipple type="button" class="p-button-rounded p-button-secondary p-button-text">
-                    <i class="pi pi-bell p-text-secondary" pBadge style="font-size: 1.25rem" value="2" severity="danger"></i>
-                </button>
-                <p-avatar image="assets/images/icons/calendar.svg" styleClass="p-mr-2" shape="circle"></p-avatar>
-            </ng-template>
-        </p-menubar>
-    
-        <router-outlet></router-outlet>
-    </div>
-
-</div>
 

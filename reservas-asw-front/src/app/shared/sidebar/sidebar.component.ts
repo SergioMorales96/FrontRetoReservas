@@ -31,8 +31,8 @@ export class SidebarComponent {
   constructor(
     private store: Store<AppState>
   ) {
-    this.display = false;
-    this.blocked = true;
+    this.display = true;
+    this.blocked = false;
     this.items = [
       {
         label: 'Lista de usuarios',
