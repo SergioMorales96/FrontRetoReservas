@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { setDisplay } from '../reservation.actions';
+import { setDisplay } from '../../reservations/reservation.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';

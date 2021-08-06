@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationAction, RouteName } from '../../../../../utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
@@ -7,7 +7,7 @@ import * as moment from 'moment';
 
 import {  Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservation, setReservationList, setEditReservation } from '../../../../shared/reservation.actions';
+import { setReservation, setReservationList, setEditReservation } from '../../../reservation.actions';
 @Component({
   selector: 'app-view-reservation',
   templateUrl: './view-reservation.component.html',

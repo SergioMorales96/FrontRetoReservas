@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setEditReservation, setReservationList } from '../../../../shared/reservation.actions';
+import { setEditReservation, setReservationList } from '../../../reservation.actions';
 
 @Component({
   selector: 'app-edit-reservation',

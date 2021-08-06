@@ -49,14 +49,16 @@ import { ViewReservationComponent } from './components/reservation/view-reservat
     ReactiveFormsModule,
     PrimeNgModule,
     ReservationsRoutingModule,
+    
   ], 
   exports: [
     CalendarComponent,
     ReservationComponent,
     ViewReservationComponent,
     EditReservationComponent,
-    SceneComponent
-    ReservationFormComponent
+    SceneComponent,
+    ReservationFormComponent,
+    AddComponent
   ]
 })
 export class ReservationsModule { }

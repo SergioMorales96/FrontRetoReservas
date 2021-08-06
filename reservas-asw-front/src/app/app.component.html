@@ -19,15 +19,8 @@
     
 
 
-    <div class="p-col margin-reservation" *ngIf="display; else reservations">
-       
-        <app-reservation-form></app-reservation-form>
-
-        <div id="sceneContainer" style="width: 500px; height: 500px; position: relative;">
-            <app-scene></app-scene>
-        </div>
-        
-        
+    <div class="p-col margin-reservation" *ngIf="display; else reservations">    
+        <app-add></app-add>
     </div>
     
     <ng-template class="p-col-5" #reservations>

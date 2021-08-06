@@ -2,8 +2,8 @@ import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
-import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime } from '../reservation.actions';
+import { AppState } from '../../../../app/app.reducer';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime } from '../../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
