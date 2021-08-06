@@ -3,7 +3,7 @@
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
     acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
-<app-menu></app-menu>
+<!-- <app-menu></app-menu> -->
 
 <!--button (click)="responsive = !responsive">Responsive</button-->
 
@@ -17,14 +17,18 @@
             <app-sidebar></app-sidebar>
         </ng-template>
     </div>
+    
 
 
     <div class="p-col" style="margin-left: 208px;" *ngIf="display; else reservations">
        <div> <app-reservation-form></app-reservation-form></div>
-
-        <div id="sceneContainer" style="width: 700px; height: 500px">
+        <div id="sceneContainer" style="width: 500px; height: 500px;">
             <app-scene></app-scene>
         </div>
+        <div class="container">
+            <app-reservation-summary></app-reservation-summary>
+        </div>
+        
     </div>
     <ng-template class="p-col-5" #reservations>
         <div class="p-d-flex p-jc-center p-ai-center">

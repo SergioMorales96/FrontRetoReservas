@@ -137,7 +137,8 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-  
+      console.log("RESV: ",this.reservationId);
+      
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
     });

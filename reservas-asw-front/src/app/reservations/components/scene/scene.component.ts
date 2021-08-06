@@ -278,7 +278,7 @@ export class SceneComponent implements OnInit {
       // pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
      
       pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) * 2 - 1;
-      pointer.y = - ( ( event.clientY - (rect.top + 50) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
+      pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
       
      
 
