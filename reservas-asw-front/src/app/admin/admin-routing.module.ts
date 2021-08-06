@@ -34,6 +34,8 @@ import { ReservationComponent } from '../reservations/components/reservation/res
 import { EditReservationComponent } from '../reservations/components/reservation/edit-reservation/edit-reservation.component';
 import { CActiveGuard } from '../auth/c-active.guard';
 import { CLoadService } from '../auth/c-load.service';
+import { AddComponent } from '../reservations/pages/add/add.component';
+import { HomeComponent } from '../reservations/pages/home/home.component';
 
 
 const routes: Routes = [
@@ -234,6 +236,14 @@ const routes: Routes = [
       {
         path:'reservations',
         component: ReservationComponent,
+      },
+      {
+        path:'addReservation',
+        component: AddComponent,
+      },
+      {
+        path:'viewReservation',
+        component: HomeComponent,
       },
       {
         path: '**',

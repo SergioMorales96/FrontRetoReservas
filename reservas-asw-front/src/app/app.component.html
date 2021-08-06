@@ -15,7 +15,7 @@
             </ng-template>
         </p-menubar>
     
-        <router-outlet></router-outlet>
+       
     </div>
 
 </div>
@@ -40,30 +40,19 @@
         </ng-template>
     </div>
     
-    <div class="p-col margin-reservation" *ngIf="display; else reservations">    
-        <app-add></app-add>
-    </div>
-    
-    <ng-template class="p-col-5" #reservations>
-        <div class="p-d-flex p-jc-center p-ai-center">
-            <div class="box1" >
-                <h3>Mis Reservas</h3>
-                <app-reservation></app-reservation>
-            </div>
-            <div class="box2 ">
-                <app-calendar></app-calendar> 
-            </div>
-           
-        </div>
-    </ng-template>
-
-    
    
-    
+    <router-outlet></router-outlet>
 
 
 </div>
 
 
+<!-- <div class="p-col margin-reservation" *ngIf="display; else reservations">    
+    <app-add></app-add>
+</div>
 
+<ng-template class="p-col-5" #reservations>
+   <app-home></app-home>
+</ng-template>
+ -->
 
