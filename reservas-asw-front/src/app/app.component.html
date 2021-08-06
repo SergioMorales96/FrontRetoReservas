@@ -19,11 +19,11 @@
     
 
 
-    <div class="p-col margin-reservation" style="margin-left: 208px;" *ngIf="display; else reservations">
+    <div class="p-col margin-reservation" *ngIf="display; else reservations">
        
         <app-reservation-form></app-reservation-form>
 
-        <div id="sceneContainer" style="width: 500px; height: 500px; position: absolute;">
+        <div id="sceneContainer" style="width: 500px; height: 500px; position: relative;">
             <app-scene></app-scene>
         </div>
         
