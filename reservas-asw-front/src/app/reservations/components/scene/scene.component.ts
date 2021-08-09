@@ -45,7 +45,7 @@ const STAIRS_POS_Z = 0;
 const STAIRS_SCALE_X = 1;
 const STAIRS_SCALE_Y = 1;
 const STAIRS_SCALE_Z = 1;
-const FLOOR_ACTIVE_COLOR = 0x3131ff;
+const FLOOR_ACTIVE_COLOR = 0x4848dd;
 const FLOOR_INACTIVE_COLOR = 0xbf;
 const CHAIR_SADDLE_COLOR = 0x444b93;
 const CHAIR_BACK_COLOR = 0x444b93;
@@ -93,27 +93,18 @@ export class SceneComponent implements OnInit {
     const mouse = new THREE.Vector2();
     let intersects = [];
     let floor: string = '';
-    let cloudParticles: any = [];
+    let stars: THREE.Mesh[] = [];
 
-    //scene.background = new THREE.Color( BACKGROUND_COLOR );
+    scene.background = new THREE.Color( BACKGROUND_COLOR );
 
-    let ambient = new THREE.AmbientLight(0x555555);
-    scene.add(ambient);
-
-    let directionalLight = new THREE.DirectionalLight(0xbf, 50);
-    directionalLight.position.set(0,0,1);
-    scene.add(directionalLight);
-
-    let blueLight = new THREE.PointLight(0x3677ac,50,450,1.7);
-    blueLight.position.set(300,300,200);
-    scene.add(blueLight);
+    let pointlight = new THREE.PointLight(0xffffff,2);
+    pointlight.position.set(200,200,200);
+    scene.add(pointlight);
 
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
 
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize(window.innerWidth,window.innerHeight);
-    scene.fog = new THREE.FogExp2(0xffffff, 0.001);
-    renderer.setClearColor(scene.fog.color);
     renderer.outputEncoding = THREE.sRGBEncoding;
     document.body.appendChild(renderer.domElement);
 
@@ -124,80 +115,6 @@ export class SceneComponent implements OnInit {
     controls.enablePan = false;
     controls.enableDamping = true;
     
-    const textures2: any = {
-      refraction: '//cdn.wtlstudio.com/sample.wtlstudio.com/08271035-d8f6-47c6-b6bb-b8b8a45dc024.jpg',
-      reflection: '//cdn.wtlstudio.com/sample.wtlstudio.com/de8e4a51-dcdd-4b6a-9b40-e42b4ea1b7c5.jpg'
-    };
-    
-    const createEnvMap = (type = 'reflection', onReady = () => {}) => {
-      return new THREE.TextureLoader().load(textures2[type], (texture) => {
-        if (type === 'reflection') {
-          texture.mapping = THREE.EquirectangularReflectionMapping;
-        } else {
-          texture.mapping = THREE.EquirectangularRefractionMapping;
-        }
-    
-        texture.encoding = THREE.sRGBEncoding;
-        texture.magFilter = THREE.LinearFilter;
-        texture.minFilter = THREE.NearestFilter;
-        
-        onReady();
-      });
-    }
-    
-    //scene.background = createEnvMap('reflection');
-    //scene.environment = createEnvMap('reflection');
-
-    //Adición nube
-    
-    let loader2 = new THREE.TextureLoader();
-    loader2.load("assets/models/smoke.png", function(texture){
-      const cloudGeo = new THREE.PlaneBufferGeometry(1000,500);
-      const cloudMaterial = new THREE.MeshLambertMaterial({
-        map:texture,
-        transparent: true,
-      });
-
-      for(let p=0; p<50; p++) {
-        let cloud = new THREE.Mesh(cloudGeo, cloudMaterial);
-        cloud.position.set(
-          Math.random()*800-400,
-          -100,
-          Math.random()*500-800
-        );
-        //cloud.rotation.x = 1.16;
-        //cloud.rotation.y = -0.12;
-        //cloud.rotation.z = Math.random()*2*Math.PI;
-        cloud.material.opacity = 0.4;
-        cloudParticles.push(cloud);
-        scene.add(cloud);
-      }
-    });
-    /*
-    //efecto constelación
-    const points = [];
-    for(let i=0;i<6000;i++) {
-      let star = new THREE.Vector3(
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300
-    );
-    points.push(star);
-    }
-    let starGeo = new THREE.BufferGeometry().setFromPoints( points )
-
-    let sprite = new THREE.TextureLoader().load( 'assets/models/star.png' );
-    let starMaterial = new THREE.PointsMaterial({
-      color: 0xbf,
-      size: 0.8,
-      map: sprite
-    });
-
-    let stars = new THREE.Points(starGeo,starMaterial);
-    scene.add(stars);
-*/
-    //
-
     loader.setDRACOLoader( dracoLoader );
 
     floor = selectFloor(this.idFloor);
@@ -211,8 +128,8 @@ export class SceneComponent implements OnInit {
       modelFloor.position.set( FLOOR_POS_X, FLOOR_POS_Y, FLOOR_POS_Z );
       //modelFloor.scale.set( FLOOR_SCALE_X, FLOOR_SCALE_Y, FLOOR_SCALE_Z);
 
+      colorFloor(materialFloor);
       scene.add( modelFloor ); 
-
       renderer.domElement.addEventListener("click", onClick);
 
       function onClick(event:any) {
@@ -225,27 +142,19 @@ export class SceneComponent implements OnInit {
         if (intersects.length > 0) {
 
           materialFloor.color = new THREE.Color( FLOOR_INACTIVE_COLOR );
-          materialFloor.opacity = 0.49;
-          materialFloor.roughness = 0.9;
+          materialFloor.opacity = 0.9;
+          materialFloor.roughness = 0.7;
           materialFloor.metalness = 0.0;
           materialFloor.fog= false;
           materialFloor.transparent= true;
           materialFloor.depthTest = true;
           materialFloor.depthWrite = true;
-          materialFloor.reflectivity = 0;
+          materialFloor.reflectivity = 0.7;
           materialFloor.side = THREE.FrontSide;
         
         }else {
 
-          materialFloor.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
-          materialFloor.opacity = 1;
-          materialFloor.roughness = 0.9;
-          materialFloor.metalness = 0;
-          materialFloor.fog= false;
-          materialFloor.transparent= true;
-          materialFloor.depthTest = true;
-          materialFloor.depthWrite = true;
-          materialFloor.side = THREE.FrontSide;
+          colorFloor(materialFloor);
 
         }
       }
@@ -263,7 +172,6 @@ export class SceneComponent implements OnInit {
       const modelPT2 = modelPT.children[1] as THREE.Mesh;
       const modelPT3 = modelPT.children[2] as THREE.Mesh;
       const modelPT4 = modelPT.children[3] as THREE.Mesh;
-      console.log(modelPT);
 
       const modelsChair = [modelPT1, modelPT2, modelPT3, modelPT4];
       const chairs = [["Cube024","Cube024_1","Cube017","Cube018","Cube020"],
@@ -279,7 +187,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_SADDLE_COLOR,
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -315,7 +223,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_BACK_COLOR, 
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -336,7 +244,7 @@ export class SceneComponent implements OnInit {
           refractionRatio: 0.985,
           ior: 0.9,
           side: THREE.BackSide,
-          //envMap: createEnvMap('refraction')
+          color: 0x4848dd
         } )}
       ];
       
@@ -350,97 +258,7 @@ export class SceneComponent implements OnInit {
 
     } );
 
-    loader.load( `${PATH}${PATH_CHAIRS}` , function ( gltf ) {
-
-      const modelPT = gltf.scene ;
-      const modelPT1 = modelPT.children[0] as THREE.Mesh;
-      const modelPT2 = modelPT.children[1] as THREE.Mesh;
-      const modelPT3 = modelPT.children[2] as THREE.Mesh;
-      const modelPT4 = modelPT.children[3] as THREE.Mesh;
-      console.log(modelPT);
-
-      const modelsChair = [modelPT1, modelPT2, modelPT3, modelPT4];
-      const chairs = [["Cube024","Cube024_1","Cube017","Cube018","Cube020"],
-                      ["Cube001_1","Cube001_2","Cube003","Cube002"],
-                      ["Cube006_1","Cube006_2","Cube004","Cube005"],
-                      ["Cube007_1","Cube007_2","Cube009","Cube008"]];
-
-      modelPT.position.set( CHAIRS_POS_X, CHAIRS_POS_Y, -2 );
-      modelPT.scale.set( CHAIRS_SCALE_X, CHAIRS_SCALE_Y, CHAIRS_SCALE_Z);
-
-      const INITIAL_MAP = [
-        {
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_SADDLE_COLOR,
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide} )
-        },
-        {
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_UNION_COLOR, 
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        { 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_WHEELS_COLOR,
-          opacity: 1,
-          roughness: 0.3,
-          metalness: 1,
-          fog: false,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        { 
-        mtl: new THREE.MeshStandardMaterial( { 
-          color: CHAIR_BACK_COLOR, 
-          opacity: 1,
-          roughness: 1,
-          metalness: 0,
-          fog: true,
-          transparent: false,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide } )
-        },
-        {
-        mtl: new THREE.MeshPhysicalMaterial( { 
-          color: TABLE_COLOR, 
-          opacity: 0.5,
-          roughness: 0,
-          metalness: 1,
-          fog: false,
-          transparent: true,
-          depthTest: true,
-          depthWrite: true,
-          side: THREE.FrontSide 
-        } )}
-      ];
-      
-      textures(modelsChair, chairs, INITIAL_MAP);
-
-      scene.add( modelPT );
-
-    }, undefined, function ( e ) {
-
-      console.error( e );
-
-    } );
-
+    addSphere();
     render();
 
     function initColor(parent: THREE.Mesh, type: string, mtl: MeshStandardMaterial) {
@@ -497,13 +315,55 @@ export class SceneComponent implements OnInit {
       }
     } 
 
-    function render() {
-      for (let p of cloudParticles){
-         p.rotation.z -=0.001;
+    function colorFloor (mat: THREE.MeshPhysicalMaterial){
+      mat.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
+      mat.opacity = 1;
+      mat.roughness = 0.85;
+      mat.metalness = 0;
+      mat.fog= false;
+      mat.reflectivity = 0.2;
+      mat.transparent= false;
+      mat.depthTest = true;
+      mat.depthWrite = true;
+      mat.side = THREE.FrontSide;
+    }
+
+    function addSphere(){
+
+      for ( var z= -1000; z < 2000; z+=20 ) {
+  
+        let geometry   = new THREE.SphereGeometry(0.5, 32, 32)
+        let material = new THREE.MeshBasicMaterial( {color: FLOOR_INACTIVE_COLOR} );
+        let sphere = new THREE.Mesh(geometry, material)
+  
+        sphere.position.x = Math.random() * 1000 - 500;
+        sphere.position.y = Math.random() * 1000 - 500;
+  
+        sphere.position.z = z;
+        sphere.scale.x = sphere.scale.y = 2;
+        scene.add( sphere ); 
+        stars.push(sphere); 
+
       }
+    }
+
+    function animateStars() { 
+      
+      for(var i=0; i<stars.length; i++) {
+        
+        let star: THREE.Mesh = stars[i]; 
+        star.position.z +=  i/10;
+        if(star.position.z>1000) star.position.z-=2000; 
+        
+      }
+    }
+
+    function render() {
 
       renderer.render(scene,camera);
       requestAnimationFrame(render);
+      //animateStars();
+
     }
 
   }
