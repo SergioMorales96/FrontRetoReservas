@@ -35,7 +35,7 @@ export class SidebarComponent {
   constructor(
     private store: Store<AppState>
   ) {
-    this.display = true;
+    this.display = false;
     this.blocked = false;
     this.items = [
       {
