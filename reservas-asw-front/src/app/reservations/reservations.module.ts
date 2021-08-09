@@ -21,6 +21,8 @@ import { SceneComponent } from './components/scene/scene.component';
 import { TimePeriodSliderComponent } from './components/time-period-slider/time-period-slider.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 import { ViewReservationComponent } from './components/reservation/view-reservation/view-reservation.component';
+import { Calendar1Component } from './components/calendar1/calendar1.component';
+import { Calendar2Component } from './components/calendar2/calendar2.component';
 
 
 
@@ -41,6 +43,8 @@ import { ViewReservationComponent } from './components/reservation/view-reservat
     TimeSelectorComponent,
     TimePeriodSliderComponent,
     ViewReservationComponent,
+    Calendar1Component,
+    Calendar2Component,
   ],
   imports: [
     CommonModule,
