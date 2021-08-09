@@ -1,13 +1,13 @@
 import { AlertsService } from '../../../../services/cancelReservation.service';
+import { AppState } from 'src/app/app.reducer';
 import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
+import { setEditReservation, setReservationList } from '../../../reservation.actions';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { setEditReservation, setReservationList } from '../../../reservation.actions';
 import * as moment from 'moment';
 
 @Component({
@@ -17,10 +17,10 @@ import * as moment from 'moment';
 })
 export class EditReservationComponent {
 
+  currentPosition: number = 0;
   currentReservation!: DatesReservation ;  
   datesReservationList: DatesReservation[]=[];
   datesReservation: DatesReservation[] = [];
-  currentPosition: number = 0;
   routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',

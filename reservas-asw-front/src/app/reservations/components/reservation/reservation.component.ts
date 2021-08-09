@@ -16,8 +16,9 @@ import { ReservationsService } from '../../services/reservations.service';
 })
 
 export class ReservationComponent implements OnInit{
-  resp: boolean= true
+
   hasEditing!: boolean;
+  resp: boolean= true
   reservation:Reservation={
     dia: "11-01-0020",
     horaInicio:"8:00",
@@ -39,6 +40,7 @@ export class ReservationComponent implements OnInit{
     private alertsService: AlertsService,
     private store :Store<AppState>
   ){ }
+
   ngOnInit(): void {
     this.store
       .select('reservation')
@@ -74,10 +76,8 @@ export class ReservationComponent implements OnInit{
             else{
               return;
             }
-          })
-          
+          })          
           }
-        });
-        
+        });        
   }
 }
