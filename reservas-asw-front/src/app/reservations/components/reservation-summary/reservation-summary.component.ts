@@ -119,7 +119,6 @@ export class ReservationSummaryComponent implements OnInit {
 
   setFecha(){
     //const selectedDate = moment(this.selectedDateSummary).format('DD-MM-yyyy');
-    //console.log(selectedDate);
     if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
