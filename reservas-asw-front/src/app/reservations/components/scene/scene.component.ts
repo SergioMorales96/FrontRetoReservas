@@ -21,7 +21,7 @@ import { setReservationId } from '../../../reservations/reservation.actions';
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
-const BACKGROUND_COLOR = 0x000000;
+const BACKGROUND_COLOR = 0xffffff;
 const SCENE_SIGMA = 0.04;
 const FOG_COLOR = 0x681453;
 const FOG_NEAR = 1;
@@ -165,7 +165,7 @@ export class SceneComponent implements OnInit {
     //window.addEventListener('click', onClick);
 
     /* scene.background = new THREE.Color( 0xFFFFFF ); */
-    scene.background = new THREE.Color( 0x000000 );
+    scene.background = new THREE.Color( BACKGROUND_COLOR );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
