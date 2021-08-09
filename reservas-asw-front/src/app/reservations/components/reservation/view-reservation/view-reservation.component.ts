@@ -142,10 +142,8 @@ export class ViewReservationComponent implements OnInit {
   
   getData() {
     return {
-      startDate: '01-08-2021',
-      endDate: '14-08-2021',
-      // startDate: moment().format('DD-MM-YYYY'),
-      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+       startDate: moment().format('DD-MM-YYYY'),
+       endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }

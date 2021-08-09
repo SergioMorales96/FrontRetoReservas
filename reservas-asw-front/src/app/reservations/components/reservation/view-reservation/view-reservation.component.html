@@ -1,5 +1,4 @@
 <ng-container *ngIf="datesReservation.length > 0; else noReservations">
-
     <div 
         class="p-d-flex" 
          *ngIf="showReservations; else userBlock"> 
@@ -92,8 +91,6 @@
         </div>
     </div>
 </ng-container>
-
-
 <ng-template #noReservations>
     <div class="p-d-flex">
         <div class="p-d-flex p-jc-center p-ai-center">
@@ -107,8 +104,6 @@
         </div>
     </div>
 </ng-template>
-
-
 <ng-template #userBlock>
     <div class="p-d-flex">
         <div class="dimensions p-col-3 d-p-flex p-jc-center p-ai-center">

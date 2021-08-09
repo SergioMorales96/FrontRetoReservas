@@ -1,7 +1,6 @@
 import { AlertsService } from '../../../../services/cancelReservation.service';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
-import { ReservationAction } from 'src/utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
 import { tap } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setEditReservation, setReservationList } from '../../../reservation.actions';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -111,10 +111,8 @@ export class EditReservationComponent {
 
   getData() {
     return {
-      startDate: '01-08-2021',
-      endDate: '14-08-2021',
-      // startDate: moment().format('DD-MM-YYYY'),
-      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+      startDate: moment().format('DD-MM-YYYY'),
+      endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }
