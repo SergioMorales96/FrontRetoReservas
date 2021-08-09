@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { setDisplay } from '../../reservations/reservation.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
-import { RouterLink } from '@angular/router';
 import { RouteFloor, RouteName } from '../../../utils/enums';
 
 @Component({
@@ -64,11 +62,4 @@ export class SidebarComponent {
       },
     ];
   }
-
-  changeDisplay(display: boolean){
-
-    /*this.display = display;
-    this.store.dispatch(setDisplay({ display : this.display }));*/
-  }
-
 }
