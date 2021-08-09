@@ -48,7 +48,7 @@ export class ReservationSummaryComponent implements OnInit {
     this.store
       .select('reservation')
       .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime }) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
+        //console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
         this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
         this.setWorkstation(reservationId);
@@ -93,6 +93,8 @@ export class ReservationSummaryComponent implements OnInit {
       } else {
         this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
+    }else{
+      this.info='Puesto Reserva';
     }
   }
 
@@ -101,6 +103,8 @@ export class ReservationSummaryComponent implements OnInit {
      
         this.sintomas = `Ha tenido sintomas : ${this.symptoms} `;
      
+    }else{
+      this.sintomas='Información del Asistente';
     }
   }
 
@@ -127,6 +131,10 @@ export class ReservationSummaryComponent implements OnInit {
           if(this.selectedDateSummary===''){
             this.selectedDateSummary=new Date;
           }
+    }else{
+      this.selectedDateSummary='';
+      this.fecha='Fecha de Reserva';
+      this.timeMinutes='';
     }
 
   }
