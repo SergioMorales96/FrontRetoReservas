@@ -15,8 +15,6 @@ import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { DataService } from '../../../services/data.service';
 import { setSelectedDate } from 'src/app/reservations/reservation.actions';
 
 @Component({
@@ -91,9 +89,7 @@ export class CalendarComponent implements OnInit {
   }
 
   onMonthChange({ month, year }: { month: number, year: number }): void {
-
     console.log(month, year);
-
   }
 
   monthChange(month: number, year: number): void {
@@ -183,7 +179,6 @@ export class CalendarComponent implements OnInit {
   }
 
   setSelectedDate(selectedDate: Date): void {
-
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
     console.log(selectedDate);
@@ -200,7 +195,6 @@ export class CalendarComponent implements OnInit {
 
     switch (this.dateValidationType) {
       case DateValidationType.DayCapacity:
-
         break;
       case DateValidationType.ParkingAvailabilityPerBicycle:
         this.getParkingCycle();
@@ -208,9 +202,6 @@ export class CalendarComponent implements OnInit {
       case DateValidationType.ParkingAvailabilityPerCar:
         console.log('Entrando case ParkingAvailabilityPerCar ');
         this.getCarParkingAvailability();
-        break;
-      case DateValidationType.ParkingAvailabilityPerBicycle:
-        // this.getBici();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         this.getParkingMotorcycle();
@@ -250,7 +241,6 @@ export class CalendarComponent implements OnInit {
         summary: `Parqueadero de carro disponible:`,
         detail: ` ${data} ${menssage}`,
       });
-
     } else {
       this.onDayParkingAvailabilityPerCar.emit(false);
       this.toastService.showToastDanger({
@@ -267,7 +257,6 @@ export class CalendarComponent implements OnInit {
     } else if (data === 1) {
       this.onDayCapacity.emit(true);
       this.toastService.showToastInfo({ summary: 'Aforo Disponible:', detail: `El aforo disponible para esta fecha es de ${data} persona` })
-
     } else {
       this.onDayCapacity.emit(false);
       this.toastService.showToastDanger({
@@ -301,7 +290,6 @@ export class CalendarComponent implements OnInit {
       })
     }
   }
-
 
   getParkingMotorcycle(): void {
     const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
