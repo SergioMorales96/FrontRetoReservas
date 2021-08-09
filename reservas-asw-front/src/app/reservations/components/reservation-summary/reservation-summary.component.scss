@@ -1,33 +1,31 @@
-
-.container{
-    background-attachment: fixed; 
-    //background-image: linear-gradient(to right, blue 28.5% , white 28.6%);
+.container{    
+    background-attachment: fixed;
+    background-image: linear-gradient(to right, rgb(6, 102, 251) 545px, rgb(255, 255, 255) 545px);
+    margin-left: -8px;
+    border:none
 }
+
 .panel{
     height: 90px; 
     z-index: 1;
     background: inherit;
-    left: 16.6%;
+    width: 60rem;
+    margin-left: 145px;
 }
 .panel:before {
     background-color: rgba(96, 96, 96, 0.7);
-    backdrop-filter: blur(10px) saturate(100%) contrast(45%) brightness(130%);
+    backdrop-filter: blur(10px) saturate(100%) contrast(85%) brightness(130%);
     content: '';
     height: 90px;
     position: absolute;
-    width: 83.4%;
-    left:16.6%;
+    width: 60rem;
 }
 p {
     z-index: 1;
     color: white;
     font-weight: bold;
 }
-.resume {
-    z-index: 1;
-    color: white;
-    font-weight: bold;
-}
+
 
 .color{
     color: #777777;

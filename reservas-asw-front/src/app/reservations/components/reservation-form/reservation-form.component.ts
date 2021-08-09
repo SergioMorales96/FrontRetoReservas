@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { DataService } from '../../services/data.service';
-import { DateValidationType } from '../../../utils/enums';
+import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setWorkstation, setContinue, setSymptoms, setSteps, setReservationId, setDisplay } from '../reservation.actions';
+import { AppState } from '../../../app.reducer';
+import { setFloorNumber, setPeopleNumber,  setContinue,  setSteps, setReservationId, setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -15,9 +14,8 @@ import { ReservationsService } from 'src/app/reservations/services/reservations.
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
-import { JsonpClientBackend } from '@angular/common/http';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { ViewAdminComponent } from '../../admin/pages/admins/view/view-admin.component';
+import { DataService } from '../../../services/data.service';
+
 
 @Component({
   selector: 'app-reservation-form',
@@ -137,7 +135,8 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-  
+      console.log("RESV: ",this.reservationId);
+      
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
     });
@@ -156,6 +155,8 @@ export class ReservationFormComponent implements OnInit {
       default:
         return 'NA';  
     }
+
+    //console.log(this.reservaForm.get('personasReserva')?.value);
 
   }
 

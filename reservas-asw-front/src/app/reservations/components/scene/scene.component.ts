@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ɵExtraLocaleDataIndex } from '@angular/core';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshStandardMaterial } from 'three';
@@ -15,13 +15,13 @@ import { Floors } from '../../interfaces/floors.interface';
 import { Floor } from '../../../admin/interfaces/admin.interfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservationId } from '../../../shared/reservation.actions';
+import { setReservationId } from '../../../reservations/reservation.actions';
 
 
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
-const BACKGROUND_COLOR = 0x000000;
+const BACKGROUND_COLOR = 0xffffff;
 const SCENE_SIGMA = 0.04;
 const FOG_COLOR = 0x681453;
 const FOG_NEAR = 1;
@@ -110,7 +110,20 @@ export class SceneComponent implements OnInit {
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 40, 1, 1, 100 );
+    
+    const sceneContainer = document.getElementById( 'sceneContainer' );
+    //renderer.setPixelRatio( window.devicePixelRatio );
+     
+    if( sceneContainer ){
+      
+      renderer.setSize( sceneContainer.clientWidth, sceneContainer.clientHeight );
+      renderer.outputEncoding = THREE.sRGBEncoding;
+      sceneContainer.appendChild( renderer.domElement );
+    }
+    const rect: DOMRect = renderer.domElement.getBoundingClientRect();
+    
+    
+    const camera = new THREE.PerspectiveCamera( 40, renderer.domElement.width/renderer.domElement.height, 1, 100 );
     const controls = new OrbitControls( camera, renderer.domElement );
     const dracoLoader = new DRACOLoader();
     const loader = new GLTFLoader();
@@ -127,7 +140,7 @@ export class SceneComponent implements OnInit {
     let roomsList: THREE.Group[] = [];
     let sceneInfo = { "floors": floorsList, "workSpaces": workSpacesList, "room": roomsList };
     
-
+    
     let jocker1: workSpaceW[] = [];
     let jocker2: workSpaceW[] = [];
     let jocker3: workSpaceW[] = [];
@@ -135,28 +148,29 @@ export class SceneComponent implements OnInit {
 
     let idPisoActual = idPiso;
     let numeroPersonasActual: number = numeroPersonas;
-    console.log("El piso Actual es: ", idPiso);
+    
     
     const CHAIR_SADDLE_COLOR = 0x444b93;
     const CHAIR_BACK_COLOR = 0x444b93;
     const CHAIR_UNION_COLOR = 0x1e;
     const CHAIR_WHEELS_COLOR = 0x1e;
     const TABLE_COLOR = 0xffffff;
+    
 
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( 500, 500 );
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    document.body.appendChild( renderer.domElement );
+
+    
+    
     //document.addEventListener( 'mousemove', onPointerMove );
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     //window.addEventListener('click', onClick);
 
-    scene.background = new THREE.Color( 0xFFFFFF );
+    /* scene.background = new THREE.Color( 0xFFFFFF ); */
+    scene.background = new THREE.Color( BACKGROUND_COLOR );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
 
-    controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
+    //controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
     controls.update();
     //controls.enablePan = false;
     controls.enableDamping = true;
@@ -188,46 +202,48 @@ export class SceneComponent implements OnInit {
       renderer.domElement.addEventListener( 'click', onClick );
     
       function onClick(event: MouseEvent ) {
-        myStore.dispatch(setReservationId({ reservationId: 999 }));  // Modificame
+         // Modificame
         raycaster.setFromCamera(pointer, camera);
+        
         let intersects = raycaster.intersectObjects(scene.children, true);
-    
-        if( !intersects[0] ){
-           if( idPiso == 3 ){
-             idPiso--;
-           }else{
-             idPiso++;
-           }
-          /*if (numeroPersonas == 2) {
-            numeroPersonas--;  
-          } else{
-            numeroPersonas++;
-          }*/
+        console.log("el intersects dentro de onClick es: ", intersects);
+        let index: number = 0;
+        let flag: boolean = false;
+        do {
+          console.log("intersect[index] es: ", intersects[index], index);
           
-          console.log("el numero de personas es:", numeroPersonas);
-    
-          
-        }
-            if( intersects[0] && intersects[0].object.userData.info  ){
-              if( numeroPersonas == 1 ){
-                if( selectedObject && selectedObject != intersects[0].object ){
-                   setColorSelectedObject( );
-                   changeToChairCurrentColor()
-                 }
-              }else {
-                //lógica salas de trabajo
-              }
-              selectChair(intersects);  
-              selectedObject = intersects[0].object;
-              if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
-                selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
-              }else{
-                selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
-              }
-              (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-              INTERSECTED = null; 
+          if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
+            console.log('entro al if');
+            
+            // if( numeroPersonas == 1 ){
+              if( selectedObject && selectedObject != intersects[index].object ){
+                 setColorSelectedObject( );
+                 changeToChairCurrentColor()
+               }
+            // }else {
+            //   //lógica salas de trabajo
+            //   setColorSelectedObject( );
+            //   changeToChairCurrentColor()
+            // }
+            selectChair(intersects, index);  
+            selectedObject = intersects[index].object;
+            console.log("el selectedObject es: ", selectedObject);
+            
+            myStore.dispatch(setReservationId({ reservationId: selectedObject.userData.info.idPuestoTrabajo })); 
+            if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
+              selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
+            }else{
+              selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
             }
-            console.log('El selected: ', selectedObject);   
+            (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
+            INTERSECTED = null; 
+            flag = true;
+          }
+
+          index++;
+        } while ((!flag) && index<= intersects.length-1);
+            
+              
       }  
     
     loadStairs();
@@ -250,8 +266,22 @@ export class SceneComponent implements OnInit {
     
 
   function onPointerMove( event: MouseEvent ) {
-      pointer.x = ( event.clientX / 500 ) * 2 - 1;
-      pointer.y = - ( event.clientY / 700 ) * 2 + 1;
+      /* pointer.x = ( event.clientX / 505 ) * 2 - 1;
+      pointer.y = - ( event.clientY / 1000 ) * 2 + 1; */
+      
+     
+      
+      /* pointer.x = ( event.clientX + rect.left + ( rect.width/2 ) )* 2 - 1;
+      pointer.y = ( event.clientY + rect.top + ( rect.height/2 ) )* 2 + 1; */
+      
+      // pointer.x = ( ( event.clientX - rect.left ) / ( rect.right  - rect.left ) ) * 2 - 1;
+      // pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
+     
+      pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) * 2 - 1;
+      pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
+      
+     
+
       checkOnObject();
   }
   
@@ -295,18 +325,15 @@ export class SceneComponent implements OnInit {
     let path: string = '';
     
     if(floorNumber==1){
-      console.log('Cargado piso 18');
-
+      
       path = 'assets/models/18th_floor/18th_floor.gltf';
 
     }else if(floorNumber==2){
-      console.log('Cargado piso 19');
-      
+            
       path = 'assets/models/19th_floor/19th_floor.gltf';
 
     }else if(floorNumber==3){
-      console.log('Cargado Piso 20');
-
+     
       path = 'assets/models/20th_floor/20th_floor.gltf';
       
     }else{
@@ -317,20 +344,9 @@ export class SceneComponent implements OnInit {
       const model3 = gltf.scene;
       const child = model3.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
-     // console.log("el material del piso es: ", childMaterial , 'el Child es: ', child);
-      const objects = [child];
-      //childMaterial.color = new THREE.Color(0x4f1245);
-
-      
-    //  childMaterial.color = new THREE.Color( 0x3131ff);
-    //  childMaterial.opacity = 1;
-    //  childMaterial.roughness = 0.9;
-    //  childMaterial.metalness = 0;
-    //  childMaterial.fog= true;
-    //  childMaterial.transparent= false;
-    //  childMaterial.depthTest = true;
-    //  childMaterial.depthWrite = true;
-    //  childMaterial.side = THREE.FrontSide;
+     
+      const objects = [child];  
+  
 
         renderer.domElement.addEventListener( 'click', onMove );
         function onMove(event: MouseEvent){
@@ -386,7 +402,9 @@ export class SceneComponent implements OnInit {
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
       //model3.position.y += model3.scale.y;
       model3.userData = { "info": answ.data[floorNumber-1] };
-      model3.visible = model3.userData.info.idPiso == idPiso;
+      console.log("id piso: ", model3.userData.info.idPiso, idPiso);
+      
+      model3.visible = model3.userData.info.idPiso == idPiso - 17;
       sceneInfo.floors.push( model3 );
       scene.add( model3 );
 
@@ -414,7 +432,7 @@ export class SceneComponent implements OnInit {
   }
 
   function invisibleModels(pisoActual: number ): boolean{
-    return pisoActual === idPiso;
+    return pisoActual === idPiso - 17;
   }
 
  
@@ -425,7 +443,7 @@ export class SceneComponent implements OnInit {
       const modelPT2 = model.children[1] as THREE.Mesh;
       const modelPT3 = model.children[2] as THREE.Mesh;
       const modelPT4 = model.children[3] as THREE.Mesh;
-      console.log(model);
+      
 
       const modelsChair = [modelPT1, modelPT2, modelPT3, modelPT4];
       const chairs = [["Cube024","Cube024_1","Cube017","Cube018","Cube020"],
@@ -834,7 +852,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
           }
           
         }
-        //console.log( 'El n es: ', n , 'Length de answ: ', answ.data.length);
+        
         
       } else if (piso === 2) {
         model5.position.set(-7.08,0,-4.32);  ////// COORDENADAS PISO 19
@@ -1180,14 +1198,14 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: RoomsPerFloorResponse) => {
-          console.log(answ.data);
+          
           loader.load( 'assets/models/chairs/chairs.gltf', function ( gltf ) {
       
             const model4 = gltf.scene;
             const child = model4.children[0].children[0] as THREE.Mesh;
-           //console.log("los hijos de las mesas son:", child);
+           
             const childMaterial = child.material as THREE.MeshStandardMaterial;
-            //console.log("el material de la mesa es: ", childMaterial);
+           
             childMaterial.color = new THREE.Color(0x65FC17);
             
             //model4.position.set( -6.9, 0, -0.28 );
@@ -1227,9 +1245,9 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                     let child1 = piece.children[0].children[0] as THREE.Mesh;
                     let childMaterial1 = child1.material  as THREE.MeshStandardMaterial;
                     childMaterial1.color = smallChairColor;
-                    console.log(piece.userData = {"info" : answ.data[j]});
+                    
                     generateChairRoomTextureModels(piece);
-                    console.log("la mesa es:",piece);
+                   
                     
                     piece.scale.set( piece.scale.x*0.39, piece.scale.y*0.39, piece.scale.z*0.39);
                    
@@ -1280,12 +1298,9 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       reservationsService.sendWorkSpacesPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: workSpacesPerFloorResponse) => {
-          console.log(answ.data);
-          matriz = loadChairWorkSpaces( answ, matriz );
-          console.log("matriz[0] es ",matriz[0]);
-          console.log("matriz[1] es ",matriz[1]);
-          console.log("matriz[2] es ",matriz[2]);
           
+          matriz = loadChairWorkSpaces( answ, matriz );
+      
           
             loader.load( 'assets/models/PUESTOS CON MESA/PLANOS 3D.gltf', function ( gltf ) {  
 
@@ -1504,7 +1519,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       const model = gltf.scene;
       const child = model.children[0] as THREE.Mesh;
       const childMaterial = child.material as THREE.MeshStandardMaterial;
-      //console.log("el material de las escaleras es: ", childMaterial);
+      
       childMaterial.color = new THREE.Color(0xbf);
       childMaterial.opacity = 0.49;
       childMaterial.roughness = 0.9;
@@ -1531,7 +1546,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
   }
 
     function animate() {
-      //console.log(numeroPersonas);
+      
       requestAnimationFrame( animate );
 
       checkChanges();
@@ -1558,18 +1573,18 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     function updateModels(){
 
       for (let ws of sceneInfo.workSpaces) {
-        ws.visible = ws.children[0].userData.info.idPiso == idPiso && numeroPersonas == 1 ? true : false;  
+        ws.visible = ws.children[0].userData.info.idPiso == idPiso -17 && numeroPersonas == 1 ? true : false;  
         
       }
 
       for (let f of sceneInfo.floors) {
-        f.visible = f.userData.info.idPiso == idPiso ? true : false; 
-        console.log( f.visible );
+        f.visible = f.userData.info.idPiso == idPiso - 17 ? true : false; 
+       
         
       }
 
       for (let r of sceneInfo.room) {
-        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso && numeroPersonas > 1;
+        r.visible = r.children[0].children[0].userData.info.idPiso == idPiso - 17 && numeroPersonas > 1;
       }
     }
 
@@ -1597,20 +1612,21 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       }
     }
 
-    function selectChair(intersects: THREE.Intersection[]){
+    function selectChair(intersects: THREE.Intersection[], index: number){
       for (let ob of scene.children) {
                 
         //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[0].object.userData.info.idPuestoTrabajo ){
+        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
+          && ob.children[4].userData.info.idPiso == idPiso - 17){
 
           ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
           ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
 
-          console.log( 'Color ACtual de la silla', ob.userData.chairCurrentColor );
+          
           
           ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
           (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
-          console.log( 'Color rojo de la silla', ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color );
+          
         }            
       }
     }

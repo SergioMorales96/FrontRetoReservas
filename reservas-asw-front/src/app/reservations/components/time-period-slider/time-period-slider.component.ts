@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from 'src/app/app.reducer';
-import { ToastsService } from '../../services/toasts.service';
-import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../reservation.actions';
+
+import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../../reservation.actions';
+import { ToastsService } from '../../../services/toasts.service';
 
 @Component({
   selector: 'app-time-period-slider',

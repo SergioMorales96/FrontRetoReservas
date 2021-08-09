@@ -1,6 +1,9 @@
 :host ::ng-deep .p-card {
   background: rgb(6, 102, 251);
   width: 22rem;
+  border-radius: 0;
+  border-bottom: none;
+  box-shadow: none;
 
   .p-button {
     background: transparent;
@@ -15,8 +18,9 @@
     color: rgb(146, 188, 253);
   }
 
-  .p-card {
+  .p-card-body {
     box-shadow: none;
+    padding: 1.5rem 1.5rem 0 1.5rem;
   }
 
   .p-d-flex {
@@ -34,4 +38,13 @@
     text-justify: auto;
     color: rgb(146, 188, 253);
   }
+  .p-card-content {
+    padding: 1rem 0 0 0;
+  }
+
+  .container{
+    margin-left: 145px ;
+  }
 }
+
+
