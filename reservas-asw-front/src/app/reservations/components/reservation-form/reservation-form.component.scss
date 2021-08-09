@@ -1,6 +1,9 @@
 :host ::ng-deep .p-card {
   background: rgb(6, 102, 251);
   width: 22rem;
+  border-radius: 0;
+  border-bottom: none;
+  box-shadow: none;
 
   .p-button {
     background: transparent;

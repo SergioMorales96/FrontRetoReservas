@@ -26,6 +26,8 @@ export enum RouteName {
     DomainEdit = "/admin/domains/edit",
     DomainView = "/admin/domains/view",
     
+    addReservation = "/admin/addReservation",
+    viewReservation = "/admin/viewReservation"
     }
 
 export enum RouteFloor {
