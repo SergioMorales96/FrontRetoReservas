@@ -5,8 +5,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppState } from 'src/app/app.reducer';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
-import { ReservationAction } from '../../../../utils/enums';
-import { DatesReservation, ReservationResponse } from '../../../admin/interfaces/reservation';
 import { Reservation } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
 
