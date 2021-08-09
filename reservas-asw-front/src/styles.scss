@@ -13,6 +13,7 @@ body {
   color: $dark-navy-blue;
   font-size: 16px;
   margin: 0% !important;
+  overflow-x: hidden;
 }
 
 .button-link {
@@ -88,7 +89,7 @@ body {
 }
 
 .sidebar{
-  position: absolute;
+  position: fixed;
   width: 208px;
   height: 100%;
   margin-top: -54px;
@@ -117,6 +118,7 @@ body {
 
 .margin-reservation{
   margin-left: 208px;
+  padding-bottom: 0px !important;
 }
 
 .p-menuButton .p-button{
