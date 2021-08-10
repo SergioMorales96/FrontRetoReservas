@@ -16,6 +16,7 @@ import { Floor } from '../../../admin/interfaces/admin.interfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId } from '../../../reservations/reservation.actions';
+import { setIsWorkstation } from '../../reservation.actions';
 
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
@@ -156,30 +157,14 @@ export class SceneComponent implements OnInit {
     const CHAIR_WHEELS_COLOR = 0x1e;
     const TABLE_COLOR = 0xffffff;
     
-
-
-    
-    
-    //document.addEventListener( 'mousemove', onPointerMove );
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
-    //window.addEventListener('click', onClick);
-
-    /* scene.background = new THREE.Color( 0xFFFFFF ); */
     scene.background = new THREE.Color( BACKGROUND_COLOR );
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
     camera.position.set( 8, 15, 10 );
-
-    //controls.target.set( CAMERA_TARGET_X, CAMERA_TARGET_Y, CAMERA_TARGET_Z );
     controls.update();
-    //controls.enablePan = false;
     controls.enableDamping = true;
     controls.maxPolarAngle = Math.PI / 2;
-
-    const axesHelper = new THREE.AxesHelper( 15 );
-    //scene.add( axesHelper );
-    var grid = new THREE.GridHelper(20, 100);
-    //scene.add(grid);
 
     const arrowHelper = new THREE.ArrowHelper(
       new THREE.Vector3(),
@@ -202,7 +187,7 @@ export class SceneComponent implements OnInit {
       renderer.domElement.addEventListener( 'click', onClick );
     
       function onClick(event: MouseEvent ) {
-         // Modificame
+
         raycaster.setFromCamera(pointer, camera);
         
         let intersects = raycaster.intersectObjects(scene.children, true);
@@ -214,22 +199,21 @@ export class SceneComponent implements OnInit {
           
           if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
             console.log('entro al if');
-            
-            // if( numeroPersonas == 1 ){
+
               if( selectedObject && selectedObject != intersects[index].object ){
                  setColorSelectedObject( );
                  changeToChairCurrentColor()
                }
-            // }else {
-            //   //lógica salas de trabajo
-            //   setColorSelectedObject( );
-            //   changeToChairCurrentColor()
-            // }
+
             selectChair(intersects, index);  
             selectedObject = intersects[index].object;
             console.log("el selectedObject es: ", selectedObject);
+            let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
+            myStore.dispatch(setReservationId({ reservationId: id })); 
+            let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
+            myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation} ) );
             
-            myStore.dispatch(setReservationId({ reservationId: selectedObject.userData.info.idPuestoTrabajo })); 
+            
             if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
               selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
             }else{
@@ -246,8 +230,7 @@ export class SceneComponent implements OnInit {
               
       }  
       const rect: DOMRect = renderer.domElement.getBoundingClientRect();
-    
-      console.log('Rect Top: ', rect.top, 'Rect left:', rect.left);
+
     loadStairs();
 
     animate();
@@ -270,27 +253,13 @@ export class SceneComponent implements OnInit {
     
 
   function onPointerMove( event: MouseEvent ) {
-      /* pointer.x = ( event.clientX / 505 ) * 2 - 1;
-      pointer.y = - ( event.clientY / 1000 ) * 2 + 1; */
-      
-     
-      
-      /* pointer.x = ( event.clientX + rect.left + ( rect.width/2 ) )* 2 - 1;
-      pointer.y = ( event.clientY + rect.top + ( rect.height/2 ) )* 2 + 1; */
-      
-      // pointer.x = ( ( event.clientX - rect.left ) / ( rect.right  - rect.left ) ) * 2 - 1;
-      // pointer.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
      
       pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) * 2 - 1;
-      pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
-      console.log('PointerX: ', pointer.x, 'PointerY: ', pointer.y);
-      
-     
-
+      pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;    
       checkOnObject();
+
   }
   
-
 
   
   function checkOnObject(  ){
@@ -369,14 +338,6 @@ export class SceneComponent implements OnInit {
           childMaterial.depthTest = true;
           childMaterial.depthWrite = true;
           childMaterial.side = THREE.FrontSide;
-
-          /* const n = new THREE.Vector3()
-          n.copy((intersects[0]?.face as THREE.Face)?.normal)
-          n.transformDirection(intersects[0].object.matrixWorld) */
-
-          //arrowHelper.setDirection(n)
-          //arrowHelper.position.copy(intersects[0].point)
-
         }
       
 
@@ -387,9 +348,7 @@ export class SceneComponent implements OnInit {
      
       model3.position.set( 0,0,0 );
       model3.scale.set( model3.scale.x * 3, model3.scale.y * 3, model3.scale.z *3);
-      //model3.position.y += model3.scale.y;
       model3.userData = { "info": answ.data[floorNumber-1] };
-      console.log("id piso: ", model3.userData.info.idPiso, idPiso);
       
       model3.visible = model3.userData.info.idPiso == idPiso - 17;
       sceneInfo.floors.push( model3 );
@@ -1222,8 +1181,6 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
             const childMaterial = child.material as THREE.MeshStandardMaterial;
            
             childMaterial.color = new THREE.Color(0x65FC17);
-            
-            //model4.position.set( -6.9, 0, -0.28 );
             model4.position.set(-7.02,0,-4.28)
             model4.scale.set(model4.scale.x*0.49, model4.scale.y*0.49, model4.scale.z*0.49);
             model4.rotation.y += -0.7;
@@ -1567,8 +1524,6 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       checkChanges();
 
       controls.update();
-
-      //checkOnObject();
 
       renderer.render( scene, camera );
     }
