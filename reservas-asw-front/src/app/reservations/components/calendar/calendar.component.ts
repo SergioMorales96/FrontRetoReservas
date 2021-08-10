@@ -89,7 +89,6 @@ export class CalendarComponent implements OnInit {
   }
 
   onMonthChange({ month, year }: { month: number, year: number }): void {
-    console.log(month, year);
   }
 
   monthChange(month: number, year: number): void {
@@ -104,8 +103,6 @@ export class CalendarComponent implements OnInit {
   }
 
   consultReservations(): void {
-    console.log('Id Puesto de Trabajo:', this.reservationId);
-    console.log('Número de personas', this.peopleNumber);
     this.setDates(this.tempDate);
     let urlPlugin: string =
       this.peopleNumber > 1 ? this.roomUrlPlugin : this.workstationUrlPlugin;
@@ -181,15 +178,10 @@ export class CalendarComponent implements OnInit {
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.callMethodPerDateValidationType();
-    console.log(selectedDate);
     this.store.dispatch(setSelectedDate({ selectedDateSummary: this.selectedDate }));
   }
 
   callMethodPerDateValidationType(): void {
-    console.log(
-      'Desde callMethodPerDateValidationType, validType = ',
-      this.dateValidationType
-    );
 
     this.getCapacity();
 
@@ -200,7 +192,6 @@ export class CalendarComponent implements OnInit {
         this.getParkingCycle();
         break;
       case DateValidationType.ParkingAvailabilityPerCar:
-        console.log('Entrando case ParkingAvailabilityPerCar ');
         this.getCarParkingAvailability();
         break;
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
