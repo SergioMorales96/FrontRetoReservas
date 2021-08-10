@@ -72,6 +72,12 @@ export const setReservation= createAction(
     '[Reservations Component] setReservation',
     props<{reservation: DatesReservation | null}>()
 )
+
+export const setDates= createAction(
+    '[Reservations Component] setReservation',
+    props<{dates: DatesReservation[]}>()
+)
+
 export const setEditReservation = createAction(
     '[Reservations Component] setEditReservation',
     props<{isEditReservation: boolean }>()

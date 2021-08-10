@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -133,6 +133,7 @@ export class ViewReservationComponent implements OnInit {
       }
     })    
     this.getLockedUsers();
+    this.store.dispatch(setDates({dates: this.datesReservation}))
   }
 
   getCounterDays( dateLocked: string ): number {
@@ -144,7 +145,7 @@ export class ViewReservationComponent implements OnInit {
   getData() {
     return {
        startDate: moment().format('DD-MM-YYYY'),
-       endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+       endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }

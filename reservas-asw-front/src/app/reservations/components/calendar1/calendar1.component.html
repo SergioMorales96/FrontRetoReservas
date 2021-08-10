@@ -5,7 +5,8 @@
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
   (onMonthChange)="onMonthChange( $event )"
-  [disabledDays]="[]">
+  [disabledDays]="[]"
+  [minDate] ="currentDate">
 
   <ng-template pTemplate="date" let-date>
     <td>

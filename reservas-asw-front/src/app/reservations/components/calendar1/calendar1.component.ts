@@ -10,12 +10,11 @@ import {
 import { ReservationsService } from '../../../admin/services/reservation.service';
 import * as moment from 'moment';
 import { DateValidationType } from 'src/utils/enums';
-import { DataResponse } from '../../interfaces/reservations.interface';
 import { ToastsService } from '../../../services/toasts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { OnInit } from '@angular/core';
-import { setSelectedDate } from 'src/app/reservations/reservation.actions';
+import { setSelectedDate, setDates } from 'src/app/reservations/reservation.actions';
 import { DatesReservation, DatesReservationClass } from 'src/app/admin/interfaces/reservation';
 
 @Component({
@@ -25,28 +24,28 @@ import { DatesReservation, DatesReservationClass } from 'src/app/admin/interface
 })
 export class Calendar1Component implements OnInit {
 
-  @Output() onDayCapacity: EventEmitter<boolean>;
-  @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean>;
+  // @Output() onDayCapacity: EventEmitter<boolean>;
+  // @Output() onDayParkingAvailabilityPerCar: EventEmitter<boolean>;
 
-  private tempDate: Date = new Date();
-  private roomUrlPlugin: string = 'reservas/reservas_sala';
-  private workstationUrlPlugin: string = 'reservas/reservas_puesto';
-  private queryDates: string = '';
+  // private tempDate: Date = new Date();
+  // private roomUrlPlugin: string = 'reservas/reservas_sala';
+  // private workstationUrlPlugin: string = 'reservas/reservas_puesto';
+  // private queryDates: string = '';
 
   currentDate: Date;
   selectedDate: Date;
   invalidDates: Date[];
-  invalidMorningDates: number[];
-  invalidAfternoonDates: number[];
+  // invalidMorningDates: number[];
+  // invalidAfternoonDates: number[];
   invalidTotalDates: number[];
-  reservations: Reservation[];
-  floorNumber!: number;
-  peopleNumber!: number;
-  reservationId!: number;
-  dateValidationType!: DateValidationType;
-  currentMonth: number;
+  // reservations: Reservation[];
+  // floorNumber!: number;
+  // peopleNumber!: number;
+  // reservationId!: number;
+  // dateValidationType!: DateValidationType;
+  // currentMonth: number;
 
-  allReservations: DatesReservation[];
+  allReservations!: DatesReservation[];
 
   constructor(
     private reservationsService: ReservationsService,
@@ -56,32 +55,27 @@ export class Calendar1Component implements OnInit {
     this.store
       .select('reservation')
       .subscribe(reservation => {
-        this.floorNumber = reservation.floorNumber;
-        this.peopleNumber = reservation.peopleNumber;
-        this.reservationId = reservation.reservationId;
-        this.dateValidationType = reservation.meanOfTransport;
+        this.allReservations = reservation.reservationList;
+        console.log('datos: ', this.allReservations);
       });
 
-    this.onDayCapacity = new EventEmitter<boolean>();
-    this.onDayParkingAvailabilityPerCar = new EventEmitter<boolean>();
+    // this.onDayCapacity = new EventEmitter<boolean>();
+    // this.onDayParkingAvailabilityPerCar = new EventEmitter<boolean>();
     this.selectedDate = new Date();
     this.currentDate = new Date();
-    this.currentMonth = 0;
+    // this.currentMonth = 0;
     this.invalidDates = [];
-    this.invalidMorningDates = [];
-    this.invalidAfternoonDates = [];
+    // this.invalidMorningDates = [];
+    // this.invalidAfternoonDates = [];
     this.invalidTotalDates = [];
-    this.reservations = [];
-    this.dateValidationType = DateValidationType.DayCapacity;
-
-    this.allReservations = [];
+    // this.reservations = [];
+    // this.dateValidationType = DateValidationType.DayCapacity;
   }
 
   ngOnInit(): void {
     this.store
     .select('reservation')
-    .subscribe( reservation =>{this.allReservations = reservation.reservationList});
-    console.log('reservas:', this.allReservations); 
+    .subscribe( reservation =>{this.allReservations = reservation.dates});
   }
 
   // isInvalidAfternoonDate(day: number): boolean {
@@ -102,12 +96,12 @@ export class Calendar1Component implements OnInit {
 
   monthChange(month: number, year: number): void {
     this.invalidTotalDates = [];
-    this.invalidMorningDates = [];
-    this.invalidAfternoonDates = [];
+    // this.invalidMorningDates = [];
+    // this.invalidAfternoonDates = [];
     this.invalidDates = [];
-    this.tempDate.setMonth(month - 1);
-    this.tempDate.setDate(1);
-    this.tempDate.setFullYear(year);
+    // this.tempDate.setMonth(month - 1);
+    // this.tempDate.setDate(1);
+    // this.tempDate.setFullYear(year);
     // this.consultReservations();
   }
 
@@ -209,7 +203,6 @@ export class Calendar1Component implements OnInit {
   //       this.getParkingCycle();
   //       break;
   //     case DateValidationType.ParkingAvailabilityPerCar:
-  //       // console.log('Entrando case ParkingAvailabilityPerCar ');
   //       this.getCarParkingAvailability();
   //       break;
   //     case DateValidationType.ParkingAvailabilityPerMotorcycle:
