@@ -48,12 +48,8 @@ export class ReservationFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService,
     private store: Store<AppState>,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private reservationService: ReservationsService,
-    private router: Router,
     private toastService: ToastsService,
     private alertsService: AlertsService
   ) {
@@ -101,8 +97,8 @@ export class ReservationFormComponent implements OnInit {
       asistenteInfo: this.fb.group({
         nombres: ['NOMBRE APELLIDO', Validators.required],
         identificacion: [123456789, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
-        grupoRiesgo: ['No Aplica', Validators.required],
-        convivenciaRiesgo: ['No', Validators.required],
+        //grupoRiesgo: ['No Aplica', Validators.required],
+        //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
         descripcion: ['Barrio XXX, Tomo transporte público en..', Validators.required],
       }),
@@ -120,8 +116,6 @@ export class ReservationFormComponent implements OnInit {
     this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
 
-    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
     this.store.dispatch(
       setReservationId({
         reservationId: this.workstationInfo.controls['reserva'].value,
@@ -135,10 +129,10 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      console.log("RESV: ",this.reservationId);
       
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
+
     });
     
   } 
@@ -155,8 +149,6 @@ export class ReservationFormComponent implements OnInit {
       default:
         return 'NA';  
     }
-
-    //console.log(this.reservaForm.get('personasReserva')?.value);
 
   }
 
@@ -205,6 +197,7 @@ export class ReservationFormComponent implements OnInit {
     };
 
   }
+
   addReservation() {
     this.reservationService
       .addReservation(this.getReservationFormValue())
@@ -247,6 +240,7 @@ export class ReservationFormComponent implements OnInit {
   }
 
   submit() {
+    
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {

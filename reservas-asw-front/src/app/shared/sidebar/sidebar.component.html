@@ -6,24 +6,24 @@
             class="imageLogo" 
             src="assets/images/logos/logo.svg">
     </h2>
-    <a [routerLink]="routeName.addReservation">
-        <p-button 
+    <p-button 
         class="p-menuButton"
         [ngClass]="{'p-menuBlocked': blocked}" 
         (onClick)="display = true"
-        [disabled]="blocked">
+        [disabled]="blocked"
+        [routerLink]="routeName.addReservation">
         <a class="text">Generar una reserva</a>
         <img 
             class="image imageIcon" 
             [src]="generateReservationIcon">
-    </p-button></a>
+    </p-button>
     
-    <a [routerLink]="routeName.viewReservation">
     <p-button 
         class="p-menuButton p-menuReservation" 
         [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
         (onClick)="display = false"
-        [disabled]="false">
+        [disabled]="false"
+        [routerLink]="routeName.viewReservation">
         <img 
             class="image imageCalendar" 
             [src]="myReservationIconCalendar">
@@ -31,7 +31,7 @@
         <img 
             class="imageArrow"
             [src]="myReservationIconArrow">
-    </p-button></a>
+    </p-button>
     <p-button 
         class="p-menuButton p-menuReservation"
         (click)="menu.toggle($event)">

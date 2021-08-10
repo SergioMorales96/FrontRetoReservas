@@ -8,6 +8,7 @@ export interface State {
     floorNumber: number; 
     peopleNumber: number;
     reservationId: number;
+    isWorkstation: boolean;
     workstation: string;
     meanOfTransport: number;
     symptoms:string;
@@ -30,6 +31,7 @@ export const initialState: State = {
    peopleNumber: 0,
    reservationId: 0,
    workstation: "",
+   isWorkstation: true,
    meanOfTransport: 0,
    symptoms:"",
    timePeriod: 0,

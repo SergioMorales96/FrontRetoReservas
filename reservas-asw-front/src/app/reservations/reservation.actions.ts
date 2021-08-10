@@ -17,6 +17,11 @@ export const setReservationId = createAction(
     props<{ reservationId: number }>()    
 );
 
+export const setIsWorkstation = createAction(
+    '[Reservations Component] setIsWorkstation',
+    props<{ isWorkstation: boolean }>()    
+);
+
 export const setMeanOfTransport = createAction(
     '[Reservations Component] setMeanOfTransport',
     props<{ meanOfTransportId: number }>()    
