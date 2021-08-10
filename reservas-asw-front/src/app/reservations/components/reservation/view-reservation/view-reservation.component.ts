@@ -76,7 +76,6 @@ export class ViewReservationComponent implements OnInit {
     const blocked = !this.dataUser;
     this.store.dispatch(setBlocked({blocked : !blocked}))
     return blocked;
-;
   }
 
   get transportMedia(): string {
