@@ -181,11 +181,12 @@ export class Calendar1Component implements OnInit {
   // }
 
   setSelectedDate(selectedDate: Date): void {
-    console.log(this.selectedDate);
+    
     this.selectedDate = selectedDate;
     // this.callMethodPerDateValidationType();
     // console.log(selectedDate);
     this.store.dispatch(setSelectedDate({ selectedDateSummary: this.selectedDate }));
+
   }
 
   // callMethodPerDateValidationType(): void {
