@@ -18,7 +18,7 @@ export class FormFloorComponent implements OnInit {
   floorForm = this.fb.group({
     nameFloor: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     maximunCapacity: ['', [Validators.required]],
-    numberFloor: ['', [Validators.required]],
+    numberFloor: ['', [Validators.required,Validators.min(1)]],
     idBranch: ['', [Validators.required]],
     nameBranch: [''],
     idFloor: [''],

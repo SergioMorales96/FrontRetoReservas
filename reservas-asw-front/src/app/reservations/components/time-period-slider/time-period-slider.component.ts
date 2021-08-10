@@ -13,6 +13,7 @@ import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider }
 export class TimePeriodSliderComponent implements OnInit{
   
   rangeValues!: Array<string>;
+  rangeValues2!: Array<number>;
   firstHour = '-';
   secondHour = '0horas';
   thirdHour = '0.5horas';
@@ -22,6 +23,11 @@ export class TimePeriodSliderComponent implements OnInit{
   endTime!: string;
   minvalue1!: number;
   maxvalue1!: number;
+  hour1:number=0;
+  hour2:number=0;
+  hour:number=0;
+  simbol:string="<";
+  simbol2:string=">";
 
   constructor(
     private store: Store<AppState>
@@ -39,46 +45,73 @@ export class TimePeriodSliderComponent implements OnInit{
       this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
     }
     this.functionHour(this.maxvalue1,this.minvalue1);
-    this.rangeValues = [String(this.maxvalue1),String(this.minvalue1)];
+    this.rangeValues = ['0','0'];
   }
   ngOnInit(): void {
-    this.store
+     this.store
     .select( 'reservation' )
     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
     } );
   }
+  importValue(hour:number,currentTime:number):void{
+    this.hour1=currentTime;
+    this.hour2=this.hour1+hour;
+    this.hour=hour;
+    this.rangeValues = [String(this.hour1),String(this.hour2)];
+    this.rangeValues2 = [this.hour1,this.hour2];
+    this.onChange();
+  }
+  importValue2():void{ 
+    this.hour1+=1;
+    this.hour2+=1;
+    if(this.hour2>=this.hour1 && this.hour2<=18){
+    this.rangeValues = [String(this.hour1),String(this.hour2)];
+    this.rangeValues2 = [this.hour1,this.hour2];
+    }else{
+    this.hour1=0;
+    this.hour2=this.hour;
+    this.rangeValues = [String(this.hour1),String(this.hour2)];
+    this.rangeValues2 = [this.hour1,this.hour2];
+    }
+    this.onChange();
+  }
+
+  importValue3():void{ 
+    this.hour1-=1;
+    this.hour2-=1;
+    if(this.hour2>=this.hour1 && this.hour1>=0){
+    this.rangeValues = [String(this.hour1),String(this.hour2)];
+    this.rangeValues2 = [this.hour1,this.hour2];
+    }else{
+    this.hour1=18-this.hour;
+    this.hour2=18;
+    this.rangeValues = [String(this.hour1),String(this.hour2)];
+    this.rangeValues2 = [this.hour1,this.hour2];
+    }
+    
+    this.onChange();
+    
+  }
 
   functionHour(maxValue:number,minValue:number): void {
     let range = (maxValue - minValue) / 2;
-    if (range < 0.5) {
-      this.firstHour = '-';
-      this.secondHour = '0horas';
-      this.thirdHour = range + 0.5 + 'horas';
-    } else {
-      const valitionHour = range - 0.5 == 1 ? 'hora' : 'horas';
-      this.firstHour = range - 0.5 + valitionHour;
-      const valitionHour1 = range == 1 ? 'hora' : 'horas';
-      this.secondHour = range + valitionHour1;
-      const valitionHour2 = range + 0.5 == 1 ? 'hora' : 'horas';
-      this.thirdHour = range + 0.5 + valitionHour2;
-    }
     this.store.dispatch( setTimePeriod({ timePeriod: range}) );
   }
-  onChange( { values }: { values: (number | string)[] } ): void {
-
-    const startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
-    const rangeValues = values.map( value => +value );
-    this.minValue = rangeValues[0] * 30;
-    this.maxValue = rangeValues[1] * 30;
+  onChange(): void {
+    let startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
+    this.minValue = this.rangeValues2[0] * 30;
+    this.maxValue = this.rangeValues2[1] * 30;
     this.startTime = startDate.add( this.minValue, 'minutes' ).format( 'hh:mm A' );
     this.store.dispatch( setStartTime({ startTime: this.startTime}) );
+    startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
     this.endTime = startDate.add( this.maxValue, 'minutes' ).format( 'hh:mm A' );
     this.store.dispatch( setEndTime({ endTime: this.endTime}) );
-    this.functionHour(rangeValues[1],rangeValues[0]);
+    this.functionHour(this.rangeValues2[1],this.rangeValues2[0]);
     
-    this.store.dispatch( setStartSlider({ startSlider: rangeValues[0] }));
-    this.store.dispatch( setEndSlider({ endSlider: rangeValues[1] }));
+    this.store.dispatch( setStartSlider({ startSlider: this.rangeValues2[0] }));
+    this.store.dispatch( setEndSlider({ endSlider: this.rangeValues2[1] }));
   }
 }
+ 

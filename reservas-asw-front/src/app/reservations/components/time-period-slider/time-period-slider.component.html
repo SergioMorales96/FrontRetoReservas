@@ -22,9 +22,13 @@
                
             <label class="p-timeFrame" for="countries" >
                <div class="p-listHour">
-                    <a class="p-listHour p-opacities">{{firstHour}}<br></a>
-                    <a class="p-listHour">{{secondHour}}<br></a>
-                    <a class="p-listHour p-opacities">{{thirdHour}}<br></a>                       
+                    <a class="p-listHour" *ngIf="hour==4" (click)="importValue(4,hour1)">2Horas<br></a>
+                    <a class="p-listHour p-opacities" *ngIf="hour!=4" (click)="importValue(4,hour1)">2Horas<br></a>
+                    <a class="p-listHour" *ngIf="hour==2" (click)="importValue(2,hour1)">1Horas<br></a>
+                    <a class="p-listHour p-opacities"  *ngIf="hour!=2" (click)="importValue(2,hour1)">1Horas<br></a>
+                    <a class="p-listHour" *ngIf="hour==1" (click)="importValue(1,hour1)">30min<br></a>
+                    <a class="p-listHour p-opacities"  *ngIf="hour!=1" (click)="importValue(1,hour1)">30min<br></a>                    
+                
                 </div> 
             </label>
         </div>
@@ -39,13 +43,30 @@
                     </div>
 
                 </div>
-                <div class="p-slider1 p-col ">
-                    <p-slider 
-                    [(ngModel)]="rangeValues" 
-                    [min]="0" 
-                    [max]="18" 
-                    [range]="true"
-                    (onChange)="onChange( $event )"></p-slider>               
+                <div class="p-col">
+                    <div class="p-grid">
+                      <div class="p-col-2">
+                          <button
+                          class="btn btn-primary p-buttonnext"
+                          (click)="importValue3()"
+                          ><b>{{simbol}}</b></button>
+                      </div>
+                      <div class="p-col-8">
+                          <p-slider 
+                          class="p-slider1"
+                          [(ngModel)]="rangeValues" 
+                          [min]="0" 
+                          [max]="18" 
+                          [disabled]="true"
+                          [range]="true"></p-slider>               
+                      </div>
+                      <div class="p-col-2 ">
+                          <button
+                          class="btn btn-primary p-buttonnext1"
+                          (click)="importValue2()"
+                          ><b>{{simbol2}}</b></button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
