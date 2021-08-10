@@ -64,8 +64,6 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setStartSlider,(state, { startSlider }) => ({ ...state, startSlider: startSlider})),
     on(actions.setEndSlider,(state, { endSlider }) => ({ ...state, endSlider: endSlider})),
 
-
-
     on(actions.setReservation,(state,{reservation})=>({...state, reservation: reservation})),
     on(actions.setReservationList,(state,{reservationList})=>({...state, reservationList: reservationList})),
     on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
