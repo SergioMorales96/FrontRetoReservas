@@ -23,6 +23,7 @@ export interface State {
     display: boolean;
     selectedDateSummary: Date | string;
     step: number;
+    dates: DatesReservation[];
 }
 
 export const initialState: State = {
@@ -43,7 +44,8 @@ export const initialState: State = {
    isEditReservation: false,
    display: false,
    selectedDateSummary: '',
-   step: 0,
+   step: 1,
+   dates: [],
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -67,6 +69,7 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
     on(actions.setDisplay,(state,{display})=>({...state, display: display})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
+    on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
 );
 
 export function reservationReducer(state: any, action: any) {

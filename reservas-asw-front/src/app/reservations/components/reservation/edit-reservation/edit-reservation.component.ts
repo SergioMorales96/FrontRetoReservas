@@ -1,14 +1,15 @@
 import { AlertsService } from '../../../../services/cancelReservation.service';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AppState } from 'src/app/app.reducer';
+import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
-import { ReservationAction } from 'src/utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
+import { setEditReservation, setReservation, setReservationList, setSteps } from '../../../reservation.actions';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { setEditReservation, setReservationList } from '../../../reservation.actions';
+import * as moment from 'moment';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -17,10 +18,10 @@ import { setEditReservation, setReservationList } from '../../../reservation.act
 })
 export class EditReservationComponent {
 
+  currentPosition: number = 0;
   currentReservation!: DatesReservation ;  
   datesReservationList: DatesReservation[]=[];
   datesReservation: DatesReservation[] = [];
-  currentPosition: number = 0;
   routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',
@@ -95,8 +96,8 @@ export class EditReservationComponent {
     private cancelReservationService: AlertsService,
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-    private store :Store<AppState>
-
+    private store :Store<AppState>,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -111,10 +112,8 @@ export class EditReservationComponent {
 
   getData() {
     return {
-      startDate: '01-08-2021',
-      endDate: '14-08-2021',
-      // startDate: moment().format('DD-MM-YYYY'),
-      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+      startDate: moment().format('DD-MM-YYYY'),
+      endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }
@@ -162,6 +161,14 @@ export class EditReservationComponent {
   showReservation1(): void {
     this.store.dispatch(setEditReservation({isEditReservation: false}));   
   }
+
+  sendStep(step: number): void{     
+    this.store.dispatch( setSteps({step: step}) ); 
+    this.router.navigate(["admin/addReservation"]);
+    this.store.dispatch(setReservation({reservation: this.currentReservation}));
+
+  }
+   
 }
 function deleteReservation(arg0: { reservationList: DatesReservation[]; }): any {
   throw new Error('Function not implemented.');
