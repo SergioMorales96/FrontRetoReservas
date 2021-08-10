@@ -17,7 +17,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId } from '../../../reservations/reservation.actions';
 
-
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
@@ -107,6 +106,8 @@ export class SceneComponent implements OnInit {
       numeroPersonas = reservation.peopleNumber;      
     });
 
+    setFlag();
+
     const renderer = new THREE.WebGLRenderer( { antialias: true } );
     const pmremGenerator = new THREE.PMREMGenerator( renderer );
     const scene = new THREE.Scene();
@@ -120,7 +121,6 @@ export class SceneComponent implements OnInit {
       renderer.outputEncoding = THREE.sRGBEncoding;
       sceneContainer.appendChild( renderer.domElement );
     }
-    const rect: DOMRect = renderer.domElement.getBoundingClientRect();
     
     
     const camera = new THREE.PerspectiveCamera( 40, renderer.domElement.width/renderer.domElement.height, 1, 100 );
@@ -245,13 +245,17 @@ export class SceneComponent implements OnInit {
             
               
       }  
+      const rect: DOMRect = renderer.domElement.getBoundingClientRect();
     
+      console.log('Rect Top: ', rect.top, 'Rect left:', rect.left);
     loadStairs();
 
     animate();
 
+    
 
     updateModels();
+    //window.location.reload();
 
     // window.onresize = function () {
 
@@ -279,6 +283,7 @@ export class SceneComponent implements OnInit {
      
       pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) * 2 - 1;
       pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) * 2 + 1;
+      console.log('PointerX: ', pointer.x, 'PointerY: ', pointer.y);
       
      
 
@@ -319,26 +324,8 @@ export class SceneComponent implements OnInit {
 
   }
 
-  
 
-  function loadThisFloor( floorNumber: number, answ: RoomsPerFloorResponse ){
-    let path: string = '';
-    
-    if(floorNumber==1){
-      
-      path = 'assets/models/18th_floor/18th_floor.gltf';
-
-    }else if(floorNumber==2){
-            
-      path = 'assets/models/19th_floor/19th_floor.gltf';
-
-    }else if(floorNumber==3){
-     
-      path = 'assets/models/20th_floor/20th_floor.gltf';
-      
-    }else{
-      console.log('No cargado ningun piso'); 
-    }
+  function loadPathFound( path: string,  floorNumber: number, answ: RoomsPerFloorResponse ){
 
     loader.load( path, function ( gltf ) {
       const model3 = gltf.scene;
@@ -413,6 +400,34 @@ export class SceneComponent implements OnInit {
       console.error( e );
 
     } );
+
+  }
+
+  
+
+  function loadThisFloor( floorNumber: number, answ: RoomsPerFloorResponse ){
+    let path: string = '';
+    
+    if(floorNumber==1){
+      
+      path = 'assets/models/18th_floor/18th_floor.gltf';
+      loadPathFound( path, floorNumber, answ );
+
+    }else if(floorNumber==2){
+            
+      path = 'assets/models/19th_floor/19th_floor.gltf';
+      loadPathFound( path, floorNumber, answ );
+
+    }else if(floorNumber==3){
+     
+      path = 'assets/models/20th_floor/20th_floor.gltf';
+      loadPathFound( path, floorNumber, answ );
+      
+    }else{
+      console.log('No cargado ningun piso'); 
+    }
+
+    
   }
 
   function loadFloor(idpiso: number, path: string, reservationsService: ReservationsService, urlPlugin: string, query: string){
@@ -1569,6 +1584,14 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       });
     }
 
+    function setFlag(){
+
+      if( sessionStorage.getItem( 'flag' ) == 'true' ){ sessionStorage.clear()}
+      else{
+        sessionStorage.setItem( 'flag', 'true' );
+        window.location.reload();  
+      }
+    }
 
     function updateModels(){
 
