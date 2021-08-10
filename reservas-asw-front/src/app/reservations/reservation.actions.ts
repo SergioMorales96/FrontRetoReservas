@@ -98,4 +98,8 @@ export const setDisplay= createAction(
     props<{display: boolean }>()
 )
 
+export const setBlocked= createAction(
+    '[Reservations Component] setBlocked',
+    props<{blocked: boolean }>()
+)
 

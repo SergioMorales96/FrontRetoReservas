@@ -14,7 +14,7 @@ import { setDisplay } from '../../reservations/reservation.actions';
 export class SidebarComponent {
 
   display!: boolean;
-  blocked: boolean;
+  blocked!: boolean;
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
@@ -40,12 +40,14 @@ export class SidebarComponent {
     this.store.select('reservation').subscribe(
       (reservation) => this.display = reservation.display
     );
+    this.store.select('reservation').subscribe(
+      (reservation) => this.blocked = reservation.blocked
+    );
   }
 
   constructor(
     private store: Store<AppState>
   ) {
-    this.blocked = false;
     this.items = [
       {
         label: 'Lista de usuarios',

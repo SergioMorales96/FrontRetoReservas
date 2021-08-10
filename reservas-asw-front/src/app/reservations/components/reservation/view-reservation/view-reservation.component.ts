@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation, setDates } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -73,7 +73,10 @@ export class ViewReservationComponent implements OnInit {
   }
 
   get showReservations(): boolean {
-    return !this.dataUser;
+    const blocked = !this.dataUser;
+    this.store.dispatch(setBlocked({blocked : !blocked}))
+    return blocked;
+;
   }
 
   get transportMedia(): string {
