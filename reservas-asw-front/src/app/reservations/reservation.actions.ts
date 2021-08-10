@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { DatesReservation } from '../admin/interfaces/reservation';
-import { ReservationAction } from '../../utils/enums';
+
 
 export const setFloorNumber = createAction(
     '[Reservations Component] setFloorNumber',

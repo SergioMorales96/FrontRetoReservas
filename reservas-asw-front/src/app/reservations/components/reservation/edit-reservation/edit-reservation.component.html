@@ -12,22 +12,23 @@
                 </button>
             </span>
         </div>
-        <div class="reservation__background" >
-            <div class= "style__backgruond1 p-pt-2 p-px-4 p-pb-4"  >                
+        <div class="reservation__background" >         
+           
+            <div class= "style__backgruond1 p-pt-2 p-px-4 p-pb-4" (click)="sendStep(2)" style="cursor:pointer">                
                 <div class="p-grid p-m-0" >
                     <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
                         <img class="" [src]="'assets/images/icons/'+ workStationMedia">
                         <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                     </div>
-                    <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
+                     <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
                         <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
                         <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
-                                class="reservation__pipe-divider">|</span> &nbsp; {{ currentReservation?.horaFin}}
+                             class="reservation__pipe-divider">|</span> &nbsp; {{ currentReservation?.horaFin}}
                         </h3>
                     </div>
                 </div>            
-            </div>
-            <div class="style__backgruond2 p-d-flex p-flex-column p-m-0 p-py-3 "> 
+            </div> 
+            <div class="style__backgruond2 p-d-flex p-flex-column p-m-0 p-py-3" (click)="sendStep(1)"  style="cursor:pointer"> 
                 <div class="p-d-flex p-jc-center p-ai-center">
                     <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; 
                         <span class="reservation__pipe-divider">|</span>&nbsp;

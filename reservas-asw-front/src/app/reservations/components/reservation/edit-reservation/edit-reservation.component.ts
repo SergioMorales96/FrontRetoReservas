@@ -4,11 +4,12 @@ import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setEditReservation, setReservationList } from '../../../reservation.actions';
+import { setEditReservation, setReservation, setReservationList, setSteps } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
 import * as moment from 'moment';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -95,8 +96,8 @@ export class EditReservationComponent {
     private cancelReservationService: AlertsService,
     private reservationsService: ReservationsService,
     private toastService: ToastsService,
-    private store :Store<AppState>
-
+    private store :Store<AppState>,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -160,6 +161,14 @@ export class EditReservationComponent {
   showReservation1(): void {
     this.store.dispatch(setEditReservation({isEditReservation: false}));   
   }
+
+  sendStep(step: number): void{     
+    this.store.dispatch( setSteps({step: step}) ); 
+    this.router.navigate(["admin/addReservation"]);
+    this.store.dispatch(setReservation({reservation: this.currentReservation}));
+
+  }
+   
 }
 function deleteReservation(arg0: { reservationList: DatesReservation[]; }): any {
   throw new Error('Function not implemented.');
