@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './reservation-form.component.html',
   styleUrls: ['./reservation-form.component.scss'],
 })
-export class ReservationFormComponent implements OnInit {
+export class ReservationFormComponent implements OnInit, OnDestroy {
   reservaForm!: FormGroup;
   step: number;
   submitted: boolean;
@@ -142,6 +142,10 @@ export class ReservationFormComponent implements OnInit {
     });
     
   } 
+
+  ngOnDestroy(): void{
+    this.store.dispatch(setDisplay({display : false}))
+  }
 
   get transportModeName(): string {
 

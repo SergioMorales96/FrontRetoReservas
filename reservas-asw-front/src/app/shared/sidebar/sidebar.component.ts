@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
+import { setDisplay } from '../../reservations/reservation.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -12,7 +13,7 @@ import { RouteFloor, RouteName } from '../../../utils/enums';
 })
 export class SidebarComponent {
 
-  display: boolean;
+  display!: boolean;
   blocked: boolean;
   items: MenuItem[];
   routeName = RouteName;
@@ -30,10 +31,20 @@ export class SidebarComponent {
     return `assets/images/icons/${this.display ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
+  changeDisplay(display: boolean){
+    this.display = display;
+    this.store.dispatch(setDisplay({display : display}))
+  }
+
+  ngOnInit(): void {
+    this.store.select('reservation').subscribe(
+      (reservation) => this.display = reservation.display
+    );
+  }
+
   constructor(
     private store: Store<AppState>
   ) {
-    this.display = false;
     this.blocked = false;
     this.items = [
       {

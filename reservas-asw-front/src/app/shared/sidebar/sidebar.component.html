@@ -9,7 +9,7 @@
     <p-button 
         class="p-menuButton"
         [ngClass]="{'p-menuBlocked': blocked}" 
-        (onClick)="display = true"
+        (onClick)="changeDisplay(true)"
         [disabled]="blocked"
         [routerLink]="routeName.addReservation">
         <p class="text">Generar una reserva</p>
@@ -21,7 +21,7 @@
     <p-button 
         class="p-menuButton p-menuReservation" 
         [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
-        (onClick)="display = false"
+        (onClick)="changeDisplay(false)"
         [disabled]="false"
         [routerLink]="routeName.viewReservation">
         <img 
