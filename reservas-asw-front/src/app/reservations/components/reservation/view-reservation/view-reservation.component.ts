@@ -1,13 +1,13 @@
+import { AppState } from 'src/app/app.reducer';
 import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
-import { ReservationAction, RouteName } from '../../../../../utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
+import { RouteName } from '../../../../../utils/enums';
+import { setReservation, setReservationList, setEditReservation } from '../../../reservation.actions';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import {  Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { setReservation, setReservationList, setEditReservation } from '../../../reservation.actions';
 @Component({
   selector: 'app-view-reservation',
   templateUrl: './view-reservation.component.html',
@@ -15,20 +15,21 @@ import { setReservation, setReservationList, setEditReservation } from '../../..
 })
 export class ViewReservationComponent implements OnInit {
   
-  datesReservation: DatesReservation[] ;
-  currentPosition: number;
   counterDays: number;
+  currentPosition: number;  
+   
   dataUser: DataUsersBlock | undefined;
   dataUsersBlock: DataUsersBlock[];
+  datesRList!: DatesReservation[];
+  datesReservation: DatesReservation[] ; 
+  prueba!: boolean;
   remainingDays: number;
   routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',
     '=1': '1 persona',
     'other': '# personas',
-  };
-  prueba!: boolean;
-  datesRList!: DatesReservation[];
+  }; 
 
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
@@ -142,10 +143,8 @@ export class ViewReservationComponent implements OnInit {
   
   getData() {
     return {
-      startDate: '01-08-2021',
-      endDate: '14-08-2021',
-      // startDate: moment().format('DD-MM-YYYY'),
-      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+       startDate: moment().format('DD-MM-YYYY'),
+       endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }

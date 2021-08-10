@@ -43,7 +43,7 @@ export const initialState: State = {
    isEditReservation: false,
    display: false,
    selectedDateSummary: '',
-   step: 0,
+   step: 1,
 }
 
 const _reservationReducer = createReducer(initialState,
