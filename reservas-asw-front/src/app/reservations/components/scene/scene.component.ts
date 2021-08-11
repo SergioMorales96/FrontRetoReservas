@@ -212,10 +212,10 @@ export class SceneComponent implements OnInit {
         let index: number = 0;
         let flag: boolean = false;
         do {
-          console.log("intersect[index] es: ", intersects[index], index);
+          //console.log("intersect[index] es: ", intersects[index], index);
           
           if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
-            console.log('entro al if');
+            //console.log('entro al if');
 
               if( selectedObject && selectedObject != intersects[index].object ){
                  setColorSelectedObject( );
@@ -228,6 +228,7 @@ export class SceneComponent implements OnInit {
             let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
             myStore.dispatch(setReservationId({ reservationId: id })); 
             let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
+           
             myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation} ) );
             
             
@@ -1500,9 +1501,9 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: RoomsPerFloorResponse) => {
-          console.log("el query es: ", query);
+          //console.log("el query es: ", query);
           matrizS = loadRoomWorkSpaces( answ, matrizS );
-          console.log("la matrizS es: ", matrizS);
+         // console.log("la matrizS es: ", matrizS);
           
           
           /** PISO 18 */
