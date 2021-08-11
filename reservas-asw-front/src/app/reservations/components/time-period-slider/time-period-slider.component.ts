@@ -14,15 +14,10 @@ export class TimePeriodSliderComponent implements OnInit{
   
   rangeValues!: Array<string>;
   rangeValues2!: Array<number>;
-  firstHour = '-';
-  secondHour = '0horas';
-  thirdHour = '0.5horas';
   minValue!: number;
   maxValue!:number;
   startTime!: string;
   endTime!: string;
-  minvalue1!: number;
-  maxvalue1!: number;
   hour1:number=0;
   hour2:number=0;
   hour:number=0;
@@ -36,21 +31,21 @@ export class TimePeriodSliderComponent implements OnInit{
     .select( 'reservation' )
     .subscribe( reservation => {
       this.startTime = reservation.startTime;
-      this.endTime = reservation.endTime;
-      this.maxvalue1 = reservation.endSlider;
-      this.minvalue1 = reservation.startSlider;
+      this.endTime = reservation.endTime; 
+      this.hour2 = reservation.endSlider;
+      this.hour1= reservation.startSlider;   
     } );
     if(this.startTime == ''){
       this.store.dispatch( setStartTime({ startTime: '08:00 AM'}) );
       this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
     }
-    this.functionHour(this.maxvalue1,this.minvalue1);
+    this.functionHour(this.maxValue,this.minValue);
     this.rangeValues = ['0','0'];
   }
   ngOnInit(): void {
-     this.store
-    .select( 'reservation' )
-    .subscribe( reservation => {
+      this.store
+     .select( 'reservation' )
+     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
     } );
@@ -61,7 +56,7 @@ export class TimePeriodSliderComponent implements OnInit{
     this.hour=hour;
     this.rangeValues = [String(this.hour1),String(this.hour2)];
     this.rangeValues2 = [this.hour1,this.hour2];
-    this.onChange();
+   this.onChange();
   }
   importValue2():void{ 
     this.hour1+=1;
@@ -75,7 +70,7 @@ export class TimePeriodSliderComponent implements OnInit{
     this.rangeValues = [String(this.hour1),String(this.hour2)];
     this.rangeValues2 = [this.hour1,this.hour2];
     }
-    this.onChange();
+     this.onChange();
   }
 
   importValue3():void{ 
@@ -89,10 +84,8 @@ export class TimePeriodSliderComponent implements OnInit{
     this.hour2=18;
     this.rangeValues = [String(this.hour1),String(this.hour2)];
     this.rangeValues2 = [this.hour1,this.hour2];
-    }
-    
-    this.onChange();
-    
+    }  
+    this.onChange();  
   }
 
   functionHour(maxValue:number,minValue:number): void {
@@ -110,8 +103,8 @@ export class TimePeriodSliderComponent implements OnInit{
     this.store.dispatch( setEndTime({ endTime: this.endTime}) );
     this.functionHour(this.rangeValues2[1],this.rangeValues2[0]);
     
-    this.store.dispatch( setStartSlider({ startSlider: this.rangeValues2[0] }));
-    this.store.dispatch( setEndSlider({ endSlider: this.rangeValues2[1] }));
+     this.store.dispatch( setStartSlider({ startSlider: this.rangeValues2[0] }));
+     this.store.dispatch( setEndSlider({ endSlider: this.rangeValues2[1] }));
   }
 }
  
