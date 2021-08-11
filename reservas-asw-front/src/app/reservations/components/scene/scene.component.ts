@@ -12,9 +12,6 @@ const CAMERA_NEAR = 1;
 const CAMERA_FAR = 1000;
 const BACKGROUND_COLOR = 0xffffff;
 const SCENE_SIGMA = 0.04;
-const FOG_COLOR = 0x681453;
-const FOG_NEAR = 1;
-const FOG_FAR = 20;
 const CAMERA_X_INIT = 0;
 const CAMERA_Y_INIT = 2;
 const CAMERA_Z_INIT = 8;
@@ -45,14 +42,12 @@ const STAIRS_POS_Z = 0;
 const STAIRS_SCALE_X = 1;
 const STAIRS_SCALE_Y = 1;
 const STAIRS_SCALE_Z = 1;
-const FLOOR_ACTIVE_COLOR = 0x4848dd;
-const FLOOR_INACTIVE_COLOR = 0xbf;
+const FLOOR_ACTIVE_COLOR = 0xbf;
+const FLOOR_INACTIVE_COLOR = 0x4848dd;
 const CHAIR_SADDLE_COLOR = 0x444b93;
 const CHAIR_BACK_COLOR = 0x444b93;
 const CHAIR_UNION_COLOR = 0x1e;
 const CHAIR_WHEELS_COLOR = 0x1e;
-const TABLE_COLOR = 0xffffff;
-const STAIRS_COLOR = 0xbf;
 const PATH = 'assets/models/';
 const PATH_FLOOR_18 = '18th_floor/18th_floor.gltf';
 const PATH_FLOOR_19 = '19th_floor/19th_floor.gltf';
@@ -141,7 +136,7 @@ export class SceneComponent implements OnInit {
 
         if (intersects.length > 0) {
 
-          materialFloor.color = new THREE.Color( FLOOR_INACTIVE_COLOR );
+          materialFloor.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
           materialFloor.opacity = 0.9;
           materialFloor.roughness = 0.7;
           materialFloor.metalness = 0.0;
@@ -244,13 +239,127 @@ export class SceneComponent implements OnInit {
           refractionRatio: 0.985,
           ior: 0.9,
           side: THREE.BackSide,
-          color: 0x4848dd
+          color: FLOOR_INACTIVE_COLOR
         } )}
       ];
       
       textures(modelsChair, chairs, INITIAL_MAP);
 
       scene.add( modelPT );
+
+    }, undefined, function ( e ) {
+
+      console.error( e );
+
+    } );
+
+    loader.load( `${PATH}${PATH_ROOMS}` , function ( gltf ) {
+
+      const modelPS = gltf.scene ;
+
+      modelPS.position.set( ROOMS_POS_X, ROOMS_POS_Y, ROOMS_POS_Z );
+      modelPS.scale.set( ROOMS_SCALE_X, ROOMS_SCALE_Y, ROOMS_SCALE_Z);
+
+      const modelPS_silla = modelPS.children[3] as THREE.Mesh;
+      const modelPS_mesa = modelPS.children[4] as THREE.Mesh;
+
+      const INITIAL_MAP_silla = [
+        {childID: "Cube024",
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_SADDLE_COLOR,
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide} )
+        },
+        {childID: "Cube024_1", 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_UNION_COLOR, 
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube017", 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_WHEELS_COLOR,
+          opacity: 1,
+          roughness: 0.3,
+          metalness: 1,
+          fog: false,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        },
+        {childID: "Cube018", 
+        mtl: new THREE.MeshStandardMaterial( { 
+          color: CHAIR_BACK_COLOR, 
+          opacity: 1,
+          roughness: 1,
+          metalness: 0,
+          fog: true,
+          transparent: false,
+          depthTest: true,
+          depthWrite: true,
+          side: THREE.FrontSide } )
+        }
+      ];
+
+      const INITIAL_MAP_mesa = [
+        {childID: "Cube020", 
+        mtl: new THREE.MeshPhysicalMaterial( { 
+          metalness: .9,
+          roughness: .05,
+          envMapIntensity: 0.9,
+          clearcoat: 1,
+          transparent: true,
+          transmission: .95,
+          opacity: .5,
+          reflectivity: 0.9,
+          refractionRatio: 0.985,
+          ior: 0.9,
+          side: THREE.BackSide,
+          color: FLOOR_INACTIVE_COLOR
+        } )
+        }
+      ];
+
+      for (let object of INITIAL_MAP_silla) {
+        initColor(modelPS_silla, object.childID, object.mtl);
+      }
+
+      for (let object of INITIAL_MAP_mesa) {
+        initColor(modelPS_mesa, object.childID, object.mtl);
+      }
+
+      scene.add( modelPS );
+
+    }, undefined, function ( e ) {
+
+      console.error( e );
+
+    } );
+
+    loader.load( `${PATH}${PATH_STAIRS}` , function ( gltf ) {
+
+      const modelStairs = gltf.scene.children[0] as THREE.Mesh;
+      const materialStairs = modelStairs.material as THREE.MeshPhysicalMaterial;
+
+      modelStairs.position.set( STAIRS_POS_X, STAIRS_POS_Y, STAIRS_POS_Z );
+      //modelStairs.scale.set( STAIRS_SCALE_X, STAIRS_SCALE_Y, STAIRS_SCALE_Z);
+      
+      colorFloor(materialStairs);
+
+      scene.add( modelStairs );
 
     }, undefined, function ( e ) {
 
@@ -316,7 +425,7 @@ export class SceneComponent implements OnInit {
     } 
 
     function colorFloor (mat: THREE.MeshPhysicalMaterial){
-      mat.color = new THREE.Color( FLOOR_ACTIVE_COLOR );
+      mat.color = new THREE.Color( FLOOR_INACTIVE_COLOR );
       mat.opacity = 1;
       mat.roughness = 0.85;
       mat.metalness = 0;
@@ -332,12 +441,12 @@ export class SceneComponent implements OnInit {
 
       for ( var z= -1000; z < 2000; z+=20 ) {
   
-        let geometry   = new THREE.SphereGeometry(0.5, 32, 32)
-        let material = new THREE.MeshBasicMaterial( {color: FLOOR_INACTIVE_COLOR} );
+        let geometry   = new THREE.SphereGeometry(0.1, 32, 32)
+        let material = new THREE.MeshBasicMaterial( {color: FLOOR_ACTIVE_COLOR} );
         let sphere = new THREE.Mesh(geometry, material)
   
-        sphere.position.x = Math.random() * 1000 - 500;
-        sphere.position.y = Math.random() * 1000 - 500;
+        sphere.position.x = Math.random() * 100 - 50;
+        sphere.position.y = Math.random() * 100 - 100;
   
         sphere.position.z = z;
         sphere.scale.x = sphere.scale.y = 2;
@@ -352,7 +461,7 @@ export class SceneComponent implements OnInit {
       for(var i=0; i<stars.length; i++) {
         
         let star: THREE.Mesh = stars[i]; 
-        star.position.z +=  i/10;
+        star.position.z +=  i/80;
         if(star.position.z>1000) star.position.z-=2000; 
         
       }
@@ -362,7 +471,7 @@ export class SceneComponent implements OnInit {
 
       renderer.render(scene,camera);
       requestAnimationFrame(render);
-      //animateStars();
+      animateStars();
 
     }
 

@@ -12,6 +12,7 @@ import { PrimeNgModule } from './prime-ng/prime-ng.module';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { CLoadService } from './auth/c-load.service';
+import { CActiveGuard } from './auth/c-active.guard';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { CLoadService } from './auth/c-load.service';
   providers: [
     ConfirmationService,
     MessageService,
+    CActiveGuard,
     CLoadService
   ],
   bootstrap: [AppComponent]
