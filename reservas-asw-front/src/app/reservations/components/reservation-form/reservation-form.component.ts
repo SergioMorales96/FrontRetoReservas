@@ -144,7 +144,6 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
 
     });
     
-    
   } 
 
   ngOnDestroy(): void{
