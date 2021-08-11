@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { DatesReservation } from '../admin/interfaces/reservation';
-import { ReservationAction } from '../../utils/enums';
+
 
 export const setFloorNumber = createAction(
     '[Reservations Component] setFloorNumber',
@@ -77,6 +77,12 @@ export const setReservation= createAction(
     '[Reservations Component] setReservation',
     props<{reservation: DatesReservation | null}>()
 )
+
+export const setDates= createAction(
+    '[Reservations Component] setReservation',
+    props<{dates: DatesReservation[]}>()
+)
+
 export const setEditReservation = createAction(
     '[Reservations Component] setEditReservation',
     props<{isEditReservation: boolean }>()
@@ -95,5 +101,10 @@ export const setContinue = createAction(
 export const setDisplay= createAction(
     '[Reservations Component] setDisplay',
     props<{display: boolean }>()
+)
+
+export const setBlocked= createAction(
+    '[Reservations Component] setBlocked',
+    props<{blocked: boolean }>()
 )
 
