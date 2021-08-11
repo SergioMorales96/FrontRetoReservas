@@ -20,8 +20,8 @@ export class TimePeriodSliderComponent implements OnInit{
   endTime!: string;
   minvalue1!: number;
   maxvalue1!: number;
-  hour1:number=0;
-  hour2:number=0;
+  initialTime:number=0;
+  finalTime:number=0;
   hour:number=0;
   simbol:string="<";
   simbol2:string=">";
@@ -55,39 +55,39 @@ export class TimePeriodSliderComponent implements OnInit{
     this.rangeValues = [String(this.minvalue1),String(this.maxvalue1)];
   }
   importValue(hour:number,currentTime:number):void{
-    this.hour1=currentTime;
-    this.hour2=this.hour1+hour;
+    this.initialTime=currentTime;
+    this.finalTime=this.initialTime+hour;
     this.hour=hour;
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     this.onChange();
   }
-  importValue2():void{ 
-    this.hour1+=1;
-    this.hour2+=1;
-    if(this.hour2>=this.hour1 && this.hour2<=18){
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
+  nextValue():void{ 
+    this.initialTime+=1;
+    this.finalTime+=1;
+    if(this.finalTime>=this.initialTime && this.finalTime<=18){
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     }else{
-    this.hour1=0;
-    this.hour2=this.hour;
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
+    this.initialTime=0;
+    this.finalTime=this.hour;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     }
     this.onChange();
   }
 
-  importValue3():void{ 
-    this.hour1-=1;
-    this.hour2-=1;
-    if(this.hour2>=this.hour1 && this.hour1>=0){
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
+  previousValue():void{ 
+    this.initialTime-=1;
+    this.finalTime-=1;
+    if(this.finalTime>=this.initialTime && this.initialTime>=0){
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     }else{
-    this.hour1=18-this.hour;
-    this.hour2=18;
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
+    this.initialTime=18-this.hour;
+    this.finalTime=18;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     }
     
     this.onChange();

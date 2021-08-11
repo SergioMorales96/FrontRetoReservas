@@ -22,12 +22,12 @@
                
             <label class="p-timeFrame" for="countries" >
                <div class="p-listHour">
-                    <a class="p-listHour" *ngIf="hour==4" (click)="importValue(4,hour1)">2Horas<br></a>
-                    <a class="p-listHour p-opacities" *ngIf="hour!=4" (click)="importValue(4,hour1)">2Horas<br></a>
-                    <a class="p-listHour" *ngIf="hour==2" (click)="importValue(2,hour1)">1Horas<br></a>
-                    <a class="p-listHour p-opacities"  *ngIf="hour!=2" (click)="importValue(2,hour1)">1Horas<br></a>
-                    <a class="p-listHour" *ngIf="hour==1" (click)="importValue(1,hour1)">30min<br></a>
-                    <a class="p-listHour p-opacities"  *ngIf="hour!=1" (click)="importValue(1,hour1)">30min<br></a>                    
+                    <a class="p-listHour" *ngIf="hour==4" (click)="importValue(4,initialTime)">2Horas<br></a>
+                    <a class="p-listHour p-opacities" *ngIf="hour!=4" (click)="importValue(4,initialTime)">2Horas<br></a>
+                    <a class="p-listHour" *ngIf="hour==2" (click)="importValue(2,initialTime)">1Horas<br></a>
+                    <a class="p-listHour p-opacities"  *ngIf="hour!=2" (click)="importValue(2,initialTime)">1Horas<br></a>
+                    <a class="p-listHour" *ngIf="hour==1" (click)="importValue(1,initialTime)">30min<br></a>
+                    <a class="p-listHour p-opacities"  *ngIf="hour!=1" (click)="importValue(1,initialTime)">30min<br></a>                    
                 
                 </div> 
             </label>
@@ -48,7 +48,7 @@
                       <div class="p-col-2">
                           <button
                           class="btn btn-primary p-buttonnext"
-                          (click)="importValue3()"
+                          (click)="previousValue()"
                           ><b>{{simbol}}</b></button>
                       </div>
                       <div class="p-col-8">
@@ -63,7 +63,7 @@
                       <div class="p-col-2 ">
                           <button
                           class="btn btn-primary p-buttonnext1"
-                          (click)="importValue2()"
+                          (click)="nextValue()"
                           ><b>{{simbol2}}</b></button>
                       </div>
                     </div>
