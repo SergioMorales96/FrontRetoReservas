@@ -3,11 +3,9 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-<<<<<<< HEAD
-import { setFloorNumber, setPeopleNumber,  setContinue,  setSteps, setReservationId, setDisplay, setSymptoms } from '../../reservation.actions';
-=======
+
 import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation, setSymptoms } from '../../reservation.actions';
->>>>>>> 6e1d068618bb887d9fae9ea134c821e7badebc4c
+
 import {
   Reservation,
   ReservationResponse,
@@ -145,11 +143,6 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
 
     });
-
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
-    this.store.dispatch(setSymptoms({ symptoms: this.assistantGroup.controls['sintomas'].value }));
-
     
     
   } 

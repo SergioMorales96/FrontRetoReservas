@@ -48,17 +48,11 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-<<<<<<< HEAD
-      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime }) => {
-        console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
-        this.setSteps( step );this.setFloorNumber(floorNumber);
-=======
       .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime, isWorkstation }) => {
         
         this.isWorkstation = isWorkstation;
         this.setSteps( step );
         this.setFloorNumber(floorNumber);
->>>>>>> 6e1d068618bb887d9fae9ea134c821e7badebc4c
         this.setPeopleNumber(peopleNumber);
         this.setWorkstation(reservationId);
         this.setMeanOfTransport(meanOfTransport);
@@ -80,10 +74,10 @@ export class ReservationSummaryComponent implements OnInit {
 
   setSteps(step: number){
     this.step=step;
-<<<<<<< HEAD
+
     console.log('step ', step);
-=======
->>>>>>> 6e1d068618bb887d9fae9ea134c821e7badebc4c
+
+    console.log('step ', step);
   }
 
   setPeopleNumber(peopleNumber: number) {
