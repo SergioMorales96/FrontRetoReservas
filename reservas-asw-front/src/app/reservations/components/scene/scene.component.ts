@@ -228,10 +228,9 @@ export class SceneComponent implements OnInit {
             let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
             myStore.dispatch(setReservationId({ reservationId: id })); 
             let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
-           
-            myStore.dispatch(setPeopleNumber ({peopleNumber: isWorkstation ? 1 : 2}))
+                      
             myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation} ) );
-            
+            myStore.dispatch(setPeopleNumber ({peopleNumber: isWorkstation ? 1 : 2}))
             
             if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
               selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;

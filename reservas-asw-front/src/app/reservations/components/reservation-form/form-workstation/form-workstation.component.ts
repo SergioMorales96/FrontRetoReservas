@@ -36,7 +36,7 @@ export class FormWorkstationComponent implements OnInit {
   showLicensePlate!: boolean;
   workplaceLabel!: string;
   peopleNumberData: number[] = [];
-  IsWorkstation!: boolean;
+  isWorkstation!: boolean;
 
   private vehiclesWithLicensePlates: { key: string, value: number } [];
 
@@ -78,9 +78,9 @@ export class FormWorkstationComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    this.floorNumber = this.form.get('piso')?.value;
     this.peopleNumber = this.form.controls['personasReserva'].value;
-    
+
+    this.floorNumber = this.form.get('piso')?.value;
     this.meanOfTransport = this.form.get('medioTransporte')?.value;
     this.reservationId = this.form.get('reserva')?.value;
     this.meanOfTransport &&
@@ -89,11 +89,10 @@ export class FormWorkstationComponent implements OnInit {
       : (this.showLicensePlate = false);
 
       this.store.select('reservation').subscribe((reservation) => {
-        this.IsWorkstation = reservation.isWorkstation;         
-        this.peopleNumber = reservation.peopleNumber;
-        this.IsWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
-        console.log("NUM PPL: ", this.peopleNumber);
-        
+        this.isWorkstation = reservation.isWorkstation;         
+        this.isWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
+        this.peopleNumber = this.form.controls['personasReserva'].value;
+
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
         if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
       });
