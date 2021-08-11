@@ -56,7 +56,8 @@ export class Calendar1Component implements OnInit {
       .select('reservation')
       .subscribe(reservation => {
         this.allReservations = reservation.reservationList;
-        console.log('datos: ', this.allReservations);
+        console.log('Hello world', this.allReservations);
+        
       });
 
     // this.onDayCapacity = new EventEmitter<boolean>();
@@ -76,6 +77,8 @@ export class Calendar1Component implements OnInit {
     this.store
     .select('reservation')
     .subscribe( reservation =>{this.allReservations = reservation.dates});
+    
+    
   }
 
   // isInvalidAfternoonDate(day: number): boolean {

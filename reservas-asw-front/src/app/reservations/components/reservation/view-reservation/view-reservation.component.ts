@@ -21,7 +21,7 @@ export class ViewReservationComponent implements OnInit {
   dataUsersBlock: DataUsersBlock[];
   datesRList!: DatesReservation[];
   datesReservation: DatesReservation[] ; 
-  day: Date | string;
+  date: Date | string;
   prueba!: boolean;
   remainingDays: number;
   routeName = RouteName;
@@ -31,6 +31,7 @@ export class ViewReservationComponent implements OnInit {
     'other': '# personas',
   }; 
 
+  
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
 
@@ -45,7 +46,14 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get canShowNext(): boolean {
+
+  get canShowNext(): boolean {    
+    const guardar = this.datesReservation.findIndex(dia => dia.dia === this.date )
+    if(guardar >= 0){
+      this.currentPosition=guardar
+      console.log(guardar);
+    }
+
     return this.datesReservation.length - 1 > this.currentPosition;
   }
 
@@ -74,9 +82,8 @@ export class ViewReservationComponent implements OnInit {
 
   get showReservations(): boolean {
     const blocked = !this.dataUser;
-    this.store.dispatch(setBlocked({blocked : !blocked}))
     return blocked;
-;
+
   }
 
   get transportMedia(): string {
@@ -124,11 +131,12 @@ export class ViewReservationComponent implements OnInit {
   ) {   
     this.dataUsersBlock = [];
     this.datesReservation = [];
-    this.day= new Date();
+    this.date= new Date();
     this.currentPosition = 0;
     this.counterDays = 0;
     this.remainingDays = 0;
- 
+    
+    
   }
 
   ngOnInit(): void {
@@ -136,14 +144,22 @@ export class ViewReservationComponent implements OnInit {
     .select('reservation')
     .subscribe( reservation =>{
       this.datesReservation = reservation.reservationList;
-      this.day=reservation.selectedDateSummary;
-      console.log("date:", this.day);
+      console.log('Hola:',this.datesReservation);
+      
+      if (reservation.selectedDateSummary) {
+        this.date = moment(reservation.selectedDateSummary).format('DD-MM-YYYY');
+        console.log( 'selected date', this.date );
+      }
+      
+
       if(this.datesReservation.length == 0 ){
         this.getReservations(this.getData());
       }
     })    
     this.getLockedUsers();
     this.store.dispatch(setDates({dates: this.datesReservation}))
+
+    
   }
 
   getCounterDays( dateLocked: string ): number {
@@ -168,6 +184,7 @@ export class ViewReservationComponent implements OnInit {
       .subscribe(response => {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
+        this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
         console.log(this.dataUser);
         console.log(this.getData().email);
         console.log(this.dataUsersBlock);
@@ -184,7 +201,19 @@ export class ViewReservationComponent implements OnInit {
         (ReservationResponse: ReservationResponse) => {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
+          const hola = this.datesReservation.sort(function(a,b){
+            if (moment(a.dia,'DD-MM-YYYY').isAfter(moment(b.dia,'DD-MM-YYYY')) ) {
+              return 1;
+            }
+            if (moment(a.dia,'DD-MM-YYYY').isBefore(moment(b.dia,'DD-MM-YYYY'))) {
+              return -1;
+            }
+      
+            return 0;
+          });
+          console.log({hola});
           this.store.dispatch(setReservationList({reservationList: this.datesReservation}));
+          
         }
       )
   }
