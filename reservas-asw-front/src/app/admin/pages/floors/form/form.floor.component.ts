@@ -1,11 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
+import { Branch, BranchesResponse } from 'src/app/admin/interfaces/branches.interfaces';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FloorsService } from '../../../services/floors.service';
-import { RouteFloor } from '../../../../../utils/enums';
 import { FloorResponse, FloorClass, Floor, FloorsResponse } from '../../../interfaces/floors.interfaces';
+import { RouteFloor } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';
-import { Branch, BranchesResponse } from 'src/app/admin/interfaces/branches.interfaces';
 
 @Component({
   selector: 'app-floor-form',

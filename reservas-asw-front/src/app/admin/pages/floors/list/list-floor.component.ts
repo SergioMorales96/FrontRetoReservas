@@ -1,9 +1,9 @@
+import { AlertsService } from '../../../../services/alerts.service';
 import { Component, OnInit } from '@angular/core';
 import { Floor, FloorsResponse, FloorResponse } from '../../../interfaces/floors.interfaces';
 import { FloorsService } from '../../../services/floors.service';
 import { RouteFloor } from '../../../../../utils/enums';
 import { ToastsService } from '../../../../services/toasts.service';
-import { AlertsService } from '../../../../services/alerts.service';
 
 @Component({
   selector: 'app-list-floor',

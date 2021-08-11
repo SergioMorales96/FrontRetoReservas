@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as moment from 'moment';
 import { AppState } from 'src/app/app.reducer';
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { Store } from '@ngrx/store';
 
 import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../../reservation.actions';
 
@@ -20,15 +20,8 @@ export class TimePeriodSliderComponent implements OnInit{
   maxvalue1!:number;
   startTime!: string;
   endTime!: string;
-<<<<<<< HEAD
-  minvalue1!: number;
-  maxvalue1!: number;
   initialTime:number=0;
   finalTime:number=0;
-=======
-  hour1:number=0;
-  hour2:number=0;
->>>>>>> 91f1d01f3213c6e4157ba6a3dd832c3d466f5670
   hour:number=0;
   simbol:string="<";
   simbol2:string=">";
@@ -64,15 +57,9 @@ export class TimePeriodSliderComponent implements OnInit{
     this.initialTime=currentTime;
     this.finalTime=this.initialTime+hour;
     this.hour=hour;
-<<<<<<< HEAD
     this.rangeValues = [String(this.initialTime),String(this.finalTime)];
     this.rangeValues2 = [this.initialTime,this.finalTime];
     this.onChange();
-=======
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
-   this.onChange();
->>>>>>> 91f1d01f3213c6e4157ba6a3dd832c3d466f5670
   }
   nextValue():void{ 
     this.initialTime+=1;
@@ -96,25 +83,14 @@ export class TimePeriodSliderComponent implements OnInit{
     this.rangeValues = [String(this.initialTime),String(this.finalTime)];
     this.rangeValues2 = [this.initialTime,this.finalTime];
     }else{
-<<<<<<< HEAD
     this.initialTime=18-this.hour;
     this.finalTime=18;
     this.rangeValues = [String(this.initialTime),String(this.finalTime)];
     this.rangeValues2 = [this.initialTime,this.finalTime];
-    }
-    
+    }  
     this.onChange();
     
-=======
-    this.hour1=18-this.hour;
-    this.hour2=18;
-    this.rangeValues = [String(this.hour1),String(this.hour2)];
-    this.rangeValues2 = [this.hour1,this.hour2];
-    }  
-    this.onChange();  
->>>>>>> 91f1d01f3213c6e4157ba6a3dd832c3d466f5670
   }
-
   functionHour(maxValue:number,minValue:number): void {
     let range = (maxValue - minValue) / 2;
     this.store.dispatch( setTimePeriod({ timePeriod: range}) );
