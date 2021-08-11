@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AppState } from 'src/app/app.reducer';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
-import { ReservationAction } from '../../../../utils/enums';
-import { DatesReservation, ReservationResponse } from '../../../admin/interfaces/reservation';
 import { Reservation } from '../../interfaces/reservations.interface';
 import { ReservationsService } from '../../services/reservations.service';
 
@@ -19,8 +16,9 @@ import { ReservationsService } from '../../services/reservations.service';
 })
 
 export class ReservationComponent implements OnInit{
-  resp: boolean= true
+
   hasEditing!: boolean;
+  resp: boolean= true
   reservation:Reservation={
     dia: "11-01-0020",
     horaInicio:"8:00",
@@ -42,6 +40,7 @@ export class ReservationComponent implements OnInit{
     private alertsService: AlertsService,
     private store :Store<AppState>
   ){ }
+
   ngOnInit(): void {
     this.store
       .select('reservation')
@@ -77,10 +76,8 @@ export class ReservationComponent implements OnInit{
             else{
               return;
             }
-          })
-          
+          })          
           }
-        });
-        
+        });        
   }
 }

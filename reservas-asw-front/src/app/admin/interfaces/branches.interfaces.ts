@@ -6,7 +6,7 @@ export interface BranchesResponse {
 }
 
 export interface BranchResponse {
-    data:    Branch;
+    data:     Branch;
     success?: boolean;
     message?: string;
     status?:  string;
@@ -14,10 +14,10 @@ export interface BranchResponse {
 
 export interface Branch {
     idSucursal?:    number;
-    aforoMaximo:   number;
-    direccion:     string;
-    nit:           string;
-    nombre:        string;
+    aforoMaximo:    number;
+    direccion:      string;
+    nit:            string;
+    nombre:         string;
     nombreEmpresa?: string;
 }
 

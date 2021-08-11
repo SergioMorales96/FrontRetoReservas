@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
+import { environment } from '../environments/environment'
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent {
 
   display: boolean = false;
   responsive: boolean = false;
+  assetsUrl = environment.assetsUrl
 
   constructor(
     private store: Store<AppState>
