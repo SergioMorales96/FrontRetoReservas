@@ -88,10 +88,6 @@ export class CalendarComponent implements OnInit {
     return this.invalidTotalDates.includes(day);
   }
 
-  onMonthChange({ month, year }: { month: number, year: number }): void {
-    console.log(month, year);
-  }
-
   monthChange(month: number, year: number): void {
     this.invalidTotalDates = [];
     this.invalidMorningDates = [];

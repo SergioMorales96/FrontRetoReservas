@@ -19,7 +19,7 @@ export class Calendar1Component implements OnInit {
   invalidDates: Date[];
   invalidTotalDates: number[];
   allReservations!: DatesReservation[];
-  prueba!: string;
+
 
   constructor(
     private store: Store<AppState>
@@ -27,7 +27,7 @@ export class Calendar1Component implements OnInit {
     this.selectedDate = new Date();
     this.currentDate = new Date();
     this.invalidDates = [];
-    this.invalidTotalDates = [];
+    this.invalidTotalDates = []
   }
 
   ngOnInit(): void {
@@ -37,31 +37,24 @@ export class Calendar1Component implements OnInit {
         this.allReservations = reservation.reservationList;
         console.log('datooos: ', this.allReservations);
       });
-      this.llenarPrueba();
+    this.llenarPrueba();
     this.store
       .select('reservation')
       .subscribe(reservation => { this.allReservations = reservation.dates });
   }
 
-  llenarPrueba(){
+  llenarPrueba() {
     this.store
       .select('reservation')
       .subscribe(reservation => {
         this.allReservations = reservation.reservationList;
       });
-      for (let i in this.allReservations){
-        // console.log(this.allReservations[i]);
-        (datesReservation: DatesReservation) => this.prueba = datesReservation.dia;
-        console.log('diassssss: ', this.prueba);
-      }
+    for (let i in this.allReservations) {
+    }
   }
 
   isInvalidTotalDate(day: number): boolean {
     return this.invalidTotalDates.includes(day);
-  }
-
-  onMonthChange({ month, year }: { month: number, year: number }): void {
-    // console.log(month, year);
   }
 
   monthChange(month: number, year: number): void {
