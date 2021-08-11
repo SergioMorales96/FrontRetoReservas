@@ -113,6 +113,11 @@ export class FormWorkstationComponent implements OnInit {
 
   }
 
+  get peopleNumberReservation(): number[]{
+   // if this.formControls['']
+    return [];
+  }
+
   removePeople(): void {
 
     this.peopleData.removeAt(this.peopleData.length - 1);

@@ -28,14 +28,14 @@
         Reserva
       </label>
       <p class="description description_muted font-size-body">
-        Seleccione un puesto o sala de reuniones en el mapa.
+        Elija un puesto o sala de reuniones en el mapa.
       </p>
-      <app-data-selector
+      <!-- <app-data-selector
         id="reserva"
         [data]="[1, 2, 3, 4]"
         [initialValue]="reservationId"
         (onCurrentValue)="onChangeReservation( $event )">
-      </app-data-selector>
+      </app-data-selector> -->
       <small
         *ngIf="formControls.reserva.errors?.required && submitted"
         class="p-error">

@@ -4,7 +4,6 @@ import * as moment from 'moment';
 import { AppState } from 'src/app/app.reducer';
 
 import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../../reservation.actions';
-import { ToastsService } from '../../../services/toasts.service';
 
 @Component({
   selector: 'app-time-period-slider',
@@ -25,7 +24,6 @@ export class TimePeriodSliderComponent implements OnInit{
   maxvalue1!: number;
 
   constructor(
-    private toastService: ToastsService,
     private store: Store<AppState>
   ) {
     this.store
