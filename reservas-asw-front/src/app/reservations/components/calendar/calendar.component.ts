@@ -89,6 +89,7 @@ export class CalendarComponent implements OnInit {
   }
 
   onMonthChange({ month, year }: { month: number, year: number }): void {
+    console.log(month, year);
   }
 
   monthChange(month: number, year: number): void {
