@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { AppState } from '../../../../app/app.reducer';
-import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setMeanOfTransport, setSelectedDate, setSymptoms, setSteps, setStartTime, setIsWorkstation } from '../../reservation.actions';
 
 @Component({
   selector: 'app-reservation-summary',
@@ -27,6 +27,7 @@ export class ReservationSummaryComponent implements OnInit {
   timePeriod: number=0;
   startTime:string="";
   endTime:string="";
+  isWorkstation!: boolean;
  /* meses = [
     "Enero",
     "Febrero",
@@ -47,8 +48,9 @@ export class ReservationSummaryComponent implements OnInit {
   ) {
     this.store
       .select('reservation')
-      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime }) => {
+      .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime, isWorkstation }) => {
         
+        this.isWorkstation = isWorkstation;
         this.setSteps( step );
         this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
@@ -88,11 +90,13 @@ export class ReservationSummaryComponent implements OnInit {
   }
   setInfo() {
     if (this.step >= 2) {
-      if (this.peopleNumber === 1) {
+      if (this.isWorkstation) {
         this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
       } else {
-        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
+        this.info = `Sala ${this.piso} , Sala ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
       }
+    }else{
+      this.info='Puesto Reserva';
     }
   }
 
@@ -101,6 +105,8 @@ export class ReservationSummaryComponent implements OnInit {
      
         this.sintomas = `Ha tenido sintomas : ${this.symptoms} `;
      
+    }else{
+      this.sintomas='Información del Asistente';
     }
   }
 
@@ -119,7 +125,6 @@ export class ReservationSummaryComponent implements OnInit {
 
   setFecha(){
     //const selectedDate = moment(this.selectedDateSummary).format('DD-MM-yyyy');
-    //console.log(selectedDate);
     if (this.step >= 3) {
       
         //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
@@ -128,6 +133,10 @@ export class ReservationSummaryComponent implements OnInit {
           if(this.selectedDateSummary===''){
             this.selectedDateSummary=new Date;
           }
+    }else{
+      this.selectedDateSummary='';
+      this.fecha='Fecha de Reserva';
+      this.timeMinutes='';
     }
 
   }

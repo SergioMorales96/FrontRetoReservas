@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation, setSymptoms } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -46,7 +46,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
   reservationType!: string;
   reservationId!: number;
   IsWorkstation!: boolean;
-  
+  symptoms!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -132,6 +132,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
     this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
+    this.store.dispatch(setSymptoms({ symptoms: this.assistantGroup.controls['sintomas'].value }));
 
     
     
