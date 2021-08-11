@@ -4,7 +4,7 @@ import { DateValidationType } from '../../../../utils/enums';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss' ]
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
@@ -15,15 +15,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  validateDayCapacity( hasCapacity: boolean ): void {
-    console.log( hasCapacity );
+  validateDayCapacity(hasCapacity: boolean): void {
+    console.log(hasCapacity);
   }
-  validateAvailabilityMotorcycle(availabilityMotocycle: boolean ): void {
-    console.log( availabilityMotocycle );
+  validateAvailabilityMotorcycle(availabilityMotocycle: boolean): void {
+    console.log(availabilityMotocycle);
   }
 
-  validateParkingAvailabilityPerCar( hasAvailabilityPerCar: boolean ): void {
-    console.log( hasAvailabilityPerCar );
+  validateParkingAvailabilityPerCar(hasAvailabilityPerCar: boolean): void {
+    console.log(hasAvailabilityPerCar);
   }
 
 }

@@ -1,0 +1,20 @@
+<p-calendar 
+  [inline]="true" 
+  [disabledDates]="invalidDates"
+  [disabledDays]="[0]"
+  [firstDayOfWeek]="1"
+  (onSelect)="setSelectedDate( $event )"
+  (onMonthChange)="onMonthChange( $event )"
+  [disabledDays]="[]"
+  [minDate] ="currentDate">
+
+  <ng-template pTemplate="date" let-date>
+    <td>
+      <span [ngClass]="{
+        'dia': isInvalidTotalDate(date.day)}">
+        {{date.day}}
+      </span>
+    </td>
+  </ng-template>
+
+</p-calendar>

@@ -22,8 +22,10 @@ export interface State {
     reservationAction: ReservationAction | number;
     isEditReservation: boolean;
     display: boolean;
+    blocked: boolean;
     selectedDateSummary: Date | string;
     step: number;
+    dates: DatesReservation[];
 }
 
 export const initialState: State = {
@@ -44,8 +46,10 @@ export const initialState: State = {
    reservationAction: 0,
    isEditReservation: false,
    display: false,
+   blocked: false,
    selectedDateSummary: '',
-   step: 0,
+   step: 1,
+   dates: [],
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -65,13 +69,13 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setStartSlider,(state, { startSlider }) => ({ ...state, startSlider: startSlider})),
     on(actions.setEndSlider,(state, { endSlider }) => ({ ...state, endSlider: endSlider})),
 
-
-
     on(actions.setReservation,(state,{reservation})=>({...state, reservation: reservation})),
     on(actions.setReservationList,(state,{reservationList})=>({...state, reservationList: reservationList})),
     on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
     on(actions.setDisplay,(state,{display})=>({...state, display: display})),
+    on(actions.setBlocked,(state,{blocked})=>({...state, blocked: blocked})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
+    on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
 );
 
 export function reservationReducer(state: any, action: any) {
