@@ -18,12 +18,19 @@ export class Calendar1Component implements OnInit {
   currentDate: Date;
   selectedDate: Date;
   invalidDates: Date[] = []; 
-  invalidTotalDates: Date[];
+  invalidTotalDates: number[];
   datesReservations: string[];
   stringDate: string;
+  datesReservations2: number[];
+  stringDate2: string;
   dateDate: Date[];
 
   datesReservation: DatesReservation[];
+
+  get diasparapintar(): Date [] {
+    const diasparapint = this.dateDate;
+    return diasparapint;
+  }
 
   constructor(
     private reservationsService: ReservationsService,
@@ -31,10 +38,12 @@ export class Calendar1Component implements OnInit {
   ) {
     this.selectedDate = new Date();
     this.currentDate = new Date();
-    this.stringDate = '';
     this.invalidTotalDates = [];
     this.dateDate = [];
     this.datesReservations = [];
+    this.stringDate = '';
+    this.datesReservations2 = [];
+    this.stringDate2 = '';
     this.datesReservation = [];
   }
 
@@ -65,11 +74,13 @@ export class Calendar1Component implements OnInit {
   }
 
   getarray(): void {
-    console.log('prueba1.0: ', this.datesReservation);
+    // console.log('prueba1.0: ', this.datesReservation);
     for (let i in this.datesReservation) {
       const dia = this.datesReservation[i].dia;
       const date = dia.split('-');
       this.stringDate = `${date[2]}/${date[1]}/${date[0]}`;
+      this.stringDate2 = `${date[0]}`;
+      this.datesReservations2.push(parseInt(this.stringDate2));
       this.datesReservations.push(this.stringDate);
     }
     for (let x in this.datesReservations) {
@@ -78,18 +89,19 @@ export class Calendar1Component implements OnInit {
     }
     // this.invalidDates = this.dateDate;
     console.log('Fechas en strings: ', this.datesReservations);
+    console.log('Dias en numbers: ', this.datesReservations2);
     console.log('Fechas en fechas: ', this.dateDate);
   }
 
-  isInvalidTotalDate(day: Date): boolean {
-    this.invalidTotalDates = this.dateDate;
+  isInvalidTotalDate(day: number): boolean {
+    this.invalidTotalDates = this.datesReservations2;
     return this.invalidTotalDates.includes(day);
   }
 
-  monthChange(month: number, year: number): void {
-    this.invalidTotalDates = [];
-    this.invalidDates = [];
-  }
+  // monthChange(month: number, year: number): void {
+  //   this.invalidTotalDates = [];
+  //   this.invalidDates = [];
+  // }
 
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
