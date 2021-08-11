@@ -34,9 +34,7 @@ export class FormWorkstationComponent implements OnInit {
   meanOfTransport!: number | null;
   reservationId!: number;
   showLicensePlate!: boolean;
-  workplaceLabel!: string;
-  peopleNumberData: number[] = [];
-  IsWorkstation!: boolean;
+
 
   private vehiclesWithLicensePlates: { key: string, value: number } [];
 
@@ -79,19 +77,13 @@ export class FormWorkstationComponent implements OnInit {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.floorNumber = this.form.get('piso')?.value;
-    
+    this.peopleNumber = this.form.get('personasReserva')?.value;
     this.meanOfTransport = this.form.get('medioTransporte')?.value;
     this.reservationId = this.form.get('reserva')?.value;
     this.meanOfTransport &&
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
-
-      this.store.select('reservation').subscribe((reservation) => {
-        this.IsWorkstation = reservation.isWorkstation;         
-        this.peopleNumber = this.formControls['personasReserva'].value;
-        this.IsWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
-      });
   }
 
   get transportModeName(): string {
@@ -114,12 +106,6 @@ export class FormWorkstationComponent implements OnInit {
     return this.form.controls;
 
   }
-
-  get workPlaceSelected(): boolean{
-
-    return this.formControls['reserva'].value > 0 ? true : false;
-
-  }
   
   get peopleData(): FormArray {
 
@@ -127,10 +113,9 @@ export class FormWorkstationComponent implements OnInit {
 
   }
 
-  get reservaId(): number{
-
-    return Number(this.formControls['reserva'].value);
-    
+  get peopleNumberReservation(): number[]{
+   // if this.formControls['']
+    return [];
   }
 
   removePeople(): void {

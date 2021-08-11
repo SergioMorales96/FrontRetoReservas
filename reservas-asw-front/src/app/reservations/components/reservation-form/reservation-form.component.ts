@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber,  setContinue,  setSteps, setReservationId, setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -45,8 +45,6 @@ export class ReservationFormComponent implements OnInit {
   emailString: string = '';
   reservationType!: string;
   reservationId!: number;
-  IsWorkstation!: boolean;
-  
 
   constructor(
     private fb: FormBuilder,
@@ -66,7 +64,7 @@ export class ReservationFormComponent implements OnInit {
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [, [Validators.required,Validators.min(1)]],
+        reserva: [1, Validators.required],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -109,7 +107,21 @@ export class ReservationFormComponent implements OnInit {
     this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
+
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
+    this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
    
+    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
+    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
+    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
+
+    this.store.dispatch(
+      setReservationId({
+        reservationId: this.workstationInfo.controls['reserva'].value,
+      })
+    );
+
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
@@ -117,17 +129,11 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      this.IsWorkstation = reservation.isWorkstation;         
-      this.IsWorkstation ? this.workstationGroup.controls['personasReserva'].setValue(1) : this.workstationGroup.controls['personasReserva'].setValue(2);
-      this.workstationGroup.controls['reserva'].setValue(this.reservationId);
+      
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
 
     });
-
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
-
     
   } 
 
