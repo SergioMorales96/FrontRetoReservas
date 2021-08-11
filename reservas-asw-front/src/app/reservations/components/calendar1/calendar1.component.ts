@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { Reservation } from '../../interfaces/reservations.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { OnInit } from '@angular/core';
 import { setSelectedDate } from 'src/app/reservations/reservation.actions';
-import { DatesReservation } from 'src/app/admin/interfaces/reservation';
-import { radToDeg } from 'three/src/math/MathUtils';
+import { DatesReservation, ReservationResponse } from 'src/app/admin/interfaces/reservation';
+import { ReservationsService } from 'src/app/admin/services/reservation.service';
+import { tap } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-calendar1',
@@ -16,44 +17,72 @@ export class Calendar1Component implements OnInit {
 
   currentDate: Date;
   selectedDate: Date;
-  invalidDates: Date[];
-  invalidTotalDates: number[];
-  allReservations!: DatesReservation[];
+  invalidDates: Date[] = []; 
+  invalidTotalDates: Date[];
+  datesReservations: string[];
+  stringDate: string;
+  dateDate: Date[];
 
+  datesReservation: DatesReservation[];
 
   constructor(
+    private reservationsService: ReservationsService,
     private store: Store<AppState>
   ) {
     this.selectedDate = new Date();
     this.currentDate = new Date();
-    this.invalidDates = [];
-    this.invalidTotalDates = []
+    this.stringDate = '';
+    this.invalidTotalDates = [];
+    this.dateDate = [];
+    this.datesReservations = [];
+    this.datesReservation = [];
   }
 
   ngOnInit(): void {
-    this.store
-      .select('reservation')
-      .subscribe(reservation => {
-        this.allReservations = reservation.reservationList;
-        console.log('datooos: ', this.allReservations);
-      });
-    this.llenarPrueba();
-    this.store
-      .select('reservation')
-      .subscribe(reservation => { this.allReservations = reservation.dates });
+    this.getReservations(this.getData());
   }
 
-  llenarPrueba() {
-    this.store
-      .select('reservation')
-      .subscribe(reservation => {
-        this.allReservations = reservation.reservationList;
-      });
-    for (let i in this.allReservations) {
+  getReservations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
+    this.reservationsService.getReservations(startDate, endDate, email)
+      .pipe(
+        tap(console.log)
+      )
+      .subscribe(
+        (ReservationResponse: ReservationResponse) => {
+          this.datesReservation = ReservationResponse.data;
+          this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R');
+          this.getarray();
+        }
+      )
+  }
+
+  getData() {
+    return {
+      startDate: moment().format('DD-MM-YYYY'),
+      endDate: moment().endOf('month').format('DD-MM-YYYY'),
+      email: 'correoJuan@correo.com'
     }
   }
 
-  isInvalidTotalDate(day: number): boolean {
+  getarray(): void {
+    console.log('prueba1.0: ', this.datesReservation);
+    for (let i in this.datesReservation) {
+      const dia = this.datesReservation[i].dia;
+      const date = dia.split('-');
+      this.stringDate = `${date[2]}/${date[1]}/${date[0]}`;
+      this.datesReservations.push(this.stringDate);
+    }
+    for (let x in this.datesReservations) {
+      const dia2 = this.datesReservations[x];
+      this.dateDate.push(new Date(dia2));
+    }
+    // this.invalidDates = this.dateDate;
+    console.log('Fechas en strings: ', this.datesReservations);
+    console.log('Fechas en fechas: ', this.dateDate);
+  }
+
+  isInvalidTotalDate(day: Date): boolean {
+    this.invalidTotalDates = this.dateDate;
     return this.invalidTotalDates.includes(day);
   }
 
@@ -62,16 +91,10 @@ export class Calendar1Component implements OnInit {
     this.invalidDates = [];
   }
 
-  private invalidTotalDatesDay(rev: Reservation, checked: string[]): void {
-    this.invalidTotalDates.push(parseInt(rev.dia));
-    checked.push(rev.dia);
-  }
-
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.store.dispatch(setSelectedDate({ selectedDateSummary: this.selectedDate }));
     console.log(this.selectedDate);
-    this.llenarPrueba();
   }
 }
 
