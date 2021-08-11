@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber,  setContinue,  setSteps, setReservationId, setDisplay } from '../../reservation.actions';
+import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation, setSymptoms } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -19,9 +19,9 @@ import * as moment from 'moment';
   templateUrl: './reservation-form.component.html',
   styleUrls: ['./reservation-form.component.scss'],
 })
-export class ReservationFormComponent implements OnInit {
+export class ReservationFormComponent implements OnInit, OnDestroy {
   reservaForm!: FormGroup;
-  step: number;
+  step!: number;
   submitted: boolean;
   numPersonas!: number;
   meanOfTransportStr!: string;
@@ -42,6 +42,8 @@ export class ReservationFormComponent implements OnInit {
   emailString: string = '';
   reservationType!: string;
   reservationId!: number;
+  IsWorkstation!: boolean;
+  symptoms!: string;
 
   constructor(
     private fb: FormBuilder,
@@ -50,18 +52,23 @@ export class ReservationFormComponent implements OnInit {
     private toastService: ToastsService,
     private alertsService: AlertsService
   ) {
-    this.step = 1;
     this.submitted = false;
-    this.store.dispatch( setSteps({step: this.step}) );
+    
   }
 
   ngOnInit(): void {
 
+      
+    this.store.select('reservation').subscribe((reservation) => {
+      this.step=reservation.step;
+
+    });
+    this.store.dispatch( setSteps({step:this.step}) ); 
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [1, Validators.required],
+        reserva: [, [Validators.required,Validators.min(1)]],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -104,21 +111,7 @@ export class ReservationFormComponent implements OnInit {
     this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
-
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
-    this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
    
-    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
-    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
-
-    this.store.dispatch(
-      setReservationId({
-        reservationId: this.workstationInfo.controls['reserva'].value,
-      })
-    );
-
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
@@ -126,13 +119,25 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      
+      this.IsWorkstation = reservation.isWorkstation;         
+      this.IsWorkstation ? this.workstationGroup.controls['personasReserva'].setValue(1) : this.workstationGroup.controls['personasReserva'].setValue(2);
+      this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
 
     });
+
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
+    this.store.dispatch(setSymptoms({ symptoms: this.assistantGroup.controls['sintomas'].value }));
+
+    
     
   } 
+
+  ngOnDestroy(): void{
+    this.store.dispatch(setDisplay({display : false}))
+  }
 
   get transportModeName(): string {
 
@@ -254,7 +259,8 @@ export class ReservationFormComponent implements OnInit {
     this.step += 1;    
     this.store.dispatch( setSteps({step: this.step}) );
 
-    if (this.step == 4) {    
+    if (this.step == 4) {  
+      this.store.dispatch( setSteps({step: 1}) );  
       this.addReservation();
       this.store.dispatch( setDisplay({display: false}) );
     }
