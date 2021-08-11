@@ -79,6 +79,7 @@ export class FormWorkstationComponent implements OnInit {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.floorNumber = this.form.get('piso')?.value;
+    this.peopleNumber = this.form.controls['personasReserva'].value;
     
     this.meanOfTransport = this.form.get('medioTransporte')?.value;
     this.reservationId = this.form.get('reserva')?.value;
@@ -89,8 +90,10 @@ export class FormWorkstationComponent implements OnInit {
 
       this.store.select('reservation').subscribe((reservation) => {
         this.IsWorkstation = reservation.isWorkstation;         
-        this.peopleNumber = this.formControls['personasReserva'].value;
+        this.peopleNumber = reservation.peopleNumber;
         this.IsWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
+        console.log("NUM PPL: ", this.peopleNumber);
+        
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
         if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
       });
