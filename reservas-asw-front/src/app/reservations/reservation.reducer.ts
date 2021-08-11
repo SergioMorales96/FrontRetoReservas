@@ -36,7 +36,7 @@ export const initialState: State = {
    startTime: "",
    endTime: "",
    startSlider: 0,
-    endSlider: 0,
+   endSlider: 0,
    reservationList: [],
    reservation: null ,
    reservationAction: 0,

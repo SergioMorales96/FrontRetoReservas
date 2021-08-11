@@ -14,9 +14,6 @@ export class TimePeriodSliderComponent implements OnInit{
   
   rangeValues!: Array<string>;
   rangeValues2!: Array<number>;
-  firstHour = '-';
-  secondHour = '0horas';
-  thirdHour = '0.5horas';
   minValue!: number;
   maxValue!:number;
   startTime!: string;
@@ -37,15 +34,13 @@ export class TimePeriodSliderComponent implements OnInit{
     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
-      this.maxvalue1 = reservation.endSlider;
-      this.minvalue1 = reservation.startSlider;
     } );
     if(this.startTime == ''){
       this.store.dispatch( setStartTime({ startTime: '08:00 AM'}) );
       this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
     }
     this.functionHour(this.maxvalue1,this.minvalue1);
-    this.rangeValues = ['0','0'];
+    
   }
   ngOnInit(): void {
      this.store
@@ -53,7 +48,11 @@ export class TimePeriodSliderComponent implements OnInit{
     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
+      this.maxvalue1 = reservation.endSlider;
+      this.minvalue1 = reservation.startSlider;
+      this.hour=reservation.endSlider-reservation.startSlider;
     } );
+    this.rangeValues = [String(this.minvalue1),String(this.maxvalue1)];
   }
   importValue(hour:number,currentTime:number):void{
     this.hour1=currentTime;
