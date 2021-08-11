@@ -117,16 +117,15 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      this.IsWorkstation = reservation.isWorkstation;         
-      this.IsWorkstation ? this.workstationGroup.controls['personasReserva'].setValue(1) : this.workstationGroup.controls['personasReserva'].setValue(2);
+      this.workstationGroup.controls['personasReserva'].setValue(reservation.peopleNumber);
       this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-
+      
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
+    
 
     
   } 

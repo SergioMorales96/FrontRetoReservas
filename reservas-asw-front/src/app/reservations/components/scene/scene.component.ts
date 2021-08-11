@@ -16,7 +16,7 @@ import { Floor } from '../../../admin/interfaces/admin.interfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId } from '../../../reservations/reservation.actions';
-import { setIsWorkstation } from '../../reservation.actions';
+import { setIsWorkstation, setPeopleNumber } from '../../reservation.actions';
 
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
@@ -229,6 +229,7 @@ export class SceneComponent implements OnInit {
             myStore.dispatch(setReservationId({ reservationId: id })); 
             let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
            
+            myStore.dispatch(setPeopleNumber ({peopleNumber: isWorkstation ? 1 : 2}))
             myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation} ) );
             
             

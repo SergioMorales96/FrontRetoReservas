@@ -91,6 +91,8 @@ export class FormWorkstationComponent implements OnInit {
         this.IsWorkstation = reservation.isWorkstation;         
         this.peopleNumber = this.formControls['personasReserva'].value;
         this.IsWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
+        if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
+        if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
       });
   }
 
