@@ -8,13 +8,10 @@ import {
   Reservation,
   ReservationResponse,
 } from 'src/app/reservations/interfaces/reservations.interface';
-import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
-import { DataService } from '../../../services/data.service';
 
 
 @Component({
