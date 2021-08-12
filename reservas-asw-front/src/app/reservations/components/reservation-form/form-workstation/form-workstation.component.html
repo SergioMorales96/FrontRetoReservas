@@ -27,17 +27,16 @@
         for="reserva">
         Reserva
       </label>
-      <p class="description description_muted font-size-body">
+
+      <p class="description description_muted font-size-body" *ngIf="!workPlaceSelected; else notSelected" >
         Elija un puesto o sala de reuniones en el mapa.
       </p>
-      <!-- <app-data-selector
-        id="reserva"
-        [data]="[1, 2, 3, 4]"
-        [initialValue]="reservationId"
-        (onCurrentValue)="onChangeReservation( $event )">
-      </app-data-selector> -->
+      <ng-template #notSelected>
+        <p class="description description_muted font-size-body">Puesto {{reservaId}}</p>
+      </ng-template>
+
       <small
-        *ngIf="formControls.reserva.errors?.required && submitted"
+        *ngIf="formControls.reserva.errors && submitted"
         class="p-error">
         Seleccione un puesto o sala en el mapa
       </small>
@@ -51,7 +50,7 @@
       </label>
       <app-data-selector
         id="personasReserva"
-        [data]="[1, 2, 3, 4, 5]"
+        [data]="peopleNumberData"
         [initialValue]="peopleNumber"
         (onCurrentValue)="onChangePeople( $event )">
       </app-data-selector>

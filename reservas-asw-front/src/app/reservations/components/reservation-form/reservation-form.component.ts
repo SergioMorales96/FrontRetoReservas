@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-
-import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation, setSymptoms } from '../../reservation.actions';
-
+import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -24,9 +22,9 @@ import { DataService } from '../../../services/data.service';
   templateUrl: './reservation-form.component.html',
   styleUrls: ['./reservation-form.component.scss'],
 })
-export class ReservationFormComponent implements OnInit, OnDestroy {
+export class ReservationFormComponent implements OnInit {
   reservaForm!: FormGroup;
-  step!: number;
+  step: number;
   submitted: boolean;
   numPersonas!: number;
   meanOfTransportStr!: string;
@@ -48,7 +46,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
   reservationType!: string;
   reservationId!: number;
   IsWorkstation!: boolean;
-  symptoms!: string;
+  
 
   constructor(
     private fb: FormBuilder,
@@ -57,23 +55,18 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
     private toastService: ToastsService,
     private alertsService: AlertsService
   ) {
+    this.step = 1;
     this.submitted = false;
-    
+    this.store.dispatch( setSteps({step: this.step}) );
   }
 
   ngOnInit(): void {
 
-      
-    this.store.select('reservation').subscribe((reservation) => {
-      this.step=reservation.step;
-
-    });
-    this.store.dispatch( setSteps({step:this.step}) ); 
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [1, Validators.required],
+        reserva: [, [Validators.required,Validators.min(1)]],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -116,21 +109,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
     this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
-
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
-    this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
    
-    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
-    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
-
-    this.store.dispatch(
-      setReservationId({
-        reservationId: this.workstationInfo.controls['reserva'].value,
-      })
-    );
-
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
@@ -138,17 +117,18 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      
+      this.workstationGroup.controls['personasReserva'].setValue(reservation.peopleNumber);
+      this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-
+      
     });
+
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    
+
     
   } 
-
-  ngOnDestroy(): void{
-    this.store.dispatch(setDisplay({display : false}))
-  }
 
   get transportModeName(): string {
 
@@ -203,7 +183,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva, // Enviar desde 3D
+      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
       idRelacion: 1, 
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails
@@ -270,8 +250,7 @@ export class ReservationFormComponent implements OnInit, OnDestroy {
     this.step += 1;    
     this.store.dispatch( setSteps({step: this.step}) );
 
-    if (this.step == 4) {  
-      this.store.dispatch( setSteps({step: 1}) );  
+    if (this.step == 4) {    
       this.addReservation();
       this.store.dispatch( setDisplay({display: false}) );
     }

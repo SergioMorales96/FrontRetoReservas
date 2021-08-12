@@ -34,7 +34,9 @@ export class FormWorkstationComponent implements OnInit {
   meanOfTransport!: number | null;
   reservationId!: number;
   showLicensePlate!: boolean;
-
+  workplaceLabel!: string;
+  peopleNumberData: number[] = [];
+  isWorkstation!: boolean;
 
   private vehiclesWithLicensePlates: { key: string, value: number } [];
 
@@ -76,14 +78,27 @@ export class FormWorkstationComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
+    this.peopleNumber = this.form.controls['personasReserva'].value;
+
     this.floorNumber = this.form.get('piso')?.value;
-    this.peopleNumber = this.form.get('personasReserva')?.value;
     this.meanOfTransport = this.form.get('medioTransporte')?.value;
     this.reservationId = this.form.get('reserva')?.value;
     this.meanOfTransport &&
     this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
+
+      this.store.select('reservation').subscribe((reservation) => {
+        this.isWorkstation = reservation.isWorkstation;         
+        if(this.isWorkstation) { 
+          this.peopleNumberData = [1];
+          while(this.peopleData.length > 1) this.removePeople();
+        }  else  this.peopleNumberData = [2,3,4,5]
+        this.peopleNumber = this.form.controls['personasReserva'].value;
+
+        if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
+        if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
+      });
   }
 
   get transportModeName(): string {
@@ -106,6 +121,12 @@ export class FormWorkstationComponent implements OnInit {
     return this.form.controls;
 
   }
+
+  get workPlaceSelected(): boolean{
+
+    return this.formControls['reserva'].value > 0 ? true : false;
+
+  }
   
   get peopleData(): FormArray {
 
@@ -113,9 +134,10 @@ export class FormWorkstationComponent implements OnInit {
 
   }
 
-  get peopleNumberReservation(): number[]{
-   // if this.formControls['']
-    return [];
+  get reservaId(): number{
+
+    return Number(this.formControls['reserva'].value);
+    
   }
 
   removePeople(): void {

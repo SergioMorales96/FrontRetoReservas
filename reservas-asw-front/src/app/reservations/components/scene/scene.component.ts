@@ -16,7 +16,7 @@ import { Floor } from '../../../admin/interfaces/admin.interfaces';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId } from '../../../reservations/reservation.actions';
-import { setIsWorkstation } from '../../reservation.actions';
+import { setIsWorkstation, setPeopleNumber } from '../../reservation.actions';
 
 
 const CAMERA_FOV = 60;
@@ -205,14 +205,14 @@ export class SceneComponent implements OnInit {
         raycaster.setFromCamera(pointer, camera);
         
         let intersects = raycaster.intersectObjects(scene.children, true);
-        console.log("el intersects dentro de onClick es: ", intersects);
+       // console.log("el intersects dentro de onClick es: ", intersects);
         let index: number = 0;
         let flag: boolean = false;
         do {
-          console.log("intersect[index] es: ", intersects[index], index);
+          //console.log("intersect[index] es: ", intersects[index], index);
           
           if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
-            console.log('entro al if');
+            //console.log('entro al if');
 
               if( selectedObject && selectedObject != intersects[index].object ){
                  setColorSelectedObject( );
@@ -221,12 +221,13 @@ export class SceneComponent implements OnInit {
 
             selectChair(intersects, index);  
             selectedObject = intersects[index].object;
-            console.log("el selectedObject es: ", selectedObject);
+            //console.log("el selectedObject es: ", selectedObject);
             let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
             myStore.dispatch(setReservationId({ reservationId: id })); 
             let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
+                      
             myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation} ) );
-            
+            myStore.dispatch(setPeopleNumber ({peopleNumber: isWorkstation ? 1 : 2}))
             
             if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
               selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
@@ -391,7 +392,7 @@ export class SceneComponent implements OnInit {
       loadPathFound( path, floorNumber, answ );
       
     }else{
-      console.log('No cargado ningun piso'); 
+     // console.log('No cargado ningun piso'); 
     }
 
     
@@ -1497,9 +1498,9 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       reservationsService.sendRoomsPerFloorRequest( urlPlugin, query )
       .subscribe(
         (answ: RoomsPerFloorResponse) => {
-          console.log("el query es: ", query);
+          //console.log("el query es: ", query);
           matrizS = loadRoomWorkSpaces( answ, matrizS );
-          console.log("la matrizS es: ", matrizS);
+         // console.log("la matrizS es: ", matrizS);
           
           
           /** PISO 18 */
