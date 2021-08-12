@@ -112,7 +112,7 @@ export class EditReservationComponent {
 
   getData() {
     return {
-      startDate: moment().format('DD-MM-YYYY'),
+      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
       endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
