@@ -2,7 +2,7 @@
   [inline]="true" 
   [disabledDates]="invalidDates"
   [showOtherMonths]="false" 
-  [disabledDays]="[]"
+  [disabledDays]="invalidDays"
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
   (onMonthChange)="monthChange( $event.month, $event.year )"

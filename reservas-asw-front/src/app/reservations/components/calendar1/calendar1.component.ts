@@ -20,8 +20,10 @@ export class Calendar1Component implements OnInit {
   currentDate: Date;
   selectedDate: Date;
   invalidDates: Date[] = [];
+  invalidDays: number[] = [];
   invalidTotalDates: number[];
   datesReservation: DatesReservation[];
+  blocked!: boolean;
 
   constructor(
     private reservationsService: ReservationsService,
@@ -31,9 +33,14 @@ export class Calendar1Component implements OnInit {
     this.currentDate = new Date();
     this.invalidTotalDates = [];
     this.datesReservation = [];
+    this.invalidDays = [];
   }
 
   ngOnInit(): void {
+    this.store.select('reservation').subscribe(
+      (reservation) => this.blocked = reservation.blocked
+    );
+    console.log('estado usuario :', this.blocked);
     this.getReservations(this.getData(this.tempDate));
   }
 
@@ -47,13 +54,12 @@ export class Calendar1Component implements OnInit {
 
   getReservations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
     this.reservationsService.getReservations(startDate, endDate, email)
-      .pipe(
-      )
+      .pipe()
       .subscribe(
         (ReservationResponse: ReservationResponse) => {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R');
-          this.updateCalendar();
+          this.updateCalendar(this.validator());
           console.log('reservas :', this.datesReservation);
         }
       )
@@ -66,30 +72,44 @@ export class Calendar1Component implements OnInit {
   monthChange(month: number, year: number): void {
     this.invalidTotalDates = [];
     this.invalidDates = [];
+    this.invalidDays = [];
     this.tempDate.setMonth(month - 1);
     this.tempDate.setDate(this.obtenerDia(month, year));
     this.tempDate.setFullYear(year);
     this.getReservations(this.getData(this.tempDate));
   }
 
-  obtenerDia(month: number, year: number ): number {
-    let dia = 1;
-    const actual = new Date ();
-    if (month - 1 === actual.getMonth() && year === actual.getFullYear()){
-      dia = actual.getDate();
+  obtenerDia(month: number, year: number): number {
+    let initialday = 1;
+    const actual = new Date();
+    if (month - 1 === actual.getMonth() && year === actual.getFullYear()) {
+      initialday = actual.getDate();
     }
-    return dia;
+    return initialday;
   }
 
-  updateCalendar(): void {
-    let i = 0;
-    let checked: string[] = [];
+  validator(): boolean {
+    let validacion = true;
+    if (this.datesReservation.length == 0 || this.blocked == true) {
+      validacion = false;
+    }
+    return validacion;
+  }
 
-    for (const reservation of this.datesReservation) {
-      if (!checked.includes(this.datesReservation[i].dia)) {
-        checked = this.compareReservations(i, checked);
+  updateCalendar(tamaño: boolean): void {
+    if (tamaño == true) {
+      console.log('tamaño consulta :', this.datesReservation.length);
+      let i = 0;
+      let checked: string[] = [];
+
+      for (const reservation of this.datesReservation) {
+        if (!checked.includes(this.datesReservation[i].dia)) {
+          checked = this.compareReservations(i, checked);
+        }
+        i++;
       }
-      i++;
+    } else {
+      this.invalidDays = [0, 1, 2, 3, 4, 5, 6]
     }
   }
 
