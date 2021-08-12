@@ -56,7 +56,6 @@ export class Calendar1Component implements OnInit {
       .select('reservation')
       .subscribe(reservation => {
         this.allReservations = reservation.reservationList;
-        console.log('Hello world', this.allReservations);
         
       });
 
