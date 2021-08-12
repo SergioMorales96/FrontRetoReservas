@@ -1,0 +1,180 @@
+.button__close{
+  background-color: white;
+  color: red;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+}
+.cancel__button{
+  width: 13.25rem;
+  height: 2.5rem;
+  align-items: center;
+  background-color: #fa729c;
+  border: none;
+  color: white;
+  border-radius: none;  
+}
+.column__White {
+  width: 2.875rem;
+  height: 21.4375rem;
+}
+
+.column__center {
+  width: 25.5625rem;
+}
+.degrade__line {
+  width: 24.25rem;
+  height: 0.0625rem;
+  margin: 0 0.625rem 0 0.625rem;
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 97%, var(#ffffff) 49%, rgba(255, 255, 255, 0) 2%);
+}
+.reservation__background{
+  width: 24.25rem;
+  left:.6rem;
+  height: 302px; 
+  background-color: #0666fb; 
+  position: relative;
+}
+.reservation__cancel {
+  width: 13.25rem;
+  height: 2.5rem;
+  background-color: #fa729c;
+}
+.reservation__edit {
+  color: #ffffff;
+  width: 24.25rem;
+  height: 2.5rem;
+  padding: 0.089rem 0.625rem 0.089rem 0.625rem;
+  margin: 0 0.625rem 0 0.625rem;
+  background-color: #0666fb;
+}
+.reservation__pipe-divider {
+  font-size: 0.5rem;
+}
+.reservation__salaOrJob{
+  max-width: 11.25rem;
+  max-width: 5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.reservation__subtitle {
+  font-size: 1.3125rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+  display: flex;
+  align-items: center;
+}
+.reservation__subtitle-2 {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+  display: flex;
+  align-items: center;
+}
+.reservation__text {
+  font-size: 1rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+  opacity: 0.56;
+}
+.reservation__text-small {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+.reservation__text-small-2 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+.reservation__title {
+  font-size: 2rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+.style__backgruond1 {
+  position: absolute;
+  top: 0;
+  left: -0.5rem;
+  right: -0.5rem;
+  height: 9.25rem;
+  color: white;
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+  background-color: rgba(0, 0, 2, 0.6);
+  border-bottom: 4px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(to right, #606060, white, #606060);
+}
+.style__backgruond2 {
+  position: absolute;
+  top: 152px;
+  left: -0.5rem;
+  right: -0.5rem;
+  height: 10.25rem;
+  color: white;
+  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(30px);
+  box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+  background-color: rgba(0, 0, 2, 0.6);
+  border-top: 4px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(to right, #606060, white, #606060);
+}
+:host ::ng-deep {
+  .reservation__button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .reservation__button:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .reservation__controls-button:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.viewEdit{
+  flex-wrap: nowrap !important;
+}

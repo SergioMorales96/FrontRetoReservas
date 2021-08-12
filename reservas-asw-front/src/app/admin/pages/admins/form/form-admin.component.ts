@@ -8,7 +8,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 import { BranchesService } from '../../../services/branches.service';
 import { BranchesResponse, Branch } from 'src/app/admin/interfaces/branches.interfaces';
 @Component({
-  selector: 'app-form-admin',
+  selector: 'form-add-admin',
   templateUrl: './form-admin.component.html',
   styles: [
   ]
@@ -97,6 +97,7 @@ export class FormAdminComponent implements OnInit {
         .subscribe(
           (adminResponse: AdminResponse) => {
             this.router.navigateByUrl(RouteName.AdminsList);
+            
             this.toastService.showToastSuccess({ summary: 'Administrador editado', detail: 'El administrador ha sido editado correctamente' });
           },
           (() => this.admin = new AdminClass())
@@ -106,7 +107,12 @@ export class FormAdminComponent implements OnInit {
         .subscribe(
           (adminResponse: AdminResponse) => {
             this.router.navigateByUrl(RouteName.AdminsList);
-            this.toastService.showToastSuccess({ summary: 'Administrador creado', detail: 'El administrador ha sido creado correctamente' })
+            if (adminResponse.success=== false){
+              this.toastService.showToastDanger({ summary: 'No se creo el administrador', detail: 'El administrador no se pudo crear' })
+            }else{
+              this.toastService.showToastSuccess({ summary: 'Administrador creado', detail: 'El administrador ha sido creado correctamente' })
+
+            }
           },
           (() => this.admin = new AdminClass())
         )

@@ -1,0 +1,141 @@
+<div class="p-fluid">
+
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Puesto reserva</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
+
+  <ng-container [formGroup]="form">
+
+    <label 
+      class="label font-size-small" 
+      for="piso">
+      Piso
+    </label>
+    <app-data-selector
+      id="piso"
+      [data]="[18, 19, 20]"
+      [initialValue]="floorNumber"
+      (onCurrentValue)="onChangeFloor( $event )">
+    </app-data-selector>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="reserva">
+        Reserva
+      </label>
+      <p class="description description_muted font-size-body">
+        Elija un puesto o sala de reuniones en el mapa.
+      </p>
+      <!-- <app-data-selector
+        id="reserva"
+        [data]="[1, 2, 3, 4]"
+        [initialValue]="reservationId"
+        (onCurrentValue)="onChangeReservation( $event )">
+      </app-data-selector> -->
+      <small
+        *ngIf="formControls.reserva.errors?.required && submitted"
+        class="p-error">
+        Seleccione un puesto o sala en el mapa
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="personasReserva">
+        Personas reserva
+      </label>
+      <app-data-selector
+        id="personasReserva"
+        [data]="[1, 2, 3, 4, 5]"
+        [initialValue]="peopleNumber"
+        (onCurrentValue)="onChangePeople( $event )">
+      </app-data-selector>
+    </div>
+
+    <ng-container formArrayName="datosAcompanante">
+      <ng-container *ngFor="let peopleReservation of peopleData.controls; let i = index">
+        <div class="p-field" *ngIf="i > 0">
+          <label 
+            class="label font-size-small" 
+            for="peopleReservation">
+            Datos Personas
+          </label>
+          <div [formGroupName]="i">
+            <input
+              type="text"
+              pInputTex
+              class="p-inputtext"
+              formControlName="correo"
+              placeholder="Correo" />
+
+            <small
+              *ngIf="(peopleReservation.get('correo')?.touched &&
+                    peopleReservation.get('correo')?.errors) ||
+                    (submitted && peopleReservation.get('correo')?.errors)"
+              class="p-error">
+              Correo inválido
+            </small>
+            <div class="p-field_checkbox">
+              <input
+                class="checkMember"
+                type="checkbox"
+                checked="false"
+                formControlName="miembroOrganizacion" />
+              <label 
+                class="label font-size-small" 
+                for="esDeOrganizacion">
+                Es de la organizacion
+              </label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="medioTransporte">
+        Medio de transporte
+      </label>
+      <app-data-selector
+        id="medioTransporte"
+        [data]="meansOfTransport"
+        [initialValue]="meanOfTransport"
+        label="label"
+        value="value"
+        (onCurrentValue)="onChangeTransport( $event )">
+      </app-data-selector>
+    </div>
+
+    <div 
+      *ngIf="showLicensePlate" 
+      class="p-field">
+      <label 
+        class="label font-size-small" 
+        for="placaMedioTransporte">
+        Placa del {{ transportModeName | lowercase }}
+      </label>
+      <p-inputMask
+        id="placaMedioTransporte"
+        placeholder="XXX-###"
+        formControlName="placa"
+        mask="aaa-99*"
+        [autoClear]="false"
+        [style]="{ 'text-transform': 'uppercase' }">
+      </p-inputMask>
+    </div>
+    <small
+      *ngIf="formControls.placa?.touched && formControls.placa.errors"
+      class="p-error">
+      Placa inválida
+    </small>
+
+  </ng-container>
+
+</div>

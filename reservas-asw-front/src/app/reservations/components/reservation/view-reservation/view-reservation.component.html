@@ -1,0 +1,112 @@
+<ng-container *ngIf="datesReservation.length > 0; else noReservations">
+    <div 
+        class="p-d-flex" 
+         *ngIf="showReservations; else userBlock"> 
+        <div class="p-d-flex p-jc-center p-ai-center">
+            <p-button 
+                styleClass="reservation__controls-button p-button-text"
+                (onClick)="showReservation( -1 )"
+                [disabled]="!canShowPreview">
+                <ng-template pTemplate="content">
+                    <img 
+                        alt="icon" 
+                        src="assets/images/icons/arrow-left-blue.svg" />
+                </ng-template>
+            </p-button>
+        </div>
+        <div class="reservation__background" >
+            <div class="position-relative p-pt-6 p-px-4 p-pb-4">
+                <p-button 
+                    styleClass="button_square reservation__button"
+                    (onClick)="showEditReservation()">
+                    <ng-template pTemplate="content">
+                        <img 
+                            alt="icon" 
+                            src="assets/images/icons/travel-guide.svg" 
+                            *ngIf="false; else edit"/>
+                        <ng-template #edit>
+                            <img alt="icon" src="assets/images/icons/edit.svg" />
+                        </ng-template>
+                    </ng-template>
+                </p-button>
+    
+                <div class="p-grid p-m-0" >
+                    <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
+                        <img class="" [src]="'assets/images/icons/'+ workStationMedia">
+                        <p class="reservation__text-small-2 p-mb-0">Reserva</p>
+                    </div>
+                    <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
+                        <h1 class="reservation__title p-mt-0 p-mb-2">{{ reservationDate }}</h1>
+                        <h3 class="reservation__subtitle p-mt-0 p-mb-0">{{ currentReservation?.horaInicio}} &nbsp; <span
+                                class="reservation__pipe-divider">|</span> &nbsp; {{ currentReservation?.horaFin}}
+                        </h3>
+                    </div>
+                </div>
+                <hr class="white__line">
+                <div class="p-d-flex p-jc-center p-ai-center">
+                    <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; 
+                        <span class="reservation__pipe-divider">|</span> &nbsp;
+                        <span class="reservation__salaOrJob"> {{salaOrJob}} </span>  &nbsp; 
+                        <span class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
+                </div>
+            </div>
+            
+            <div class="reservationGeneral p-grid p-m-0 p-py-3">
+                <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                    <h5 class="reservation__text-small p-mt-0">
+                        Medio de transporte
+                    </h5>
+                    <div class="p-d-flex p-jc-center p-ai-center">
+                        <img class="p-mr-2" [src]="transportMedia">
+                        <p class="reservation__text">{{typeVehicle}}</p>
+                    </div>
+                </div>
+                <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
+                    <h5 class="reservation__text-small p-mt-0">{{brandOrPlate}}</h5>
+                    <p class="reservation__text p-my-0">
+                        {{currentReservation?.placa}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="p-d-flex p-jc-center p-ai-center">
+            <p-button 
+                styleClass="reservation__controls-button p-button-text"
+                (onClick)="showReservation( 1 )"
+                [disabled]="!canShowNext">
+                <ng-template pTemplate="content">
+                    <img alt="icon" src="assets/images/icons/arrow-right-blue.svg" />
+                </ng-template>
+            </p-button>
+        </div>
+    </div>
+</ng-container>
+<ng-template #noReservations>
+    <div class="p-d-flex">
+        <div class="p-d-flex p-jc-center p-ai-center">
+           <i>
+                <img alt="icon" src="assets/images/icons/flecha.svg">
+           </i> 
+        </div>
+        <div class="dimensions p-col-5 d-p-flex p-jc-center p-ai-center">
+            <p class="question" ><img src="assets/images/icons/question.svg"></p>
+            <p class="noReservation">No hay reservas para este mes, realiza una reserva</p>
+        </div>
+    </div>
+</ng-template>
+<ng-template #userBlock>
+    <div class="p-d-flex">
+        <div class="dimensions p-col-3 d-p-flex p-jc-center p-ai-center">
+            <p class="question" ><img alt="icon" src="assets/images/icons/sad-face.svg"></p>
+            <p class="noReservation">
+                Has fallado muchas veces con las reservas,
+                Debes esperar {{ dataUser?.remainingDays }} días para poder realizar
+                una nueva.
+            </p>
+            <br>
+            <p class="noReservation"> 
+                Recuerda que al reservar estás generando aforo en las oficinas, si no asistes estás afectando a tus compañeros que habrían podido ocupar tu lugar.
+            </p>
+        </div>
+    </div>
+</ng-template>

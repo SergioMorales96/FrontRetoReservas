@@ -14,6 +14,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenubarModule } from 'primeng/menubar';
+import {MenuModule} from 'primeng/menu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { SplitterModule } from 'primeng/splitter';
@@ -27,6 +28,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { BadgeModule } from 'primeng/badge';
 import { MessagesModule } from 'primeng/messages';
 import { PaginatorModule } from 'primeng/paginator';
+import {SliderModule} from 'primeng/slider';
 
 
 @NgModule({
@@ -38,7 +40,6 @@ import { PaginatorModule } from 'primeng/paginator';
     ConfirmDialogModule,
     DialogModule,
     DividerModule,
-    DialogModule,
     DropdownModule,
     InputNumberModule,
     InputMaskModule,
@@ -46,6 +47,7 @@ import { PaginatorModule } from 'primeng/paginator';
     InputTextModule,
     KeyFilterModule,
     ListboxModule,
+    MenuModule,
     MegaMenuModule,
     MenubarModule,
     PaginatorModule,
@@ -57,11 +59,12 @@ import { PaginatorModule } from 'primeng/paginator';
     ToastModule,
     ToggleButtonModule,
     TooltipModule,
-    MenubarModule,
+    ConfirmDialogModule,
     MessagesModule,
     AvatarModule,
     AvatarGroupModule,
     BadgeModule,
+    SliderModule
   ],
 })
 export class PrimeNgModule { }

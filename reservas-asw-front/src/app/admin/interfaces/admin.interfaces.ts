@@ -23,6 +23,7 @@ export interface FloorResponse {
 
 }
 
+
 export interface Floor {
     idPiso:      number;
     aforoMaximo: number;
@@ -30,7 +31,5 @@ export interface Floor {
     nombre:      string;
     numeroPiso:  number;
 }
-
-
 
 

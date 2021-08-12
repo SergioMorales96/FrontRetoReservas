@@ -1,17 +1,14 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-
     <h3> {{ formTitle }} </h3>
-
     <a
         pButton
-        *ngIf="isEditing"
         [routerLink]="[routeName.BranchView, branch?.idSucursal]"
         class="button-link p-button-help p-m-1"
         icon="pi pi-eye"
         pTooltip="Ver"
-        tooltipPosition="top">
+        tooltipPosition="top"
+        *ngIf="isEditing">
     </a>
-
 </div>
 
 <form 
@@ -63,14 +60,14 @@
                 required>
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Nit</label>
-            <input 
-                id="nit" 
-                type="text" 
+            <label for="floorId">Empresa</label>
+                <p-dropdown 
+                [options]="enterprises" 
                 formControlName="nit" 
-                placeholder="Nit" 
-                pInputText
-                required>
+                placeholder="Seleccione empresa" 
+                optionLabel="nombre"
+                optionValue="nit">
+                </p-dropdown>
         </div>
 
     </div>

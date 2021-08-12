@@ -1,0 +1,75 @@
+:host ::ng-deep .p-card {
+    background-color: #0666fb23;
+    width: 20rem;
+    height: 12rem;
+    box-shadow: none;
+    
+    .p-titleSlider{
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.0;
+        color: white;
+    }
+    .p-textHour{
+        opacity: 0.57;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: left;
+        color: white;
+    }
+    .p-timeFrame{
+        width: 70px;
+        height: 83px;
+        padding: 7px 8px 7px 7px;
+        border-radius: 11px;
+        border: solid 1px rgba(255, 255, 255, 0.47);
+       
+    }
+    .p-listHour{
+        width: 30px;
+        height: 13px;
+        margin: 2px 1px 5px 0px;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: left;
+        color: white;
+    }
+    .p-selectTime{
+        width: 200px;
+        height: 13px;
+        margin: 10px 1px 5px 0;
+        opacity: 0.57;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.3;
+        letter-spacing: normal;
+        text-align: right;
+        color: white;
+    }
+    .p-opacities{
+        opacity: 0.57;
+    }
+
+    .p-slider1{
+        width: 185px;
+        height: 20px;
+        margin-top: 30px;
+        margin-left: 20px;
+        text-align: unset;
+    }
+    .p-slider-handle{
+        width: 15px;
+        height: 25px;
+        border-block-start-color: white;
+        border-color: white;
+    }
+    .p-editImage{
+        margin-top: 20px;
+
+    }
+    
+  }

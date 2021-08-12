@@ -1,0 +1,52 @@
+<div class="p-fluid">
+  <div class="p-card">
+      <div class="p-grid">
+        <div class="p-col-5">
+            <p class="p-titleSlider">Fecha de reserva</p>
+        </div>
+            <div class="p-editImage">
+            <img
+              src="assets/images/icons/minus-gray.svg" 
+              alt="step icon" />
+          </div>
+        </div>
+            <div class="p-field">
+              <label 
+                class="p-textHour">
+                Periodo de tiempo por horas (salas)
+              </label>
+            </div>
+        
+        <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-3 ">
+               
+            <label class="p-timeFrame" for="countries" >
+               <div class="p-listHour">
+                    <a class="p-listHour p-opacities">{{firstHour}}<br></a>
+                    <a class="p-listHour">{{secondHour}}<br></a>
+                    <a class="p-listHour p-opacities">{{thirdHour}}<br></a>                       
+                </div> 
+            </label>
+        </div>
+    
+            <div class="p-col-9">
+                <div class="p-grid p-selectTime">
+                    <div class="p-col">
+                        {{ startTime }}
+                    </div>
+                    <div class="p-col">
+                        {{ endTime }}
+                    </div>
+
+                </div>
+                <div class="p-slider1 p-col ">
+                    <p-slider 
+                    [(ngModel)]="rangeValues" 
+                    [min]="0" 
+                    [max]="18" 
+                    [range]="true"
+                    (onChange)="onChange( $event )"></p-slider>               
+                </div>
+            </div>
+        </div>
+</div>

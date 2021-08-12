@@ -29,6 +29,13 @@ import { FormDomainComponent } from './pages/domains/form/form-domain.component'
 import { ListBranchComponent } from './pages/branches/list/list-branch.component';
 import { FormBranchComponent } from './pages/branches/form/form-branch.component';
 import { ViewBranchComponent } from './pages/branches/view/view-branch.component';
+import { ViewReservationComponent } from '../reservations/components/reservation/view-reservation/view-reservation.component';
+import { ReservationComponent } from '../reservations/components/reservation/reservation.component';
+import { EditReservationComponent } from '../reservations/components/reservation/edit-reservation/edit-reservation.component';
+import { CActiveGuard } from '../auth/c-active.guard';
+import { CLoadService } from '../auth/c-load.service';
+import { AddComponent } from '../reservations/pages/add/add.component';
+import { HomeComponent } from '../reservations/pages/home/home.component';
 
 
 const routes: Routes = [
@@ -117,7 +124,6 @@ const routes: Routes = [
           }
 
         ]
-
       },
       {
         path: 'floors',
@@ -224,6 +230,18 @@ const routes: Routes = [
             redirectTo: 'list'
           }
         ]
+      },
+      {
+        path:'reservations',
+        component: ReservationComponent,
+      },
+      {
+        path:'addReservation',
+        component: AddComponent,
+      },
+      {
+        path:'viewReservation',
+        component: HomeComponent,
       },
       {
         path: '**',

@@ -5,12 +5,11 @@ import { CActiveGuard } from './auth/c-active.guard';
 import { CLoadService } from './auth/c-load.service';
 
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
-import { HomeComponent } from './shared/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    redirectTo: 'reservations',
     pathMatch: 'full'
   },
   {

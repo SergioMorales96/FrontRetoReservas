@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
-import { RouteName, RouteFloor } from '../../../utils/enums';
+import { RouteFloor, RouteName } from '../../../utils/enums';
+import { setDisplay } from '../../reservations/reservation.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,77 +11,68 @@ import { RouteName, RouteFloor } from '../../../utils/enums';
   styles: [
   ]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
 
-  @Input() display: boolean = false;
-  @Output() onHide = new EventEmitter<boolean>();
+  display!: boolean;
+  blocked!: boolean;
+  items: MenuItem[];
+  routeName = RouteName;
+  routeNameFloors = RouteFloor;
 
-  items: MenuItem[] = [];
+  get generateReservationIcon(): string {
+    return `assets/images/icons/${this.blocked ? 'minus-gray' : this.display ? 'close-red' : 'plus-blue'}.svg`;
+  }
+
+  get myReservationIconCalendar(): string {
+    return `assets/images/icons/${this.display ? 'calendar-white' : 'calendar-blue'}.svg`;
+  }
+
+  get myReservationIconArrow(): string {
+    return `assets/images/icons/${this.display ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
+  }
+
+  changeDisplay(display: boolean){
+    this.display = display;
+    this.store.dispatch(setDisplay({display : display}))
+  }
 
   ngOnInit(): void {
+    this.store.select('reservation').subscribe(
+      (reservation) => this.display = reservation.display
+    );
+    this.store.select('reservation').subscribe(
+      (reservation) => this.blocked = reservation.blocked
+    );
+  }
+
+  constructor(
+    private store: Store<AppState>
+  ) {
     this.items = [
       {
-        label: 'Generar una reserva',
-        icon: 'pi pi-times-circle',
-        disabled: true,
+        label: 'Lista de usuarios',
+        routerLink: ''
       },
       {
-        label: 'Mis reservas',
-        icon: 'pi pi-calendar-times',
-        disabled: true,
+        label: 'Lista de administración',
+        routerLink: 'admin/admins/list'
       },
       {
-        label: 'Administración',
-        items: [
-          {
-            label: 'Lista de administradores',
-            icon: 'pi pi-users',
-            routerLink: RouteName.AdminsList,
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de dominios',
-            icon: 'pi pi-list',
-            routerLink: RouteName.DomainsList,
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de horarios de puestos de trabajo',
-            icon: 'pi pi-clock',
-            routerLink: RouteName.SchedulesList,
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de pisos',
-            icon: 'pi pi-list',
-            routerLink: RouteFloor.FloorList,
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de puestos de trabajo',
-            routerLink: RouteName.WorkstationList,
-            icon: 'pi pi-briefcase',
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de salas',
-            icon: 'pi pi-list',
-            routerLink: RouteName.RoomsList,
-            command: () => this.display = false
-          },
-          {
-            label: 'Lista de sucursales',
-            icon: 'pi pi-list',
-            routerLink: RouteName.BranchesList,
-            command: () => this.display = false
-          },
-        ]
-      }
-    ]
+        label: 'Lista de dominios',
+        routerLink: 'admin/domains/list'
+      },
+      {
+        label: 'Lista de pisos',
+        routerLink: 'admin/floors/list'
+      },
+      {
+        label: 'Lista de salas',
+        routerLink: 'admin/rooms/list'
+      },
+      {
+        label: 'Lista de sucursales',
+        routerLink: 'admin/branches/list'
+      },
+    ];
   }
-
-  hide( ): void {
-    this.onHide.emit(true);
-  }
-
 }

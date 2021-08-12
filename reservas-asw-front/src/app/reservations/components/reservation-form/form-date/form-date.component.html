@@ -1,0 +1,33 @@
+<div class="p-fluid">
+
+  <ng-container [formGroup]="form">
+    <div class="p-field">
+      <app-time-period-slider></app-time-period-slider>
+      <small
+      *ngIf="submitted && form.controls.periodoTiempo.errors"
+      class="p-error">
+      Seleccione su tiempo de estadía
+    </small>
+    
+    </div>
+
+    <div class="p-my-5">
+      <app-calendar></app-calendar>
+      <small
+      *ngIf="submitted && form.controls.fecha.errors"
+      class="p-error">
+      Seleccione una fecha
+    </small>
+    </div>
+
+    
+
+    <label class="label font-size-small">Informacion del Aforo</label>
+    <br />
+    <p class="description font-size-body">
+      El aforo para este día es <br> bajo <span style="color: #9cf886;">(65 personas)</span>
+    </p>
+
+  </ng-container>
+
+</div>

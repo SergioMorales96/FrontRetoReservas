@@ -1,0 +1,117 @@
+<div class="p-fluid">
+
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Información del <br> asistente</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
+
+  <ng-container [formGroup]="form">
+
+    <div class="p-field">
+      <label
+        class="label font-size-small"
+        for="nombres">Nombres y Apellidos
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="nombres"
+        [style]="{ 'text-transform': 'uppercase' }" />
+      <small
+        *ngIf="submitted && formControls.nombres.errors?.required"
+        class="p-error">
+        Se requieren los nombres
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="identificacion">
+        Identificación
+      </label>
+      <p-inputNumber 
+      formControlName=identificacion ></p-inputNumber>
+      <small
+        *ngIf="submitted && formControls.identificacion.errors?.required" 
+        class="p-error">
+        Por favor ingresar su identificacion
+      </small>
+    </div>
+
+    <!-- <div class="p-field"> 
+      <label 
+        class="label font-size-small"
+        for="grupoRiesgo">
+        Grupo de riesgo 1
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="grupoRiesgo" />
+    </div>-->
+
+    <!-- <div class="p-field">
+      <label 
+        class="label font-size-small"  
+        for="convivenciaRiesgo">
+        Convive con grupo de riesgo 1
+      </label>
+      <input
+        type="text"
+        pInputText
+        class="p-inputtext"
+        formControlName="convivenciaRiesgo" />
+    </div> -->
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="piso">
+        ¿Ha tenido sintomas de coronavirus? (Disnea, fiebre, tos seca, dolor
+        de garganta, dificultad para identificar olores y sabores)
+      </label>
+      <div class="p-d-flex">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-chevron-left"
+          (click)="hasSymptoms()">
+        </button>
+        <span>{{ symptoms }}</span>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-chevron-right"
+          (click)="hasSymptoms()">
+        </button>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label 
+        class="label font-size-small"
+        for="piso">
+        Indica barrio donde vives y describe la ruta que realizarás
+      </label>
+      <textarea
+        [rows]="2"
+        [cols]="30"
+        pInputTextarea
+        placeholder="Descripción"
+        formControlName="descripcion">
+      </textarea>
+      <small
+        *ngIf="submitted && formControls.descripcion.errors?.required"
+        class="p-error">
+        Descripción
+      </small>
+    </div>
+
+  </ng-container>
+
+</div>

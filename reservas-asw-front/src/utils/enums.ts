@@ -26,6 +26,8 @@ export enum RouteName {
     DomainEdit = "/admin/domains/edit",
     DomainView = "/admin/domains/view",
     
+    addReservation = "/admin/addReservation",
+    viewReservation = "/admin/viewReservation"
     }
 
 export enum RouteFloor {
@@ -38,4 +40,22 @@ export enum RouteFloor {
 export enum WorkStationState {
     Active = 'A',
     Inactive = 'I'
+}
+
+export enum WorkStationType {
+    Gerente = 'G',
+    PuestoTrabajo = 'PT'
+}
+
+export enum DateValidationType {
+    DayCapacity,
+    ParkingAvailabilityPerMotorcycle,
+    ParkingAvailabilityPerCar,
+    ParkingAvailabilityPerBicycle,
+}
+
+ 
+export enum ReservationAction {
+    Edit,
+    ViewSummary
 }

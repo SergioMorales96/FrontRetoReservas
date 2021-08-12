@@ -1,20 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Store } from '@ngrx/store';
+import { AppState } from './app.reducer';
+import { environment } from '../environments/environment'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  title = 'reservas-asw-front';
   display: boolean = false;
+  responsive: boolean = false;
+  assetsUrl = environment.assetsUrl
 
-  items: MenuItem[] = [];
+  constructor(
+    private store: Store<AppState>
+  ){}
 
   ngOnInit(): void {
-    this.items = [
-    ]
+    this.store.select('reservation').subscribe((reservation) => {
+      this.display = reservation.display;
+    });
   }
 }

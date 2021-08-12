@@ -3,13 +3,14 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workstation, WorkstationClass, WorkstationResponse } from 'src/app/admin/interfaces/workstation.interfaces';
 import { WorkstationsService } from 'src/app/admin/services/workstations.service';
-import { RouteName, WorkStationState } from '../../../../../utils/enums';
+import { RouteName} from '../../../../../utils/enums';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { DomainsService } from 'src/app/admin/services/domains.service';
 import { Domain, DomainsResponse } from 'src/app/admin/interfaces/domains.interfaces';
 import { Floor } from 'src/app/admin/interfaces/floors.interfaces';
 import { FloorsService } from 'src/app/admin/services/floors.service';
 import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
+
 
 
 @Component({
@@ -20,7 +21,10 @@ import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
 })
 export class FormWorkstationComponent implements OnInit {
 
-  workstationForm = this.fb.group({
+  private DOMAIN_STATE_CONDITION: string = 'ESTADO_PUESTO_TRABAJO';
+  private DOMAIN_TYPE_CONDITION: string = 'TIPO_PUESTO_TRABAJO';
+
+  workstationForm = this.formBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     domainType: ['', [Validators.required]],
     domainState: ['', [Validators.required]],
@@ -29,19 +33,14 @@ export class FormWorkstationComponent implements OnInit {
 
   isEditing: boolean = false;
   workstation!: Workstation;
-  domains: Domain[] = [];
+  domainTypes: Domain[] = [];
+  domainStates: Domain[] = [];
+  
+
+
   floors: Floor[] = [];
   routeName = RouteName;
-  workstationStates = [
-    {
-      label: 'Activo',
-      value: WorkStationState.Active,
-    },
-    {
-      label: 'Inactivo',
-      value: WorkStationState.Inactive,
-    }
-  ];
+  
 
   get formTitle(): string {
     return this.isEditing ? (this.workstation?.nombre ?? 'Editar puesto de trabajo') : 'Crear puesto de trabajo';
@@ -54,12 +53,12 @@ export class FormWorkstationComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private workstationsService: WorkstationsService,
     private router: Router,
-    private toastService: ToastsService,
+    private toastService: ToastsService, 
     private domainsService: DomainsService,
-    private foorService: FloorsService,
+    private floorService: FloorsService,
   ) { }
 
   ngOnInit(): void {
@@ -87,14 +86,24 @@ export class FormWorkstationComponent implements OnInit {
       )
   }
 
+
+
   getDomains(): void {
     this.domainsService.getDomains()
       .subscribe(
-        (domainsResponse: DomainsResponse) => this.domains = domainsResponse.data
+        (domainsResponse: DomainsResponse) => { 
+          const domains = domainsResponse.data;
+
+          this.domainTypes = domains.filter(d => d.codigoDominio === this.DOMAIN_TYPE_CONDITION );
+          console.log(this.domainTypes);
+          this.domainStates = domains.filter(d => d.codigoDominio === this.DOMAIN_STATE_CONDITION );
+
+        }
       );
   }
+
   getFloors(): void {
-    this.foorService.getFloors()
+    this.floorService.getFloors()
       .subscribe(
         (floorsResponse: FloorsResponse) => this.floors = floorsResponse.data
       );
