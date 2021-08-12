@@ -183,7 +183,7 @@ export class ReservationFormComponent implements OnInit {
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva, // Enviar desde 3D
+      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
       idRelacion: 1, 
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails

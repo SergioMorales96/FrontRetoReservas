@@ -90,7 +90,10 @@ export class FormWorkstationComponent implements OnInit {
 
       this.store.select('reservation').subscribe((reservation) => {
         this.isWorkstation = reservation.isWorkstation;         
-        this.isWorkstation ? this.peopleNumberData = [1] : this.peopleNumberData = [2,3,4,5]
+        if(this.isWorkstation) { 
+          this.peopleNumberData = [1];
+          while(this.peopleData.length > 1) this.removePeople();
+        }  else  this.peopleNumberData = [2,3,4,5]
         this.peopleNumber = this.form.controls['personasReserva'].value;
 
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
