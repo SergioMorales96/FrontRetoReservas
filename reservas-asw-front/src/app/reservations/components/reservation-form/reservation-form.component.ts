@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { DateValidationType } from '../../../../utils/enums';
+import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
 import { setFloorNumber,  setContinue, setSteps,  setDisplay } from '../../reservation.actions';
@@ -43,6 +43,7 @@ export class ReservationFormComponent implements OnInit {
   reservationType!: string;
   reservationId!: number;
   IsWorkstation!: boolean;
+  routeName = RouteName;
   
 
   constructor(
@@ -50,7 +51,8 @@ export class ReservationFormComponent implements OnInit {
     private store: Store<AppState>,
     private reservationService: ReservationsService,
     private toastService: ToastsService,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    
   ) {
     this.step = 1;
     this.submitted = false;
@@ -248,6 +250,7 @@ export class ReservationFormComponent implements OnInit {
 
     if (this.step == 4) {    
       this.addReservation();
+
       this.store.dispatch( setDisplay({display: false}) );
     }
 
