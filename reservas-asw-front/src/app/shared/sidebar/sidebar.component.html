@@ -6,17 +6,24 @@
             class="imageLogo" 
             src="assets/images/logos/logo.svg">
     </h2>
-    <p-button 
-        class="p-menuButton"
-        [ngClass]="{'p-menuBlocked': blocked}" 
-        (onClick)="changeDisplay(true)"
-        [disabled]="blocked"
-        [routerLink]="routeName.addReservation">
-        <p class="text">Generar una reserva</p>
-        <img 
-            class="image imageIcon" 
-            [src]="generateReservationIcon">
-    </p-button>
+    <div
+        class = "generateButton">
+        <p-button 
+            class="p-menuButton p-textButton"
+            [ngClass]="{'p-menuBlocked': blocked}" 
+            (onClick)="changeDisplay(true)"
+            [disabled]="blocked"
+            [routerLink]="routeName.addReservation">
+            <p class="text">Generar una reserva</p>
+        </p-button>
+        <p-button
+            class="p-menuButton p-iconButton"
+            [routerLink]="routeName.viewReservation">
+            <img 
+                class="image imageIcon" 
+                [src]="generateReservationIcon">
+        </p-button>
+    </div>
     
     <p-button 
         class="p-menuButton p-menuReservation" 
