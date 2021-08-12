@@ -77,6 +77,10 @@ export class SidebarComponent {
         label: 'Lista de puestos de trabajo',
         routerLink: '/admin/workstations/list'
       },
+      {
+        label: 'Lista de horarios',
+        routerLink: 'admin/schedules/list'
+      },
     ];
   }
 }

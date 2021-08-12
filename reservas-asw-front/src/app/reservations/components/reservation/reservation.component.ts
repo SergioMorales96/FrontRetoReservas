@@ -28,7 +28,6 @@ export class ReservationComponent implements OnInit{
     placa: "ATA004",
     emailUsuario: "correo@correo.com",
     proyecto:"SEMILLA_2021_2",
-    idPuestoTrabajo: 5,
     idRelacion: 1,
     tipoReserva: "PUESTO",
     emailsAsistentes: "prueba@gmail.com, con@con.con, testeoeo@asw.xx"

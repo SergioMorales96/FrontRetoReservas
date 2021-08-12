@@ -3,18 +3,15 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation } from '../../reservation.actions';
+import { setFloorNumber,  setContinue, setSteps,  setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
 } from 'src/app/reservations/interfaces/reservations.interface';
-import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
-import { DataService } from '../../../services/data.service';
 
 
 @Component({
@@ -183,15 +180,14 @@ export class ReservationFormComponent implements OnInit {
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
-      idRelacion: 1, 
+      idRelacion: this.reservaForm.value.puestoInfo.reserva, 
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails
     };
 
   }
 
-  addReservation() {
+  addReservation() {   
     this.reservationService
       .addReservation(this.getReservationFormValue())
       .subscribe((reservationResponse: ReservationResponse) => {
