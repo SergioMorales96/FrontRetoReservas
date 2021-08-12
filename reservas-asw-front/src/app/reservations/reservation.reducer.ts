@@ -22,7 +22,6 @@ export interface State {
     reservationAction: ReservationAction | number;
     isEditReservation: boolean;
     display: boolean;
-    blocked: boolean;
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
@@ -46,11 +45,10 @@ export const initialState: State = {
    reservationAction: 0,
    isEditReservation: false,
    display: false,
-   blocked: false,
+   blocked: true,
    selectedDateSummary: '',
    step: 1,
    dates: [],
-   blocked:  false,
 }
 
 const _reservationReducer = createReducer(initialState,
