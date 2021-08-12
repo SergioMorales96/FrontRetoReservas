@@ -92,7 +92,7 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Date - Step 2
       fechaInfo: this.fb.group({
-        periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
+        periodoTiempo: ['', [Validators.required, Validators.min(0.4)]],
         fecha: [null, [Validators.required, Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])\-(0[1-9]|1[0-2])\-[0-9]{4}$/)]],
       }),
       //Assistant Info - Step 3
