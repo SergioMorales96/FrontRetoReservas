@@ -15,22 +15,13 @@ import * as moment from 'moment';
 })
 export class Calendar1Component implements OnInit {
 
+  private tempDate: Date = new Date();
+
   currentDate: Date;
   selectedDate: Date;
-  invalidDates: Date[] = []; 
+  invalidDates: Date[] = [];
   invalidTotalDates: number[];
-  datesReservations: string[];
-  stringDate: string;
-  datesReservations2: number[];
-  stringDate2: string;
-  dateDate: Date[];
-
   datesReservation: DatesReservation[];
-
-  get diasparapintar(): Date [] {
-    const diasparapint = this.dateDate;
-    return diasparapint;
-  }
 
   constructor(
     private reservationsService: ReservationsService,
@@ -39,69 +30,92 @@ export class Calendar1Component implements OnInit {
     this.selectedDate = new Date();
     this.currentDate = new Date();
     this.invalidTotalDates = [];
-    this.dateDate = [];
-    this.datesReservations = [];
-    this.stringDate = '';
-    this.datesReservations2 = [];
-    this.stringDate2 = '';
     this.datesReservation = [];
   }
 
   ngOnInit(): void {
-    this.getReservations(this.getData());
+    this.getReservations(this.getData(this.tempDate));
+  }
+
+  getData(datevalue: Date) {
+    return {
+      startDate: moment(datevalue).startOf('date').format('DD-MM-YYYY'),
+      endDate: moment(datevalue).endOf('month').format('DD-MM-YYYY'),
+      email: 'correoJuan@correo.com'
+    }
   }
 
   getReservations({ startDate, endDate, email }: { startDate: string, endDate: string, email: string }): void {
     this.reservationsService.getReservations(startDate, endDate, email)
       .pipe(
-        tap(console.log)
       )
       .subscribe(
         (ReservationResponse: ReservationResponse) => {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R');
-          this.getarray();
+          this.updateCalendar();
+          console.log('reservas :', this.datesReservation);
         }
       )
   }
 
-  getData() {
-    return {
-      startDate: moment().format('DD-MM-YYYY'),
-      endDate: moment().endOf('month').format('DD-MM-YYYY'),
-      email: 'correoJuan@correo.com'
-    }
-  }
-
-  getarray(): void {
-    // console.log('prueba1.0: ', this.datesReservation);
-    for (let i in this.datesReservation) {
-      const dia = this.datesReservation[i].dia;
-      const date = dia.split('-');
-      this.stringDate = `${date[2]}/${date[1]}/${date[0]}`;
-      this.stringDate2 = `${date[0]}`;
-      this.datesReservations2.push(parseInt(this.stringDate2));
-      this.datesReservations.push(this.stringDate);
-    }
-    for (let x in this.datesReservations) {
-      const dia2 = this.datesReservations[x];
-      this.dateDate.push(new Date(dia2));
-    }
-    // this.invalidDates = this.dateDate;
-    console.log('Fechas en strings: ', this.datesReservations);
-    console.log('Dias en numbers: ', this.datesReservations2);
-    console.log('Fechas en fechas: ', this.dateDate);
-  }
-
   isInvalidTotalDate(day: number): boolean {
-    this.invalidTotalDates = this.datesReservations2;
     return this.invalidTotalDates.includes(day);
   }
 
-  // monthChange(month: number, year: number): void {
-  //   this.invalidTotalDates = [];
-  //   this.invalidDates = [];
-  // }
+  monthChange(month: number, year: number): void {
+    this.invalidTotalDates = [];
+    this.invalidDates = [];
+    this.tempDate.setMonth(month - 1);
+    this.tempDate.setDate(this.obtenerDia(month, year));
+    this.tempDate.setFullYear(year);
+    this.getReservations(this.getData(this.tempDate));
+  }
+
+  obtenerDia(month: number, year: number ): number {
+    let dia = 1;
+    const actual = new Date ();
+    if (month - 1 === actual.getMonth() && year === actual.getFullYear()){
+      dia = actual.getDate();
+    }
+    return dia;
+  }
+
+  updateCalendar(): void {
+    let i = 0;
+    let checked: string[] = [];
+
+    for (const reservation of this.datesReservation) {
+      if (!checked.includes(this.datesReservation[i].dia)) {
+        checked = this.compareReservations(i, checked);
+      }
+      i++;
+    }
+  }
+
+  private compareReservations(i: number = 0, checked: string[]): string[] {
+    let flag: boolean = false;
+    let iRerservation: DatesReservation = this.datesReservation[i];
+    for (let j = 0; j < this.datesReservation.length; j++) {
+      let jReservation: DatesReservation = this.datesReservation[j];
+      if (j != i) {
+        if (jReservation.dia === iRerservation.dia) {
+          this.invalidTotalDates.push(parseInt(jReservation.dia));
+          checked.push(jReservation.dia);
+          flag = true;
+        }
+      }
+    }
+    if (!flag) {
+      this.invalidTotalDatesDay(iRerservation, checked)
+    }
+    return checked;
+  }
+
+  private invalidTotalDatesDay(rev: DatesReservation, checked: string[]): void {
+    this.invalidTotalDates.push(parseInt(rev.dia));
+    checked.push(rev.dia);
+  }
 
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
