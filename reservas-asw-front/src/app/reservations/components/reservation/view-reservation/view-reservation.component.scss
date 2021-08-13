@@ -1,15 +1,18 @@
 .dimensions{
   height: 24rem;
+  width: 335px;
   text-align: center;
+
 }
 .green__division{
   background-color: #5ebc00;
 }
+.noHaveReservatio{
+  margin-left: 109px;
+}
 .noReservation{
-  margin: 0%;
   opacity: 0.7;
   font-size: 14px;
-  font-weight: 500;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.36;
@@ -18,7 +21,9 @@
   color: var(--dark-navy-blue);
 }
 .question{
-  margin: 0%;
+  display: block;
+  margin: auto;
+  width: 297;
   object-fit: contain;
   opacity: 0.7;
   font-size: 128px;
@@ -28,6 +33,10 @@
   line-height: 1.33;
   letter-spacing: normal;
   color: var(--dark-navy-blue);
+}
+
+.reservationGeneral{
+  padding-top: 0 !important;
 }
 .reservation__background{
   width: 24rem;

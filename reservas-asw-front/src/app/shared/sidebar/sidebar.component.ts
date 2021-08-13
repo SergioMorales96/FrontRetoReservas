@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { setDisplay } from '../../reservations/reservation.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
-import { RouterLink } from '@angular/router';
 import { RouteFloor, RouteName } from '../../../utils/enums';
+import { setDisplay } from '../../reservations/reservation.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,8 +13,8 @@ import { RouteFloor, RouteName } from '../../../utils/enums';
 })
 export class SidebarComponent {
 
-  display: boolean;
-  blocked: boolean;
+  display!: boolean;
+  blocked!: boolean;
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
@@ -32,11 +31,23 @@ export class SidebarComponent {
     return `assets/images/icons/${this.display ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
+  changeDisplay(display: boolean){
+    this.display = display;
+    this.store.dispatch(setDisplay({display : display}))
+  }
+
+  ngOnInit(): void {
+    this.store.select('reservation').subscribe(
+      (reservation) => this.display = reservation.display
+    );
+    this.store.select('reservation').subscribe(
+      (reservation) => this.blocked = reservation.blocked
+    );
+  }
+
   constructor(
     private store: Store<AppState>
   ) {
-    this.display = false;
-    this.blocked = false;
     this.items = [
       {
         label: 'Lista de usuarios',
@@ -62,13 +73,14 @@ export class SidebarComponent {
         label: 'Lista de sucursales',
         routerLink: 'admin/branches/list'
       },
+      {
+        label: 'Lista de puestos de trabajo',
+        routerLink: '/admin/workstations/list'
+      },
+      {
+        label: 'Lista de horarios',
+        routerLink: 'admin/schedules/list'
+      },
     ];
   }
-
-  changeDisplay(display: boolean){
-
-    /*this.display = display;
-    this.store.dispatch(setDisplay({ display : this.display }));*/
-  }
-
 }

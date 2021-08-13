@@ -3,18 +3,15 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber,  setContinue,  setSteps, setReservationId, setDisplay } from '../../reservation.actions';
+import { setFloorNumber,  setContinue, setSteps,  setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
 } from 'src/app/reservations/interfaces/reservations.interface';
-import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
-import { DataService } from '../../../services/data.service';
 
 
 @Component({
@@ -45,15 +42,13 @@ export class ReservationFormComponent implements OnInit {
   emailString: string = '';
   reservationType!: string;
   reservationId!: number;
+  IsWorkstation!: boolean;
+  
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService,
     private store: Store<AppState>,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
     private reservationService: ReservationsService,
-    private router: Router,
     private toastService: ToastsService,
     private alertsService: AlertsService
   ) {
@@ -68,7 +63,7 @@ export class ReservationFormComponent implements OnInit {
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [1, Validators.required],
+        reserva: [, [Validators.required,Validators.min(1)]],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -101,8 +96,8 @@ export class ReservationFormComponent implements OnInit {
       asistenteInfo: this.fb.group({
         nombres: ['NOMBRE APELLIDO', Validators.required],
         identificacion: [123456789, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
-        grupoRiesgo: ['No Aplica', Validators.required],
-        convivenciaRiesgo: ['No', Validators.required],
+        //grupoRiesgo: ['No Aplica', Validators.required],
+        //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
         descripcion: ['Barrio XXX, Tomo transporte público en..', Validators.required],
       }),
@@ -111,23 +106,7 @@ export class ReservationFormComponent implements OnInit {
     this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
-
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: this.workstationGroup.controls['personasReserva'].value }));
-    this.store.dispatch(setReservationId({reservationId: this.workstationGroup.controls['reserva'].value}));
    
-    this.workstationInfo = this.reservaForm.get('puestoInfo') as FormGroup;
-    this.dateInfo = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantInfo = this.reservaForm.get('asistenteInfo') as FormGroup;
-
-    this.store.dispatch(setFloorNumber({ floorNumber: 18 }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber: 1 }));
-    this.store.dispatch(
-      setReservationId({
-        reservationId: this.workstationInfo.controls['reserva'].value,
-      })
-    );
-
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
@@ -135,11 +114,16 @@ export class ReservationFormComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
-      console.log("RESV: ",this.reservationId);
-      
+      this.workstationGroup.controls['personasReserva'].setValue(reservation.peopleNumber);
+      this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
+      
     });
+
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    
+
     
   } 
 
@@ -155,8 +139,6 @@ export class ReservationFormComponent implements OnInit {
       default:
         return 'NA';  
     }
-
-    //console.log(this.reservaForm.get('personasReserva')?.value);
 
   }
 
@@ -198,14 +180,14 @@ export class ReservationFormComponent implements OnInit {
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoJuan@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva, // Enviar desde 3D
-      idRelacion: 1, 
+      idRelacion: this.reservaForm.value.puestoInfo.reserva, 
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails
     };
 
   }
-  addReservation() {
+
+  addReservation() {   
     this.reservationService
       .addReservation(this.getReservationFormValue())
       .subscribe((reservationResponse: ReservationResponse) => {
@@ -247,6 +229,7 @@ export class ReservationFormComponent implements OnInit {
   }
 
   submit() {
+    
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {

@@ -83,7 +83,6 @@ export class ReservationsService {
       );
   }
 
-
   sendFloorRequest(urlPlugin: string = '', query: string = ''): Observable<FloorsResponse> {
     return this.http.get<FloorsResponse>(`${this.serviceUrl}/${urlPlugin}/${query}`)
       .pipe(

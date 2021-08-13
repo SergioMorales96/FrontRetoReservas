@@ -1,19 +1,16 @@
 <p-calendar 
   [inline]="true" 
   [disabledDates]="invalidDates"
-  [disabledDays]="[0]"
   [showOtherMonths]="false" 
+  [disabledDays]="invalidDays"
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
   (onMonthChange)="monthChange( $event.month, $event.year )"
-  [disabledDays]="[0, 6]"
   [minDate] ="currentDate">
 
   <ng-template pTemplate="date" let-date>
     <td>
       <span [ngClass]="{
-        'tarde': isInvalidAfternoonDate(date.day),
-        'mañana':isInvalidMorningDate(date.day),
         'dia': isInvalidTotalDate(date.day)}">
         {{date.day}}
       </span>
@@ -21,4 +18,3 @@
   </ng-template>
 
 </p-calendar>
-

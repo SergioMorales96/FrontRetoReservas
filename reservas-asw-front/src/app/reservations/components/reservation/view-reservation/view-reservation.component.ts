@@ -1,13 +1,14 @@
+import { AppState } from 'src/app/app.reducer';
 import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
-import { ReservationAction, RouteName } from '../../../../../utils/enums';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
+import { RouteName } from '../../../../../utils/enums';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked } from '../../../reservation.actions';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { ToastsService } from '../../../../services/toasts.service';
 
-import {  Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { setReservation, setReservationList, setEditReservation } from '../../../reservation.actions';
 @Component({
   selector: 'app-view-reservation',
   templateUrl: './view-reservation.component.html',
@@ -15,21 +16,23 @@ import { setReservation, setReservationList, setEditReservation } from '../../..
 })
 export class ViewReservationComponent implements OnInit {
   
-  datesReservation: DatesReservation[] ;
-  currentPosition: number;
   counterDays: number;
+  currentPosition: number;     
   dataUser: DataUsersBlock | undefined;
   dataUsersBlock: DataUsersBlock[];
+  datesRList!: DatesReservation[];
+  datesReservation: DatesReservation[] ; 
+  date: Date | string;
+  prueba!: boolean;
   remainingDays: number;
   routeName = RouteName;
   usersMap = {
     '=0': 'No hay personas',
     '=1': '1 persona',
     'other': '# personas',
-  };
-  prueba!: boolean;
-  datesRList!: DatesReservation[];
+  }; 
 
+  
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
 
@@ -44,7 +47,8 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get canShowNext(): boolean {
+
+  get canShowNext(): boolean { 
     return this.datesReservation.length - 1 > this.currentPosition;
   }
 
@@ -53,6 +57,7 @@ export class ViewReservationComponent implements OnInit {
   }
 
   get currentReservation(): DatesReservation {
+  
     return this.datesReservation[this.currentPosition];
   }
 
@@ -60,7 +65,6 @@ export class ViewReservationComponent implements OnInit {
     const date = this.currentReservation?.dia?.split('-');
     return `${date[0]}/${date[1]}/${date[2]}`;
   }
-
   get salaOrJob(): string {
     return this.currentReservation.idSala
       ? this.currentReservation.nombreSala
@@ -68,7 +72,8 @@ export class ViewReservationComponent implements OnInit {
   }
 
   get showReservations(): boolean {
-    return !this.dataUser;
+    const blocked = !this.dataUser;
+    return blocked;
   }
 
   get transportMedia(): string {
@@ -112,40 +117,55 @@ export class ViewReservationComponent implements OnInit {
 
   constructor(
     private reservationsService: ReservationsService,
-    private store :Store<AppState>
+    private store :Store<AppState>,
+    private toastService: ToastsService
   ) {   
     this.dataUsersBlock = [];
     this.datesReservation = [];
+    this.date= new Date();
     this.currentPosition = 0;
     this.counterDays = 0;
     this.remainingDays = 0;
- 
+    
+    
   }
 
   ngOnInit(): void {
     this.store
     .select('reservation')
     .subscribe( reservation =>{
-      this.datesReservation = reservation.reservationList;
-      if(this.datesReservation.length == 0 ){
+      this.datesReservation = reservation.reservationList;      
+      if (reservation.selectedDateSummary) {
+        this.date = moment(reservation.selectedDateSummary).format('DD-MM-YYYY');
+        const selectDate = this.datesReservation.findIndex(dia => dia.dia === this.date );
+        if( selectDate >= 0 ){
+          this.currentPosition =  selectDate;
+        }else if(selectDate === -1){
+          this.toastService.showToastInfo({summary:'No tienes reservas para este dia', detail:''})
+
+        }
+      }
+      
+      if(this.datesReservation.length === 0 ){
         this.getReservations(this.getData());
       }
     })    
     this.getLockedUsers();
+    this.store.dispatch(setDates({dates: this.datesReservation}))
+    
+    
   }
 
   getCounterDays( dateLocked: string ): number {
     const startDate = moment( ).format('MM-DD-YYYY');
-    const endDate = moment(dateLocked);
+    const endDate = moment(dateLocked, 'DD-MM-YYYY');
     return endDate.diff( startDate, 'days' );
   }
   
   getData() {
     return {
-      startDate: '01-08-2021',
-      endDate: '14-08-2021',
-      // startDate: moment().format('DD-MM-YYYY'),
-      // endDate: moment().add(1, 'w').format('DD-MM-YYYY'),
+      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
+      endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }
@@ -155,6 +175,7 @@ export class ViewReservationComponent implements OnInit {
       .subscribe(response => {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
+        this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
       });
 
   }
@@ -166,26 +187,37 @@ export class ViewReservationComponent implements OnInit {
       )
       .subscribe(
         (ReservationResponse: ReservationResponse) => {
+
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
+          const hola = this.datesReservation.sort(function(a,b){
+            if (moment(a.dia,'DD-MM-YYYY').isAfter(moment(b.dia,'DD-MM-YYYY')) ) {
+              return 1;
+            }
+            if (moment(a.dia,'DD-MM-YYYY').isBefore(moment(b.dia,'DD-MM-YYYY'))) {
+              return -1;
+            }
+      
+            return 0;
+          });
           this.store.dispatch(setReservationList({reservationList: this.datesReservation}));
         }
       )
   }
-
+  
   showEditReservation(): void {    
     this.store.dispatch(setReservation({reservation: this.currentReservation}));   
     this.store.dispatch(setEditReservation({isEditReservation: true}));
   }
 
   showReservation(value: number): void {
-    this.currentPosition = this.currentPosition + value;
+    this.currentPosition = this.currentPosition + value;    
   }
 
   transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
     return users.map(d => ({ 
       ...d, 
-      remainingDays: this.getCounterDays( moment(d.bloqueadoHasta).format('DD-MM-YYYY') )
+      remainingDays: this.getCounterDays(d.bloqueadoHasta )
     }));
-  }  
+  }   
 }

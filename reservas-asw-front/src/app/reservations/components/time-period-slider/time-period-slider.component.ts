@@ -94,7 +94,7 @@ export class TimePeriodSliderComponent implements OnInit{
   }
   functionHour(maxValue:number,minValue:number): void {
     let range = (maxValue - minValue) / 2;
-    this.store.dispatch( setTimePeriod({ timePeriod: range}) );
+    if ( !isNaN(range) )  this.store.dispatch( setTimePeriod({ timePeriod: range}) );
   }
   onChange(): void {
     let startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );

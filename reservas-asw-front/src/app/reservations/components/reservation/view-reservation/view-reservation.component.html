@@ -1,5 +1,4 @@
 <ng-container *ngIf="datesReservation.length > 0; else noReservations">
-
     <div 
         class="p-d-flex" 
          *ngIf="showReservations; else userBlock"> 
@@ -43,15 +42,16 @@
                         </h3>
                     </div>
                 </div>
-                <div class="p-d-flex p-jc-end p-ai-center">
+                <hr class="white__line">
+                <div class="p-d-flex p-jc-center p-ai-center">
                     <p class="reservation__subtitle-2 p-my-0">Piso {{currentReservation?.idPiso}} &nbsp; 
                         <span class="reservation__pipe-divider">|</span> &nbsp;
                         <span class="reservation__salaOrJob"> {{salaOrJob}} </span>  &nbsp; 
                         <span class="reservation__pipe-divider">|</span> &nbsp; {{currentReservation?.numeroAsistentes | i18nPlural:usersMap}}</p>
                 </div>
             </div>
-            <hr class="white__line">
-            <div class="p-grid p-m-0 p-py-3">
+            
+            <div class="reservationGeneral p-grid p-m-0 p-py-3">
                 <div class="p-col p-d-flex p-flex-column p-jc-center p-ai-center">
                     <h5 class="reservation__text-small p-mt-0">
                         Medio de transporte
@@ -68,17 +68,6 @@
                     </p>
                 </div>
             </div>
-            <div class="green__division p-grid p-m-0" >
-                <div class="p-col-2 p-d-flex p-jc-center p-ai-center">
-                    <img src="assets/images/icons/eye-white.svg">
-                </div>
-                <div class="p-col-10 p-d-flex p-jc-start p-ai-center">
-                    <p class="reservation__text-small-2 p-py-0">
-                        Estas listo para ingresar a las oficinas ¡Te extrañabamos!
-                        En la puerta de ingreso reconócete con WhoAmEye para que el sistema sepa que llegaste a tu reserva.
-                    </p>
-                </div>
-            </div>
         </div>
         <div class="p-d-flex p-jc-center p-ai-center">
             <p-button 
@@ -92,10 +81,8 @@
         </div>
     </div>
 </ng-container>
-
-
 <ng-template #noReservations>
-    <div class="p-d-flex">
+    <div class="noHaveReservations p-d-flex">
         <div class="p-d-flex p-jc-center p-ai-center">
            <i>
                 <img alt="icon" src="assets/images/icons/flecha.svg">
@@ -107,8 +94,6 @@
         </div>
     </div>
 </ng-template>
-
-
 <ng-template #userBlock>
     <div class="p-d-flex">
         <div class="dimensions p-col-3 d-p-flex p-jc-center p-ai-center">
