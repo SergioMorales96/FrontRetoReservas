@@ -1,11 +1,11 @@
 <p-calendar 
   [inline]="true" 
   [disabledDates]="invalidDates"
-  [disabledDays]="[0]"
+  [showOtherMonths]="false" 
+  [disabledDays]="invalidDays"
   [firstDayOfWeek]="1"
   (onSelect)="setSelectedDate( $event )"
-  (onMonthChange)="onMonthChange( $event )"
-  [disabledDays]="[]"
+  (onMonthChange)="monthChange( $event.month, $event.year )"
   [minDate] ="currentDate">
 
   <ng-template pTemplate="date" let-date>

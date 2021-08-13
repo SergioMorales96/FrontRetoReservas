@@ -30,9 +30,10 @@ export class ListfloorComponent implements OnInit {
   }
 
   deleteFloor(id: number): void {
+    console.log('metodo delete');
     this.alertsService.showConfirmDialog({
       message: '¿Desea eliminar el piso, esta acción no se podrá revertir?',
-      header: 'Eliminar piso',
+      header: 'Eliminar piso'
     })
       .then(resp => {
         if (resp) {
@@ -47,6 +48,6 @@ export class ListfloorComponent implements OnInit {
           return;
         }
       })
-      .catch(console.log);
+      .catch(console.log);    
   }
 }

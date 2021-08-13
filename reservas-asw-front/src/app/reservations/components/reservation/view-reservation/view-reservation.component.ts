@@ -7,6 +7,7 @@ import { setReservation, setReservationList, setEditReservation, setDates, setBl
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { ToastsService } from '../../../../services/toasts.service';
 
 @Component({
   selector: 'app-view-reservation',
@@ -21,7 +22,7 @@ export class ViewReservationComponent implements OnInit {
   dataUsersBlock: DataUsersBlock[];
   datesRList!: DatesReservation[];
   datesReservation: DatesReservation[] ; 
-  day: Date | string;
+  date: Date | string;
   prueba!: boolean;
   remainingDays: number;
   routeName = RouteName;
@@ -31,6 +32,7 @@ export class ViewReservationComponent implements OnInit {
     'other': '# personas',
   }; 
 
+  
   get brandOrPlate(): string {
     const typeDomainVehicle = this.currentReservation?.dominioTipoVehiculo
 
@@ -45,7 +47,8 @@ export class ViewReservationComponent implements OnInit {
     }
   }
 
-  get canShowNext(): boolean {
+
+  get canShowNext(): boolean { 
     return this.datesReservation.length - 1 > this.currentPosition;
   }
 
@@ -54,6 +57,7 @@ export class ViewReservationComponent implements OnInit {
   }
 
   get currentReservation(): DatesReservation {
+  
     return this.datesReservation[this.currentPosition];
   }
 
@@ -61,11 +65,6 @@ export class ViewReservationComponent implements OnInit {
     const date = this.currentReservation?.dia?.split('-');
     return `${date[0]}/${date[1]}/${date[2]}`;
   }
-
-  // get dayCalendar(): string{
-   
-  // }
-
   get salaOrJob(): string {
     return this.currentReservation.idSala
       ? this.currentReservation.nombreSala
@@ -74,7 +73,6 @@ export class ViewReservationComponent implements OnInit {
 
   get showReservations(): boolean {
     const blocked = !this.dataUser;
-    this.store.dispatch(setBlocked({blocked : !blocked}))
     return blocked;
   }
 
@@ -119,45 +117,55 @@ export class ViewReservationComponent implements OnInit {
 
   constructor(
     private reservationsService: ReservationsService,
-    private store :Store<AppState>
+    private store :Store<AppState>,
+    private toastService: ToastsService
   ) {   
     this.dataUsersBlock = [];
     this.datesReservation = [];
-    this.day= new Date();
+    this.date= new Date();
     this.currentPosition = 0;
     this.counterDays = 0;
     this.remainingDays = 0;
- 
+    
+    
   }
 
   ngOnInit(): void {
     this.store
     .select('reservation')
     .subscribe( reservation =>{
-      this.datesReservation = reservation.reservationList;
-      this.day=reservation.selectedDateSummary;
-      console.log("date:", this.day);
-      if(this.datesReservation.length == 0 ){
+      this.datesReservation = reservation.reservationList;      
+      if (reservation.selectedDateSummary) {
+        this.date = moment(reservation.selectedDateSummary).format('DD-MM-YYYY');
+        const selectDate = this.datesReservation.findIndex(dia => dia.dia === this.date );
+        if( selectDate >= 0 ){
+          this.currentPosition =  selectDate;
+        }else if(selectDate === -1){
+          this.toastService.showToastInfo({summary:'No tienes reservas para este dia', detail:''})
+
+        }
+      }
+      
+      if(this.datesReservation.length === 0 ){
         this.getReservations(this.getData());
       }
     })    
     this.getLockedUsers();
     this.store.dispatch(setDates({dates: this.datesReservation}))
+    
+    
   }
 
   getCounterDays( dateLocked: string ): number {
-    console.log({dateLocked});
     const startDate = moment( ).format('MM-DD-YYYY');
     const endDate = moment(dateLocked, 'DD-MM-YYYY');
-    console.log({startDate});  
-    console.log(endDate.diff( startDate, 'days' ));
     return endDate.diff( startDate, 'days' );
   }
   
   getData() {
     return {
-       startDate: moment().format('DD-MM-YYYY'),
-       endDate: moment().endOf('month').format('DD-MM-YYYY'),
+      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
+      endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoJuan@correo.com'
     }
   }
@@ -167,9 +175,7 @@ export class ViewReservationComponent implements OnInit {
       .subscribe(response => {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
-        console.log(this.dataUser);
-        console.log(this.getData().email);
-        console.log(this.dataUsersBlock);
+        this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
       });
 
   }
@@ -181,32 +187,37 @@ export class ViewReservationComponent implements OnInit {
       )
       .subscribe(
         (ReservationResponse: ReservationResponse) => {
+
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R')
+          const hola = this.datesReservation.sort(function(a,b){
+            if (moment(a.dia,'DD-MM-YYYY').isAfter(moment(b.dia,'DD-MM-YYYY')) ) {
+              return 1;
+            }
+            if (moment(a.dia,'DD-MM-YYYY').isBefore(moment(b.dia,'DD-MM-YYYY'))) {
+              return -1;
+            }
+      
+            return 0;
+          });
           this.store.dispatch(setReservationList({reservationList: this.datesReservation}));
         }
       )
   }
-  selectPosition():void{
   
-    //this.day=this.datesReservation.filter(days => days.dia === this.day)
-
-  }
-
   showEditReservation(): void {    
     this.store.dispatch(setReservation({reservation: this.currentReservation}));   
     this.store.dispatch(setEditReservation({isEditReservation: true}));
   }
 
   showReservation(value: number): void {
-    this.currentPosition = this.currentPosition + value;
+    this.currentPosition = this.currentPosition + value;    
   }
 
   transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
-    console.log(users)
     return users.map(d => ({ 
       ...d, 
       remainingDays: this.getCounterDays(d.bloqueadoHasta )
     }));
-  }  
+  }   
 }

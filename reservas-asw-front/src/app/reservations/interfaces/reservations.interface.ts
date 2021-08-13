@@ -27,7 +27,6 @@ export interface Reservation {
     emailUsuario: string;
     horaFin : string;
     horaInicio: string;
-    idPuestoTrabajo?: number;
     idSala?: number;
     parqueadero?: string;
     placa: string;
@@ -46,7 +45,6 @@ export class ReservationClass {
     emailUsuario!: string;
     horaFin !: string;
     horaInicio!: string;
-    idPuestoTrabajo!: number;
     idSala!: number;
     parqueadero!: string;
     placa!: string;

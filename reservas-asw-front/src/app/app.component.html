@@ -1,8 +1,5 @@
 <p-toast></p-toast>
 
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
-</p-confirmDialog>
 
 <div class="flex">
     <div>
@@ -20,16 +17,6 @@
 
 </div>
 
-<p-confirmDialog 
-    [style]="{ width: '50vw' }" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar"
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success"
-    rejectButtonStyleClass="p-button-danger">
-</p-confirmDialog>
-
-
 <div class="p-grid margin-sidebar">
     <div>
         <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
@@ -38,12 +25,8 @@
         <ng-template #sidebar>
             <app-sidebar></app-sidebar>
         </ng-template>
-    </div>
-    
-   
+    </div>  
     <router-outlet></router-outlet>
-
-
 </div>
 
 

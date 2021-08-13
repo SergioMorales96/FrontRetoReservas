@@ -18,7 +18,7 @@ export class FormFloorComponent implements OnInit {
   floorForm = this.fb.group({
     nameFloor: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     maximunCapacity: ['', [Validators.required]],
-    numberFloor: ['', [Validators.required]],
+    numberFloor: ['', [Validators.required,Validators.min(1)]],
     idBranch: ['', [Validators.required]],
     nameBranch: [''],
     idFloor: [''],
@@ -66,7 +66,6 @@ export class FormFloorComponent implements OnInit {
       .subscribe(
         (floorResponse: FloorResponse) => {
           this.floor = floorResponse.data;
-          console.log( this.floor );
           this.setFloor(this.floor);
         }
       )
@@ -93,7 +92,6 @@ export class FormFloorComponent implements OnInit {
   }
 
   save(): void {
-    console.log('save Floor', this.floorForm.value);
     if (this.isEditing) {
       this.floorsService.updateFloor({
         ...this.getFloorFormValue(),

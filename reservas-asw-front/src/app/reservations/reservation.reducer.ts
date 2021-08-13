@@ -1,13 +1,14 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './reservation.actions';
 import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
 
 export interface State {
+    blocked: boolean;
     floorNumber: number; 
     peopleNumber: number;
     reservationId: number;
+    isWorkstation: boolean;
     workstation: string;
     meanOfTransport: number;
     symptoms:string;
@@ -21,7 +22,6 @@ export interface State {
     reservationAction: ReservationAction | number;
     isEditReservation: boolean;
     display: boolean;
-    blocked: boolean;
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
@@ -29,22 +29,23 @@ export interface State {
 
 export const initialState: State = {
    floorNumber: 0,
-   peopleNumber: 0,
+   peopleNumber: 1,
    reservationId: 0,
    workstation: "",
+   isWorkstation: true,
    meanOfTransport: 0,
    symptoms:"",
    timePeriod: 0,
    startTime: "",
    endTime: "",
    startSlider: 0,
-    endSlider: 0,
+   endSlider: 0,
    reservationList: [],
    reservation: null ,
    reservationAction: 0,
    isEditReservation: false,
    display: false,
-   blocked: false,
+   blocked: true,
    selectedDateSummary: '',
    step: 1,
    dates: [],
@@ -56,6 +57,7 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setReservationId, (state, { reservationId }) => ({ ...state, reservationId: reservationId})),
     on(actions.setMeanOfTransport, (state, { meanOfTransportId }) => ({ ...state, meanOfTransportId: meanOfTransportId})),
     on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
+    on(actions.setIsWorkstation,(state, { isWorkstation }) => ({ ...state, isWorkstation: isWorkstation})),
     on(actions.setMeanOfTransport,(state, { meanOfTransportId }) => ({ ...state, meanOfTransport: meanOfTransportId})),
     on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
     on(actions.setSymptoms,(state, { symptoms }) => ({ ...state, symptoms: symptoms})),
