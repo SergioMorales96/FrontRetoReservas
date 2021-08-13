@@ -153,7 +153,7 @@ export class SceneComponent implements OnInit {
       let index: number = 0;
       let flag: boolean = false;
       do {        
-        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
+        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 && intersects[index].object != selectedObject ){
 
           if( selectedObject && selectedObject != intersects[index].object ){
               setColorSelectedObject( );
