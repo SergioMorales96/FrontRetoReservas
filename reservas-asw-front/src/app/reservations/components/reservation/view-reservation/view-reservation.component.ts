@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation, setDates, setBlocked } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked, setBlocked1 } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -74,7 +74,6 @@ export class ViewReservationComponent implements OnInit {
   get showReservations(): boolean {
     const blocked = !this.dataUser;
     return blocked;
-
   }
 
   get transportMedia(): string {
@@ -141,9 +140,6 @@ export class ViewReservationComponent implements OnInit {
         const selectDate = this.datesReservation.findIndex(dia => dia.dia === this.date );
         if( selectDate >= 0 ){
           this.currentPosition =  selectDate;
-        }else if(selectDate === -1){
-          this.toastService.showToastInfo({summary:'No tienes reservas para este dia', detail:''})
-
         }
       }
       
@@ -177,6 +173,7 @@ export class ViewReservationComponent implements OnInit {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
         this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
+        this.store.dispatch(setBlocked1({blocked1 : !!this.dataUser}))
       });
 
   }

@@ -1,5 +1,4 @@
 <p-toast></p-toast>
-
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
     acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
@@ -20,16 +19,6 @@
 
 </div>
 
-<p-confirmDialog 
-    [style]="{ width: '50vw' }" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar"
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success"
-    rejectButtonStyleClass="p-button-danger">
-</p-confirmDialog>
-
-
 <div class="p-grid margin-sidebar">
     <div>
         <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
@@ -38,21 +27,9 @@
         <ng-template #sidebar>
             <app-sidebar></app-sidebar>
         </ng-template>
-    </div>
-    
-   
+    </div>  
     <router-outlet></router-outlet>
-
-
 </div>
 
 
-<!-- <div class="p-col margin-reservation" *ngIf="display; else reservations">    
-    <app-add></app-add>
-</div>
-
-<ng-template class="p-col-5" #reservations>
-   <app-home></app-home>
-</ng-template>
- -->
 

@@ -17,6 +17,11 @@ export const setReservationId = createAction(
     props<{ reservationId: number }>()    
 );
 
+export const setIsWorkstation = createAction(
+    '[Reservations Component] setIsWorkstation',
+    props<{ isWorkstation: boolean }>()    
+);
+
 export const setMeanOfTransport = createAction(
     '[Reservations Component] setMeanOfTransport',
     props<{ meanOfTransportId: number }>()    
@@ -102,4 +107,17 @@ export const setBlocked= createAction(
     '[Reservations Component] setBlocked',
     props<{blocked: boolean }>()
 )
+
+export const setBlocked1= createAction(
+    '[Reservations Component] setBlocked1',
+    props<{blocked1: boolean }>()
+)
+
+export const setIsEdit= createAction(
+    '[Reservations Component] setIsEdit',
+    props<{isEdit: boolean }>()
+)
+
+
+
 

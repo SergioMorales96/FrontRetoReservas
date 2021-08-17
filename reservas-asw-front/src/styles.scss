@@ -13,6 +13,7 @@ body {
   color: $dark-navy-blue;
   font-size: 16px;
   margin: 0% !important;
+  overflow-x: hidden;
 }
 
 .button-link {
@@ -81,6 +82,7 @@ body {
   line-height: 1.36;
   letter-spacing: normal;
   color: #fff !important;
+  text-align: center;
 }
 
 .description_muted {
@@ -117,6 +119,7 @@ body {
 
 .margin-reservation{
   margin-left: 208px;
+  padding-bottom: 0px !important;
 }
 
 .p-menuButton .p-button{

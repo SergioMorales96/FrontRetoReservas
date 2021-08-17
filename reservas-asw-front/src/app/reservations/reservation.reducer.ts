@@ -4,9 +4,12 @@ import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
 
 export interface State {
+    blocked: boolean;
+    blocked1: boolean;
     floorNumber: number; 
     peopleNumber: number;
     reservationId: number;
+    isWorkstation: boolean;
     workstation: string;
     meanOfTransport: number;
     symptoms:string;
@@ -20,33 +23,36 @@ export interface State {
     reservationAction: ReservationAction | number;
     isEditReservation: boolean;
     display: boolean;
-    blocked: boolean;
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
+    isEdit: boolean;
 }
 
 export const initialState: State = {
-   floorNumber: 0,
-   peopleNumber: 0,
+   floorNumber: 18,
+   peopleNumber: 1,
    reservationId: 0,
    workstation: "",
+   isWorkstation: true,
    meanOfTransport: 0,
    symptoms:"",
    timePeriod: 0,
    startTime: "",
    endTime: "",
    startSlider: 0,
-    endSlider: 0,
+   endSlider: 0,
    reservationList: [],
    reservation: null ,
    reservationAction: 0,
    isEditReservation: false,
    display: false,
    blocked: false,
+   blocked1: true,
    selectedDateSummary: '',
    step: 1,
    dates: [],
+   isEdit: false,
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -55,6 +61,7 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setReservationId, (state, { reservationId }) => ({ ...state, reservationId: reservationId})),
     on(actions.setMeanOfTransport, (state, { meanOfTransportId }) => ({ ...state, meanOfTransportId: meanOfTransportId})),
     on(actions.setWorkstation,(state, { workstation }) => ({ ...state, workstation: workstation})),
+    on(actions.setIsWorkstation,(state, { isWorkstation }) => ({ ...state, isWorkstation: isWorkstation})),
     on(actions.setMeanOfTransport,(state, { meanOfTransportId }) => ({ ...state, meanOfTransport: meanOfTransportId})),
     on(actions.setSelectedDate,(state, { selectedDateSummary }) => ({ ...state, selectedDateSummary: selectedDateSummary})),
     on(actions.setSymptoms,(state, { symptoms }) => ({ ...state, symptoms: symptoms})),
@@ -70,8 +77,11 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
     on(actions.setDisplay,(state,{display})=>({...state, display: display})),
     on(actions.setBlocked,(state,{blocked})=>({...state, blocked: blocked})),
+    on(actions.setBlocked1,(state,{blocked1})=>({...state, blocked1: blocked1})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
+
+    on(actions.setIsEdit , (state, { isEdit }) => ({...state, isEdit:isEdit})),
 );
 
 export function reservationReducer(state: any, action: any) {
