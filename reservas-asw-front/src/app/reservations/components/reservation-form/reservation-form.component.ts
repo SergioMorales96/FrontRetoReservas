@@ -21,8 +21,9 @@ import * as moment from 'moment';
 })
 export class ReservationFormComponent implements OnInit {
   reservaForm!: FormGroup;
-  step: number;
+  step!: number;
   submitted: boolean;
+  isEdit!: boolean;
   numPersonas!: number;
   meanOfTransportStr!: string;
   public floorId!: number;
@@ -44,6 +45,7 @@ export class ReservationFormComponent implements OnInit {
   reservationId!: number;
   IsWorkstation!: boolean;
   routeName = RouteName;
+  currentReservation: any;
   
 
   constructor(
@@ -54,12 +56,20 @@ export class ReservationFormComponent implements OnInit {
     private alertsService: AlertsService,
     
   ) {
-    this.step = 1;
     this.submitted = false;
-    this.store.dispatch( setSteps({step: this.step}) );
   }
 
   ngOnInit(): void {
+
+    this.store.select('reservation').subscribe((reservation) => {
+
+      this.step=reservation.step;     
+      this.isEdit = reservation.isEdit
+      this.currentReservation = reservation.reservation;
+      
+    });
+
+    this.store.dispatch( setSteps({step:this.step}) ); 
 
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
@@ -124,10 +134,20 @@ export class ReservationFormComponent implements OnInit {
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    
 
-    
+    if (this.isEdit) this.editValues(this.currentReservation)
+
   } 
+
+  ngOnDestroy(): void{
+    this.store.dispatch(setDisplay({display : false}))
+  }
+
+  editValues(reservation: any):any{
+    console.log("DESDE EL METODO:",reservation?.idPiso);
+    
+    this.workstationGroup.controls['piso'].setValue(reservation.idPiso);
+  }
 
   get transportModeName(): string {
 
@@ -250,7 +270,7 @@ export class ReservationFormComponent implements OnInit {
 
     if (this.step == 4) {    
       this.addReservation();
-
+      this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setDisplay({display: false}) );
     }
 
