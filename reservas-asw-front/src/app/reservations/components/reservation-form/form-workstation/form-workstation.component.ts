@@ -38,6 +38,7 @@ export class FormWorkstationComponent implements OnInit {
   peopleNumberData: number[] = [];
   isWorkstation!: boolean;
 
+
   private vehiclesWithLicensePlates: { key: string, value: number } [];
 
   constructor(
@@ -88,16 +89,21 @@ export class FormWorkstationComponent implements OnInit {
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
 
-      this.store.select('reservation').subscribe((reservation) => {
-        this.isWorkstation = reservation.isWorkstation;         
+    this.store.select('reservation').subscribe((reservation) => {
+
+        this.isWorkstation = reservation.isWorkstation;    
+        this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala"
         if(this.isWorkstation) { 
+
           this.peopleNumberData = [1];
           while(this.peopleData.length > 1) this.removePeople();
-        }  else  this.peopleNumberData = [2,3,4,5]
-        this.peopleNumber = this.form.controls['personasReserva'].value;
 
+        }else  this.peopleNumberData = [2,3,4,5]
+
+        this.peopleNumber = this.form.controls['personasReserva'].value;
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
         if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
+
       });
   }
 

@@ -26,10 +26,11 @@
       iconPos="right" *ngIf="step != 3" (click)="submit()">
     </p-button>
     <p-button styleClass="description font-size-body" [style]="{ color: 'rgb(156,248,134)' }" class="p-mr-2"
-      label="Reservar" icon="pi pi-check" iconPos="right" *ngIf="step == 3" (click)="submit()">
+      label="Reservar" icon="pi pi-check" iconPos="right" *ngIf="step == 3" (click)="submit()"
+      [routerLink] = "routeName.viewReservation">
     </p-button>
     
   </div>
 </p-card>
 
-<!-- <pre>{{reservaForm.value | json}} </pre> -->
+<pre>{{reservaForm.value | json}} </pre>

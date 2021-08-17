@@ -23,7 +23,8 @@ export class Calendar1Component implements OnInit {
   invalidDays: number[] = [];
   invalidTotalDates: number[];
   datesReservation: DatesReservation[];
-  blocked!: boolean;
+  blocked1!: boolean;
+  
 
   constructor(
     private reservationsService: ReservationsService,
@@ -38,9 +39,9 @@ export class Calendar1Component implements OnInit {
 
   ngOnInit(): void {
     this.store.select('reservation').subscribe(
-      (reservation) => this.blocked = reservation.blocked
+      (reservation) => this.blocked1 = reservation.blocked1
     );
-    console.log('estado usuario :', this.blocked);
+    console.log('estado usuario :', this.blocked1);
     this.getReservations(this.getData(this.tempDate));
   }
 
@@ -90,7 +91,7 @@ export class Calendar1Component implements OnInit {
 
   validator(): boolean {
     let validacion = true;
-    if (this.datesReservation.length == 0 || this.blocked == true) {
+    if (this.datesReservation.length == 0 || this.blocked1 == true) {
       validacion = false;
     }
     return validacion;

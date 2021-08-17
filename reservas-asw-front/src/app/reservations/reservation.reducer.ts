@@ -5,6 +5,7 @@ import { ReservationAction } from 'src/utils/enums';
 
 export interface State {
     blocked: boolean;
+    blocked1: boolean;
     floorNumber: number; 
     peopleNumber: number;
     reservationId: number;
@@ -25,10 +26,11 @@ export interface State {
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
+    isEdit: boolean;
 }
 
 export const initialState: State = {
-   floorNumber: 0,
+   floorNumber: 18,
    peopleNumber: 1,
    reservationId: 0,
    workstation: "",
@@ -46,9 +48,11 @@ export const initialState: State = {
    isEditReservation: false,
    display: false,
    blocked: false,
+   blocked1: true,
    selectedDateSummary: '',
    step: 1,
    dates: [],
+   isEdit: false,
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -73,8 +77,11 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
     on(actions.setDisplay,(state,{display})=>({...state, display: display})),
     on(actions.setBlocked,(state,{blocked})=>({...state, blocked: blocked})),
+    on(actions.setBlocked1,(state,{blocked1})=>({...state, blocked1: blocked1})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
+
+    on(actions.setIsEdit , (state, { isEdit }) => ({...state, isEdit:isEdit})),
 );
 
 export function reservationReducer(state: any, action: any) {
