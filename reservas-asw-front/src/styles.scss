@@ -123,13 +123,15 @@ body {
 
 .p-menuButton .p-button{
   border: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-right: 0 !important;
   width: 100% !important;
   height: 54px !important;
   border-radius: 0% !important;
   color: white;
   font-size: 14.5px;
+  padding-left: 7px !important;
 }
 
 .p-menuBlocked .p-button{
@@ -193,16 +195,4 @@ body {
 .p-sidebar-left{
   width: 208px !important; 
   border: 0 !important;
-}
-
-.generateButton{
-  display: flex;
-}
-
-.p-textButton{
-  width: 80%;
-  padding-left: 8px !important;
-}
-.p-iconButton{
-  width: 20%;
 }
