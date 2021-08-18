@@ -166,6 +166,7 @@ export class EditReservationComponent {
     this.store.dispatch( setSteps({step: step}) ); 
     this.router.navigate(["admin/addReservation"]);
     this.store.dispatch(setReservation({reservation: this.currentReservation}));
+    this.store.dispatch(setEditReservation({isEditReservation: false}));
     this.store.dispatch(setDisplay({display: true}));
     this.store.dispatch(setIsEdit({isEdit: true}));
   }

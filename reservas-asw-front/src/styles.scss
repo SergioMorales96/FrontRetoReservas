@@ -91,7 +91,7 @@ body {
 
 .sidebar{
   position: absolute;
-  width: 208px;
+  width: 20%;
   height: 100%;
   margin-top: -54px;
 }
@@ -124,15 +124,12 @@ body {
 
 .p-menuButton .p-button{
   border: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-right: 0 !important;
   width: 100% !important;
   height: 54px !important;
   border-radius: 0% !important;
   color: white;
   font-size: 14.5px;
-  padding-left: 7px !important;
+  padding: 10% !important;
 }
 
 .p-menuBlocked .p-button{
@@ -141,19 +138,46 @@ body {
 
 .p-menuReservation .p-button{
   background-color: #113561 !important;
-  padding-left: 10px !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
 }
 
 .p-menuReservationActive .p-button{
   background-color: white !important;
   color: $blue-primary !important;
-  padding-left: 10px !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
 }
 
 .p-administration .p-button{
   background-color: #113561 !important;
   align-items: center;
-  padding-left: 38px !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-menu-overlay{
+  width: 90% !important;
+  margin-left: 5% !important;
+}
+
+.white__line{
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
+}
+
+#line_shade{
+  margin: 0% !important;
+  width: 100% !important;
+  padding: 0% !important;
+  
 }
 
 .image{
@@ -167,7 +191,7 @@ body {
 
 .imageCalendar{
   margin-right: 5%;
-  margin-left: 17%;
+  margin-left: 5%;
 }
 
 
