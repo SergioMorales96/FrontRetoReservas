@@ -18,6 +18,14 @@ export interface ReservationResponse {
     message?: string;
     status?:  string;
 }
+export interface AforoResponse {
+
+    data:    number;
+    success?: boolean;
+    message?: string;
+    status?:  string;
+
+}
 
 export interface Reservation {
     numero_reserva?: number;

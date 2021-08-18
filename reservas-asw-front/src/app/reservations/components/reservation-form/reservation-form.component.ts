@@ -13,6 +13,7 @@ import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
 import { DatesReservation } from 'src/app/admin/interfaces/reservation';
+import { DataResponse } from '../../interfaces/reservations.interface';
 
 @Component({
   selector: 'app-reservation-form',
@@ -46,6 +47,8 @@ export class ReservationFormComponent implements OnInit {
   IsWorkstation!: boolean;
   routeName = RouteName;
   currentReservation!: DatesReservation | null;
+  dateAforo!: string;
+  responseAforo!: number| any;
   
 
   constructor(
@@ -128,8 +131,8 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-
       this.step=reservation.step;     
+      this.AforoPuesto();
       this.isEdit = reservation.isEdit;
       this.currentReservation = reservation.reservation;   
       if(this.isEdit) this.editValues(this.currentReservation);  
@@ -290,6 +293,14 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch( setSteps({step: this.step}) );
   }
 
-  
+  AforoPuesto():number {
+
+    this.dateAforo="this.selectedDate";
+    this.reservationService
+    .aforoPuestos(this.dateAforo,this.startTime,this.endTime,this.floorId)
+    .subscribe((dataResponse: DataResponse) => this.responseAforo= (dataResponse.data));
+    return this.responseAforo;
+ 
+   }
 
 }
