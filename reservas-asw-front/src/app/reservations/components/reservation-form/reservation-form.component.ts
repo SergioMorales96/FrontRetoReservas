@@ -131,12 +131,10 @@ export class ReservationFormComponent implements OnInit {
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
 
       this.step=reservation.step;     
-      this.isEdit = reservation.isEdit
+      this.isEdit = reservation.isEdit;
       this.currentReservation = reservation.reservation;   
       if(this.isEdit) this.editValues(this.currentReservation);  
-      
-      
-      
+           
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
@@ -150,35 +148,14 @@ export class ReservationFormComponent implements OnInit {
 
   editValues(currentReservation: DatesReservation | null):any{
 
-    this.workstationGroup.patchValue({
-
-    'piso':currentReservation?.numeroPiso,
-    'reserva': currentReservation?.idSala ? currentReservation?.idSala : currentReservation?.idPuestoTrabajo,
-    'personasReserva': 1,
-    'datosAcompanante': '',
-    'medioTransporte': 2,
-    'placa':this.currentReservation?.placa
-    })
-    
-    
-    
-    this.dateGroup.patchValue({
-    'periodoTiempo': this.currentReservation?.totalHoras,
-    'fecha': this.currentReservation?.dia,
-    }) 
-    
-    
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    this.store.dispatch(setReservationId({ reservationId : this.workstationGroup.controls['reserva'].value }));
-    this.store.dispatch(setPeopleNumber({ peopleNumber : this.workstationGroup.controls['personasReserva'].value }));
-    //this.store.dispatch(({ : this.workstationGroup.controls['datosAcompanante'].value }));
-    //this.store.dispatch(({ : this.workstationGroup.controls['medioTransporte'].value }));
-    //this.store.dispatch(({ : this.workstationGroup.controls['placa'].value }));
-    
-    
-    
-  
-    this.store.dispatch(setIsEdit({ isEdit: false }));
+    this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
+    this.workstationGroup.controls['reserva'].setValue(currentReservation?.numeroAsistentes == 0 ? currentReservation.idPuestoTrabajo : currentReservation?.idSala);
+    this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
+    //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
+    this.workstationGroup.controls['medioTransporte'].setValue(3);
+    this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
+    this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
+    this.dateGroup.controls['fecha'].setValue(currentReservation?.dia);  
     
     }
 
