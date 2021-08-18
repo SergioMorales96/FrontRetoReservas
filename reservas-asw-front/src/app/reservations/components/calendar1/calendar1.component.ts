@@ -49,7 +49,7 @@ export class Calendar1Component implements OnInit {
     return {
       startDate: moment(datevalue).startOf('date').format('DD-MM-YYYY'),
       endDate: moment(datevalue).endOf('month').format('DD-MM-YYYY'),
-      email: 'correoJuan@correo.com'
+      email: 'correoUsuario@correo.com'
     }
   }
 
