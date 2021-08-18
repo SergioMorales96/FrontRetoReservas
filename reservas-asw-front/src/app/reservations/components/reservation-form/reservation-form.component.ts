@@ -180,7 +180,7 @@ export class ReservationFormComponent implements OnInit {
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
-      emailUsuario: 'correoJuan@correo.com', // Dato por SESION
+      emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idRelacion: this.reservaForm.value.puestoInfo.reserva, 
       tipoReserva: this.ReservationType,
