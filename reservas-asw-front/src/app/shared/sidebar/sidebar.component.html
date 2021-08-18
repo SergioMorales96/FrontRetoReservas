@@ -1,9 +1,9 @@
-<div 
-    class="sidebar" 
-    [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
-    <h2 class="spaceLogo">
+<div
+    id="sidebar"
+    [ngClass]="{'sidebar': !responsive, 'sidebarComp': responsive, 'sidebarActive': display, 'sidebarInactive': !display}">
+    <h2 [ngClass]="{'spaceLogo': !responsive, 'spaceLogoComp': responsive}">
         <img 
-            class="imageLogo" 
+            [ngClass]= "{'imageLogo': !responsive, 'imageLogoComp': responsive}"
             src="assets/images/logos/logo.svg">
     </h2>
     <div>
