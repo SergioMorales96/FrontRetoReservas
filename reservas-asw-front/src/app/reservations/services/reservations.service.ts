@@ -109,6 +109,5 @@ export class ReservationsService {
           return throwError(err);
         })
       );
-
   }
 }
