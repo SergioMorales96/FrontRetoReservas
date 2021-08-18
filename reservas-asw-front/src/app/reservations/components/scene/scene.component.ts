@@ -13,6 +13,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
 import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit } from '../../reservation.actions';
+import { DatesReservation } from '../../../admin/interfaces/reservation';
 
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
@@ -75,14 +76,14 @@ export class SceneComponent implements OnInit {
     let numeroPersonas = 0;
     let myStore = this.store;
     let step = 0;
-    let currentReservation : any;
+    let currentReservation: DatesReservation | null;
     let isEdit : boolean;
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
       numeroPersonas = reservation.peopleNumber;      
       step = reservation.step;
-      currentReservation = reservation.reservation;      
+      currentReservation = reservation?.reservation;      
       isEdit = reservation.isEdit;
     });
 
@@ -1706,7 +1707,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
-        if(currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         window.location.reload();  
 

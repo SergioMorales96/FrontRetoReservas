@@ -24,8 +24,7 @@ export class EditReservationComponent {
   datesReservation: DatesReservation[] = [];
   routeName = RouteName;
   usersMap = {
-    '=0': 'No hay personas',
-    '=1': '1 persona',
+    '=0': '1 persona',
     'other': '# personas',
   };
 
