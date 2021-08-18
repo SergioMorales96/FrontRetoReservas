@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
@@ -47,6 +47,7 @@ export class ReservationFormComponent implements OnInit {
   IsWorkstation!: boolean;
   routeName = RouteName;
   currentReservation!: DatesReservation | null;
+  @Output() view = new EventEmitter<number>();
   
 
   constructor(
@@ -284,13 +285,18 @@ export class ReservationFormComponent implements OnInit {
       this.store.dispatch( setDisplay({display: false}) );
     }
 
+    this.viewStatus(this.step);
+
   }
 
   previous() {
     this.step = this.step - 1;
     this.store.dispatch( setSteps({step: this.step}) );
+    this.viewStatus(this.step);
   }
 
-  
+  viewStatus(value: number) {
+    this.view.emit(value);
+  }
 
 }

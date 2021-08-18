@@ -15,7 +15,8 @@ import { setReservationId, setSteps } from '../../../reservations/reservation.ac
 import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit } from '../../reservation.actions';
 import { DatesReservation } from '../../../admin/interfaces/reservation';
 
-const CAMERA_FOV = 40;
+
+const CAMERA_FOV = 60;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
 const BACKGROUND_COLOR = 0xffffff;
@@ -138,6 +139,7 @@ export class SceneComponent implements OnInit {
     
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     scene.background = new THREE.Color( BACKGROUND_COLOR );
+
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT);
@@ -346,7 +348,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_SADDLE_COLOR,
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -382,7 +384,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_BACK_COLOR, 
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -1772,6 +1774,16 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     function setColorSelectedObject():  void {
       (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
     }
+
+
+    function render() {
+
+      renderer.render(scene,camera);
+      requestAnimationFrame(render);
+      animateStars();
+
+    }
+
   }
 
   ngOnInit(): void{
