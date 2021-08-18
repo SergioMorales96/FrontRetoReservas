@@ -36,7 +36,7 @@ export class CActiveGuard implements CanActivate {
     // pueda entrar a la página después de las 10:00 pm  
     console.log(hora);
     
-    if (hora >= 14) {
+    if (hora >= 18) {
       console.log("FUNCIONO!");
       
       // Si la hora es mayor o igual redireccionamos al homeComponent

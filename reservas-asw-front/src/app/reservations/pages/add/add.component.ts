@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-add',
@@ -7,7 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddComponent implements OnInit {
 
+  view: number = 1;
+
   constructor() { }
+
+  changeVal(val: any) {
+    this.view = val;
+  }
 
   ngOnInit(): void {
   }

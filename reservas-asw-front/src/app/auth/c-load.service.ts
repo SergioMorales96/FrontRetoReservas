@@ -10,7 +10,7 @@ export class CLoadService implements CanLoad {
   canLoad(route: Route): boolean {
     const hora = new Date().getHours();
     
-    if (hora >= 14) {
+    if (hora >= 18) {
       
       alert('You are not authorised to visit this page');
 
