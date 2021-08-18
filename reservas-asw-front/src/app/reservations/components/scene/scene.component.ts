@@ -1706,7 +1706,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
-        sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        if(currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         window.location.reload();  
 

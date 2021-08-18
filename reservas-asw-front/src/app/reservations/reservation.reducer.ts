@@ -48,7 +48,7 @@ export const initialState: State = {
    isEditReservation: false,
    display: false,
    blocked: false,
-   blocked1: true,
+   blocked1: false,
    selectedDateSummary: '',
    step: 1,
    dates: [],
