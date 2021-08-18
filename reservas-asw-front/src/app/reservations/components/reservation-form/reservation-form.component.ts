@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber,  setContinue, setSteps,  setDisplay } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -12,6 +12,7 @@ import { ReservationsService } from 'src/app/reservations/services/reservations.
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
+import { DatesReservation } from 'src/app/admin/interfaces/reservation';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class ReservationFormComponent implements OnInit {
   reservationId!: number;
   IsWorkstation!: boolean;
   routeName = RouteName;
-  currentReservation: any;
+  currentReservation!: DatesReservation | null;
   
 
   constructor(
@@ -64,9 +65,7 @@ export class ReservationFormComponent implements OnInit {
     this.store.select('reservation').subscribe((reservation) => {
 
       this.step=reservation.step;     
-      this.isEdit = reservation.isEdit
-      this.currentReservation = reservation.reservation;
-      
+
     });
 
     this.store.dispatch( setSteps({step:this.step}) ); 
@@ -80,7 +79,7 @@ export class ReservationFormComponent implements OnInit {
         datosAcompanante: this.fb.array([
           this.fb.group({
             correo: [
-              'correousuario@correo.com',
+              'correoUsuario@correo.com',
               [
                 Validators.required,
                 Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$'),
@@ -121,7 +120,7 @@ export class ReservationFormComponent implements OnInit {
    
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
-      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
+      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');      
       this.timePeriod = reservation.timePeriod;
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
@@ -130,12 +129,18 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
+
+      this.step=reservation.step;     
+      this.isEdit = reservation.isEdit
+      this.currentReservation = reservation.reservation;   
+      if(this.isEdit) this.editValues(this.currentReservation);  
+      
+      
       
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
 
-    if (this.isEdit) this.editValues(this.currentReservation)
 
   } 
 
@@ -143,11 +148,39 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setDisplay({display : false}))
   }
 
-  editValues(reservation: any):any{
-    console.log("DESDE EL METODO:",reservation?.idPiso);
+  editValues(currentReservation: DatesReservation | null):any{
+
+    this.workstationGroup.patchValue({
+
+    'piso':currentReservation?.numeroPiso,
+    'reserva': currentReservation?.idSala ? currentReservation?.idSala : currentReservation?.idPuestoTrabajo,
+    'personasReserva': 1,
+    'datosAcompanante': '',
+    'medioTransporte': 2,
+    'placa':this.currentReservation?.placa
+    })
     
-    this.workstationGroup.controls['piso'].setValue(reservation.idPiso);
-  }
+    
+    
+    this.dateGroup.patchValue({
+    'periodoTiempo': this.currentReservation?.totalHoras,
+    'fecha': this.currentReservation?.dia,
+    }) 
+    
+    
+    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    this.store.dispatch(setReservationId({ reservationId : this.workstationGroup.controls['reserva'].value }));
+    this.store.dispatch(setPeopleNumber({ peopleNumber : this.workstationGroup.controls['personasReserva'].value }));
+    //this.store.dispatch(({ : this.workstationGroup.controls['datosAcompanante'].value }));
+    //this.store.dispatch(({ : this.workstationGroup.controls['medioTransporte'].value }));
+    //this.store.dispatch(({ : this.workstationGroup.controls['placa'].value }));
+    
+    
+    
+  
+    this.store.dispatch(setIsEdit({ isEdit: false }));
+    
+    }
 
   get transportModeName(): string {
 
@@ -200,7 +233,7 @@ export class ReservationFormComponent implements OnInit {
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
-      emailUsuario: 'correoJuan@correo.com', // Dato por SESION
+      emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idRelacion: this.reservaForm.value.puestoInfo.reserva, 
       tipoReserva: this.ReservationType,

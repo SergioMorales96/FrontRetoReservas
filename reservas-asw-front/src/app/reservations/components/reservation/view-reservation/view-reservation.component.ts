@@ -27,8 +27,7 @@ export class ViewReservationComponent implements OnInit {
   remainingDays: number;
   routeName = RouteName;
   usersMap = {
-    '=0': 'No hay personas',
-    '=1': '1 persona',
+    '=0': '1 persona',
     'other': '# personas',
   }; 
 
@@ -163,7 +162,7 @@ export class ViewReservationComponent implements OnInit {
     return {
       startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
       endDate: moment().endOf('month').format('DD-MM-YYYY'),
-      email: 'correoJuan@correo.com'
+      email: 'correoUsuario@correo.com'
     }
   }
   
