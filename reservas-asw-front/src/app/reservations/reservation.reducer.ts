@@ -48,7 +48,7 @@ export const initialState: State = {
    reservationAction: 0,
    isEditReservation: false,
    display: false,
-   responsive: false,
+   responsive: true,
    blocked: false,
    blocked1: true,
    selectedDateSummary: '',
