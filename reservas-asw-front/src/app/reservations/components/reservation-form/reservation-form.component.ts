@@ -163,7 +163,8 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
       //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
-      this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
+      //this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
+      this.workstationGroup.controls['placa'].setValue('ZZZ-222');  
       this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
       this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
     } 
@@ -231,7 +232,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
   getReservationFormValue(): Reservation {
    
     return {
-      id: 397,
+      id: this.currentReservation?.numeroReserva,
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
       horaFin: this.endTime,
@@ -347,25 +348,17 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.step += 1;    
     this.store.dispatch( setSteps({step: this.step}) );
 
-    if (this.step == 4) {    
-      //this.addReservation();
-      this.editReservation();
+    if (this.step == 4) {   
+      this.getReservationFormValue().id ?  this.editReservation() : this.addReservation();    
       this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setDisplay({display: false}) );
     }
-
-    this.viewStatus(this.step);
 
   }
 
   previous() {
     this.step = this.step - 1;
     this.store.dispatch( setSteps({step: this.step}) );
-    this.viewStatus(this.step);
-  }
-
-  viewStatus(value: number) {
-    this.view.emit(value);
   }
 
 }

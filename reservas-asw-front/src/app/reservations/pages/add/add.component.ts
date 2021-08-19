@@ -10,14 +10,9 @@ import { AppState } from 'src/app/app.reducer';
 export class AddComponent implements OnInit {
   step!: number;
 
-  //view: number = 1;
-
-  constructor(    private store: Store<AppState>,
+  constructor(private store: Store<AppState>,
     ) { }
 
-  /*changeVal(val: any) {
-    this.view = val;
-  }*/
 
   ngOnInit(): void {
 
