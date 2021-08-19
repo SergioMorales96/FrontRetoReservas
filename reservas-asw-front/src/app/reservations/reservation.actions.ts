@@ -118,6 +118,14 @@ export const setIsEdit= createAction(
     props<{isEdit: boolean }>()
 )
 
+export const setResponsive= createAction(
+    '[Reservations Component] setResponsive',
+    props<{responsive: boolean }>()
+)
 
+export const setSidebar = createAction(
+    '[Reservations Component] setSidebar',
+    props<{ sidebar: any }>()
+)
 
 

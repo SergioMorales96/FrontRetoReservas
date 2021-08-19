@@ -1,34 +1,22 @@
-<p-menubar styleClass="ui-menubar">
-
-
-    <ng-template pTemplate="start">
-        <!-- <img 
-            src="assets/images/logos/logo.svg" 
-            height="25" 
-            class="logoDis"
-        /> -->
-    </ng-template>
-
-
+<p-menubar>
     <ng-template pTemplate="end">
         <button 
             pButton 
-            icon="pi pi-bell" 
+            pRipple 
+            type="button" 
             class="p-button-rounded p-button-secondary p-button-text">
             <i 
+                class="pi pi-bell p-text-secondary" 
                 pBadge 
-                severity="info" 
-                class="num" 
-                style="font-size: 2rem" 
-                value="4">
+                style="font-size: 1.25rem" 
+                value="2" 
+                severity="danger">
             </i>
         </button>
-        
         <p-avatar 
-            image="https://i.blogs.es/63adbf/audi-r8-v10-decennium-03/1366_2000.jpg" 
-            shape="circle" 
-            styleClass="p-mr-2">
+            [image]="'assets/images/icons/calendar.svg'" 
+            styleClass="p-mr-2" 
+            shape="circle">
         </p-avatar>
     </ng-template>
-    
 </p-menubar>
