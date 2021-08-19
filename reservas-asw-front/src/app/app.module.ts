@@ -19,6 +19,7 @@ import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { appReducers } from './app.reducer';
 import { CLoadService } from './auth/c-load.service';
+import { CActiveGuard } from './auth/c-active.guard';
 import { ReservationsModule } from './reservations/reservations.module';
 import { ViewReservationComponent } from './reservations/components/reservation/view-reservation/view-reservation.component';
 import { EditReservationComponent } from './reservations/components/reservation/edit-reservation/edit-reservation.component';
@@ -41,6 +42,7 @@ import { EditReservationComponent } from './reservations/components/reservation/
   providers: [
     ConfirmationService,
     MessageService,
+    CActiveGuard,
     CLoadService,
     {provide: LOCALE_ID, useValue:'es-CO'}
   ],

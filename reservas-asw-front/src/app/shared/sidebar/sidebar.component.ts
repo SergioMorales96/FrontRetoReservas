@@ -3,7 +3,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
-import { setDisplay } from '../../reservations/reservation.actions';
+import { setDisplay, setSteps } from '../../reservations/reservation.actions';
+import { setIsEdit } from '../../reservations/editReservation.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -34,6 +35,10 @@ export class SidebarComponent {
   changeDisplay(display: boolean){
     this.display = display;
     this.store.dispatch(setDisplay({display : display}))
+    if(display == true) {
+       this.store.dispatch(setSteps({step : 1}));
+       this.store.dispatch(setIsEdit({isEdit : false}))
+      }
   }
 
   ngOnInit(): void {
