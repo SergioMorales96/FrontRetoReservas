@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber, setCapacity } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -49,6 +49,9 @@ export class ReservationFormComponent implements OnInit {
   currentReservation!: DatesReservation | null;
   dateAforo!: string;
   responseAforo!: number| any;
+  hora_i!: string;
+  hora_f!: string;
+  capacity!:number;
   
 
   constructor(
@@ -59,6 +62,7 @@ export class ReservationFormComponent implements OnInit {
     private alertsService: AlertsService,
     
   ) {
+    this.store.dispatch(setCapacity({ capacity: this.capacity }));
     this.submitted = false;
   }
 
@@ -131,14 +135,16 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-      this.step=reservation.step;     
-      this.AforoPuesto();
+      this.step=reservation.step;  
+      if(this.endTime && this.reservaForm.value.fechaInfo.fecha!="Invalid date"){
+        //this.capacity=this.AforoPuesto();
+        this.capacity=this.AforoSala();
+      }   
       this.isEdit = reservation.isEdit;
       this.currentReservation = reservation.reservation;   
-      if(this.isEdit) this.editValues(this.currentReservation);  
-           
+      if(this.isEdit) this.editValues(this.currentReservation);      
     });
-
+    this.store.dispatch(setCapacity({ capacity: this.capacity }));
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
 
 
@@ -295,10 +301,26 @@ export class ReservationFormComponent implements OnInit {
 
   AforoPuesto():number {
 
-    this.dateAforo="this.selectedDate";
+    this.dateAforo=this.reservaForm.value.fechaInfo.fecha;
+    this.hora_i="01-01-1970 "+this.startTime.slice(0,5)+":00";
+    this.hora_f="01-01-1970 "+this.endTime.slice(0,5)+":00";
     this.reservationService
-    .aforoPuestos(this.dateAforo,this.startTime,this.endTime,this.floorId)
+    .aforoPuestos(this.dateAforo,this.hora_i,this.hora_f,this.workstationGroup.controls['piso'].value)
     .subscribe((dataResponse: DataResponse) => this.responseAforo= (dataResponse.data));
+    console.log(this.responseAforo);
+    return this.responseAforo;
+ 
+   }
+
+   AforoSala():number {
+
+    this.dateAforo=this.reservaForm.value.fechaInfo.fecha;
+    this.hora_i="01-01-1970 "+this.startTime.slice(0,5)+":00";
+    this.hora_f="01-01-1970 "+this.endTime.slice(0,5)+":00";
+    this.reservationService
+    .aforoSalas(this.dateAforo,this.hora_i,this.hora_f,this.workstationGroup.controls['piso'].value)
+    .subscribe((dataResponse: DataResponse) => this.responseAforo= (dataResponse.data));
+    console.log(this.responseAforo);
     return this.responseAforo;
  
    }

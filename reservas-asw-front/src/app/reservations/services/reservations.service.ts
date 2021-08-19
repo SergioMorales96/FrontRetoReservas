@@ -119,4 +119,13 @@ export class ReservationsService {
       );
 
   }
+  aforoSalas(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0): Observable<AforoResponse> {
+    const urlLink = `${this.apiUrl}/aforoSalas`;
+    return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}`)
+      .pipe(
+        catchError(err => of({ data: 0 }))
+
+      );
+
+  }
 }

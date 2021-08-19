@@ -118,6 +118,9 @@ export const setIsEdit= createAction(
     props<{isEdit: boolean }>()
 )
 
-
+export const setCapacity= createAction(
+    '[Reservations Component] setCapacity',
+    props<{capacity: number }>()
+)
 
 
