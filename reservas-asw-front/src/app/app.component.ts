@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
 import { setResponsive } from './reservations/reservation.actions';
@@ -12,20 +12,6 @@ export class AppComponent {
 
   display: boolean = true;
   responsive: boolean = true;
-  inside = false;
-
-  @HostListener("click")
-  clicked() {
-    this.inside = true;
-  }
-
-  @HostListener("document:click")
-  clickedOut() {
-    this.inside
-      ? null
-      : this.changeResponsive(false);
-    this.inside = false;
-  }
 
   constructor(
     private store: Store<AppState>

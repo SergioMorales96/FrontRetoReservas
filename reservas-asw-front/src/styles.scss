@@ -161,7 +161,6 @@ body {
 }
 
 .margin-reservation{
-  margin-left: 208px;
   padding-bottom: 0px !important;
 }
 
@@ -194,6 +193,10 @@ body {
   padding-right: 15% !important;
   padding-top: 0% !important;
   padding-bottom: 0% !important;
+}
+
+.p-menubar-button {
+  display: none !important;
 }
 
 .p-administration .p-button{
