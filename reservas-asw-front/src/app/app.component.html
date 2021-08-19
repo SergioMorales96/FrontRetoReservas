@@ -21,12 +21,13 @@
 
 <div class="p-grid margin-sidebar">
     <div>
-        <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
+        <p-sidebar [(visible)]="responsive">
             <app-sidebar></app-sidebar>
         </p-sidebar>
-        <ng-template #sidebar>
+        <!--*ngIf="responsive; else sidebar"-->
+        <!--ng-template #sidebar>
             <app-sidebar></app-sidebar>
-        </ng-template>
+        </ng-template-->
     </div>  
     <router-outlet></router-outlet>
 </div>
