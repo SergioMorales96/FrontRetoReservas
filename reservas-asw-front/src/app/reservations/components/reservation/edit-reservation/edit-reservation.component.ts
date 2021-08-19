@@ -4,12 +4,13 @@ import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setEditReservation, setReservation, setReservationList, setSteps, setDisplay, setIsEdit } from '../../../reservation.actions';
+import { setEditReservation, setReservation, setReservationList, setSteps, setDisplay } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
 import * as moment from 'moment';
 import { Router, RouterLink } from '@angular/router';
+import { setIsEdit } from '../../../editReservation.actions';
 
 @Component({
   selector: 'app-edit-reservation',

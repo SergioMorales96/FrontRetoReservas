@@ -11,9 +11,10 @@ import { Roomr, RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.i
 import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspaces-per-floor.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit } from '../../reservation.actions';
+import { setDisplay, setReservationId, setSteps } from '../../../reservations/reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation } from '../../reservation.actions';
 import { DatesReservation } from '../../../admin/interfaces/reservation';
+import { setIsEdit } from '../../editReservation.actions';
 
 
 const CAMERA_FOV = 60;
@@ -79,13 +80,18 @@ export class SceneComponent implements OnInit {
     let step = 0;
     let currentReservation: DatesReservation | null;
     let isEdit : boolean;
+    let display : boolean;
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
       numeroPersonas = reservation.peopleNumber;      
       step = reservation.step;
-      currentReservation = reservation?.reservation;      
-      isEdit = reservation.isEdit;
+      currentReservation = reservation?.reservation;    
+      display = reservation.display  
+    });
+
+   this.store.select('editReservation').subscribe((editReservation) => {
+      isEdit = editReservation.isEdit;
     });
 
     setFlag();
@@ -1702,6 +1708,9 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setSteps({step: Number(  JSON.parse(sessionStorage.getItem( 'step' ) || '{}' ) )}) );  
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
+      myStore.dispatch( setDisplay({ display: JSON.parse(sessionStorage.getItem( 'display' ) || '{}' ) }) );    
+      //myStore.dispatch( setIsEdit({isEdit: true}) );    
+
       sessionStorage.clear(); 
 
     }
@@ -1710,8 +1719,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
-        
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
+        sessionStorage.setItem( "display", JSON.stringify(display));
         window.location.reload();  
 
       }
