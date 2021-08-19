@@ -3,7 +3,8 @@
     acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
 
-<div class="flex">
+<div style="width: 100%; height: 100vh ">
+
     <div>
         <p-menubar>
             <ng-template pTemplate="end">
@@ -13,25 +14,24 @@
                 <p-avatar [image]="assetsUrl + 'images/icons/calendar.svg'" styleClass="p-mr-2" shape="circle"></p-avatar>
             </ng-template>
         </p-menubar>
-    
-       
     </div>
 
-</div>
-
-<div class="p-grid margin-sidebar">
-    <div>
-        <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
-            <app-sidebar></app-sidebar>
-        </p-sidebar>
-        <ng-template #sidebar>
-            <app-sidebar></app-sidebar>
-        </ng-template>
+    <div class="p-grid margin-sidebar">
+            <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
+                <app-sidebar></app-sidebar>
+            </p-sidebar>
+            <ng-template #sidebar>
+                <app-sidebar></app-sidebar>
+            </ng-template>
     </div>
-    <div style="width: 100%; height: 100%">
+
+    <div >
         <router-outlet></router-outlet>   
     </div>
+
 </div>
+
+
 
 
 

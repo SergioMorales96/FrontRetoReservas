@@ -92,7 +92,7 @@ body {
 .sidebar{
   position: absolute;
   width: 20%;
-  height: 100%;
+  height: 100.7%;
   margin-top: -54px;
 }
 
@@ -114,11 +114,12 @@ body {
 }
 
 .imageLogo{
-  transform: scale(0.5);
+  transform: scale(0.45);
+  margin: -5px;
 }
 
 .margin-reservation{
-  margin-left: 208px;
+
   padding-bottom: 0px !important;
 }
 
@@ -216,8 +217,18 @@ body {
   padding: 0 !important;
   height: 577.33px;
 }
+@media screen and (min-width: 1500px){
 
-.p-sidebar-left{
-  width: 208px !important; 
-  border: 0 !important;
+ .imageLogo{
+  transform: scale(0.40);
+  margin: -10px;
+ }
 }
+
+@media screen and (min-width: 1800px){
+
+  .imageLogo{
+   transform: scale(0.40);
+   margin: -20px;
+  }
+ }
