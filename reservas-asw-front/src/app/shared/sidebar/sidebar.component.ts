@@ -16,6 +16,7 @@ export class SidebarComponent {
 
   display!: boolean;
   blocked!: boolean;
+  responsive!: boolean;
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
@@ -56,6 +57,9 @@ export class SidebarComponent {
     );
     this.store.select('reservation').subscribe(
       (reservation) => this.blocked = reservation.blocked
+    );
+    this.store.select('reservation').subscribe(
+      (reservation) => this.responsive = reservation.responsive
     );
   }
 
