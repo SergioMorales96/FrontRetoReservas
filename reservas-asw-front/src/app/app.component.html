@@ -1,5 +1,7 @@
 <p-toast></p-toast>
 
+<app-menu></app-menu>
+
 <p-confirmDialog 
     [style]="{width: '50vw'}" 
     [baseZIndex]="10000" 
@@ -10,18 +12,18 @@
 </p-confirmDialog>
 
 <p-sidebar 
-    [(visible)]="display"
+    [(visible)]="responsive"
     styleClass="width-15 full-height">
     <app-sidebar></app-sidebar>
 </p-sidebar>
 
 <router-outlet></router-outlet>
 
-<p-button 
+<!-- <p-button 
     type="text" 
     (click)="display = !display" 
     icon="pi pi-plus" 
     label="Show">
-</p-button>
+</p-button> -->
 
 

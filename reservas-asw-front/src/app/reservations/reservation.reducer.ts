@@ -52,7 +52,7 @@ export const initialState: State = {
    display: false,
    responsive: true,
    blocked: false,
-   blocked1: true,
+   blocked1: false,
    selectedDateSummary: '',
    step: 1,
    dates: [],

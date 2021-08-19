@@ -1,4 +1,16 @@
 <p-menubar>
+    <ng-template pTemplate="start" >
+        <button
+        pButton 
+        pRipple 
+        type="button" 
+        (click) ="changeResponsive(true)"
+        class="p-button-rounded p-button-secondary p-button-text">
+            <i class="pi pi-bars">
+
+            </i>
+        </button>
+    </ng-template>
     <ng-template pTemplate="end">
         <button 
             pButton 

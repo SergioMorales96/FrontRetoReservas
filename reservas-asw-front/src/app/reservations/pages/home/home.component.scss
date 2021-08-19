@@ -1,26 +1,6 @@
-.box1{
-    transform: scale(1);
-    margin-left: 100px;
-}
-.box2{
-    transform: scale(0.8);
-    margin-top: 3%;
-}
 .margin-sidebar{
     margin-top: 0px;
 }
 .margin-reservation{
-    margin-left: 90px;
-}
-
-@media screen and (max-width:48rem) {
-    .margin-reservation{
-        display: flex !important;
-        flex-direction: column;
-    }
-
-    .box1{
-        width:auto;
-        text-align: center;
-    }
+    max-width: 100%;
 }
