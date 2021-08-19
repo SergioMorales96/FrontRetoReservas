@@ -4,13 +4,10 @@ import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
 import { setDisplay } from '../../reservations/reservation.actions';
-import { GridHelper } from 'three';
 
 @Component({
   selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styles: [
-  ]
+  templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent {
 
@@ -20,6 +17,7 @@ export class SidebarComponent {
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
+  isEditingReservation: boolean = false;
 
   get generateReservationIcon(): string {
     return `assets/images/icons/${this.blocked ? 'minus-gray' : this.display ? 'close-red' : 'plus-blue'}.svg`;
@@ -33,45 +31,10 @@ export class SidebarComponent {
     return `assets/images/icons/${this.display ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
-  changeDisplay(display: boolean){
-    this.display = display;
-    this.store.dispatch(setDisplay({display : display}))
-  }
-
-  ngOnInit(): void {
-    this.store.select('reservation').subscribe(
-      (reservation) => 
-      {
-        this.display = reservation.display;
-        const line = document.getElementById('line_shade');
-        if (this.display) {
-          if (line) {
-            line.style.display = 'flex';
-          }
-        } else {
-          if (line) {
-            line.style.display = 'none';
-          }
-        }
-      }
-    );
-    this.store.select('reservation').subscribe(
-      (reservation) => this.blocked = reservation.blocked
-    );
-    this.store.select('reservation').subscribe(
-      (reservation) => this.responsive = reservation.responsive
-    );
-  }
-
   constructor(
     private store: Store<AppState>
   ) {
     this.items = [
-      {
-        label: 'Lista de usuarios',
-        routerLink: '',
-        icon: 'pi pi-check'
-      },
       {
         label: 'Lista de administración',
         routerLink: 'admin/admins/list',
@@ -108,5 +71,33 @@ export class SidebarComponent {
         icon: 'pi pi-check'
       },
     ];
+  }
+
+  ngOnInit(): void {
+    this.store.select('reservation').subscribe(
+      (reservation) => {
+        this.display = reservation.display;
+        const line = document.getElementById('line_shade');
+        if (this.display) {
+          if (line) {
+            line.style.display = 'flex';
+          }
+        } else {
+          if (line) {
+            line.style.display = 'none';
+          }
+        }
+        this.blocked = reservation.blocked;
+        this.responsive = reservation.responsive;
+
+
+        this.isEditingReservation = reservation.sidebar.isEditingReservation;
+      }
+    );
+  }
+
+  changeDisplay(display: boolean): void {
+    this.display = display;
+    this.store.dispatch(setDisplay({ display: display }))
   }
 }

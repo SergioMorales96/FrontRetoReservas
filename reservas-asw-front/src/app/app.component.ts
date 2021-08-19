@@ -1,7 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
-import { environment } from '../environments/environment'
 import { setResponsive } from './reservations/reservation.actions';
 
 @Component({
@@ -11,11 +10,10 @@ import { setResponsive } from './reservations/reservation.actions';
 })
 export class AppComponent {
 
-  display: boolean = false;
-  responsive!: boolean;
-  assetsUrl = environment.assetsUrl
+  display: boolean = true;
+  responsive: boolean = true;
   inside = false;
-  
+
   @HostListener("click")
   clicked() {
     this.inside = true;
@@ -28,23 +26,18 @@ export class AppComponent {
       : this.changeResponsive(false);
     this.inside = false;
   }
-  
-  changeResponsive(responsive: boolean){
-    this.responsive = responsive;
-    this.store.dispatch(setResponsive({responsive : responsive}))
-  }
-
 
   constructor(
     private store: Store<AppState>
-  ){}
+  ) {
+    this.store.select('reservation').subscribe((reservation) => this.responsive = reservation.responsive);
+  }
 
   ngOnInit(): void {
-    this.store.select('reservation').subscribe((reservation) => {
-      this.display = reservation.display;
-    });
-    this.store.select('reservation').subscribe(
-      (reservation) => this.responsive = reservation.responsive
-    );
+  }
+
+  changeResponsive(responsive: boolean) {
+    this.responsive = responsive;
+    this.store.dispatch(setResponsive({ responsive: responsive }))
   }
 }
