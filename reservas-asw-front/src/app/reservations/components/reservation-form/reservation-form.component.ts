@@ -231,6 +231,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
   getReservationFormValue(): Reservation {
    
     return {
+      id: 397,
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
       horaFin: this.endTime,
@@ -287,6 +288,47 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
       });
   }
 
+  editReservation() {   
+    this.reservationService
+      .editReservation(this.getReservationFormValue())
+      .subscribe((reservationResponse: ReservationResponse) => {
+        if (reservationResponse.status === `OK`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+              header: 'Edición de reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastSuccess({
+                  summary: 'Reserva editada',
+                  detail: `Se editó la reserva exitosamente`,
+                });
+              else {
+                return;
+              }
+            })
+            .catch(console.log);
+        } else if (reservationResponse.status === `INTERNAL_SERVER_ERROR`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Ups... No fue posible editar la reserva :(`,
+              header: 'Error en la edición de la reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastDanger({
+                  summary: 'Reserva NO editada',
+                  detail: `No se pudo editar la reserva`,
+                });
+              else {
+                return;
+              }
+            });
+        }
+      });
+  }
+
   submit() {
     
     this.submitted = true;
@@ -306,7 +348,8 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.store.dispatch( setSteps({step: this.step}) );
 
     if (this.step == 4) {    
-      this.addReservation();
+      //this.addReservation();
+      this.editReservation();
       this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setDisplay({display: false}) );
     }

@@ -20,7 +20,7 @@ export interface ReservationResponse {
 }
 
 export interface Reservation {
-    numero_reserva?: number;
+    id?: number;
     dia: string;
     dominioEstado?: string;
     dominioTipoVehiculo: string;
@@ -38,7 +38,7 @@ export interface Reservation {
 }
 
 export class ReservationClass {
-    numero_reserva!: number;
+    id!: number;
     dia!: number;
     dominioEstado!: string;
     dominioTipoVehiculo!: string;
