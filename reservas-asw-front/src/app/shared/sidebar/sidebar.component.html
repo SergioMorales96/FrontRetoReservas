@@ -1,16 +1,18 @@
 <div
-    id="sidebar"
-    [ngClass]="{'sidebar': !responsive, 'sidebarComp': responsive, 'sidebarActive': display, 'sidebarInactive': !display}">
-    <h2 [ngClass]="{'spaceLogo': !responsive, 'spaceLogoComp': responsive}">
+    class="full-height"
+    [ngStyle]="{'background-color': isEditingReservation ? '#113561' : '#646464'}">
+    <div 
+        class="p-d-flex p-ai-center p-jc-center"
+        style="background-color: white; padding: 1rem;">
         <img 
-            [ngClass]= "{'imageLogo': !responsive, 'imageLogoComp': responsive}"
+            style="width: 80%;"
             src="assets/images/logos/logo.svg">
-    </h2>
+    </div>
     <div>
         <p-button 
         class="p-menuButton"
         [ngClass]="{'p-menuBlocked': blocked}" 
-        (onClick)="changeDisplay(true)"
+        (onClick)="changeDisplay(true);"
         [disabled]="blocked"
         [routerLink]="routeName.addReservation">
             <p class="text">Generar una reserva</p>

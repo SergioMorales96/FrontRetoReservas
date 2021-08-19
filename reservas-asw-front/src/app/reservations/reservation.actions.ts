@@ -123,4 +123,9 @@ export const setResponsive= createAction(
     props<{responsive: boolean }>()
 )
 
+export const setSidebar = createAction(
+    '[Reservations Component] setSidebar',
+    props<{ sidebar: any }>()
+)
+
 

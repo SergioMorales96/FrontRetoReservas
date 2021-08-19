@@ -13,6 +13,7 @@ body {
   color: $dark-navy-blue;
   font-size: 16px;
   margin: 0% !important;
+  height: 100%;
   overflow-x: hidden;
 }
 
@@ -39,7 +40,27 @@ body {
   .button_square {
     border-radius: 0;
   }
+
+  .full-height {
+    height: 100%;
+  }
+
+  .width-15 {
+    width:'15rem' !important;
+  }
 } 
+
+.width-15 {
+  width:'15rem' !important;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.p-sidebar-content {
+  height: 100%;
+}
 
 .jc-start-ai-center {
   justify-content: flex-start !important; 
@@ -225,7 +246,6 @@ body {
   margin-left: 10%;
 }
 
-
 .p-sidebar-header{
   width: 0;
   height: 0;
@@ -236,10 +256,8 @@ body {
 .p-sidebar-content{
   margin: 0 !important;
   padding: 0 !important;
-  height: 577.33px;
 }
 
 .p-sidebar-left{
-  width: 208px !important; 
   border: 0 !important;
 }
