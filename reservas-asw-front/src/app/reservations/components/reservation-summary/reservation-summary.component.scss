@@ -10,10 +10,13 @@
     z-index: 1;
     background-color: rgba(64, 64, 64, 0.6);
     width: 70vw;
-    margin-left: 12vw;    
+    margin-left: 11.7vw;    
     backdrop-filter: blur(30px);
     font-weight: bold;    
     color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 
