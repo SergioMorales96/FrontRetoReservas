@@ -1,20 +1,17 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { DateValidationType } from '../../../../utils/enums';
+import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setPeopleNumber, setContinue, setSteps, setReservationId, setDisplay, setIsWorkstation } from '../../reservation.actions';
+import { setFloorNumber,  setContinue, setSteps,  setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
 } from 'src/app/reservations/interfaces/reservations.interface';
-import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
 import { ReservationsService } from 'src/app/reservations/services/reservations.service';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import * as moment from 'moment';
-import { DataService } from '../../../services/data.service';
 
 
 @Component({
@@ -24,8 +21,9 @@ import { DataService } from '../../../services/data.service';
 })
 export class ReservationFormComponent implements OnInit {
   reservaForm!: FormGroup;
-  step: number;
+  step!: number;
   submitted: boolean;
+  isEdit!: boolean;
   numPersonas!: number;
   meanOfTransportStr!: string;
   public floorId!: number;
@@ -47,6 +45,8 @@ export class ReservationFormComponent implements OnInit {
   reservationId!: number;
   IsWorkstation!: boolean;
   @Output() view = new EventEmitter<number>();
+  routeName = RouteName;
+  currentReservation: any;
   
 
   constructor(
@@ -54,14 +54,23 @@ export class ReservationFormComponent implements OnInit {
     private store: Store<AppState>,
     private reservationService: ReservationsService,
     private toastService: ToastsService,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    
   ) {
-    this.step = 1;
     this.submitted = false;
-    this.store.dispatch( setSteps({step: this.step}) );
   }
 
   ngOnInit(): void {
+
+    this.store.select('reservation').subscribe((reservation) => {
+
+      this.step=reservation.step;     
+      this.isEdit = reservation.isEdit
+      this.currentReservation = reservation.reservation;
+      
+    });
+
+    this.store.dispatch( setSteps({step:this.step}) ); 
 
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
@@ -93,7 +102,7 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Date - Step 2
       fechaInfo: this.fb.group({
-        periodoTiempo: [null, [Validators.required, Validators.min(0.4)]],
+        periodoTiempo: ['', [Validators.required, Validators.min(0.4)]],
         fecha: [null, [Validators.required, Validators.pattern(/^(0[1-9]|[1-2][0-9]|3[0-1])\-(0[1-9]|1[0-2])\-[0-9]{4}$/)]],
       }),
       //Assistant Info - Step 3
@@ -126,10 +135,20 @@ export class ReservationFormComponent implements OnInit {
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    
 
-    
+    if (this.isEdit) this.editValues(this.currentReservation)
+
   } 
+
+  ngOnDestroy(): void{
+    this.store.dispatch(setDisplay({display : false}))
+  }
+
+  editValues(reservation: any):any{
+    console.log("DESDE EL METODO:",reservation?.idPiso);
+    
+    this.workstationGroup.controls['piso'].setValue(reservation.idPiso);
+  }
 
   get transportModeName(): string {
 
@@ -182,17 +201,16 @@ export class ReservationFormComponent implements OnInit {
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
-      emailUsuario: 'correoJuan@correo.com', // Dato por SESION
+      emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idPuestoTrabajo: this.reservaForm.value.puestoInfo.reserva,
-      idRelacion: 1, 
+      idRelacion: this.reservaForm.value.puestoInfo.reserva, 
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails
     };
 
   }
 
-  addReservation() {
+  addReservation() {   
     this.reservationService
       .addReservation(this.getReservationFormValue())
       .subscribe((reservationResponse: ReservationResponse) => {
@@ -253,6 +271,7 @@ export class ReservationFormComponent implements OnInit {
 
     if (this.step == 4) {    
       this.addReservation();
+      this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setDisplay({display: false}) );
     }
 

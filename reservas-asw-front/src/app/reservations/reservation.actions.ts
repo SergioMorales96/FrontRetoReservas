@@ -108,3 +108,16 @@ export const setBlocked= createAction(
     props<{blocked: boolean }>()
 )
 
+export const setBlocked1= createAction(
+    '[Reservations Component] setBlocked1',
+    props<{blocked1: boolean }>()
+)
+
+export const setIsEdit= createAction(
+    '[Reservations Component] setIsEdit',
+    props<{isEdit: boolean }>()
+)
+
+
+
+

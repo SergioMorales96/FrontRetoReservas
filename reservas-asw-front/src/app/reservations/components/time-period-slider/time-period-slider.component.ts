@@ -13,15 +13,18 @@ import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider }
 export class TimePeriodSliderComponent implements OnInit{
   
   rangeValues!: Array<string>;
-  firstHour = '-';
-  secondHour = '0horas';
-  thirdHour = '0.5horas';
+  rangeValues2!: Array<number>;
   minValue!: number;
   maxValue!:number;
+  minvalue1!: number;
+  maxvalue1!:number;
   startTime!: string;
   endTime!: string;
-  minvalue1!: number;
-  maxvalue1!: number;
+  initialTime:number=0;
+  finalTime:number=0;
+  hour:number=0;
+  simbol:string="<";
+  simbol2:string=">";
 
   constructor(
     private store: Store<AppState>
@@ -31,54 +34,83 @@ export class TimePeriodSliderComponent implements OnInit{
     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
-      this.maxvalue1 = reservation.endSlider;
-      this.minvalue1 = reservation.startSlider;
     } );
     if(this.startTime == ''){
       this.store.dispatch( setStartTime({ startTime: '08:00 AM'}) );
       this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
     }
-    this.functionHour(this.maxvalue1,this.minvalue1);
-    this.rangeValues = [String(this.maxvalue1),String(this.minvalue1)];
+    
   }
   ngOnInit(): void {
-    this.store
-    .select( 'reservation' )
-    .subscribe( reservation => {
+      this.store
+     .select( 'reservation' )
+     .subscribe( reservation => {
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
+      this.maxvalue1 = reservation.endSlider;
+      this.minvalue1 = reservation.startSlider;
+      this.hour=reservation.endSlider-reservation.startSlider;
     } );
+    this.rangeValues = [String(this.minvalue1),String(this.maxvalue1)];
+    this.functionHour(this.maxvalue1,this.minvalue1);  
+  }
+  importValue(hour:number,currentTime:number):void{
+    this.initialTime=currentTime;
+    this.finalTime=this.initialTime+hour;
+    this.hour=hour;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
+    this.onChange();
+  }
+  nextValue():void{ 
+    this.initialTime+=1;
+    this.finalTime+=1;
+    if(this.finalTime>=this.initialTime && this.finalTime<=18){
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
+    }else{
+    this.initialTime=0;
+    this.finalTime=this.hour;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
+    }
+     this.onChange();
+  }
+
+  previousValue():void{ 
+    this.initialTime-=1;
+    this.finalTime-=1;
+    if(this.finalTime>=this.initialTime && this.initialTime>=0){
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
+    }else{
+    this.initialTime=18-this.hour;
+    this.finalTime=18;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
+    }
+    
+    this.onChange();
+    
   }
 
   functionHour(maxValue:number,minValue:number): void {
     let range = (maxValue - minValue) / 2;
-    if (range < 0.5) {
-      this.firstHour = '-';
-      this.secondHour = '0horas';
-      this.thirdHour = range + 0.5 + 'horas';
-    } else {
-      const valitionHour = range - 0.5 == 1 ? 'hora' : 'horas';
-      this.firstHour = range - 0.5 + valitionHour;
-      const valitionHour1 = range == 1 ? 'hora' : 'horas';
-      this.secondHour = range + valitionHour1;
-      const valitionHour2 = range + 0.5 == 1 ? 'hora' : 'horas';
-      this.thirdHour = range + 0.5 + valitionHour2;
-    }
-    this.store.dispatch( setTimePeriod({ timePeriod: range}) );
+    if ( !isNaN(range) )  this.store.dispatch( setTimePeriod({ timePeriod: range}) );
   }
-  onChange( { values }: { values: (number | string)[] } ): void {
-
-    const startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
-    const rangeValues = values.map( value => +value );
-    this.minValue = rangeValues[0] * 30;
-    this.maxValue = rangeValues[1] * 30;
+  onChange(): void {
+    let startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
+    this.minValue = this.rangeValues2[0] * 30;
+    this.maxValue = this.rangeValues2[1] * 30;
     this.startTime = startDate.add( this.minValue, 'minutes' ).format( 'hh:mm A' );
     this.store.dispatch( setStartTime({ startTime: this.startTime}) );
+    startDate = moment( `${ moment().format( 'YYYY-MM-DD' ) } 08:00` );
     this.endTime = startDate.add( this.maxValue, 'minutes' ).format( 'hh:mm A' );
     this.store.dispatch( setEndTime({ endTime: this.endTime}) );
-    this.functionHour(rangeValues[1],rangeValues[0]);
+    this.functionHour(this.rangeValues2[1],this.rangeValues2[0]);
     
-    this.store.dispatch( setStartSlider({ startSlider: rangeValues[0] }));
-    this.store.dispatch( setEndSlider({ endSlider: rangeValues[1] }));
+     this.store.dispatch( setStartSlider({ startSlider: this.rangeValues2[0] }));
+     this.store.dispatch( setEndSlider({ endSlider: this.rangeValues2[1] }));
   }
 }
+ 
