@@ -5,7 +5,7 @@
         <div class="p-d-flex p-jc-center p-ai-center">
             <p-button 
                 styleClass="reservation__controls-button p-button-text"
-                (onClick)="showReservation( -1 )"
+                (onClick)="showReservation(-1)"
                 [disabled]="!canShowPreview">
                 <ng-template pTemplate="content">
                     <img 
@@ -72,7 +72,7 @@
         <div class="p-d-flex p-jc-center p-ai-center">
             <p-button 
                 styleClass="reservation__controls-button p-button-text"
-                (onClick)="showReservation( 1 )"
+                (onClick)="showReservation(1)"
                 [disabled]="!canShowNext">
                 <ng-template pTemplate="content">
                     <img alt="icon" src="assets/images/icons/arrow-right-blue.svg" />

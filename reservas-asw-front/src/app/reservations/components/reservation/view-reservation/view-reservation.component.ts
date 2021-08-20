@@ -138,9 +138,11 @@ export class ViewReservationComponent implements OnInit {
         this.date = moment(reservation.selectedDateSummary).format('DD-MM-YYYY');
         const selectDate = this.datesReservation.findIndex(dia => dia.dia === this.date );
         if( selectDate >= 0 ){
-          this.currentPosition =  selectDate;
+          this.currentPosition = selectDate;
         }
+        console.log(this.currentPosition);
       }
+      
       
       if(this.datesReservation.length === 0 ){
         this.getReservations(this.getData());
@@ -148,7 +150,8 @@ export class ViewReservationComponent implements OnInit {
     })    
     this.getLockedUsers();
     this.store.dispatch(setDates({dates: this.datesReservation}))
-    
+
+     
     
   }
 
@@ -210,6 +213,7 @@ export class ViewReservationComponent implements OnInit {
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;    
   }
+  
 
   transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
     return users.map(d => ({ 

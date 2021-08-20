@@ -15,34 +15,40 @@
   border-radius: none;  
 }
 .column__White {
-  width: 2.875rem;
+  max-width: 2.875rem;
   height: 21.4375rem;
 }
 
 .column__center {
-  width: 25.5625rem;
+  max-width: 25.5625rem;
+}
+
+@media screen and (min-width:48rem) {
+  .column__center{
+    width: 30rem;
+  }
 }
 .degrade__line {
-  width: 24.25rem;
+  max-width: 24.25rem;
   height: 0.0625rem;
   margin: 0 0.625rem 0 0.625rem;
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 97%, var(#ffffff) 49%, rgba(255, 255, 255, 0) 2%);
 }
 .reservation__background{
-  width: 24.25rem;
+  max-width: 24.25rem;
   left:.6rem;
   height: 302px; 
   background-color: #0666fb; 
   position: relative;
 }
 .reservation__cancel {
-  width: 13.25rem;
+  max-width: 13.25rem;
   height: 2.5rem;
   background-color: #fa729c;
 }
 .reservation__edit {
   color: #ffffff;
-  width: 24.25rem;
+  max-width: 24.25rem;
   height: 2.5rem;
   padding: 0.089rem 0.625rem 0.089rem 0.625rem;
   margin: 0 0.625rem 0 0.625rem;
@@ -177,4 +183,5 @@
 
 .viewEdit{
   flex-wrap: nowrap !important;
+  max-width: 38rem;
 }
