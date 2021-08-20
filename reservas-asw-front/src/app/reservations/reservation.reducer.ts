@@ -5,6 +5,7 @@ import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
 
 export interface State {
+    blocked: boolean;
     floorNumber: number; 
     peopleNumber: number;
     reservationId: number;
@@ -50,6 +51,7 @@ export const initialState: State = {
    selectedDateSummary: '',
    step: 1,
    dates: [],
+   blocked:  false,
 }
 
 const _reservationReducer = createReducer(initialState,
