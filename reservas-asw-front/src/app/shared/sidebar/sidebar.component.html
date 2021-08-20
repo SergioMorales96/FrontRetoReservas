@@ -1,6 +1,6 @@
 <div
     class="full-height"
-    [ngStyle]="{'background-color': isEditingReservation ? '#113561' : '#646464'}">
+    [ngStyle]="{'background-color': isEditReservation ? '#113561' : '#646464'}">
     <div 
         class="p-d-flex p-ai-center p-jc-center"
         style="background-color: white; padding: 1rem;">
@@ -11,9 +11,9 @@
     <div>
         <p-button 
         class="p-menuButton"
-        [ngClass]="{'p-menuBlocked': blocked}" 
-        (onClick)="changeDisplay(true);"
-        [disabled]="blocked"
+        [ngClass]="{'p-menuBlocked': isBlockedReservation}" 
+        (onClick)="changeEditReservation(true);"
+        [disabled]="isBlockedReservation"
         [routerLink]="routeName.addReservation">
             <p class="text">Generar una reserva</p>
             <img 
@@ -24,8 +24,8 @@
     
     <p-button 
         class="p-menuButton p-menuReservation" 
-        [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
-        (onClick)="changeDisplay(false)"
+        [ngClass]="{'p-menuReservation': isEditReservation, 'p-menuReservationActive': !isEditReservation}"
+        (onClick)="changeEditReservation(false)"
         [disabled]="false"
         [routerLink]="routeName.viewReservation">
         <img 

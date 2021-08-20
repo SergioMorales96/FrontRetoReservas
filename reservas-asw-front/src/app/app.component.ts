@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
-import { setResponsive } from './reservations/reservation.actions';
+import { setSidebar } from './reservations/reservation.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,20 +10,19 @@ import { setResponsive } from './reservations/reservation.actions';
 })
 export class AppComponent {
 
-  display: boolean = true;
-  responsive: boolean = true;
+  sidebarActive!: boolean;
 
   constructor(
     private store: Store<AppState>
   ) {
-    this.store.select('reservation').subscribe((reservation) => this.responsive = reservation.responsive);
+    this.store.select('reservation').subscribe((reservation) => this.sidebarActive = reservation.sidebar.sidebarActive);
   }
 
   ngOnInit(): void {
   }
 
-  changeResponsive(responsive: boolean) {
-    this.responsive = responsive;
-    this.store.dispatch(setResponsive({ responsive: responsive }))
+  changeSidebarActive(sidebarActive: boolean) {
+    this.sidebarActive = sidebarActive;
+    this.store.dispatch(setSidebar({ sidebar: {sidebarActive : sidebarActive} }))
   }
 }
