@@ -4,7 +4,7 @@ import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setEditReservation, setReservation, setReservationList, setSteps, setDisplay, setIsEdit } from '../../../reservation.actions';
+import { setEditReservation, setReservation, setReservationList, setSteps, setIsEdit, setIsEditReservation } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
@@ -166,7 +166,7 @@ export class EditReservationComponent {
     this.router.navigate(["admin/addReservation"]);
     this.store.dispatch(setReservation({reservation: this.currentReservation}));
     this.store.dispatch(setEditReservation({isEditReservation: false}));
-    this.store.dispatch(setDisplay({display: true}));
+    this.store.dispatch(setIsEditReservation({isEditReservation: true}));
     this.store.dispatch(setIsEdit({isEdit: true}));
   }
    

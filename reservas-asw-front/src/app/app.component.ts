@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
-import { setSidebar } from './reservations/reservation.actions';
+import { setSidebarActive } from './reservations/reservation.actions';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,6 @@ export class AppComponent {
 
   changeSidebarActive(sidebarActive: boolean) {
     this.sidebarActive = sidebarActive;
-    this.store.dispatch(setSidebar({ sidebar: {sidebarActive : sidebarActive} }))
+    this.store.dispatch(setSidebarActive({sidebarActive : sidebarActive}))
   }
 }
