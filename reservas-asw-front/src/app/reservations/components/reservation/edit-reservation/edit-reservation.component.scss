@@ -1,12 +1,12 @@
 .button__close{
   background-color: white;
   color: red;
-  width: 24px;
+  max-width: 24px;
   height: 24px;
   border-radius: 100%;
 }
 .cancel__button{
-  width: 13.25rem;
+  max-width: 13.25rem;
   height: 2.5rem;
   align-items: center;
   background-color: #fa729c;
@@ -20,13 +20,8 @@
 }
 
 .column__center {
-  max-width: 25.5625rem;
-}
-
-@media screen and (min-width:48rem) {
-  .column__center{
-    width: 30rem;
-  }
+  max-width: 26.5625rem;
+  padding-right: 0rem;
 }
 .degrade__line {
   max-width: 24.25rem;
@@ -51,7 +46,7 @@
   max-width: 24.25rem;
   height: 2.5rem;
   padding: 0.089rem 0.625rem 0.089rem 0.625rem;
-  margin: 0 0.625rem 0 0.625rem;
+  margin: 0 0 0 0.625rem;
   background-color: #0666fb;
 }
 .reservation__pipe-divider {
