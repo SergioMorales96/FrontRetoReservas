@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation, setDates, setBlocked, setBlocked1 } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked, setBlocked1, setSelectedDate } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -140,6 +140,7 @@ export class ViewReservationComponent implements OnInit {
         if( selectDate >= 0 ){
           this.currentPosition =  selectDate;
         }
+        this.store.dispatch(setSelectedDate({ selectedDateSummary: '' }));
       }
       
       if(this.datesReservation.length === 0 ){
