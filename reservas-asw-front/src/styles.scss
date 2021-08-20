@@ -110,58 +110,7 @@ body {
   opacity: 0.3 !important;
 }
 
-.sidebar{
-  position: absolute;
-  width: 20%;
-  height: 100%;
-  margin-top: -54px;
-}
-
-.sidebarComp{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  margin-top: -54px;
-}
-
-.sidebarInactive{
-  background: #646464;
-}
-
-.sidebarActive{
-  background: #113561;
-}
-
-.spaceLogo{
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  height: 54px;
-  line-height: 2.7;
-}
-
-.spaceLogoComp{
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  height: 110px;
-  line-height: 2.7;
-}
-
-.imageLogo{
-  transform: scale(0.5);
-}
-
-.imageLogoComp{
-  transform: scale(0.5);
-  height: 145%;
-  width: -webkit-fill-available !important;
-}
-
 .margin-reservation{
-  margin-left: 208px;
   padding-bottom: 0px !important;
 }
 
@@ -196,6 +145,10 @@ body {
   padding-bottom: 0% !important;
 }
 
+.p-menubar-button {
+  display: none !important;
+}
+
 .p-administration .p-button{
   background-color: #113561 !important;
   align-items: center;
@@ -208,6 +161,10 @@ body {
 .p-menu-overlay{
   width: 90% !important;
   margin-left: 5% !important;
+}
+
+.p-menubar-button {
+  display: flex !important;
 }
 
 .white__line{
