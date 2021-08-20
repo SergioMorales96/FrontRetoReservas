@@ -1,26 +1,10 @@
-.margin-reservation{
-    max-width: 100%;
-}
 
 .myReservation{
     font-size: 2vw;
 }
 
-@media screen and (max-width:50rem) {
+@media screen and (max-width:48rem) {
     .myReservation{
         display:none !important;
-    }
-
-    .appReservation{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform: scale(0.7);
-        margin-left: 11rem;
-        
-    }
-
-    .calendar{
-        transform: scale(0.9);
     }
 }

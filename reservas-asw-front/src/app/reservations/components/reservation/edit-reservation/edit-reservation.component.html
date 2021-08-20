@@ -17,7 +17,7 @@
             <div class= "style__backgruond1 p-pt-2 p-px-4 p-pb-4" (click)="sendStep(2)" style="cursor:pointer">                
                 <div class="p-grid p-m-0" >
                     <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
-                        <img class="" [src]="'assets/images/icons/'+ workStationMedia">
+                        <img class="workStationMedia" [src]="'assets/images/icons/'+ workStationMedia">
                         <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                     </div>
                      <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
@@ -41,7 +41,7 @@
                         Medio de transporte
                     </h5>
                     <div class="p-d-flex p-jc-center p-ai-center">
-                        <img class="p-mr-2" [src]="transportMedia">
+                        <img class="transportMedia p-mr-2" [src]="transportMedia">
                         <p class="reservation__text"> {{typeVehicle}}</p>
                     </div>
                     </div>

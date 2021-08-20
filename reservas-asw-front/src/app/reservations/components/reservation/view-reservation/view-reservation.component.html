@@ -3,16 +3,12 @@
         class="p-d-flex" 
          *ngIf="showReservations; else userBlock"> 
         <div class="p-d-flex p-jc-center p-ai-center">
-            <p-button 
-                styleClass="reservation__controls-button p-button-text"
-                (onClick)="showReservation(-1)"
-                [disabled]="!canShowPreview">
-                <ng-template pTemplate="content">
-                    <img 
-                        alt="icon" 
-                        src="assets/images/icons/arrow-left-blue.svg" />
-                </ng-template>
-            </p-button>
+            <img 
+                (click)="canShowPreview ? showReservation(-1) : null"
+                style="cursor: pointer; width: '2rem'"
+                [ngStyle]="{filter: !canShowPreview ? 'opacity(0.7)' : 'opacity(1)'}"
+                alt="icon" 
+                src="assets/images/icons/arrow-left-blue.svg" />
         </div>
         <div class="reservation__background" >
             <div class="position-relative p-pt-6 p-px-4 p-pb-4">
@@ -32,7 +28,7 @@
     
                 <div class="p-grid p-m-0" >
                     <div class="p-col-3 p-d-flex p-flex-column p-jc-center p-ai-center">
-                        <img class="" [src]="'assets/images/icons/'+ workStationMedia">
+                        <img class="workStationMedia" [src]="'assets/images/icons/'+ workStationMedia">
                         <p class="reservation__text-small-2 p-mb-0">Reserva</p>
                     </div>
                     <div class="p-col-9 p-d-flex p-flex-column p-jc-center p-ai-end">
@@ -57,7 +53,7 @@
                         Medio de transporte
                     </h5>
                     <div class="p-d-flex p-jc-center p-ai-center">
-                        <img class="p-mr-2" [src]="transportMedia">
+                        <img class="transportMedia p-mr-2" [src]="transportMedia">
                         <p class="reservation__text">{{typeVehicle}}</p>
                     </div>
                 </div>
@@ -70,14 +66,12 @@
             </div>
         </div>
         <div class="p-d-flex p-jc-center p-ai-center">
-            <p-button 
-                styleClass="reservation__controls-button p-button-text"
-                (onClick)="showReservation(1)"
-                [disabled]="!canShowNext">
-                <ng-template pTemplate="content">
-                    <img alt="icon" src="assets/images/icons/arrow-right-blue.svg" />
-                </ng-template>
-            </p-button>
+            <img 
+                (click)="canShowPreview ? showReservation(-1) : null"
+                style="cursor: pointer; width: '2rem'"
+                [ngStyle]="{filter: !canShowPreview ? 'opacity(0.7)' : 'opacity(1)'}"
+                alt="icon" 
+                src="assets/images/icons/arrow-right-blue.svg" />
         </div>
     </div>
 </ng-container>

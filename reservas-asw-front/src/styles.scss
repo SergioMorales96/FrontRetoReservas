@@ -17,6 +17,12 @@ body {
   overflow-x: hidden;
 }
 
+@media screen and (max-width:576px) {
+  html,body{
+    font-size:13px
+  }
+}
+
 .button-link {
   text-decoration: none;
 }
