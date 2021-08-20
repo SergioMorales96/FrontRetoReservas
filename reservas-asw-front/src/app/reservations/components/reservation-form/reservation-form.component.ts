@@ -105,7 +105,7 @@ export class ReservationFormComponent implements OnInit {
           '',
           [
             Validators.maxLength(7),
-            Validators.pattern(/^[a-zA-Z]{3}-[0-9]{2}[a-zA-Z0-9]{1}$/),
+            Validators.pattern(/^[a-zA-Z]{3}[0-9]{2}[a-zA-Z0-9]{1}$/),
           ],
         ],
       }),
@@ -131,6 +131,7 @@ export class ReservationFormComponent implements OnInit {
    
 
     this.store.select('reservation').subscribe((reservation) => {
+
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');      
       this.timePeriod = reservation.timePeriod;
@@ -144,7 +145,6 @@ export class ReservationFormComponent implements OnInit {
       this.editValues(this.isEdit, this.currentReservation); this.isEdit = false;
       this.step=reservation.step;     
        
-           
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
@@ -152,8 +152,13 @@ export class ReservationFormComponent implements OnInit {
   } 
 
   ngOnDestroy(): void{
-    this.store.dispatch(setDisplay({display : false}))
+
+    this.store.dispatch(setDisplay({display : false}));
+
   }
+
+
+
 
   editValues(editValues: boolean, currentReservation?: DatesReservation | null):any{
    
@@ -163,8 +168,8 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
       //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
-      //this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
-      this.workstationGroup.controls['placa'].setValue('ZZZ-222');  
+      this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
+      //this.workstationGroup.controls['placa'].setValue('ZZZ-222');  
       this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
       this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
     } 
@@ -238,7 +243,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
       horaFin: this.endTime,
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
-      placa: this.reservaForm.value.puestoInfo.placa.replace('-',''),
+      placa: this.reservaForm.value.puestoInfo.placa,
       emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idRelacion: this.reservaForm.value.puestoInfo.reserva, 
