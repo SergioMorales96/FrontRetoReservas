@@ -1681,9 +1681,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     list.push( <THREE.Mesh>piece.children[3].children[3] );
     list.push( <THREE.Mesh>piece.children[4] );
     piece.children[2].userData = {"info" : workPlaces[index], "num": 3, list}; //Espacio de abajo de las ruedas
-    console.log( 'Lista Antes ome', list );
     list.splice(0, list.length);
-    console.log( 'Lista papi', list );
     
     piece.children[3].userData = { "info": workPlaces[index], "num": 4 }; //Posiblemente es este el espaldar
 
@@ -1724,7 +1722,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     list.push( <THREE.Mesh>piece.children[3].children[2] );
     list.push( <THREE.Mesh>piece.children[3].children[3] );
     list.push( <THREE.Mesh>piece.children[2] );
-    piece.children[4].userData = { "info": workPlaces[index], "num": 5, list };
+    piece.children[4].userData = { "info": workPlaces[index], "num": 5, list }; //Mesa
     return piece;
   }
 
@@ -1794,19 +1792,22 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
     function selectChair(intersects: THREE.Intersection[], index: number){
 
-      let list: THREE.Mesh[] =  intersects[index].object.userData.list;
-      
+      /* let list: THREE.Mesh[] =  intersects[index].object.userData.list;
+      Prueba nueva
       for (let mesh of list) {
         mesh.userData.currentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color;
         ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color = selectedObjectColor;
-      }
+      } */
 
-      /* for (let ob of scene.children) {
+      //Antiguo
+      for (let ob of scene.children) {
                 
-        NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+        //Verifica que sea del mismo piso, sea sala o puesto de trabajo y tenga sea el modelo 3D seleccionado
         if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
           && ob.children[4].userData.info.idPiso == idPiso - 17){
 
+          //Verificar si es una sala o un puesto de trabajo ( if ) intersects[index].object.userData.info.idPuestoTrabajo
+          // Si es un puesto de trabajo tienes que recorrer los children y guardar los colores actuales y  cambiar a color de seleccionado
           ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
           ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
 
@@ -1814,7 +1815,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
           (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
           
         }            
-      } */
+      }
     }
 
     function setColorSelectedObject():  void {
