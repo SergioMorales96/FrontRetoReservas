@@ -11,10 +11,11 @@ import { Roomr, RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.i
 import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspaces-per-floor.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservationId } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber } from '../../reservation.actions';
+import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit } from '../../reservation.actions';
 
-const CAMERA_FOV = 40;
+
+const CAMERA_FOV = 60;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
 const BACKGROUND_COLOR = 0xffffff;
@@ -74,10 +75,16 @@ export class SceneComponent implements OnInit {
     let idPiso = 0;
     let numeroPersonas = 0;
     let myStore = this.store;
+    let step = 0;
+    let currentReservation : any;
+    let isEdit : boolean;
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
       numeroPersonas = reservation.peopleNumber;      
+      step = reservation.step;
+      currentReservation = reservation.reservation;      
+      isEdit = reservation.isEdit;
     });
 
     setFlag();
@@ -131,6 +138,7 @@ export class SceneComponent implements OnInit {
     
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     scene.background = new THREE.Color( BACKGROUND_COLOR );
+
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT);
@@ -341,7 +349,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_SADDLE_COLOR,
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -377,7 +385,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_BACK_COLOR, 
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -1749,11 +1757,25 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
     function setFlag(){
 
-      if( sessionStorage.getItem( 'flag' ) == 'true' ){ sessionStorage.clear()}
+      if( sessionStorage.getItem( 'flag' ) == 'true' ){
+
+      
+      myStore.dispatch( setSteps({step: Number(  JSON.parse(sessionStorage.getItem( 'step' ) || '{}' ) )}) );  
+      myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
+      myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
+      sessionStorage.clear(); 
+
+    }
       else{
+
         sessionStorage.setItem( 'flag', 'true' );
+        sessionStorage.setItem( "step", JSON.stringify(step) );
+        sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         window.location.reload();  
+
       }
+
     }
 
     function updateModels(){
@@ -1820,6 +1842,16 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     function setColorSelectedObject():  void {
       (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
     }
+
+
+    function render() {
+
+      renderer.render(scene,camera);
+      requestAnimationFrame(render);
+      animateStars();
+
+    }
+
   }
 
   ngOnInit(): void{
