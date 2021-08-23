@@ -27,8 +27,8 @@ body {
   text-decoration: none;
 }
 
-.position-relative {
-  position: relative;
+.button_square {
+  border-radius: 0;
 }
 
 .button-sticky-bottom {
@@ -36,69 +36,6 @@ body {
   position: sticky !important;
   left: 1rem;
   bottom: 1rem;
-}
-
-.button_square {
-  border-radius: 0;
-}
-
-:host ::ng-deep {
-  .button_square {
-    border-radius: 0;
-  }
-
-  .full-height {
-    height: 100%;
-  }
-
-  .width-15 {
-    width:'15rem' !important;
-  }
-} 
-
-.width-15 {
-  width:'15rem' !important;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.p-sidebar-content {
-  height: 100%;
-}
-
-.jc-start-ai-center {
-  justify-content: flex-start !important; 
-  align-items: center !important;
-}
-
-.font-size-title {
-  font-size: 2.25rem !important;
-}
-
-.font-size-subtitle {
-  font-size: 1.125rem !important;
-}
-
-.font-size-body {
-  font-size: 1rem !important;
-}
-
-.font-size-small {
-  font-size: 0.8125rem !important;
-}
-
-.label {
-  opacity: 0.57;
-  font-family: 'Roboto', sans-serif !important;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff !important;
 }
 
 .description {
@@ -116,11 +53,162 @@ body {
   opacity: 0.3 !important;
 }
 
+.font-size-body {
+  font-size: 1rem !important;
+}
+
+.font-size-small {
+  font-size: 0.8125rem !important;
+}
+
+.font-size-subtitle {
+  font-size: 1.125rem !important;
+}
+
+.font-size-title {
+  font-size: 2.25rem !important;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.image{
+  width: 20px;
+  height: 20px;
+}
+
+.imageArrow{
+  width: 35px;
+}
+
+.imageCalendar{
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.imageIcon{
+  margin-left: 5%;
+}
+
+.imageLogo{
+  transform: scale(0.5);
+}
+
+.imageLogoComp{
+  transform: scale(0.5);
+  height: 145%;
+  width: -webkit-fill-available !important;
+}
+
+.jc-start-ai-center {
+  justify-content: flex-start !important; 
+  align-items: center !important;
+}
+
+.label {
+  opacity: 0.57;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.3;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff !important;
+}
+
+#line_shade{
+  margin: 0% !important;
+  width: 100% !important;
+  padding: 0% !important;
+}
+
+.margin-reservation{
+  padding-bottom: 0px !important;
+}
+
+.p-administration .p-button{
+  background-color: #113561 !important;
+  align-items: center;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-menuButton .p-button{
+  border: 0 !important;
+  width: 100% !important;
+  height: 54px !important;
+  border-radius: 0% !important;
+  color: white;
+  font-size: 14.5px;
+  padding: 10% !important;
+}
+
+.p-menuBlocked .p-button{
+  background-color: #B9B9B9 !important;
+}
+
+.p-menubar-button {
+  display: none !important;
+}
+
+.p-menu-overlay{
+  width: 90% !important;
+  margin-left: 5% !important;
+}
+
+.p-menuReservation .p-button{
+  background-color: #113561 !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-menuReservationActive .p-button{
+  background-color: white !important;
+  color: $blue-primary !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.p-sidebar-content {
+  height: 100%;
+}
+
+.p-sidebar-content{
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.p-sidebar-header{
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0 !important;
+}
+.p-sidebar-left{
+  border: 0 !important;
+}
+
 .sidebar{
   position: absolute;
   width: 20%;
   height: 100%;
   margin-top: -54px;
+}
+
+.sidebarActive{
+  background: #113561;
 }
 
 .sidebarComp{
@@ -132,10 +220,6 @@ body {
 
 .sidebarInactive{
   background: #646464;
-}
-
-.sidebarActive{
-  background: #113561;
 }
 
 .spaceLogo{
@@ -156,67 +240,8 @@ body {
   line-height: 2.7;
 }
 
-.imageLogo{
-  transform: scale(0.5);
-}
-
-.imageLogoComp{
-  transform: scale(0.5);
-  height: 145%;
-  width: -webkit-fill-available !important;
-}
-
-.margin-reservation{
-  padding-bottom: 0px !important;
-}
-
-.p-menuButton .p-button{
-  border: 0 !important;
-  width: 100% !important;
-  height: 54px !important;
-  border-radius: 0% !important;
-  color: white;
-  font-size: 14.5px;
-  padding: 10% !important;
-}
-
-.p-menuBlocked .p-button{
-  background-color: #B9B9B9 !important;
-}
-
-.p-menuReservation .p-button{
-  background-color: #113561 !important;
-  padding-left: 20% !important;
-  padding-right: 15% !important;
-  padding-top: 0% !important;
-  padding-bottom: 0% !important;
-}
-
-.p-menuReservationActive .p-button{
-  background-color: white !important;
-  color: $blue-primary !important;
-  padding-left: 20% !important;
-  padding-right: 15% !important;
-  padding-top: 0% !important;
-  padding-bottom: 0% !important;
-}
-
-.p-menubar-button {
-  display: none !important;
-}
-
-.p-administration .p-button{
-  background-color: #113561 !important;
-  align-items: center;
-  padding-left: 20% !important;
-  padding-right: 15% !important;
-  padding-top: 0% !important;
-  padding-bottom: 0% !important;
-}
-
-.p-menu-overlay{
-  width: 90% !important;
-  margin-left: 5% !important;
+.width-15 {
+  width:'15rem' !important;
 }
 
 .white__line{
@@ -225,48 +250,20 @@ body {
   background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
 }
 
-#line_shade{
-  margin: 0% !important;
-  width: 100% !important;
-  padding: 0% !important;
-  
-}
-
-.image{
-  width: 20px;
-  height: 20px;
-}
-
-.imageIcon{
-  margin-left: 5%;
-}
-
-.imageCalendar{
-  margin-right: 5%;
-  margin-left: 5%;
-}
-
-
-.imageArrow{
-  width: 35px;
-}
-
 .text{
   margin-left: 10%;
 }
 
-.p-sidebar-header{
-  width: 0;
-  height: 0;
-  margin: 0;
-  padding: 0 !important;
-}
+:host ::ng-deep {
+  .button_square {
+    border-radius: 0;
+  }
 
-.p-sidebar-content{
-  margin: 0 !important;
-  padding: 0 !important;
-}
+  .full-height {
+    height: 100%;
+  }
 
-.p-sidebar-left{
-  border: 0 !important;
-}
+  .width-15 {
+    width:'15rem' !important;
+  }
+} 
