@@ -12,7 +12,7 @@ import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspa
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setDisplay, setReservationId, setSteps } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber, setReservation } from '../../reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation, setStartTime, setEndTime } from '../../reservation.actions';
 import { DatesReservation } from '../../../admin/interfaces/reservation';
 import { setIsEdit } from '../../editReservation.actions';
 
@@ -1709,7 +1709,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
       myStore.dispatch( setDisplay({ display: JSON.parse(sessionStorage.getItem( 'display' ) || '{}' ) }) );    
-      //myStore.dispatch( setIsEdit({isEdit: true}) );    
+      //myStore.dispatch( setDisplay({display: false}) );    
 
       sessionStorage.clear(); 
 

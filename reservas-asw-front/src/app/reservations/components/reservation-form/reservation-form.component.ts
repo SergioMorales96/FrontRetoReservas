@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setDisplay, setReservationId, setPeopleNumber } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setDisplay, setReservationId, setPeopleNumber, setStartTime, setEndTime } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -142,7 +142,9 @@ export class ReservationFormComponent implements OnInit {
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       Number(this.timePeriod != 0) ? this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod) : 0
       Number(this.reservationId != 0) ? this.workstationGroup.controls['reserva'].setValue(this.reservationId): 0;
-      this.editValues(this.isEdit, this.currentReservation); this.isEdit = false;
+      
+      this.editValues(this.isEdit, this.currentReservation); 
+      this.isEdit = false;
       this.step=reservation.step;     
        
     });
@@ -157,19 +159,15 @@ export class ReservationFormComponent implements OnInit {
 
   }
 
-
-
-
   editValues(editValues: boolean, currentReservation?: DatesReservation | null):any{
    
     if(editValues){
       this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
       this.workstationGroup.controls['reserva'].setValue(currentReservation?.idPuestoTrabajo);
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
-      //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
+      //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
       this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
-      //this.workstationGroup.controls['placa'].setValue('ZZZ-222');  
       this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
       this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
     } 
@@ -243,7 +241,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
       horaFin: this.endTime,
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
-      placa: this.reservaForm.value.puestoInfo.placa,
+      placa: String(this.reservaForm.value.puestoInfo.placa).toUpperCase(),
       emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idRelacion: this.reservaForm.value.puestoInfo.reserva, 
@@ -341,7 +339,11 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false; 
+        if ((this.reservaForm.controls.puestoInfo.invalid) || 
+        (this.workstationGroup.controls['medioTransporte'].value == 1 ||  this.workstationGroup.controls['medioTransporte'].value == 2
+        && this.workstationGroup.controls['placa'].value == '')) 
+           return;
+           else this.submitted = false; 
         break;
       case 2:
         if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;

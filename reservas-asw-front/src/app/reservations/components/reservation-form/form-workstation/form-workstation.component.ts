@@ -80,12 +80,11 @@ export class FormWorkstationComponent implements OnInit {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.peopleNumber = this.form.controls['personasReserva'].value;
-
-    this.floorNumber = this.form.get('piso')?.value;
-    this.meanOfTransport = this.form.get('medioTransporte')?.value;
-    this.reservationId = this.form.get('reserva')?.value;
-    this.meanOfTransport &&
-    this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
+    this.floorNumber = this.form.controls['piso'].value;
+    this.meanOfTransport = this.form.controls['medioTransporte'].value;
+    this.reservationId = this.form.controls['reserva'].value;
+    
+    this.meanOfTransport && this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
 
@@ -93,11 +92,12 @@ export class FormWorkstationComponent implements OnInit {
 
         this.isWorkstation = reservation.isWorkstation;    
         this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala"
-        if(this.isWorkstation) { 
+
+        if(this.isWorkstation) {       
 
           this.peopleNumberData = [1];
           while(this.peopleData.length > 1) this.removePeople();
-
+          
         }else  this.peopleNumberData = [2,3,4,5]
 
         this.peopleNumber = this.form.controls['personasReserva'].value;
