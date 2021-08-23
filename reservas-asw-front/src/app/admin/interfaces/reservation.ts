@@ -18,8 +18,7 @@ export interface DatesReservation {
     numeroAsistentes:    number;
     idPiso:              number;
     idSala:              number;   
-    idPuestoTrabajo:     number;
-    numeroPiso:          number;  
+    idPuestoTrabajo:     number;  
 }
 export class DatesReservationClass {
     numeroReserva!:       number;
@@ -35,7 +34,6 @@ export class DatesReservationClass {
     idPiso!:              number;
     idSala!:              number;   
     idPuestoTrabajo!:     number; 
-    numeroPiso!:          number;
     
     constructor(){} 
 }

@@ -1,9 +1,9 @@
 <div class="p-col margin-reservation">
   <div class="p-d-flex p-grid p-add">
     <div class="p-col-4">
-      <app-reservation-form (view)="changeVal($event)"></app-reservation-form>
+      <app-reservation-form></app-reservation-form>
     </div>
-    <div *ngIf="view == 1" class="p-col-8" id="sceneContainer" style="width: 700px; height: 500px">
+    <div class="p-col-8" id="sceneContainer" style="width: 700px; height: 500px">
       <app-scene></app-scene>
     </div>
   </div>

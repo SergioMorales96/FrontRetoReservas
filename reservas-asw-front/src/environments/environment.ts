@@ -6,15 +6,8 @@ export const environment = {
   production: false,
   // baseUrl: 'http://localhost:8089/api/v1',
   baseUrl: 'http://192.168.3.6:8089/api/v1',
-  assetsUrl: 'assets/',
-  autenticacion: {
-    clientId: '473482fb-2ddd-44f1-8332-7185bb10b914',
-    authority: 'https://login.microsoftonline.com/bf208dcb-97e8-4d43-bd72-323680bef25c',
-    redirectUri: 'http://localhost:4200/',
-  }
+  assetsUrl: 'assets/'
 };
-
-export const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

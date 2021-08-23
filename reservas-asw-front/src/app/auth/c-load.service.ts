@@ -8,15 +8,16 @@ export class CLoadService implements CanLoad {
  
  
   canLoad(route: Route): boolean {
-    const hora = new Date().getHours();
-    
-    if (hora >= 18) {
-      
+    let url = route.path;
+    console.log('Url:'+ url);
+    if (url=='admins') {
       alert('You are not authorised to visit this page');
-
       return false;
     }
-    return true;
+ 
+    //det
+    
+    return true; 
   }
   
 }

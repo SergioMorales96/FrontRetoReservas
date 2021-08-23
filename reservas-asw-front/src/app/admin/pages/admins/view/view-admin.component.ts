@@ -14,7 +14,6 @@ export class ViewAdminComponent implements OnInit{
 
   admin!: Administrador;
   routeName = RouteName;
-  email!: string;
 
   get viewTitle(): string {
     return this.admin?.email ? this.admin?.email : 'Ver administrador';
