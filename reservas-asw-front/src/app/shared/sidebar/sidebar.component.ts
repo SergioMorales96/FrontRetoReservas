@@ -4,6 +4,8 @@ import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
 import { setSidebarActive, setIsEditReservation } from '../../reservations/reservation.actions';
+import { setSteps } from '../../reservations/reservation.actions';
+import { setIsEdit } from '../../reservations/editReservation.actions';
 
 @Component({
   selector: 'app-sidebar',

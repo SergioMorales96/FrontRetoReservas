@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-add',
@@ -6,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add.component.scss']
 })
 export class AddComponent implements OnInit {
+  step!: number;
 
-  constructor() { }
+  constructor(private store: Store<AppState>,
+    ) { }
+
 
   ngOnInit(): void {
+
+    this.store.select('reservation').subscribe((reservation) => {
+      
+      this.step=reservation.step;    
+       
+    });
+
+
   }
 
 }

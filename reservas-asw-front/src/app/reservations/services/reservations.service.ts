@@ -109,6 +109,20 @@ export class ReservationsService {
           return throwError(err);
         })
       );
+  }
 
+  /**
+   * Edit a schedule, using the endpoint crear
+   */
+   editReservation(reservation: Reservation): Observable<ReservationResponse> {
+    const urlLink = `${this.apiUrl}/editarreserva`;
+    console.log(reservation);
+    return this.http.post<ReservationResponse>(urlLink, reservation)
+      .pipe(
+        catchError(err => {
+          this.toastService.showToastDanger({ summary: 'Error al editar la reserva ', detail: err?.message ? err.message : err });
+          return throwError(err);
+        })
+      );
   }
 }

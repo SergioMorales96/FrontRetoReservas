@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
@@ -47,6 +47,8 @@ export class ReservationFormComponent implements OnInit {
   IsWorkstation!: boolean;
   routeName = RouteName;
   currentReservation!: DatesReservation | null;
+  valueFloor!: number | undefined;
+  @Output() view = new EventEmitter<number>();
   
 
   constructor(
@@ -65,8 +67,15 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setIsEditReservation({isEditReservation : true}));
 
     this.store.select('reservation').subscribe((reservation) => {
+      
+      this.step=reservation.step;    
+      this.currentReservation = reservation.reservation;   
+       
+    });
 
-      this.step=reservation.step;     
+    this.store.select('editReservation').subscribe((editReservation) => {
+
+      this.isEdit = editReservation.isEdit;
 
     });
 
@@ -76,7 +85,7 @@ export class ReservationFormComponent implements OnInit {
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [, [Validators.required,Validators.min(1)]],
+        reserva: [0, [Validators.required,Validators.min(1)]],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -96,7 +105,7 @@ export class ReservationFormComponent implements OnInit {
           '',
           [
             Validators.maxLength(7),
-            Validators.pattern(/^[a-zA-Z]{3}-[0-9]{2}[a-zA-Z0-9]{1}$/),
+            Validators.pattern(/^[a-zA-Z]{3}[0-9]{2}[a-zA-Z0-9]{1}$/),
           ],
         ],
       }),
@@ -120,7 +129,9 @@ export class ReservationFormComponent implements OnInit {
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
     this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
    
+
     this.store.select('reservation').subscribe((reservation) => {
+
       this.selectedDate = reservation.selectedDateSummary;
       const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');      
       this.timePeriod = reservation.timePeriod;
@@ -128,19 +139,17 @@ export class ReservationFormComponent implements OnInit {
       this.endTime = reservation.endTime;
       this.reservationId = reservation.reservationId;
       this.workstationGroup.controls['personasReserva'].setValue(reservation.peopleNumber);
-      this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
-      this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-
+      Number(this.timePeriod != 0) ? this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod) : 0
+      Number(this.reservationId != 0) ? this.workstationGroup.controls['reserva'].setValue(this.reservationId): 0;
+      
+      this.editValues(this.isEdit, this.currentReservation); 
+      this.isEdit = false;
       this.step=reservation.step;     
-      this.isEdit = reservation.isEdit;
-      this.currentReservation = reservation.reservation;   
-      if(this.isEdit) this.editValues(this.currentReservation);  
-           
+       
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-
 
   } 
 
@@ -148,18 +157,36 @@ export class ReservationFormComponent implements OnInit {
     this.store.dispatch(setIsEditReservation({isEditReservation : false}))
   }
 
-  editValues(currentReservation: DatesReservation | null):any{
+  editValues(editValues: boolean, currentReservation?: DatesReservation | null):any{
+   
+    if(editValues){
+      this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
+      this.workstationGroup.controls['reserva'].setValue(currentReservation?.idPuestoTrabajo);
+      this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
+      //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.);
+      this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
+      this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
+      this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
+      this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
+    } 
 
-    this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
-    this.workstationGroup.controls['reserva'].setValue(currentReservation?.numeroAsistentes == 0 ? currentReservation.idPuestoTrabajo : currentReservation?.idSala);
-    this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
-    //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
-    this.workstationGroup.controls['medioTransporte'].setValue(3);
-    this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
-    this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
-    this.dateGroup.controls['fecha'].setValue(currentReservation?.dia);  
-    
-    }
+}
+
+
+getTransportModeNumber(transportDomain: string | undefined): number | null {
+
+  switch (transportDomain) {
+    case 'B':
+      return DateValidationType.ParkingAvailabilityPerBicycle;
+    case 'C':
+      return DateValidationType.ParkingAvailabilityPerCar;
+    case 'M':
+      return DateValidationType.ParkingAvailabilityPerMotorcycle;
+    default:
+      return null;  
+  }
+
+}
 
   get transportModeName(): string {
 
@@ -206,12 +233,13 @@ export class ReservationFormComponent implements OnInit {
   getReservationFormValue(): Reservation {
    
     return {
+      id: this.currentReservation?.numeroReserva,
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
       horaFin: this.endTime,
       totalHoras:  this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
-      placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
+      placa: String(this.reservaForm.value.puestoInfo.placa).toUpperCase(),
       emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
       idRelacion: this.reservaForm.value.puestoInfo.reserva, 
@@ -262,13 +290,58 @@ export class ReservationFormComponent implements OnInit {
       });
   }
 
+  editReservation() {   
+    this.reservationService
+      .editReservation(this.getReservationFormValue())
+      .subscribe((reservationResponse: ReservationResponse) => {
+        if (reservationResponse.status === `OK`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+              header: 'Edición de reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastSuccess({
+                  summary: 'Reserva editada',
+                  detail: `Se editó la reserva exitosamente`,
+                });
+              else {
+                return;
+              }
+            })
+            .catch(console.log);
+        } else if (reservationResponse.status === `INTERNAL_SERVER_ERROR`) {
+          this.alertsService
+            .showConfirmDialog({
+              message: `Ups... No fue posible editar la reserva :(`,
+              header: 'Error en la edición de la reserva ',
+            })
+            .then((resp) => {
+              if (resp)
+                this.toastService.showToastDanger({
+                  summary: 'Reserva NO editada',
+                  detail: `No se pudo editar la reserva`,
+                });
+              else {
+                return;
+              }
+            });
+        }
+      });
+  }
+
   submit() {
     
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false; 
+        if ((this.reservaForm.controls.puestoInfo.invalid) || 
+        (this.workstationGroup.controls['medioTransporte'].value == 1 ||  this.workstationGroup.controls['medioTransporte'].value == 2
+        && this.workstationGroup.controls['placa'].value == '')) 
+           return;
+           else this.submitted = false; 
         break;
       case 2:
         if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;
@@ -280,8 +353,8 @@ export class ReservationFormComponent implements OnInit {
     this.step += 1;    
     this.store.dispatch( setSteps({step: this.step}) );
 
-    if (this.step == 4) {    
-      this.addReservation();
+    if (this.step == 4) {   
+      this.getReservationFormValue().id ?  this.editReservation() : this.addReservation();    
       this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setIsEditReservation({isEditReservation: false}) );
     }
@@ -292,7 +365,5 @@ export class ReservationFormComponent implements OnInit {
     this.step = this.step - 1;
     this.store.dispatch( setSteps({step: this.step}) );
   }
-
-  
 
 }

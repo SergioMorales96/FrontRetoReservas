@@ -44,9 +44,7 @@ const routes: Routes = [
     children: [
       {
         path: 'admins',
-        component: AdminsComponent,
-        canActivate: [CActiveGuard],
-        canLoad: [CLoadService],
+        component: AdminsComponent, 
         children: [
           
           {
