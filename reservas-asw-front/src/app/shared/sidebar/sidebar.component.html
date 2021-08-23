@@ -10,15 +10,15 @@
     </div>
     <div>
         <p-button 
-        class="p-menuButton"
-        [ngClass]="{'p-menuBlocked': isBlockedReservation}" 
-        (onClick)="changeEditReservation(true);"
-        [disabled]="isBlockedReservation"
-        [routerLink]="routeName.addReservation">
-            <p class="text">Generar una reserva</p>
-            <img 
-                class="image imageIcon" 
-                [src]="generateReservationIcon">
+            class="p-menuButton"
+            [ngClass]="{'p-menuBlocked': isBlockedReservation}" 
+            (onClick)="changeEditReservation(true);"
+            [disabled]="isBlockedReservation"
+            [routerLink]="routeName.addReservation">
+                <p class="text">Generar una reserva</p>
+                <img 
+                    class="image imageIcon" 
+                    [src]="generateReservationIcon">
         </p-button>
     </div>
     

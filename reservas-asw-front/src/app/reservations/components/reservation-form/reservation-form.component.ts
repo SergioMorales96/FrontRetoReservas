@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setIsEdit, setReservationId, setPeopleNumber, setIsEditReservation } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -61,6 +61,8 @@ export class ReservationFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.store.dispatch(setIsEditReservation({isEditReservation : true}));
 
     this.store.select('reservation').subscribe((reservation) => {
 
@@ -143,7 +145,7 @@ export class ReservationFormComponent implements OnInit {
   } 
 
   ngOnDestroy(): void{
-    this.store.dispatch(setDisplay({display : false}))
+    this.store.dispatch(setIsEditReservation({isEditReservation : false}))
   }
 
   editValues(currentReservation: DatesReservation | null):any{
@@ -281,7 +283,7 @@ export class ReservationFormComponent implements OnInit {
     if (this.step == 4) {    
       this.addReservation();
       this.store.dispatch( setSteps({step: 1}) ); 
-      this.store.dispatch( setDisplay({display: false}) );
+      this.store.dispatch( setIsEditReservation({isEditReservation: false}) );
     }
 
   }

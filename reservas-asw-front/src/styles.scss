@@ -126,7 +126,7 @@ body {
   height: 54px !important;
   border-radius: 0% !important;
   color: white;
-  font-size: 14.5px;
+  font-size: 18px;
   padding: 10% !important;
 }
 
@@ -197,7 +197,7 @@ body {
 
 .imageCalendar{
   margin-right: 5%;
-  margin-left: 5%;
+  margin-left: 20px;
 }
 
 
@@ -206,7 +206,10 @@ body {
 }
 
 .text{
-  margin-left: 10%;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 35px !important;
 }
 
 .p-sidebar-header{

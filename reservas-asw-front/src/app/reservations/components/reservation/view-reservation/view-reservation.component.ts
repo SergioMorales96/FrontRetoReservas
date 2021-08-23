@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation, setDates, setBlocked, setBlocked1, setSelectedDate } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked1, setIsBlockedReservation } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -138,11 +138,9 @@ export class ViewReservationComponent implements OnInit {
         this.date = moment(reservation.selectedDateSummary).format('DD-MM-YYYY');
         const selectDate = this.datesReservation.findIndex(dia => dia.dia === this.date );
         if( selectDate >= 0 ){
-          this.currentPosition = selectDate;
+          this.currentPosition =  selectDate;
         }
-        this.store.dispatch(setSelectedDate({ selectedDateSummary: '' }));
       }
-      
       
       if(this.datesReservation.length === 0 ){
         this.getReservations(this.getData());
@@ -150,8 +148,7 @@ export class ViewReservationComponent implements OnInit {
     })    
     this.getLockedUsers();
     this.store.dispatch(setDates({dates: this.datesReservation}))
-
-     
+    
     
   }
 
@@ -174,7 +171,7 @@ export class ViewReservationComponent implements OnInit {
       .subscribe(response => {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
-        this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
+        this.store.dispatch(setIsBlockedReservation({isBlockedReservation : !!this.dataUser}))
         this.store.dispatch(setBlocked1({blocked1 : !!this.dataUser}))
       });
 
@@ -213,7 +210,6 @@ export class ViewReservationComponent implements OnInit {
   showReservation(value: number): void {
     this.currentPosition = this.currentPosition + value;    
   }
-  
 
   transformLockedUsers( users: DataUsersBlock[] ): DataUsersBlock[] {
     return users.map(d => ({ 

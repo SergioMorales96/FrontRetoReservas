@@ -2,6 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 import * as actions from './reservation.actions';
 import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
+import { setIsEditReservation } from './reservation.actions';
+import { Sidebar } from 'primeng/sidebar';
 
 export interface State {
     blocked1: boolean;
@@ -86,7 +88,10 @@ const _reservationReducer = createReducer(initialState,
 
     on(actions.setIsEdit , (state, { isEdit }) => ({...state, isEdit:isEdit})),
 
-    on(actions.setSidebar , (state, { sidebar }) => ({...state, sidebar: {...sidebar}})),
+    on(actions.setIsEditReservation,(state,{ isEditReservation })=>({...state, sidebar: {...state.sidebar, isEditReservation: isEditReservation} })),
+    on(actions.setSidebarActive,(state,{ sidebarActive })=>({...state, sidebar: {...state.sidebar, sidebarActive: sidebarActive} })),
+    on(actions.setIsBlockedReservation,(state,{ isBlockedReservation })=>({...state, sidebar: {...state.sidebar, isBlockedReservation: isBlockedReservation} }))
+
 );
 
 export function reservationReducer(state: any, action: any) {

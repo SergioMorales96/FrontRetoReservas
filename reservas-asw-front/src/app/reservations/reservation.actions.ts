@@ -98,16 +98,6 @@ export const setContinue = createAction(
     props<{ continuar : boolean}>()
 )
 
-export const setDisplay= createAction(
-    '[Reservations Component] setDisplay',
-    props<{display: boolean }>()
-)
-
-export const setBlocked= createAction(
-    '[Reservations Component] setBlocked',
-    props<{blocked: boolean }>()
-)
-
 export const setBlocked1= createAction(
     '[Reservations Component] setBlocked1',
     props<{blocked1: boolean }>()
@@ -118,14 +108,18 @@ export const setIsEdit= createAction(
     props<{isEdit: boolean }>()
 )
 
-export const setResponsive= createAction(
-    '[Reservations Component] setResponsive',
-    props<{responsive: boolean }>()
+export const setIsEditReservation = createAction(
+    '[Reservations Component] setIsEditReservation',
+    props<{ isEditReservation: boolean }>()
 )
 
-export const setSidebar = createAction(
-    '[Reservations Component] setSidebar',
-    props<{ sidebar: any }>()
+export const setSidebarActive = createAction(
+    '[Reservations Component] setSidebarActive',
+    props<{ sidebarActive: boolean }>()
 )
 
+export const setIsBlockedReservation = createAction(
+    '[Reservations Component] setIsBlockedReservation',
+    props<{ isBlockedReservation: boolean }>()
+)
 
