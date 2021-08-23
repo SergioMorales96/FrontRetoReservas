@@ -1,6 +1,6 @@
 .dimensions{
   height: 24rem;
-  width: 335px;
+  max-width: 335px;
   text-align: center;
 
 }
@@ -23,7 +23,7 @@
 .question{
   display: block;
   margin: auto;
-  width: 297;
+  max-width: 297;
   object-fit: contain;
   opacity: 0.7;
   font-size: 128px;
@@ -39,7 +39,7 @@
   padding-top: 0 !important;
 }
 .reservation__background{
-  width: 24rem;
+  max-width: 24rem;
   background-color: #606060;
 }
 .reservation__pipe-divider {
@@ -106,7 +106,7 @@
   font-style: normal;
   line-height: 1.33;
   letter-spacing: normal;
-  text-align: left;
+  text-align: center;
   color: #fff;
 }
 .reservation__text-small-2 {
@@ -135,5 +135,15 @@
   .reservation__controls-button:focus {
     outline: none;
     box-shadow: none;
+  }
+}
+
+@media screen and (max-width:576px) {
+  .workStationMedia{
+    width:3.5rem;
+  }
+
+  .transportMedia{
+    width:4rem;
   }
 }
