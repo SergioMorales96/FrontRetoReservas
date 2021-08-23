@@ -163,7 +163,7 @@ export class ViewReservationComponent implements OnInit {
   
   getData() {
     return {
-      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
+      startDate: moment().format('DD-MM-YYYY'),
       endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoUsuario@correo.com'
     }
