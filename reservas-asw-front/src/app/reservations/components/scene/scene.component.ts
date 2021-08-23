@@ -12,8 +12,9 @@ import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspa
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit, setIsEditReservation, setSidebarActive } from '../../reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation, setIsEditingReservation, setSidebarActive } from '../../reservation.actions';
 import { DatesReservation } from '../../../admin/interfaces/reservation';
+import { setIsEdit } from '../../editReservation.actions';
 
 
 const CAMERA_FOV = 60;
@@ -79,7 +80,7 @@ export class SceneComponent implements OnInit {
     let step = 0;
     let currentReservation: DatesReservation | null;
     let isEdit : boolean;
-    let isEditReservation : boolean;
+    let isEditingReservation : boolean;
     let sidebarActive: boolean;
 
     this.store.select('reservation').subscribe((reservation) => {
@@ -87,7 +88,7 @@ export class SceneComponent implements OnInit {
       numeroPersonas = reservation.peopleNumber;      
       step = reservation.step;
       currentReservation = reservation?.reservation;      
-      isEditReservation = reservation.sidebar.isEditReservation;
+      isEditingReservation = reservation.sidebar.isEditingReservation;
       sidebarActive = reservation.sidebar.sidebarActive;
     });
 
@@ -1709,7 +1710,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setSteps({step: Number(  JSON.parse(sessionStorage.getItem( 'step' ) || '{}' ) )}) );  
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );  
-      myStore.dispatch( setIsEditReservation({isEditReservation: JSON.parse(sessionStorage.getItem( 'isEditReservation' ) || '{}' ) }) ); 
+      myStore.dispatch( setIsEditingReservation({isEditingReservation: JSON.parse(sessionStorage.getItem( 'isEditingReservation' ) || '{}' ) }) ); 
       myStore.dispatch( setSidebarActive({sidebarActive: JSON.parse(sessionStorage.getItem( 'sidebarActive' ) || '{}' ) }) ); 
       sessionStorage.clear(); 
 
@@ -1720,7 +1721,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
-        sessionStorage.setItem( "isEditReservation", JSON.stringify(isEditReservation));
+        sessionStorage.setItem( "isEditingReservation", JSON.stringify(isEditingReservation));
         sessionStorage.setItem( "sidebarActive", JSON.stringify(sidebarActive));
         window.location.reload();  
 

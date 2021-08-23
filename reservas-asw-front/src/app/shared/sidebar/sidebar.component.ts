@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
-import { setSidebarActive, setIsEditReservation } from '../../reservations/reservation.actions';
+import { setSidebarActive, setIsEditingReservation } from '../../reservations/reservation.actions';
 import { setSteps } from '../../reservations/reservation.actions';
 import { setIsEdit } from '../../reservations/editReservation.actions';
 
@@ -13,22 +13,22 @@ import { setIsEdit } from '../../reservations/editReservation.actions';
 })
 export class SidebarComponent {
 
-  isEditReservation!: boolean;
+  isEditingReservation!: boolean;
   isBlockedReservation!: boolean;
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
 
   get generateReservationIcon(): string {
-    return `assets/images/icons/${this.isBlockedReservation ? 'minus-gray' : this.isEditReservation ? 'close-red' : 'plus-blue'}.svg`;
+    return `assets/images/icons/${this.isBlockedReservation ? 'minus-gray' : this.isEditingReservation ? 'close-red' : 'plus-blue'}.svg`;
   }
 
   get myReservationIconCalendar(): string {
-    return `assets/images/icons/${this.isEditReservation ? 'calendar-white' : 'calendar-blue'}.svg`;
+    return `assets/images/icons/${this.isEditingReservation ? 'calendar-white' : 'calendar-blue'}.svg`;
   }
 
   get myReservationIconArrow(): string {
-    return `assets/images/icons/${this.isEditReservation ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
+    return `assets/images/icons/${this.isEditingReservation ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
   constructor(
@@ -84,11 +84,11 @@ export class SidebarComponent {
     this.store.select('reservation').subscribe(
       (reservation) => {
         
-        this.isEditReservation = reservation.sidebar.isEditReservation;
+        this.isEditingReservation = reservation.sidebar.isEditingReservation;
         this.isBlockedReservation = reservation.sidebar.isBlockedReservation;
         const line = document.getElementById('line_shade');
         if(line){
-          if(this.isEditReservation){
+          if(this.isEditingReservation){
             line.style.display = "flex";
           }else{
             line.style.display = "none";
@@ -98,10 +98,14 @@ export class SidebarComponent {
     );
   }
 
-  changeEditReservation(isEditReservation: boolean): void {
-    this.isEditReservation = isEditReservation;
-    this.store.dispatch(setSidebarActive({ sidebarActive : false }))
-    this.store.dispatch(setIsEditReservation({ isEditReservation : isEditReservation}))
+  changeEditReservation(isEditingReservation: boolean): void {
+    this.isEditingReservation = isEditingReservation;
+    this.store.dispatch(setSidebarActive({ sidebarActive : false }));
+    this.store.dispatch(setIsEditingReservation({ isEditingReservation : isEditingReservation}));
+    if(isEditingReservation){
+      this.store.dispatch(setSteps({ step : 1 }));
+      this.store.dispatch(setIsEdit({ isEdit : false }));
+    }
   }
 
 }

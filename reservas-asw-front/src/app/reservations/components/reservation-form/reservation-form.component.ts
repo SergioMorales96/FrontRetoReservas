@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setIsEdit, setReservationId, setPeopleNumber, setIsEditReservation } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setReservationId, setPeopleNumber, setIsEditingReservation } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -64,7 +64,7 @@ export class ReservationFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.store.dispatch(setIsEditReservation({isEditReservation : true}));
+    this.store.dispatch(setIsEditingReservation({isEditingReservation : true}));
 
     this.store.select('reservation').subscribe((reservation) => {
       
@@ -154,14 +154,14 @@ export class ReservationFormComponent implements OnInit {
   } 
 
   ngOnDestroy(): void{
-    this.store.dispatch(setIsEditReservation({isEditReservation : false}))
+    this.store.dispatch(setIsEditingReservation({isEditingReservation : false}))
   }
 
   editValues(editValues: boolean, currentReservation?: DatesReservation | null):any{
    
     if(editValues){
       this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
-      this.workstationGroup.controls['reserva'].setValue(currentReservation?.idPuestoTrabajo);
+      this.workstationGroup.controls['reserva'].setValue(currentReservation?.numeroAsistentes == 0 ? currentReservation.idPuestoTrabajo : currentReservation?.idSala);
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
       //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
@@ -356,7 +356,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     if (this.step == 4) {   
       this.getReservationFormValue().id ?  this.editReservation() : this.addReservation();    
       this.store.dispatch( setSteps({step: 1}) ); 
-      this.store.dispatch( setIsEditReservation({isEditReservation: false}) );
+      this.store.dispatch( setIsEditingReservation({isEditingReservation: false}) );
     }
 
   }

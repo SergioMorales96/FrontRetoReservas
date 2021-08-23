@@ -1,6 +1,6 @@
 <div
     class="full-height"
-    [ngStyle]="{'background-color': isEditReservation ? '#113561' : '#646464'}">
+    [ngStyle]="{'background-color': isEditingReservation ? '#113561' : '#646464'}">
     <div 
         class="p-d-flex p-ai-center p-jc-center"
         style="background-color: white; padding: 1rem;">
@@ -24,7 +24,7 @@
     
     <p-button 
         class="p-menuButton p-menuReservation" 
-        [ngClass]="{'p-menuReservation': isEditReservation, 'p-menuReservationActive': !isEditReservation}"
+        [ngClass]="{'p-menuReservation': isEditingReservation, 'p-menuReservationActive': !isEditingReservation}"
         (onClick)="changeEditReservation(false)"
         [disabled]="false"
         [routerLink]="routeName.viewReservation">
