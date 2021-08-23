@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Component, Input, OnInit, ɵExtraLocaleDataIndex } from '@angular/core';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshStandardMaterial } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
@@ -152,9 +152,11 @@ export class SceneComponent implements OnInit {
       let intersects = raycaster.intersectObjects(scene.children, true);
       let index: number = 0;
       let flag: boolean = false;
-      do {        
-        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
-
+      do {  
+             
+        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 && intersects[index].object != selectedObject){
+         
+          
           if( selectedObject && selectedObject != intersects[index].object ){
               setColorSelectedObject( );
               changeToChairCurrentColor()
@@ -162,7 +164,7 @@ export class SceneComponent implements OnInit {
 
           selectChair(intersects, index);  
           selectedObject = intersects[index].object;
-          
+          console.log('El Selected', selectedObject);   
           let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
           myStore.dispatch(setReservationId({ reservationId: id })); 
           let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
@@ -550,6 +552,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     loader.load( `${PATH}${PATH_CHAIRS}`, function ( gltf ) {
       
       const model4 = gltf.scene;
+      console.log( 'El MOdelo de las salas: ', model4 );
+      
       const child = model4.children[0].children[0] as THREE.Mesh;
      
       const childMaterial = child.material as THREE.MeshStandardMaterial;
@@ -790,6 +794,10 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
   function generateModelsWorkSpace(workPlaces: workSpaceW[], columnas: number, filas: number, bloque: number, piso: number, index: number): workSpaceW[]{
     loader.load(`${PATH}${PATH_ROOMS}`, function ( gltf ){
       const model5 = gltf.scene;
+      console.log( 'El modelo de las sillas', model5 );
+      
+      
+      
       let n = 0;
 
       if (piso === 1) {
@@ -799,13 +807,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
           for (let j = 0; j < filas; j++) {
             
             loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-              let piece = gltf.scene;
-              piece.children[0].userData = {"info" : workPlaces[index]};
-              piece.children[1].userData = {"info" : workPlaces[index]};
-              piece.children[2].userData = {"info" : workPlaces[index]};
-              piece.children[3].userData = {"info" : workPlaces[index]};
-              piece.children[4].userData = {"info" : workPlaces[index]};
-              
+              let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, index ));     
               index++;
               generateTextureModels(piece);
 
@@ -1019,12 +1021,13 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         for (let i = 0; i < columnas; i++) {
           for (let j = 0; j < filas; j++) {
             loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-              let piece = gltf.scene;
-              piece.children[0].userData = {"info" : workPlaces[0]};
+              //let piece = gltf.scene;
+              /* piece.children[0].userData = {"info" : workPlaces[0]};
               piece.children[1].userData = {"info" : workPlaces[0]};
               piece.children[2].userData = {"info" : workPlaces[0]};
               piece.children[3].userData = {"info" : workPlaces[0]};
-              piece.children[4].userData = {"info" : workPlaces[0]};
+              piece.children[4].userData = {"info" : workPlaces[0]}; */
+              let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, 0 ));     
 
               generateTextureModels(piece);
               workPlaces.shift();
@@ -1210,13 +1213,14 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         for (let i = 0; i < columnas; i++) {
           for (let j = 0; j < filas; j++) {
               loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-                let piece = gltf.scene;
+                /* let piece = gltf.scene;
                 
                 piece.children[0].userData = {"info" : workPlaces[0]};
                 piece.children[1].userData = {"info" : workPlaces[0]};
                 piece.children[2].userData = {"info" : workPlaces[0]};
                 piece.children[3].userData = {"info" : workPlaces[0]};
-                piece.children[4].userData = {"info" : workPlaces[0]};
+                piece.children[4].userData = {"info" : workPlaces[0]}; */
+                let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, 0 ));     
                 generateTextureModels(piece);
                 workPlaces.shift();
     
@@ -1666,6 +1670,64 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     } ); 
   }
 
+  function customizeUserDataWorkSpace( piece: THREE.Group, workPlaces: workSpaceW[], index: number ): THREE.Group{
+    let list: THREE.Mesh[] = [];
+    piece.children[0].userData = {"info" : workPlaces[index], "num": 1};
+    piece.children[1].userData = {"info" : workPlaces[index], "num": 2};
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[2].userData = {"info" : workPlaces[index], "num": 3, list}; //Espacio de abajo de las ruedas
+    console.log( 'Lista Antes ome', list );
+    list.splice(0, list.length);
+    console.log( 'Lista papi', list );
+    
+    piece.children[3].userData = { "info": workPlaces[index], "num": 4 }; //Posiblemente es este el espaldar
+
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[0].userData = { "info": workPlaces[index], "num": 41, list }; // espaldar
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[1].userData = { "info": workPlaces[index], "num": 42, list };
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[2].userData = { "info": workPlaces[index], "num": 43, list };
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[3].userData = { "info": workPlaces[index], "num": 44, list }; // asiento
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    piece.children[4].userData = { "info": workPlaces[index], "num": 5, list };
+    return piece;
+  }
+
     function animate() {
       requestAnimationFrame( animate );
       checkChanges();
@@ -1731,9 +1793,17 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     }
 
     function selectChair(intersects: THREE.Intersection[], index: number){
-      for (let ob of scene.children) {
+
+      let list: THREE.Mesh[] =  intersects[index].object.userData.list;
+      
+      for (let mesh of list) {
+        mesh.userData.currentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color;
+        ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color = selectedObjectColor;
+      }
+
+      /* for (let ob of scene.children) {
                 
-        //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
+        NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
         if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
           && ob.children[4].userData.info.idPiso == idPiso - 17){
 
@@ -1744,7 +1814,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
           (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
           
         }            
-      }
+      } */
     }
 
     function setColorSelectedObject():  void {
