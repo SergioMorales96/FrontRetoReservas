@@ -10,6 +10,7 @@ export interface DatesReservation {
     dia:                 string;
     horaInicio:          string;
     horaFin:             string;
+    totalHoras:          number;
     dominioEstado:       string;
     dominioTipoVehiculo: string;
     placa:               string;
@@ -18,13 +19,15 @@ export interface DatesReservation {
     numeroAsistentes:    number;
     idPiso:              number;
     idSala:              number;   
-    idPuestoTrabajo:     number;  
+    idPuestoTrabajo:     number;
+    numeroPiso:          number;  
 }
 export class DatesReservationClass {
     numeroReserva!:       number;
     dia!:                 string;
     horaInicio!:          string;
     horaFin!:             string;
+    totalHoras!:          number;
     dominioEstado!:       string;
     dominioTipoVehiculo!: string;
     placa!:               string;
@@ -34,6 +37,7 @@ export class DatesReservationClass {
     idPiso!:              number;
     idSala!:              number;   
     idPuestoTrabajo!:     number; 
+    numeroPiso!:          number;
     
     constructor(){} 
 }

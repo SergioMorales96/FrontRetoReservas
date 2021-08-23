@@ -1,12 +1,13 @@
 .button__close{
   background-color: white;
   color: red;
-  width: 24px;
+  max-width: 24px;
   height: 24px;
   border-radius: 100%;
 }
+
 .cancel__button{
-  width: 13.25rem;
+  max-width: 13.25rem;
   height: 2.5rem;
   align-items: center;
   background-color: #fa729c;
@@ -14,43 +15,51 @@
   color: white;
   border-radius: none;  
 }
+
 .column__White {
-  width: 2.875rem;
+  max-width: 2.875rem;
   height: 21.4375rem;
 }
 
 .column__center {
-  width: 25.5625rem;
+  max-width: 26.5625rem;
+  padding-right: 0rem;
 }
+
 .degrade__line {
-  width: 24.25rem;
+  max-width: 24.25rem;
   height: 0.0625rem;
   margin: 0 0.625rem 0 0.625rem;
   background-image: linear-gradient(to left, rgba(255, 255, 255, 0) 97%, var(#ffffff) 49%, rgba(255, 255, 255, 0) 2%);
 }
+
 .reservation__background{
-  width: 24.25rem;
+  max-width: 24.25rem;
   left:.6rem;
-  height: 302px; 
+  height: 18.875rem; 
   background-color: #0666fb; 
   position: relative;
 }
+
 .reservation__cancel {
-  width: 13.25rem;
+  max-width: 13.25rem;
   height: 2.5rem;
   background-color: #fa729c;
 }
+
 .reservation__edit {
   color: #ffffff;
-  width: 24.25rem;
+  max-width: 24.25rem;
   height: 2.5rem;
   padding: 0.089rem 0.625rem 0.089rem 0.625rem;
-  margin: 0 0.625rem 0 0.625rem;
+  margin: 0 0 0 0.625rem;
   background-color: #0666fb;
 }
+
 .reservation__pipe-divider {
   font-size: 0.5rem;
 }
+
 .reservation__salaOrJob{
   max-width: 11.25rem;
   max-width: 5rem;
@@ -58,6 +67,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
 .reservation__subtitle {
   font-size: 1.3125rem;
   font-weight: 500;
@@ -71,6 +81,7 @@
   display: flex;
   align-items: center;
 }
+
 .reservation__subtitle-2 {
   font-size: 1.0625rem;
   font-weight: 500;
@@ -84,6 +95,7 @@
   display: flex;
   align-items: center;
 }
+
 .reservation__text {
   font-size: 1rem;
   font-weight: 500;
@@ -95,6 +107,7 @@
   color: #fff;
   opacity: 0.56;
 }
+
 .reservation__text-small {
   font-size: 0.9375rem;
   font-weight: 500;
@@ -105,6 +118,7 @@
   text-align: left;
   color: #fff;
 }
+
 .reservation__text-small-2 {
   font-size: 0.75rem;
   font-weight: 500;
@@ -115,6 +129,7 @@
   text-align: left;
   color: #fff;
 }
+
 .reservation__title {
   font-size: 2rem;
   font-weight: 500;
@@ -125,6 +140,7 @@
   text-align: left;
   color: #fff;
 }
+
 .style__backgruond1 {
   position: absolute;
   top: 0;
@@ -141,9 +157,10 @@
   border-width: 2px;
   border-image-source: linear-gradient(to right, #606060, white, #606060);
 }
+
 .style__backgruond2 {
   position: absolute;
-  top: 152px;
+  top: 9.5rem;
   left: -0.5rem;
   right: -0.5rem;
   height: 10.25rem;
@@ -157,6 +174,22 @@
   border-width: 2px;
   border-image-source: linear-gradient(to right, #606060, white, #606060);
 }
+
+.viewEdit{
+  flex-wrap: nowrap !important;
+  max-width: 38rem;
+}
+
+@media screen and (max-width:576px) {
+  .workStationMedia{
+    width:3.5rem;
+  }
+
+  .transportMedia{
+    width: 4rem;
+  }
+}
+
 :host ::ng-deep {
   .reservation__button {
     position: absolute;
@@ -173,8 +206,4 @@
     outline: none;
     box-shadow: none;
   }
-}
-
-.viewEdit{
-  flex-wrap: nowrap !important;
 }

@@ -1,29 +1,22 @@
 .container{    
     background-attachment: fixed;
-    background-image: linear-gradient(to right, rgb(6, 102, 251) 545px, rgb(255, 255, 255) 545px);
+    background-image: linear-gradient(to right, rgb(6, 102, 251) 43.55%, rgb(255, 255, 255) 43.55%);
     margin-left: -8px;
-    border:none
+    border:none;
 }
 
 .panel{
-    height: 90px; 
+    height: 14vh; 
     z-index: 1;
-    background: inherit;
-    width: 60rem;
-    margin-left: 145px;
-}
-.panel:before {
-    background-color: rgba(96, 96, 96, 0.7);
-    backdrop-filter: blur(10px) saturate(100%) contrast(85%) brightness(130%);
-    content: '';
-    height: 90px;
-    position: absolute;
-    width: 60rem;
-}
-p {
-    z-index: 1;
+    background-color: rgba(64, 64, 64, 0.6);
+    width: 70vw;
+    margin-left: 11.7vw;    
+    backdrop-filter: blur(30px);
+    font-weight: bold;    
     color: white;
-    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 

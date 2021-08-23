@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
-import { environment } from '../environments/environment'
+import { setResponsive } from './reservations/reservation.actions';
 
 @Component({
   selector: 'app-root',
@@ -10,17 +10,20 @@ import { environment } from '../environments/environment'
 })
 export class AppComponent {
 
-  display: boolean = false;
-  responsive: boolean = false;
-  assetsUrl = environment.assetsUrl
+  display: boolean = true;
+  responsive: boolean = true;
 
   constructor(
     private store: Store<AppState>
-  ){}
+  ) {
+    this.store.select('reservation').subscribe((reservation) => this.responsive = reservation.responsive);
+  }
 
   ngOnInit(): void {
-    this.store.select('reservation').subscribe((reservation) => {
-      this.display = reservation.display;
-    });
+  }
+
+  changeResponsive(responsive: boolean) {
+    this.responsive = responsive;
+    this.store.dispatch(setResponsive({ responsive: responsive }))
   }
 }

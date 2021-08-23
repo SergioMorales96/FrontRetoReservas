@@ -11,8 +11,9 @@ import { Roomr, RoomsPerFloorResponse } from '../../interfaces/rooms-per-floor.i
 import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspaces-per-floor.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
-import { setReservationId } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber } from '../../reservation.actions';
+import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit } from '../../reservation.actions';
+import { DatesReservation } from '../../../admin/interfaces/reservation';
 
 const CAMERA_FOV = 40;
 const CAMERA_NEAR = 1;
@@ -74,10 +75,16 @@ export class SceneComponent implements OnInit {
     let idPiso = 0;
     let numeroPersonas = 0;
     let myStore = this.store;
+    let step = 0;
+    let currentReservation: DatesReservation | null;
+    let isEdit : boolean;
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
       numeroPersonas = reservation.peopleNumber;      
+      step = reservation.step;
+      currentReservation = reservation?.reservation;      
+      isEdit = reservation.isEdit;
     });
 
     setFlag();
@@ -153,7 +160,7 @@ export class SceneComponent implements OnInit {
       let index: number = 0;
       let flag: boolean = false;
       do {        
-        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 ){
+        if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 && intersects[index].object != selectedObject ){
 
           if( selectedObject && selectedObject != intersects[index].object ){
               setColorSelectedObject( );
@@ -1687,11 +1694,26 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
     function setFlag(){
 
-      if( sessionStorage.getItem( 'flag' ) == 'true' ){ sessionStorage.clear()}
+      if( sessionStorage.getItem( 'flag' ) == 'true' ){
+
+      
+      myStore.dispatch( setSteps({step: Number(  JSON.parse(sessionStorage.getItem( 'step' ) || '{}' ) )}) );  
+      myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
+      myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
+      sessionStorage.clear(); 
+
+    }
       else{
+
         sessionStorage.setItem( 'flag', 'true' );
+        sessionStorage.setItem( "step", JSON.stringify(step) );
+        if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        
+        sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         window.location.reload();  
+
       }
+
     }
 
     function updateModels(){
