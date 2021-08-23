@@ -149,6 +149,10 @@ body {
   display: none !important;
 }
 
+.p-sidebar-button{
+  margin-left: 1em !important;
+}
+
 .p-administration .p-button{
   background-color: #113561 !important;
   align-items: center;
@@ -161,10 +165,6 @@ body {
 .p-menu-overlay{
   width: 90% !important;
   margin-left: 5% !important;
-}
-
-.p-menubar-button {
-  display: flex !important;
 }
 
 .white__line{

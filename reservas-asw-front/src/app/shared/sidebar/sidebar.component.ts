@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { MenuItem } from 'primeng/api';
 import { RouteFloor, RouteName } from '../../../utils/enums';
-import { setDisplay } from '../../reservations/reservation.actions';
+import { setDisplay, setSidebar } from '../../reservations/reservation.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,24 +11,22 @@ import { setDisplay } from '../../reservations/reservation.actions';
 })
 export class SidebarComponent {
 
-  display!: boolean;
-  blocked!: boolean;
-  responsive!: boolean;
+  isEditReservation!: boolean;
+  isBlockedReservation!: boolean;
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
-  isEditingReservation: boolean = false;
 
   get generateReservationIcon(): string {
-    return `assets/images/icons/${this.blocked ? 'minus-gray' : this.display ? 'close-red' : 'plus-blue'}.svg`;
+    return `assets/images/icons/${this.isBlockedReservation ? 'minus-gray' : this.isEditReservation ? 'close-red' : 'plus-blue'}.svg`;
   }
 
   get myReservationIconCalendar(): string {
-    return `assets/images/icons/${this.display ? 'calendar-white' : 'calendar-blue'}.svg`;
+    return `assets/images/icons/${this.isEditReservation ? 'calendar-white' : 'calendar-blue'}.svg`;
   }
 
   get myReservationIconArrow(): string {
-    return `assets/images/icons/${this.display ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
+    return `assets/images/icons/${this.isEditReservation ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
   constructor(
@@ -38,36 +36,43 @@ export class SidebarComponent {
       {
         label: 'Lista de administración',
         routerLink: 'admin/admins/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de dominios',
         routerLink: 'admin/domains/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de pisos',
         routerLink: 'admin/floors/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de salas',
         routerLink: 'admin/rooms/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de sucursales',
         routerLink: 'admin/branches/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de puestos de trabajo',
         routerLink: '/admin/workstations/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
       {
         label: 'Lista de horarios',
         routerLink: 'admin/schedules/list',
+        command: () => this.store.dispatch(setSidebar({ sidebar: {sidebarActive : false} })),
         icon: 'pi pi-check'
       },
     ];
@@ -76,9 +81,9 @@ export class SidebarComponent {
   ngOnInit(): void {
     this.store.select('reservation').subscribe(
       (reservation) => {
-        this.display = reservation.display;
+        this.isEditReservation = reservation.sidebar.isEditReservation;
         const line = document.getElementById('line_shade');
-        if (this.display) {
+        if (this.isEditReservation) {
           if (line) {
             line.style.display = 'flex';
           }
@@ -87,17 +92,15 @@ export class SidebarComponent {
             line.style.display = 'none';
           }
         }
-        this.blocked = reservation.blocked;
-        this.responsive = reservation.responsive;
-
-
-        this.isEditingReservation = reservation.sidebar.isEditingReservation;
+        this.isBlockedReservation = reservation.sidebar.isBlockedReservation;
+        this.isEditReservation = reservation.sidebar.isEditReservation;
       }
     );
   }
 
-  changeDisplay(display: boolean): void {
-    this.display = display;
-    this.store.dispatch(setDisplay({ display: display }))
+  changeEditReservation(isEditReservation: boolean): void {
+    this.isEditReservation = isEditReservation;
+    this.store.dispatch(setSidebar({ sidebar: {isEditReservation : isEditReservation} }))
   }
+
 }

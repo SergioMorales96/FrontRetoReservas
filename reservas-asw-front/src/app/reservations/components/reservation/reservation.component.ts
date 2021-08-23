@@ -44,7 +44,7 @@ export class ReservationComponent implements OnInit{
     this.store
       .select('reservation')
       .subscribe( reservation  =>{
-        this.hasEditing = reservation.isEditReservation;
+        this.hasEditing = reservation.sidebar.isEditReservation;
       });
   }
 

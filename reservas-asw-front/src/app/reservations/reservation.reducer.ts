@@ -4,7 +4,6 @@ import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
 
 export interface State {
-    blocked: boolean;
     blocked1: boolean;
     floorNumber: number; 
     peopleNumber: number;
@@ -21,15 +20,16 @@ export interface State {
     reservationList: DatesReservation[];
     reservation: DatesReservation | null;
     reservationAction: ReservationAction | number;
-    isEditReservation: boolean;
-    display: boolean;
-    responsive: boolean;
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
     isEdit: boolean;
 
-    sidebar: any;
+    sidebar: {
+        isEditReservation: boolean,
+        sidebarActive: boolean,
+        isBlockedReservation: boolean
+    }
 }
 
 export const initialState: State = {
@@ -48,19 +48,16 @@ export const initialState: State = {
    reservationList: [],
    reservation: null ,
    reservationAction: 0,
-   isEditReservation: false,
-   display: false,
-   responsive: true,
-   blocked: false,
    blocked1: false,
    selectedDateSummary: '',
    step: 1,
    dates: [],
    isEdit: false,
 
-
    sidebar: {
-       isEditingReservation: false,
+        isEditReservation: false,
+        sidebarActive: true,
+        isBlockedReservation: false
    },
 }
 
@@ -83,16 +80,11 @@ const _reservationReducer = createReducer(initialState,
 
     on(actions.setReservation,(state,{reservation})=>({...state, reservation: reservation})),
     on(actions.setReservationList,(state,{reservationList})=>({...state, reservationList: reservationList})),
-    on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
-    on(actions.setDisplay,(state,{display})=>({...state, display: display})),
-    on(actions.setResponsive,(state,{responsive})=>({...state, responsive: responsive})),
-    on(actions.setBlocked,(state,{blocked})=>({...state, blocked: blocked})),
     on(actions.setBlocked1,(state,{blocked1})=>({...state, blocked1: blocked1})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
 
     on(actions.setIsEdit , (state, { isEdit }) => ({...state, isEdit:isEdit})),
-
 
     on(actions.setSidebar , (state, { sidebar }) => ({...state, sidebar: {...sidebar}})),
 );
