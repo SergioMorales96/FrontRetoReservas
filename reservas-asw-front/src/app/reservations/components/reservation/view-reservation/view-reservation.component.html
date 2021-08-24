@@ -67,9 +67,9 @@
         </div>
         <div class="p-d-flex p-jc-center p-ai-center">
             <img 
-                (click)="canShowPreview ? showReservation(-1) : null"
+                (click)="canShowNext ? showReservation( 1 ) : null"
                 style="cursor: pointer; width: '2rem'"
-                [ngStyle]="{filter: !canShowPreview ? 'opacity(0.7)' : 'opacity(1)'}"
+                [ngStyle]="{filter: !canShowNext ? 'opacity(0.7)' : 'opacity(1)'}"
                 alt="icon" 
                 src="assets/images/icons/arrow-right-blue.svg" />
         </div>
