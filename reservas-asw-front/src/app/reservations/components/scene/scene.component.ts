@@ -1715,8 +1715,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
       myStore.dispatch( setDisplay({ display: JSON.parse(sessionStorage.getItem( 'display' ) || '{}' ) }) );    
       myStore.dispatch( setPeopleNumber({ peopleNumber: Number(  JSON.parse(sessionStorage.getItem( 'peopleNumber' ) || '{}' ) ) }) );    
-      myStore.dispatch( setIsWorkstation({ isWorkstation: currentReservation?.idPuestoTrabajo ?  true : false}) );    
-
+      myStore.dispatch( setIsWorkstation({ isWorkstation: JSON.parse(sessionStorage.getItem( 'isWorkstation' ) || '{}' )}) );    
+      
       
       sessionStorage.clear(); 
 
@@ -1730,7 +1730,10 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( "peopleNumber", JSON.stringify(peopleNumber) );
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         sessionStorage.setItem( "display", JSON.stringify(display));
-        sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
+        if(isEdit){
+          sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
+        }
+        
         window.location.reload();  
 
       }

@@ -339,9 +339,8 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if ((this.reservaForm.controls.puestoInfo.invalid) || 
-        (this.workstationGroup.controls['medioTransporte'].value == 1 ||  this.workstationGroup.controls['medioTransporte'].value == 2
-        && this.workstationGroup.controls['placa'].value == '')) 
+        if (((this.workstationGroup.controls['medioTransporte'].value == 1 && this.workstationGroup.controls['placa'].value == '')
+        ||  (this.workstationGroup.controls['medioTransporte'].value == 2 && this.workstationGroup.controls['placa'].value == '')))
            return;
            else this.submitted = false; 
         break;
@@ -356,7 +355,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.store.dispatch( setSteps({step: this.step}) );
 
     if (this.step == 4) {   
-      this.getReservationFormValue().id ?  this.editReservation() : this.addReservation();    
+      this.currentReservation?.numeroReserva ? this.editReservation() : this.addReservation();    
       this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setDisplay({display: false}) );
     }
