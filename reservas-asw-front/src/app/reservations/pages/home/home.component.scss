@@ -1,6 +1,10 @@
-.margin-sidebar{
-    margin-top: 0px;
+
+.myReservation{
+    font-size: 2vw;
 }
-.margin-reservation{
-    max-width: 100%;
+
+@media screen and (max-width:48rem) {
+    .myReservation{
+        display:none !important;
+    }
 }

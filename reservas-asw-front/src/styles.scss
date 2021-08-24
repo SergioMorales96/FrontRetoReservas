@@ -17,12 +17,18 @@ body {
   overflow-x: hidden;
 }
 
+@media screen and (max-width:576px) {
+  html,body{
+    font-size:13px
+  }
+}
+
 .button-link {
   text-decoration: none;
 }
 
-.position-relative {
-  position: relative;
+.button_square {
+  border-radius: 0;
 }
 
 .button-sticky-bottom {
@@ -30,69 +36,6 @@ body {
   position: sticky !important;
   left: 1rem;
   bottom: 1rem;
-}
-
-.button_square {
-  border-radius: 0;
-}
-
-:host ::ng-deep {
-  .button_square {
-    border-radius: 0;
-  }
-
-  .full-height {
-    height: 100%;
-  }
-
-  .width-15 {
-    width:'15rem' !important;
-  }
-} 
-
-.width-15 {
-  width:'15rem' !important;
-}
-
-.full-height {
-  height: 100%;
-}
-
-.p-sidebar-content {
-  height: 100%;
-}
-
-.jc-start-ai-center {
-  justify-content: flex-start !important; 
-  align-items: center !important;
-}
-
-.font-size-title {
-  font-size: 2.25rem !important;
-}
-
-.font-size-subtitle {
-  font-size: 1.125rem !important;
-}
-
-.font-size-body {
-  font-size: 1rem !important;
-}
-
-.font-size-small {
-  font-size: 0.8125rem !important;
-}
-
-.label {
-  opacity: 0.57;
-  font-family: 'Roboto', sans-serif !important;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff !important;
 }
 
 .description {
@@ -110,8 +53,21 @@ body {
   opacity: 0.3 !important;
 }
 
+.full-height {
+  height: 100%;
+}
+
 .margin-reservation{
   padding-bottom: 0px !important;
+}
+
+.p-administration .p-button{
+  background-color: #113561 !important;
+  align-items: center;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
 }
 
 .p-menuButton .p-button{
@@ -126,6 +82,15 @@ body {
 
 .p-menuBlocked .p-button{
   background-color: #B9B9B9 !important;
+}
+
+.p-menubar-button {
+  display: none !important;
+}
+
+.p-menu-overlay{
+  width: 90% !important;
+  margin-left: 5% !important;
 }
 
 .p-menuReservation .p-button{
@@ -145,8 +110,8 @@ body {
   padding-bottom: 0% !important;
 }
 
-.p-menubar-button {
-  display: none !important;
+.position-relative {
+  position: relative;
 }
 
 .p-sidebar-button{
@@ -162,15 +127,19 @@ body {
   padding-bottom: 0% !important;
 }
 
-.p-menu-overlay{
-  width: 90% !important;
-  margin-left: 5% !important;
+.p-sidebar-content{
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.white__line{
-  height: 2px;
-  border: 0;
-  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
+.p-sidebar-header{
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0 !important;
+}
+.p-sidebar-left{
+  border: 0 !important;
 }
 
 #line_shade{
@@ -189,13 +158,15 @@ body {
   margin-top: -54px;
 }
 
-.image{
-  width: 20px;
-  height: 20px;
+.sidebarActive{
+  background: #113561;
 }
 
-.imageIcon{
-  margin-left: 5%;
+.sidebarComp{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-top: -54px;
 }
 
 .imageCalendar{
@@ -207,8 +178,22 @@ body {
   background: #646464;
 }
 
-.imageArrow{
-  width: 35px;
+.spaceLogo{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  height: 54px;
+  line-height: 2.7;
+}
+
+.spaceLogoComp{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  height: 110px;
+  line-height: 2.7;
 }
 
 .text{
@@ -222,6 +207,10 @@ body {
   width:'15rem' !important;
 }
 
+.width-15 {
+  width:'15rem' !important;
+}
+
 .p-sidebar-header{
   width: 0;
   height: 0;
@@ -229,11 +218,12 @@ body {
   padding: 0 !important;
 }
 
-.p-sidebar-content{
-  margin: 0 !important;
-  padding: 0 !important;
+.white__line{
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
 }
 
-.p-sidebar-left{
-  border: 0 !important;
+.text{
+  margin-left: 10%;
 }
