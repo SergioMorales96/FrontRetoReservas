@@ -155,11 +155,11 @@ export class SceneComponent implements OnInit {
       do {  
              
         if( intersects[index] && intersects[index].object.userData.info && intersects[index].object.userData.info.idPiso == idPiso -17 && intersects[index].object != selectedObject){
+         console.log( ' El intersected ', intersects[index].object );
          
           
           if( selectedObject && selectedObject != intersects[index].object ){
               setColorSelectedObject( );
-              changeToChairCurrentColor()
           }
 
           selectChair(intersects, index);  
@@ -170,13 +170,6 @@ export class SceneComponent implements OnInit {
           let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
           myStore.dispatch( setIsWorkstation( {isWorkstation: isWorkstation}));
           myStore.dispatch(setPeopleNumber ({peopleNumber: isWorkstation ? 1 : 2}))
-          if( INTERSECTED && onObjectColor == (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color ){
-            selectedObject.userData.currentColor = INTERSECTED.userData.currentColor;
-          }else{
-            selectedObject.userData.currentColor = (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color;
-          }
-          (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObjectColor;  
-          INTERSECTED = null; 
           flag = true;
         }
 
@@ -198,7 +191,7 @@ export class SceneComponent implements OnInit {
      
       pointer.x = ( ( event.clientX - rect.left ) / ( renderer.domElement.clientWidth ) ) *  MOUSE_VAL2 -  MOUSE_VAL1;
       pointer.y = - ( ( event.clientY - (rect.top) ) / ( renderer.domElement.clientHeight) ) *  MOUSE_VAL2 +  MOUSE_VAL1;    
-      checkOnObject();
+      //checkOnObject();
 
   }
   
@@ -552,7 +545,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     loader.load( `${PATH}${PATH_CHAIRS}`, function ( gltf ) {
       
       const model4 = gltf.scene;
-      console.log( 'El MOdelo de las salas: ', model4 );
+      
       
       const child = model4.children[0].children[0] as THREE.Mesh;
      
@@ -570,9 +563,10 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
             for (let j = 0; j < 1; j++) {
                 loader.load( `${PATH}${PATH_CHAIRS}`, function ( gltf ) {  
                   let piece = gltf.scene;
+                  console.log( 'Modelo de las salas: ', piece );
                   
-                  piece.children[0].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[0].userData = {"info" : roomWorkPlace[index]};
+                  piece.children[0].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[2].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[3].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[4].userData = {"info" : roomWorkPlace[index]};
@@ -591,6 +585,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[index]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[index]};
+
+                  piece.userData = { "info": roomWorkPlace[index] };
 
                   index++;
 
@@ -660,6 +656,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[1].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[0]};
+
+                  piece.userData = { "info": roomWorkPlace[index] };
 
                   roomWorkPlace.shift();
                   
@@ -751,6 +749,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[1].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[0]};
+
+                  piece.userData = { "info": roomWorkPlace[index] };
 
                   roomWorkPlace.shift();
 
@@ -1723,6 +1723,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     list.push( <THREE.Mesh>piece.children[3].children[3] );
     list.push( <THREE.Mesh>piece.children[2] );
     piece.children[4].userData = { "info": workPlaces[index], "num": 5, list }; //Mesa
+    piece.userData = { "info" : workPlaces[index] };
     return piece;
   }
 
@@ -1781,45 +1782,124 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       return idPiso != idPisoActual;
     }
 
-    function changeToChairCurrentColor(): void{
-      for (let ob of scene.children) {
-        if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject?.userData.info.idPuestoTrabajo ){
-          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
-          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairCurrentColor;
-        }
-      }
-    }
+
 
     function selectChair(intersects: THREE.Intersection[], index: number){
 
-      /* let list: THREE.Mesh[] =  intersects[index].object.userData.list;
-      Prueba nueva
-      for (let mesh of list) {
-        mesh.userData.currentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color;
-        ( <THREE.MeshStandardMaterial> ( <THREE.Mesh>mesh).material).color = selectedObjectColor;
-      } */
 
-      //Antiguo
       for (let ob of scene.children) {
-                
-        //Verifica que sea del mismo piso, sea sala o puesto de trabajo y tenga sea el modelo 3D seleccionado
-        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
-          && ob.children[4].userData.info.idPiso == idPiso - 17){
 
-          //Verificar si es una sala o un puesto de trabajo ( if ) intersects[index].object.userData.info.idPuestoTrabajo
-          // Si es un puesto de trabajo tienes que recorrer los children y guardar los colores actuales y  cambiar a color de seleccionado
-          ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
-          ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+        if (  ob.userData.info && ob.userData.info.idPiso == idPiso - 17){
 
-          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
-          
-        }            
+          if( ob.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo){
+            ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+            ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+            ob.userData.chairTube = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color;
+            ob.userData.chairTable = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color;
+            
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color = selectedObjectColor ; 
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color = selectedObjectColor;
+
+          }else if( ob.userData.info.idSala && ob.userData.info.idSala == intersects[index].object.userData.info.idSala ){
+            saveAndChangeRoomsColors( ob );
+            
+
+          }
+
+        }
+                    
       }
     }
 
     function setColorSelectedObject():  void {
-      (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
+
+      for (let ob of scene.children) {
+
+        if( ob.userData.info ){
+          if ( selectedObject?.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo === selectedObject?.userData.info.idPuestoTrabajo ){
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairBackCurrentColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color = ob.userData.chairTube ;           
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color = ob.userData.chairTable;
+  
+          }else if ( selectedObject?.userData.info.idSala && ob.userData.info.idSala && ob.userData.info.idSala === selectedObject?.userData.info.idSala ){
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color = ob.userData.roomCurrentColor ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color = ob.userData.roomCurrentColor_1 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color = ob.userData.roomCurrentColor_2 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color = ob.userData.roomCurrentColor_3 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color = ob.userData.roomCurrentColor_4 ;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color = ob.userData.roomCurrentColor_1_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color = ob.userData.roomCurrentColor_1_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color = ob.userData.roomCurrentColor_1_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color = ob.userData.roomCurrentColor_1_3;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_3;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_3;
+
+
+          }
+        }
+
+        }
+        
+    }
+
+
+    function saveAndChangeRoomsColors( ob: THREE.Object3D ):void{
+      ob.userData.roomCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color;
+      ob.userData.roomCurrentColor_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color;
+      ob.userData.roomCurrentColor_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color;
+      ob.userData.roomCurrentColor_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color;
+      ob.userData.roomCurrentColor_4 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color;
+
+      ob.userData.roomCurrentColor_1_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color;
+      ob.userData.roomCurrentColor_1_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color;
+      ob.userData.roomCurrentColor_1_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color;
+      ob.userData.roomCurrentColor_1_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color;
+
+      ob.userData.roomCurrentColor_2_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+
+      ob.userData.roomCurrentColor_3_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color = selectedObjectColor ;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color = selectedObjectColor;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+
     }
   }
 
