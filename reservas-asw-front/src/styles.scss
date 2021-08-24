@@ -53,6 +53,10 @@ body {
   opacity: 0.3 !important;
 }
 
+.full-height {
+  height: 100%;
+}
+
 .margin-reservation{
   padding-bottom: 0px !important;
 }
@@ -138,6 +142,9 @@ body {
   border: 0 !important;
 }
 
+.p-sidebar {
+  flex-direction: row !important;
+}
 .sidebar{
   position: absolute;
   width: 20%;
