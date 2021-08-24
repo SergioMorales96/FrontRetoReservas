@@ -10,7 +10,6 @@ export interface DatesReservation {
     dia:                 string;
     horaInicio:          string;
     horaFin:             string;
-    totalHoras:          number;
     dominioEstado:       string;
     dominioTipoVehiculo: string;
     placa:               string;
@@ -26,7 +25,6 @@ export class DatesReservationClass {
     dia!:                 string;
     horaInicio!:          string;
     horaFin!:             string;
-    totalHoras!:          number;
     dominioEstado!:       string;
     dominioTipoVehiculo!: string;
     placa!:               string;

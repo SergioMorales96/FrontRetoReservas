@@ -1,17 +1,15 @@
 .dimensions{
   height: 24rem;
-  max-width: 335px;
+  width: 335px;
   text-align: center;
-}
 
+}
 .green__division{
   background-color: #5ebc00;
 }
-
 .noHaveReservatio{
   margin-left: 109px;
 }
-
 .noReservation{
   opacity: 0.7;
   font-size: 14px;
@@ -22,11 +20,10 @@
   text-align: left;
   color: var(--dark-navy-blue);
 }
-
 .question{
   display: block;
   margin: auto;
-  max-width: 297;
+  width: 297;
   object-fit: contain;
   opacity: 0.7;
   font-size: 128px;
@@ -41,16 +38,13 @@
 .reservationGeneral{
   padding-top: 0 !important;
 }
-
 .reservation__background{
-  max-width: 24rem;
+  width: 24rem;
   background-color: #606060;
 }
-
 .reservation__pipe-divider {
   font-size: 0.5rem;
 }
-
 .reservation__salaOrJob{
   max-width: 11.25rem;
   max-width: 5rem;
@@ -58,9 +52,8 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
 .reservation__subtitle {
-  font-size: 1.2rem;
+  font-size: 1.3125rem;
   font-weight: 500;
   font-stretch: normal;
   font-style: normal;
@@ -72,7 +65,6 @@
   display: flex;
   align-items: center;
 }
-
 .reservation__subtitle-2 {
   font-size: 1.0625rem;
   font-weight: 500;
@@ -86,7 +78,6 @@
   display: flex;
   align-items: center;
 }
-
 .reservation__title {
   font-size: 2rem;
   font-weight: 500;
@@ -97,7 +88,6 @@
   text-align: left;
   color: #fff;
 }
-
 .reservation__text {
   font-size: 1rem;
   font-weight: 500;
@@ -109,7 +99,6 @@
   color: #fff;
   opacity: 0.56;
 }
-
 .reservation__text-small {
   font-size: 0.9375rem;
   font-weight: 500;
@@ -117,10 +106,9 @@
   font-style: normal;
   line-height: 1.33;
   letter-spacing: normal;
-  text-align: center;
+  text-align: left;
   color: #fff;
 }
-
 .reservation__text-small-2 {
   font-size: 0.75rem;
   font-weight: 500;
@@ -131,7 +119,11 @@
   text-align: left;
   color: #fff;
 }
-
+.white__line{
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
+}
 :host ::ng-deep {
   .reservation__button {
     position: absolute;
@@ -147,15 +139,5 @@
   .reservation__controls-button:focus {
     outline: none;
     box-shadow: none;
-  }
-}
-
-@media screen and (max-width:576px) {
-  .workStationMedia{
-    width:3.5rem;
-  }
-
-  .transportMedia{
-    width:2rem;
   }
 }

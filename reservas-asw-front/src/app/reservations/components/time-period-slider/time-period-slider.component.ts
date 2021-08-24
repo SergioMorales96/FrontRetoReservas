@@ -57,14 +57,9 @@ export class TimePeriodSliderComponent implements OnInit{
   importValue(hour:number,currentTime:number):void{
     this.initialTime=currentTime;
     this.finalTime=this.initialTime+hour;
-    if(this.finalTime>=this.initialTime && this.finalTime<=18){
-      this.hour=hour;
-      this.rangeValues = [String(this.initialTime),String(this.finalTime)];
-      this.rangeValues2 = [this.initialTime,this.finalTime];
-    }else{
-      this.finalTime=this.initialTime-hour;
-    }
-    
+    this.hour=hour;
+    this.rangeValues = [String(this.initialTime),String(this.finalTime)];
+    this.rangeValues2 = [this.initialTime,this.finalTime];
     this.onChange();
   }
   nextValue():void{ 

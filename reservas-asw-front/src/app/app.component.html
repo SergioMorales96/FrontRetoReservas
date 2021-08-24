@@ -1,29 +1,35 @@
 <p-toast></p-toast>
-
-<app-menu></app-menu>
-
-<p-confirmDialog 
-    [style]="{width: '50vw'}" 
-    [baseZIndex]="10000" 
-    acceptLabel="Aceptar" 
-    rejectLabel="Cancelar"
-    acceptButtonStyleClass="p-button-success" 
-    rejectButtonStyleClass="p-button-danger">
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" acceptLabel="Aceptar" rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
 </p-confirmDialog>
 
-<p-sidebar 
-    [(visible)]="sidebarActive"
-    styleClass="width-15 full-height">
-    <app-sidebar></app-sidebar>
-</p-sidebar>
+<div class="flex">
+    <div>
+        <p-menubar>
+            <ng-template pTemplate="end">
+                <button pButton pRipple type="button" class="p-button-rounded p-button-secondary p-button-text">
+                    <i class="pi pi-bell p-text-secondary" pBadge style="font-size: 1.25rem" value="2" severity="danger"></i>
+                </button>
+                <p-avatar [image]="assetsUrl + 'images/icons/calendar.svg'" styleClass="p-mr-2" shape="circle"></p-avatar>
+            </ng-template>
+        </p-menubar>
+    
+       
+    </div>
 
-<router-outlet></router-outlet>
+</div>
 
-<!-- <p-button 
-    type="text" 
-    (click)="display = !display" 
-    icon="pi pi-plus" 
-    label="Show">
-</p-button> -->
+<div class="p-grid margin-sidebar">
+    <div>
+        <p-sidebar [(visible)]="responsive" *ngIf="responsive; else sidebar">
+            <app-sidebar></app-sidebar>
+        </p-sidebar>
+        <ng-template #sidebar>
+            <app-sidebar></app-sidebar>
+        </ng-template>
+    </div>  
+    <router-outlet></router-outlet>
+</div>
+
 
 

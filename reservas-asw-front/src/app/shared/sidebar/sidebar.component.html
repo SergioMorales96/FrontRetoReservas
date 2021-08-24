@@ -1,31 +1,27 @@
-<div
-    class="full-height"
-    [ngStyle]="{'background-color': isEditReservation ? '#113561' : '#646464'}">
-    <div 
-        class="p-d-flex p-ai-center p-jc-center"
-        style="background-color: white; padding: 1rem;">
+<div 
+    class="sidebar" 
+    [ngClass]="{'sidebarActive': display, 'sidebarInactive': !display }">
+    <h2 class="spaceLogo">
         <img 
-            style="width: 80%;"
+            class="imageLogo" 
             src="assets/images/logos/logo.svg">
-    </div>
-    <div>
-        <p-button 
-            class="p-menuButton"
-            [ngClass]="{'p-menuBlocked': isBlockedReservation}" 
-            (onClick)="changeEditReservation(true);"
-            [disabled]="isBlockedReservation"
-            [routerLink]="routeName.addReservation">
-                <p class="text">Generar una reserva</p>
-                <img 
-                    class="image imageIcon" 
-                    [src]="generateReservationIcon">
-        </p-button>
-    </div>
+    </h2>
+    <p-button 
+        class="p-menuButton"
+        [ngClass]="{'p-menuBlocked': blocked}" 
+        (onClick)="changeDisplay(true)"
+        [disabled]="blocked"
+        [routerLink]="routeName.addReservation">
+        <p class="text">Generar una reserva</p>
+        <img 
+            class="image imageIcon" 
+            [src]="generateReservationIcon">
+    </p-button>
     
     <p-button 
         class="p-menuButton p-menuReservation" 
-        [ngClass]="{'p-menuReservation': isEditReservation, 'p-menuReservationActive': !isEditReservation}"
-        (onClick)="changeEditReservation(false)"
+        [ngClass]="{'p-menuReservation': display, 'p-menuReservationActive': !display}"
+        (onClick)="changeDisplay(false)"
         [disabled]="false"
         [routerLink]="routeName.viewReservation">
         <img 
@@ -36,15 +32,12 @@
             class="imageArrow"
             [src]="myReservationIconArrow">
     </p-button>
-    <hr class="white__line" id="line_shade">
-
-    
     <p-button 
         class="p-menuButton p-administration"
         (click)="menu.toggle($event)">
         <p class="text">Administración</p>
     </p-button>
-    <p-menu
+    <p-menu 
         #menu 
         [popup]="true" 
         [model]="items">

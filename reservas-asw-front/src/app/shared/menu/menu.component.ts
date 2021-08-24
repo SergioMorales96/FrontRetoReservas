@@ -1,19 +1,20 @@
-import { Component, HostListener } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/app.reducer';
-import { setSidebarActive } from '../../reservations/reservation.actions';
+import { Component, OnInit } from '@angular/core';
+import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss'
+  styleUrls: [ './menu.component.scss'
   ]
 })
-export class MenuComponent{
+export class MenuComponent implements OnInit {
 
-  constructor(private store:Store<AppState>) { }
+  constructor() { }
 
-  changeSidebarActive(sidebarActive: boolean) {
-    this.store.dispatch(setSidebarActive({sidebarActive : sidebarActive}))
+  items: MenuItem[]=[];
+  ngOnInit() {
+    this.items = [
+    ]
   }
+
 }

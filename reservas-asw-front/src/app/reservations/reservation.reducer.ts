@@ -2,10 +2,9 @@ import { createReducer, on } from '@ngrx/store';
 import * as actions from './reservation.actions';
 import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
-import { setIsEditReservation } from './reservation.actions';
-import { Sidebar } from 'primeng/sidebar';
 
 export interface State {
+    blocked: boolean;
     blocked1: boolean;
     floorNumber: number; 
     peopleNumber: number;
@@ -22,16 +21,11 @@ export interface State {
     reservationList: DatesReservation[];
     reservation: DatesReservation | null;
     reservationAction: ReservationAction | number;
+    isEditReservation: boolean;
+    display: boolean;
     selectedDateSummary: Date | string;
     step: number;
     dates: DatesReservation[];
-    isEdit: boolean;
-
-    sidebar: {
-        isEditReservation: boolean,
-        sidebarActive: boolean,
-        isBlockedReservation: boolean
-    }
 }
 
 export const initialState: State = {
@@ -50,17 +44,13 @@ export const initialState: State = {
    reservationList: [],
    reservation: null ,
    reservationAction: 0,
-   blocked1: false,
+   isEditReservation: false,
+   display: false,
+   blocked: false,
+   blocked1: true,
    selectedDateSummary: '',
    step: 1,
    dates: [],
-   isEdit: false,
-
-   sidebar: {
-        isEditReservation: false,
-        sidebarActive: true,
-        isBlockedReservation: false
-   },
 }
 
 const _reservationReducer = createReducer(initialState,
@@ -82,16 +72,12 @@ const _reservationReducer = createReducer(initialState,
 
     on(actions.setReservation,(state,{reservation})=>({...state, reservation: reservation})),
     on(actions.setReservationList,(state,{reservationList})=>({...state, reservationList: reservationList})),
+    on(actions.setEditReservation,(state,{isEditReservation})=>({...state, isEditReservation: isEditReservation})),
+    on(actions.setDisplay,(state,{display})=>({...state, display: display})),
+    on(actions.setBlocked,(state,{blocked})=>({...state, blocked: blocked})),
     on(actions.setBlocked1,(state,{blocked1})=>({...state, blocked1: blocked1})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
-
-    on(actions.setIsEdit , (state, { isEdit }) => ({...state, isEdit:isEdit})),
-
-    on(actions.setIsEditReservation,(state,{ isEditReservation })=>({...state, sidebar: {...state.sidebar, isEditReservation: isEditReservation} })),
-    on(actions.setSidebarActive,(state,{ sidebarActive })=>({...state, sidebar: {...state.sidebar, sidebarActive: sidebarActive} })),
-    on(actions.setIsBlockedReservation,(state,{ isBlockedReservation })=>({...state, sidebar: {...state.sidebar, isBlockedReservation: isBlockedReservation} }))
-
 );
 
 export function reservationReducer(state: any, action: any) {

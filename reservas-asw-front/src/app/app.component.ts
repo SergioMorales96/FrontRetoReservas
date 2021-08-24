@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
-import { setSidebarActive } from './reservations/reservation.actions';
+import { environment } from '../environments/environment'
 
 @Component({
   selector: 'app-root',
@@ -10,19 +10,17 @@ import { setSidebarActive } from './reservations/reservation.actions';
 })
 export class AppComponent {
 
-  sidebarActive!: boolean;
+  display: boolean = false;
+  responsive: boolean = false;
+  assetsUrl = environment.assetsUrl
 
   constructor(
     private store: Store<AppState>
-  ) {
-    this.store.select('reservation').subscribe((reservation) => this.sidebarActive = reservation.sidebar.sidebarActive);
-  }
+  ){}
 
   ngOnInit(): void {
-  }
-
-  changeSidebarActive(sidebarActive: boolean) {
-    this.sidebarActive = sidebarActive;
-    this.store.dispatch(setSidebarActive({sidebarActive : sidebarActive}))
+    this.store.select('reservation').subscribe((reservation) => {
+      this.display = reservation.display;
+    });
   }
 }
