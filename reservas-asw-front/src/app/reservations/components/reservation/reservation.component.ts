@@ -5,6 +5,7 @@ import { AppState } from 'src/app/app.reducer';
 import { AlertsService } from 'src/app/services/alerts.service';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { Reservation } from '../../interfaces/reservations.interface';
+import { setIsEditReservation } from '../../reservation.actions';
 import { ReservationsService } from '../../services/reservations.service';
 
 
@@ -44,8 +45,9 @@ export class ReservationComponent implements OnInit{
     this.store
       .select('reservation')
       .subscribe( reservation  =>{
-        this.hasEditing = reservation.isEditReservation;
+        this.hasEditing = reservation.sidebar.isEditReservation;
       });
+    this.store.dispatch(setIsEditReservation({isEditReservation : false}));
   }
 
   addReservation(){

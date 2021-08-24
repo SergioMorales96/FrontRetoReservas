@@ -34,7 +34,7 @@ export const setWorkstation = createAction(
 
 export const setSelectedDate = createAction(
     '[Reservations Component] setSelectedDate',
-    props<{ selectedDateSummary: Date}>()
+    props<{ selectedDateSummary: Date | string}>()
 )
 
 export const setSymptoms = createAction(
@@ -98,16 +98,6 @@ export const setContinue = createAction(
     props<{ continuar : boolean}>()
 )
 
-export const setDisplay= createAction(
-    '[Reservations Component] setDisplay',
-    props<{display: boolean }>()
-)
-
-export const setBlocked= createAction(
-    '[Reservations Component] setBlocked',
-    props<{blocked: boolean }>()
-)
-
 export const setBlocked1= createAction(
     '[Reservations Component] setBlocked1',
     props<{blocked1: boolean }>()
@@ -123,4 +113,18 @@ export const setCapacity= createAction(
     props<{capacity: string }>()
 )
 
+export const setIsEditReservation = createAction(
+    '[Reservations Component] setIsEditReservation',
+    props<{ isEditReservation: boolean }>()
+)
+
+export const setSidebarActive = createAction(
+    '[Reservations Component] setSidebarActive',
+    props<{ sidebarActive: boolean }>()
+)
+
+export const setIsBlockedReservation = createAction(
+    '[Reservations Component] setIsBlockedReservation',
+    props<{ isBlockedReservation: boolean }>()
+)
 
