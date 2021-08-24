@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setIsEdit, setReservationId, setPeopleNumber, setIsEditReservation } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setIsEdit, setReservationId, setPeopleNumber, setIsEditReservation, setSelectedDate } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,

@@ -37,7 +37,6 @@ export class FormDateComponent implements OnInit {
     private rootFormGroup: FormGroupDirective,
     private store: Store<AppState>,
     private reservationService: ReservationsService,
-
   ) {
   }
 
@@ -50,10 +49,7 @@ export class FormDateComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.reservationId = reservation.reservationId;
       this.floor = reservation.floorNumber;
-
-
       if (this.endTime && this.form.controls['fecha'].value != "Invalid date") {
-
         if (!this.isWorkstation) {
           this.responseAviableRoom = (await this.AforoSala())?.data;
           this.responseCapacityRoom = (await this.AforoDisponibilidadSala())?.data;
@@ -70,27 +66,22 @@ export class FormDateComponent implements OnInit {
 
   }
   AforoPuesto(): Promise<DataResponse> {
-
     this.dateAforo = this.form.controls['fecha'].value;
     this.hora_i = "01-01-1970 " + this.startTime.slice(0, 5) + ":00";
     this.hora_f = "01-01-1970 " + this.endTime.slice(0, 5) + ":00";
     return this.reservationService
       .aforoPuestos(this.dateAforo, this.hora_i, this.hora_f, this.floor)
       .toPromise();
-
-
   }
 
   AforoSala(): Promise<DataResponse> {
     this.dateAforo = this.form.controls['fecha'].value;
-
     this.hora_i = "01-01-1970 " + this.startTime.slice(0, 5) + ":00";
     this.hora_f = "01-01-1970 " + this.endTime.slice(0, 5) + ":00";
     return this.reservationService
       .aforoSalas(this.dateAforo, this.hora_i, this.hora_f, this.floor, this.reservationId)
       .toPromise();
   }
-
   AforoDisponibilidadSala(): Promise<DataResponse> {
     return this.reservationService
       .cantidadSalas(this.reservationId)

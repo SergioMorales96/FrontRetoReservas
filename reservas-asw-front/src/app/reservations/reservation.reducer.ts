@@ -2,8 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import * as actions from './reservation.actions';
 import { DatesReservation } from '../admin/interfaces/reservation';
 import { ReservationAction } from 'src/utils/enums';
-import { setIsEditReservation } from './reservation.actions';
-import { Sidebar } from 'primeng/sidebar';
 
 export interface State {
     blocked1: boolean;

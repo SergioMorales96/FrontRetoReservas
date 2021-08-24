@@ -35,7 +35,7 @@ export const setWorkstation = createAction(
 export const setSelectedDate = createAction(
     '[Reservations Component] setSelectedDate',
     props<{ selectedDateSummary: Date | string}>()
-)
+);
 
 export const setSymptoms = createAction(
     '[Reservations Component] setSymptoms',
