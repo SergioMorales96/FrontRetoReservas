@@ -1712,6 +1712,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );  
       myStore.dispatch( setIsEditingReservation({isEditingReservation: JSON.parse(sessionStorage.getItem( 'isEditingReservation' ) || '{}' ) }) ); 
       myStore.dispatch( setSidebarActive({sidebarActive: JSON.parse(sessionStorage.getItem( 'sidebarActive' ) || '{}' ) }) ); 
+      //myStore.dispatch( setIsWorkstation({isWorkstation: currentReservation?.idPuestoTrabajo ? true : false}) );
       sessionStorage.clear(); 
 
     }

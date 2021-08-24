@@ -177,7 +177,16 @@ body {
   margin: 0% !important;
   width: 100% !important;
   padding: 0% !important;
+}
   
+.p-sidebar {
+  flex-direction: row !important;
+}
+.sidebar{
+  position: absolute;
+  width: 20%;
+  height: 100%;
+  margin-top: -54px;
 }
 
 .image{
@@ -194,6 +203,9 @@ body {
   margin-left: 20px;
 }
 
+.sidebarInactive{
+  background: #646464;
+}
 
 .imageArrow{
   width: 35px;
@@ -204,6 +216,10 @@ body {
   margin-bottom: 0 !important;
   margin-right: 0 !important;
   margin-left: 35px !important;
+}
+
+.width-15 {
+  width:'15rem' !important;
 }
 
 .p-sidebar-header{
