@@ -81,6 +81,9 @@ export class SceneComponent implements OnInit {
     let currentReservation: DatesReservation | null;
     let isEdit : boolean;
     let display : boolean;
+    let isWorkstation: boolean;
+    let peopleNumber: number;
+
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
@@ -88,6 +91,8 @@ export class SceneComponent implements OnInit {
       step = reservation.step;
       currentReservation = reservation?.reservation;    
       display = reservation.display  
+      isWorkstation = reservation.isWorkstation;
+      
     });
 
    this.store.select('editReservation').subscribe((editReservation) => {
@@ -1709,8 +1714,10 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
       myStore.dispatch( setDisplay({ display: JSON.parse(sessionStorage.getItem( 'display' ) || '{}' ) }) );    
-      //myStore.dispatch( setDisplay({display: false}) );    
+      myStore.dispatch( setPeopleNumber({ peopleNumber: Number(  JSON.parse(sessionStorage.getItem( 'peopleNumber' ) || '{}' ) ) }) );    
+      myStore.dispatch( setIsWorkstation({ isWorkstation: currentReservation?.idPuestoTrabajo ?  true : false}) );    
 
+      
       sessionStorage.clear(); 
 
     }
@@ -1719,8 +1726,11 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
+        peopleNumber = currentReservation?.idSala ?  Number(currentReservation?.numeroAsistentes) : 1;
+        sessionStorage.setItem( "peopleNumber", JSON.stringify(peopleNumber) );
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         sessionStorage.setItem( "display", JSON.stringify(display));
+        sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
         window.location.reload();  
 
       }

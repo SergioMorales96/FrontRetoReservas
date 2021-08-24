@@ -89,7 +89,7 @@ export class FormWorkstationComponent implements OnInit {
       : (this.showLicensePlate = false);
 
     this.store.select('reservation').subscribe((reservation) => {
-
+        this.peopleNumber = reservation.peopleNumber;
         this.isWorkstation = reservation.isWorkstation;    
         this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala"
 
@@ -100,7 +100,7 @@ export class FormWorkstationComponent implements OnInit {
           
         }else  this.peopleNumberData = [2,3,4,5]
 
-        this.peopleNumber = this.form.controls['personasReserva'].value;
+        //this.peopleNumber = this.form.controls['personasReserva'].value;
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
         if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
 
