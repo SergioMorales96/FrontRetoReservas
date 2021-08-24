@@ -4,7 +4,7 @@
       
       <app-reservation-form></app-reservation-form>
     </div>
-    <div class="p-col-8" id="sceneContainer" style="width: 700px; height: 500px; margin-left: 3%">
+    <div *ngIf="step == 1" class="p-col-8" id="sceneContainer" style="width: 700px; height: 500px; margin-left: 3%">
       <app-scene></app-scene>
     </div>
      <div class="summary">

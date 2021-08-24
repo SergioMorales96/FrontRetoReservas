@@ -150,7 +150,7 @@ export class ReservationFormComponent implements OnInit {
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-
+    //this.store.dispatch(setPeopleNumber({ peopleNumber : this.workstationGroup.controls['personasReserva'].value }));
   } 
 
   ngOnDestroy(): void{
@@ -161,7 +161,7 @@ export class ReservationFormComponent implements OnInit {
    
     if(editValues){
       this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
-      this.workstationGroup.controls['reserva'].setValue(currentReservation?.numeroAsistentes == 0 ? currentReservation.idPuestoTrabajo : currentReservation?.idSala);
+      this.workstationGroup.controls['reserva'].setValue(currentReservation?.idPuestoTrabajo ? currentReservation?.idPuestoTrabajo : currentReservation?.idSala);
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
       //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
@@ -353,7 +353,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     this.store.dispatch( setSteps({step: this.step}) );
 
     if (this.step == 4) {   
-      this.getReservationFormValue().id ?  this.editReservation() : this.addReservation();    
+      this.currentReservation?.numeroReserva ? this.editReservation() : this.addReservation();    
       this.store.dispatch( setSteps({step: 1}) ); 
       this.store.dispatch( setIsEditingReservation({isEditingReservation: false}) );
     }
