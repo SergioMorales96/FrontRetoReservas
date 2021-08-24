@@ -27,7 +27,7 @@ export interface State {
     step: number;
     dates: DatesReservation[];
     isEdit: boolean;
-    capacity:number;
+    capacity:string;
 }
 
 export const initialState: State = {
@@ -54,7 +54,7 @@ export const initialState: State = {
    step: 1,
    dates: [],
    isEdit: false,
-   capacity:0,
+   capacity:"",
 }
 
 const _reservationReducer = createReducer(initialState,

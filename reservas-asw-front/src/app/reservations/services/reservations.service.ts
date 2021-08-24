@@ -110,7 +110,7 @@ export class ReservationsService {
         })
       );
   }
-  aforoPuestos(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0): Observable<AforoResponse> {
+  aforoPuestos(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0): Observable<DataResponse> {
     const urlLink = `${this.apiUrl}/aforoPuestos`;
     return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}`)
       .pipe(
@@ -119,13 +119,17 @@ export class ReservationsService {
       );
 
   }
-  aforoSalas(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0): Observable<AforoResponse> {
+  aforoSalas(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0, room:number): Observable<DataResponse> {
     const urlLink = `${this.apiUrl}/aforoSalas`;
-    return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}`)
+    return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}/${room}`)
       .pipe(
         catchError(err => of({ data: 0 }))
 
       );
-
+  }
+  cantidadSalas(room :number):Observable<DataResponse>{
+    const urlLink = `${this.apiUrl}/capacidadSalas`;
+    return this.http.get<AforoResponse>(`${urlLink}/${room}`);
+      
   }
 }

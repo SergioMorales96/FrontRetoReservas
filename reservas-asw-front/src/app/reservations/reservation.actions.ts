@@ -120,7 +120,7 @@ export const setIsEdit= createAction(
 
 export const setCapacity= createAction(
     '[Reservations Component] setCapacity',
-    props<{capacity: number }>()
+    props<{capacity: string }>()
 )
 
 

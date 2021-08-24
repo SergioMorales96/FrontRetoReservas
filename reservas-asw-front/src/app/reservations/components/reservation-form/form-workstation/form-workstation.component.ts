@@ -92,7 +92,8 @@ export class FormWorkstationComponent implements OnInit {
     this.store.select('reservation').subscribe((reservation) => {
 
         this.isWorkstation = reservation.isWorkstation;    
-        this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala"
+        this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala";
+        
         if(this.isWorkstation) { 
 
           this.peopleNumberData = [1];

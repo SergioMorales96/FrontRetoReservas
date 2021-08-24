@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber, setCapacity } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setDisplay, setIsEdit, setReservationId, setPeopleNumber, setCapacity, setBlocked, setSelectedDate } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -47,12 +47,8 @@ export class ReservationFormComponent implements OnInit {
   IsWorkstation!: boolean;
   routeName = RouteName;
   currentReservation!: DatesReservation | null;
-  dateAforo!: string;
-  responseAforo!: number| any;
-  hora_i!: string;
-  hora_f!: string;
-  capacity!:number;
-  
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -60,9 +56,8 @@ export class ReservationFormComponent implements OnInit {
     private reservationService: ReservationsService,
     private toastService: ToastsService,
     private alertsService: AlertsService,
-    
+
   ) {
-    this.store.dispatch(setCapacity({ capacity: this.capacity }));
     this.submitted = false;
   }
 
@@ -70,17 +65,17 @@ export class ReservationFormComponent implements OnInit {
 
     this.store.select('reservation').subscribe((reservation) => {
 
-      this.step=reservation.step;     
+      this.step = reservation.step;
 
     });
 
-    this.store.dispatch( setSteps({step:this.step}) ); 
+    this.store.dispatch(setSteps({ step: this.step }));
 
     this.reservaForm = this.fb.group({
       //Workstation - Step 1
       puestoInfo: this.fb.group({
         piso: [18, Validators.required],
-        reserva: [, [Validators.required,Validators.min(1)]],
+        reserva: [, [Validators.required, Validators.min(1)]],
         personasReserva: [1, Validators.required],
         datosAcompanante: this.fb.array([
           this.fb.group({
@@ -93,7 +88,7 @@ export class ReservationFormComponent implements OnInit {
             ],
             miembroOrganizacion: [true, Validators.required],
           })
-          
+
         ]),
         medioTransporte: [null],
         placa: [
@@ -122,11 +117,11 @@ export class ReservationFormComponent implements OnInit {
 
     this.workstationGroup = this.reservaForm.get('puestoInfo') as FormGroup;
     this.dateGroup = this.reservaForm.get('fechaInfo') as FormGroup;
-    this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;    
-   
+    this.assistantGroup = this.reservaForm.get('asistenteInfo') as FormGroup;
+
     this.store.select('reservation').subscribe((reservation) => {
       this.selectedDate = reservation.selectedDateSummary;
-      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');      
+      const selectedDate = moment(this.selectedDate).format('DD-MM-yyyy');
       this.timePeriod = reservation.timePeriod;
       this.startTime = reservation.startTime;
       this.endTime = reservation.endTime;
@@ -135,37 +130,34 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['reserva'].setValue(this.reservationId);
       this.dateGroup.controls['fecha'].setValue(selectedDate);
       this.dateGroup.controls['periodoTiempo'].setValue(this.timePeriod);
-      this.step=reservation.step;  
-      if(this.endTime && this.reservaForm.value.fechaInfo.fecha!="Invalid date"){
-        //this.capacity=this.AforoPuesto();
-        this.capacity=this.AforoSala();
-      }   
+      this.step = reservation.step;
+
       this.isEdit = reservation.isEdit;
-      this.currentReservation = reservation.reservation;   
-      if(this.isEdit) this.editValues(this.currentReservation);      
+      this.currentReservation = reservation.reservation;
+      if (this.isEdit) this.editValues(this.currentReservation);
     });
-    this.store.dispatch(setCapacity({ capacity: this.capacity }));
+
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
 
 
-  } 
-
-  ngOnDestroy(): void{
-    this.store.dispatch(setDisplay({display : false}))
   }
 
-  editValues(currentReservation: DatesReservation | null):any{
+  ngOnDestroy(): void {
+    this.store.dispatch(setDisplay({ display: false }))
+  }
+
+  editValues(currentReservation: DatesReservation | null): any {
 
     this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
     this.workstationGroup.controls['reserva'].setValue(currentReservation?.numeroAsistentes == 0 ? currentReservation.idPuestoTrabajo : currentReservation?.idSala);
     this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
     //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.numeroPiso);
     this.workstationGroup.controls['medioTransporte'].setValue(3);
-    this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
-    this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
-    this.dateGroup.controls['fecha'].setValue(currentReservation?.dia);  
-    
-    }
+    this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);
+    this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);
+    this.dateGroup.controls['fecha'].setValue(currentReservation?.dia);
+
+  }
 
   get transportModeName(): string {
 
@@ -177,7 +169,7 @@ export class ReservationFormComponent implements OnInit {
       case DateValidationType.ParkingAvailabilityPerMotorcycle:
         return 'M';
       default:
-        return 'NA';  
+        return 'NA';
     }
 
   }
@@ -188,46 +180,45 @@ export class ReservationFormComponent implements OnInit {
 
   }
 
-  get Emails(){
+  get Emails() {
 
-    for(let i of this.peopleData.controls)
-    {
+    for (let i of this.peopleData.controls) {
       const a = i.get('correo') as FormControl;
-      this.emailString = this.emailString+a.value+',';
+      this.emailString = this.emailString + a.value + ',';
     }
     return this.emailString;
 
   }
 
-  get ReservationType(): string{
+  get ReservationType(): string {
 
-    Number(this.workstationGroup.controls['personasReserva'].value) === 1 ? 
-    this.reservationType = 'PUESTO' : 
-    this.reservationType = 'SALA';
+    Number(this.workstationGroup.controls['personasReserva'].value) === 1 ?
+      this.reservationType = 'PUESTO' :
+      this.reservationType = 'SALA';
 
     return this.reservationType;
 
   }
 
   getReservationFormValue(): Reservation {
-   
+
     return {
       dia: this.reservaForm.value.fechaInfo.fecha,
       horaInicio: this.startTime,
       horaFin: this.endTime,
-      totalHoras:  this.timePeriod,
+      totalHoras: this.timePeriod,
       dominioTipoVehiculo: this.transportModeName,
       placa: this.reservaForm.value.puestoInfo.placa.replace('-', ''),
       emailUsuario: 'correoUsuario@correo.com', // Dato por SESION
       proyecto: 'SEMILLA_2021_2', // no hay opcion de seleccionar proyecto
-      idRelacion: this.reservaForm.value.puestoInfo.reserva, 
+      idRelacion: this.reservaForm.value.puestoInfo.reserva,
       tipoReserva: this.ReservationType,
       emailsAsistentes: this.Emails
     };
 
   }
 
-  addReservation() {   
+  addReservation() {
     this.reservationService
       .addReservation(this.getReservationFormValue())
       .subscribe((reservationResponse: ReservationResponse) => {
@@ -269,12 +260,12 @@ export class ReservationFormComponent implements OnInit {
   }
 
   submit() {
-    
+
     this.submitted = true;
     this.store.dispatch(setContinue({ continuar: true }));
     switch (this.step) {
       case 1:
-        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false; 
+        if (this.reservaForm.controls.puestoInfo.invalid) return; else this.submitted = false;
         break;
       case 2:
         if (this.reservaForm.controls.fechaInfo.invalid) return; else this.submitted = false;
@@ -283,46 +274,30 @@ export class ReservationFormComponent implements OnInit {
         if (this.reservaForm.controls.asistenteInfo.invalid) return; else this.submitted = false;
         break;
     }
-    this.step += 1;    
-    this.store.dispatch( setSteps({step: this.step}) );
+    this.step += 1;
+    this.store.dispatch(setSteps({ step: this.step }));
 
-    if (this.step == 4) {    
+    if (this.step == 4) {
       this.addReservation();
-      this.store.dispatch( setSteps({step: 1}) ); 
-      this.store.dispatch( setDisplay({display: false}) );
+      this.store.dispatch(setSteps({ step: 1 }));
+      this.store.dispatch(setDisplay({ display: false }));
     }
 
   }
 
   previous() {
+
     this.step = this.step - 1;
-    this.store.dispatch( setSteps({step: this.step}) );
+    this.store.dispatch(setSteps({ step: this.step }));
+    if (this.step === 1) {
+      this.dateGroup.controls['fecha'].setValue('Invalid date');
+      let clearDate = new Date('Invalid date');
+      this.store.dispatch(setSelectedDate({ selectedDateSummary: clearDate }));
+    }
   }
 
-  AforoPuesto():number {
 
-    this.dateAforo=this.reservaForm.value.fechaInfo.fecha;
-    this.hora_i="01-01-1970 "+this.startTime.slice(0,5)+":00";
-    this.hora_f="01-01-1970 "+this.endTime.slice(0,5)+":00";
-    this.reservationService
-    .aforoPuestos(this.dateAforo,this.hora_i,this.hora_f,this.workstationGroup.controls['piso'].value)
-    .subscribe((dataResponse: DataResponse) => this.responseAforo= (dataResponse.data));
-    console.log(this.responseAforo);
-    return this.responseAforo;
- 
-   }
 
-   AforoSala():number {
 
-    this.dateAforo=this.reservaForm.value.fechaInfo.fecha;
-    this.hora_i="01-01-1970 "+this.startTime.slice(0,5)+":00";
-    this.hora_f="01-01-1970 "+this.endTime.slice(0,5)+":00";
-    this.reservationService
-    .aforoSalas(this.dateAforo,this.hora_i,this.hora_f,this.workstationGroup.controls['piso'].value)
-    .subscribe((dataResponse: DataResponse) => this.responseAforo= (dataResponse.data));
-    console.log(this.responseAforo);
-    return this.responseAforo;
- 
-   }
 
 }
