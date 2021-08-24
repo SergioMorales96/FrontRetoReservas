@@ -3,7 +3,7 @@ import { Component,  OnInit } from '@angular/core';
 import { DatesReservation, ReservationResponse, DataUsersBlock } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setReservation, setReservationList, setEditReservation, setDates, setBlocked, setBlocked1 } from '../../../reservation.actions';
+import { setReservation, setReservationList, setEditReservation, setDates, setBlocked1, setIsBlockedReservation } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -27,8 +27,7 @@ export class ViewReservationComponent implements OnInit {
   remainingDays: number;
   routeName = RouteName;
   usersMap = {
-    '=0': 'No hay personas',
-    '=1': '1 persona',
+    '=0': '1 persona',
     'other': '# personas',
   }; 
 
@@ -161,7 +160,7 @@ export class ViewReservationComponent implements OnInit {
   
   getData() {
     return {
-      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
+      startDate: moment().format('DD-MM-YYYY'),
       endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoUsuario@correo.com'
     }
@@ -172,7 +171,7 @@ export class ViewReservationComponent implements OnInit {
       .subscribe(response => {
         this.dataUsersBlock = this.transformLockedUsers( response.data );
         this.dataUser = this.dataUsersBlock.find( user => user.email === this.getData().email && user.remainingDays > 0);
-        this.store.dispatch(setBlocked({blocked : !!this.dataUser}))
+        this.store.dispatch(setIsBlockedReservation({isBlockedReservation : !!this.dataUser}))
         this.store.dispatch(setBlocked1({blocked1 : !!this.dataUser}))
       });
 

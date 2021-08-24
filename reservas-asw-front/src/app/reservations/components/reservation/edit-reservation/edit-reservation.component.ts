@@ -4,7 +4,7 @@ import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setEditReservation, setReservation, setReservationList, setSteps, setDisplay } from '../../../reservation.actions';
+import { setEditReservation, setReservation, setReservationList, setSteps, setIsEdit, setIsEditReservation } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
@@ -24,8 +24,7 @@ export class EditReservationComponent {
   datesReservation: DatesReservation[] = [];
   routeName = RouteName;
   usersMap = {
-    '=0': 'No hay personas',
-    '=1': '1 persona',
+    '=0': '1 persona',
     'other': '# personas',
   };
 
@@ -112,7 +111,7 @@ export class EditReservationComponent {
 
   getData() {
     return {
-      startDate: moment().add(-1,'day').format('DD-MM-YYYY'),
+      startDate: moment().format('DD-MM-YYYY'),
       endDate: moment().endOf('month').format('DD-MM-YYYY'),
       email: 'correoUsuario@correo.com'
     }
@@ -166,7 +165,9 @@ export class EditReservationComponent {
     this.store.dispatch( setSteps({step: step}) ); 
     this.router.navigate(["admin/addReservation"]);
     this.store.dispatch(setReservation({reservation: this.currentReservation}));
-    this.store.dispatch(setDisplay({display: true}));
+    this.store.dispatch(setEditReservation({isEditReservation: false}));
+    this.store.dispatch(setIsEditReservation({isEditReservation: true}));
+    this.store.dispatch(setIsEdit({isEdit: true}));
   }
    
 }

@@ -1,8 +1,9 @@
 :host ::ng-deep {
   .ui-menubar {
+    display: none;
     background-color: white;
     box-shadow: 1px 1px 8px gray;
-    width: 100%;
+    max-width: 120rem;
   }
 }
 

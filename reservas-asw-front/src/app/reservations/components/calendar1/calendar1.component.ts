@@ -41,7 +41,6 @@ export class Calendar1Component implements OnInit {
     this.store.select('reservation').subscribe(
       (reservation) => this.blocked1 = reservation.blocked1
     );
-    console.log('estado usuario :', this.blocked1);
     this.getReservations(this.getData(this.tempDate));
   }
 
@@ -61,7 +60,6 @@ export class Calendar1Component implements OnInit {
           this.datesReservation = ReservationResponse.data;
           this.datesReservation = this.datesReservation.filter(reservation => reservation.dominioEstado.toUpperCase() === 'R');
           this.updateCalendar(this.validator());
-          console.log('reservas :', this.datesReservation);
         }
       )
   }
@@ -99,7 +97,6 @@ export class Calendar1Component implements OnInit {
 
   updateCalendar(tamaño: boolean): void {
     if (tamaño == true) {
-      console.log('tamaño consulta :', this.datesReservation.length);
       let i = 0;
       let checked: string[] = [];
 
@@ -141,7 +138,6 @@ export class Calendar1Component implements OnInit {
   setSelectedDate(selectedDate: Date): void {
     this.selectedDate = selectedDate;
     this.store.dispatch(setSelectedDate({ selectedDateSummary: this.selectedDate }));
-    console.log(this.selectedDate);
   }
 }
 

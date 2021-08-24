@@ -13,15 +13,22 @@ body {
   color: $dark-navy-blue;
   font-size: 16px;
   margin: 0% !important;
+  height: 100%;
   overflow-x: hidden;
+}
+
+@media screen and (max-width:576px) {
+  html,body{
+    font-size:13px
+  }
 }
 
 .button-link {
   text-decoration: none;
 }
 
-.position-relative {
-  position: relative;
+.button_square {
+  border-radius: 0;
 }
 
 .button-sticky-bottom {
@@ -29,49 +36,6 @@ body {
   position: sticky !important;
   left: 1rem;
   bottom: 1rem;
-}
-
-.button_square {
-  border-radius: 0;
-}
-
-:host ::ng-deep {
-  .button_square {
-    border-radius: 0;
-  }
-} 
-
-.jc-start-ai-center {
-  justify-content: flex-start !important; 
-  align-items: center !important;
-}
-
-.font-size-title {
-  font-size: 2.25rem !important;
-}
-
-.font-size-subtitle {
-  font-size: 1.125rem !important;
-}
-
-.font-size-body {
-  font-size: 1rem !important;
-}
-
-.font-size-small {
-  font-size: 0.8125rem !important;
-}
-
-.label {
-  opacity: 0.57;
-  font-family: 'Roboto', sans-serif !important;
-  font-weight: 500;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.3;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff !important;
 }
 
 .description {
@@ -88,19 +52,121 @@ body {
   opacity: 0.3 !important;
 }
 
+.full-height {
+  height: 100%;
+}
+
+.margin-reservation{
+  padding-bottom: 0px !important;
+}
+
+.p-administration .p-button{
+  background-color: #113561 !important;
+  align-items: center;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-menuButton .p-button{
+  border: 0 !important;
+  width: 100% !important;
+  height: 54px !important;
+  border-radius: 0% !important;
+  color: white;
+  font-size: 18px;
+  padding: 10% !important;
+}
+
+.p-menuBlocked .p-button{
+  background-color: #B9B9B9 !important;
+}
+
+.p-menubar-button {
+  display: none !important;
+}
+
+.p-menu-overlay{
+  width: 90% !important;
+  margin-left: 5% !important;
+}
+
+.p-menuReservation .p-button{
+  background-color: #113561 !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-menuReservationActive .p-button{
+  background-color: white !important;
+  color: $blue-primary !important;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.p-sidebar-button{
+  margin-left: 1em !important;
+}
+
+.p-administration .p-button{
+  background-color: #113561 !important;
+  align-items: center;
+  padding-left: 20% !important;
+  padding-right: 15% !important;
+  padding-top: 0% !important;
+  padding-bottom: 0% !important;
+}
+
+.p-sidebar-content{
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.p-sidebar-header{
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0 !important;
+}
+.p-sidebar-left{
+  border: 0 !important;
+}
+
+.p-sidebar {
+  flex-direction: row !important;
+}
 .sidebar{
   position: absolute;
-  width: 208px;
+  width: 20%;
   height: 100%;
   margin-top: -54px;
 }
 
-.sidebarInactive{
-  background: #646464;
-}
-
 .sidebarActive{
   background: #113561;
+}
+
+.sidebarComp{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-top: -54px;
+}
+
+.imageCalendar{
+  margin-right: 5%;
+  margin-left: 20px;
+.sidebarInactive{
+  background: #646464;
 }
 
 .spaceLogo{
@@ -112,87 +178,32 @@ body {
   line-height: 2.7;
 }
 
-.imageLogo{
-  transform: scale(0.5);
+.spaceLogoComp{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  height: 110px;
+  line-height: 2.7;
 }
 
-.margin-reservation{
-  margin-left: 208px;
-  padding-bottom: 0px !important;
+.text{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 35px !important;
+.width-15 {
+  width:'15rem' !important;
 }
 
-.p-menuButton .p-button{
-  border: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-right: 0 !important;
-  width: 100% !important;
-  height: 54px !important;
-  border-radius: 0% !important;
-  color: white;
-  font-size: 14.5px;
-  padding-left: 7px !important;
-}
-
-.p-menuBlocked .p-button{
-  background-color: #B9B9B9 !important;
-}
-
-.p-menuReservation .p-button{
-  background-color: #113561 !important;
-  padding-left: 10px !important;
-}
-
-.p-menuReservationActive .p-button{
-  background-color: white !important;
-  color: $blue-primary !important;
-  padding-left: 10px !important;
-}
-
-.p-administration .p-button{
-  background-color: #113561 !important;
-  align-items: center;
-  padding-left: 38px !important;
-}
-
-.image{
-  width: 20px;
-  height: 20px;
-}
-
-.imageIcon{
-  margin-left: 5%;
-}
-
-.imageCalendar{
-  margin-right: 5%;
-  margin-left: 17%;
-}
-
-
-.imageArrow{
-  width: 35px;
+.white__line{
+  height: 2px;
+  border: 0;
+  background-image: linear-gradient(to right, rgb(96, 96, 96), rgba(255, 255, 255), rgba(96, 96, 96));
 }
 
 .text{
   margin-left: 10%;
 }
-
-
-.p-sidebar-header{
-  width: 0;
-  height: 0;
-  margin: 0;
-  padding: 0 !important;
 }
-
-.p-sidebar-content{
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 577.33px;
-}
-
-.p-sidebar-left{
-  width: 208px !important; 
-  border: 0 !important;
 }
