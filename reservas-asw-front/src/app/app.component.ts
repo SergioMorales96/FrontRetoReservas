@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.reducer';
 import { setSidebarActive } from './reservations/reservation.actions';
@@ -11,6 +11,21 @@ import { setSidebarActive } from './reservations/reservation.actions';
 export class AppComponent {
 
   sidebarActive!: boolean;
+
+  inside = false;
+
+  @HostListener("click")
+  clicked() {
+    this.inside = true;
+  }
+
+  @HostListener("document:click")
+  clickedOut() {
+    this.inside
+    ? null
+    : this.changeSidebarActive(false);
+    this.inside = false;
+  }
 
   constructor(
     private store: Store<AppState>
