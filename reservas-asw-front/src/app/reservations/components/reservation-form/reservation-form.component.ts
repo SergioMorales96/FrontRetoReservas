@@ -117,7 +117,7 @@ export class ReservationFormComponent implements OnInit {
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
         nombres: [null, Validators.required],
-        identificacion: [0, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
+        identificacion: [, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
         //grupoRiesgo: ['No Aplica', Validators.required],
         //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
