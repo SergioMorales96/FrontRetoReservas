@@ -116,12 +116,12 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
-        nombres: [null, Validators.required],
-        identificacion: [, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
+        nombres: ['JUAN JOSE ARANGO', Validators.required],
+        identificacion: [1098123456, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
         //grupoRiesgo: ['No Aplica', Validators.required],
         //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
-        descripcion: [, Validators.required],
+        descripcion: [,],
       }),
     });
 
@@ -296,7 +296,7 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
         if (reservationResponse.status === `OK`) {
           this.alertsService
             .showConfirmDialog({
-              message: `Se ha realizado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
+              message: `Se ha editado la reserva con éxito, recuerda que si no se cumplen las reservas, existirá una penalización para poder realizar futuras reservas.`,
               header: 'Edición de reserva ',
             })
             .then((resp) => {
