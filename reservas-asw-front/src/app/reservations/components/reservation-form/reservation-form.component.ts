@@ -116,12 +116,12 @@ export class ReservationFormComponent implements OnInit {
       }),
       //Assistant Info - Step 3
       asistenteInfo: this.fb.group({
-        nombres: ['NOMBRE APELLIDO', Validators.required],
-        identificacion: [123456789, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
+        nombres: [null, Validators.required],
+        identificacion: [0, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
         //grupoRiesgo: ['No Aplica', Validators.required],
         //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
-        descripcion: ['Barrio XXX, Tomo transporte público en..', Validators.required],
+        descripcion: [, Validators.required],
       }),
     });
 
@@ -338,8 +338,8 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
     switch (this.step) {
       case 1:
         if ((this.reservaForm.controls.puestoInfo.invalid) || 
-        (this.workstationGroup.controls['medioTransporte'].value == 1 ||  this.workstationGroup.controls['medioTransporte'].value == 2
-        && this.workstationGroup.controls['placa'].value == '')) 
+        ((this.workstationGroup.controls['medioTransporte'].value == 1 && this.workstationGroup.controls['placa'].value == '')
+        ||  (this.workstationGroup.controls['medioTransporte'].value == 2 && this.workstationGroup.controls['placa'].value == ''))) 
            return;
            else this.submitted = false; 
         break;
