@@ -33,9 +33,6 @@ export class AppComponent {
     this.store.select('reservation').subscribe((reservation) => this.sidebarActive = reservation.sidebar.sidebarActive);
   }
 
-  ngOnInit(): void {
-  }
-
   changeSidebarActive(sidebarActive: boolean) {
     this.sidebarActive = sidebarActive;
     this.store.dispatch(setSidebarActive({sidebarActive : sidebarActive}))
