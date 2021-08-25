@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 
 import { Routes, RouterModule } from '@angular/router';
+import { CActiveGuard } from './auth/c-active.guard';
+import { CLoadService } from './auth/c-load.service';
 
 import { ErrorPageComponent } from './shared/error-page/error-page.component';
 
@@ -20,7 +22,9 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import( './admin/admin.module' ).then( m => m.AdminModule )
+    loadChildren: () => import( './admin/admin.module' ).then( m => m.AdminModule ),
+    canLoad: [CLoadService],
+    canActivate: [CActiveGuard]
   },
   {
     path: '404',

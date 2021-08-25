@@ -11,6 +11,7 @@ import { AppState } from 'src/app/app.reducer';
 import { EmittedValue } from 'src/app/reservations/interfaces/shared.interfaces';
 import { DateValidationType } from 'src/utils/enums';
 import * as actions from '../../../reservation.actions';
+import { Workstation } from '../../../../admin/interfaces/workstation.interfaces';
 
 interface MeanOfTransport {
   label: string;
@@ -79,18 +80,17 @@ export class FormWorkstationComponent implements OnInit {
   ngOnInit(): void {
 
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-    this.peopleNumber = this.form.controls['personasReserva'].value;
-
-    this.floorNumber = this.form.get('piso')?.value;
-    this.meanOfTransport = this.form.get('medioTransporte')?.value;
-    this.reservationId = this.form.get('reserva')?.value;
-    this.meanOfTransport &&
-    this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
+    //this.peopleNumber = this.form.controls['personasReserva'].value;
+    this.floorNumber = this.form.controls['piso'].value;
+    this.meanOfTransport = this.form.controls['medioTransporte'].value;
+    this.reservationId = this.form.controls['reserva'].value;
+    
+    this.meanOfTransport && this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
 
     this.store.select('reservation').subscribe((reservation) => {
-
+        this.peopleNumber = reservation.peopleNumber;
         this.isWorkstation = reservation.isWorkstation;    
         this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala";
         
@@ -98,10 +98,10 @@ export class FormWorkstationComponent implements OnInit {
 
           this.peopleNumberData = [1];
           while(this.peopleData.length > 1) this.removePeople();
-
+          
         }else  this.peopleNumberData = [2,3,4,5]
 
-        this.peopleNumber = this.form.controls['personasReserva'].value;
+        //this.peopleNumber = this.form.controls['personasReserva'].value;
         if(this.peopleNumber == 2 && this.peopleData.length < 2) this.addPeople();
         if(this.peopleNumber == 1 && this.peopleData.length == 2) this.removePeople();
 

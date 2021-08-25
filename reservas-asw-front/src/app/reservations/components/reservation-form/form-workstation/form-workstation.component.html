@@ -8,7 +8,7 @@
   </div>
 
   <ng-container [formGroup]="form">
-
+    <div class="p-field">
     <label 
       class="label font-size-small" 
       for="piso">
@@ -20,7 +20,7 @@
       [initialValue]="floorNumber"
       (onCurrentValue)="onChangeFloor( $event )">
     </app-data-selector>
-
+  </div>
     <div class="p-field">
       <label 
         class="label font-size-small" 
@@ -124,7 +124,7 @@
         id="placaMedioTransporte"
         placeholder="XXX-###"
         formControlName="placa"
-        mask="aaa-99*"
+        mask="aaa99*"
         [autoClear]="false"
         [style]="{ 'text-transform': 'uppercase' }">
       </p-inputMask>

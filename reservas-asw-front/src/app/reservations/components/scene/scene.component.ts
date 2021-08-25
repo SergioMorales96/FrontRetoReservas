@@ -12,10 +12,12 @@ import { workSpacesPerFloorResponse, workSpaceW } from '../../interfaces/workspa
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { setReservationId, setSteps } from '../../../reservations/reservation.actions';
-import { setIsWorkstation, setPeopleNumber, setReservation, setIsEdit, setIsEditReservation, setSidebarActive } from '../../reservation.actions';
+import { setIsWorkstation, setPeopleNumber, setReservation, setIsEditingReservation, setSidebarActive } from '../../reservation.actions';
 import { DatesReservation } from '../../../admin/interfaces/reservation';
+import { setIsEdit } from '../../editReservation.actions';
 
-const CAMERA_FOV = 40;
+
+const CAMERA_FOV = 60;
 const CAMERA_NEAR = 1;
 const CAMERA_FAR = 100;
 const BACKGROUND_COLOR = 0xffffff;
@@ -78,17 +80,26 @@ export class SceneComponent implements OnInit {
     let step = 0;
     let currentReservation: DatesReservation | null;
     let isEdit : boolean;
-    let isEditReservation : boolean;
+    let isEditingReservation : boolean;
     let sidebarActive: boolean;
+    let isWorkstation: boolean;
+    let peopleNumber: number;
+
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
       numeroPersonas = reservation.peopleNumber;      
       step = reservation.step;
       currentReservation = reservation?.reservation;      
-      isEdit = reservation.isEdit;
-      isEditReservation = reservation.sidebar.isEditReservation;
+      isEditingReservation = reservation.sidebar.isEditingReservation;
       sidebarActive = reservation.sidebar.sidebarActive;
+      currentReservation = reservation?.reservation;    
+      isWorkstation = reservation.isWorkstation;
+      
+    });
+
+   this.store.select('editReservation').subscribe((editReservation) => {
+      isEdit = editReservation.isEdit;
     });
 
     setFlag();
@@ -142,6 +153,7 @@ export class SceneComponent implements OnInit {
     
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     scene.background = new THREE.Color( BACKGROUND_COLOR );
+
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT);
@@ -350,7 +362,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_SADDLE_COLOR,
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -386,7 +398,7 @@ export class SceneComponent implements OnInit {
         mtl: new THREE.MeshStandardMaterial( { 
           color: CHAIR_BACK_COLOR, 
           opacity: 1,
-          roughness: 1,
+          roughness: 0.8,
           metalness: 0,
           fog: true,
           transparent: false,
@@ -1703,9 +1715,14 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       
       myStore.dispatch( setSteps({step: Number(  JSON.parse(sessionStorage.getItem( 'step' ) || '{}' ) )}) );  
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
-      myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );  
-      myStore.dispatch( setIsEditReservation({isEditReservation: JSON.parse(sessionStorage.getItem( 'isEditReservation' ) || '{}' ) }) ); 
+      myStore.dispatch( setIsEditingReservation({isEditingReservation: JSON.parse(sessionStorage.getItem( 'isEditingReservation' ) || '{}' ) }) ); 
       myStore.dispatch( setSidebarActive({sidebarActive: JSON.parse(sessionStorage.getItem( 'sidebarActive' ) || '{}' ) }) ); 
+      //myStore.dispatch( setIsWorkstation({isWorkstation: currentReservation?.idPuestoTrabajo ? true : false}) );
+      myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
+      myStore.dispatch( setPeopleNumber({ peopleNumber: Number(  JSON.parse(sessionStorage.getItem( 'peopleNumber' ) || '{}' ) ) }) );    
+      myStore.dispatch( setIsWorkstation({ isWorkstation: JSON.parse(sessionStorage.getItem( 'isWorkstation' ) || '{}' )}) );    
+      
+      
       sessionStorage.clear(); 
 
     }
@@ -1714,10 +1731,15 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
-        
+        peopleNumber = currentReservation?.idSala ?  Number(currentReservation?.numeroAsistentes) : 1;
+        sessionStorage.setItem( "peopleNumber", JSON.stringify(peopleNumber) );
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
-        sessionStorage.setItem( "isEditReservation", JSON.stringify(isEditReservation));
+        sessionStorage.setItem( "isEditingReservation", JSON.stringify(isEditingReservation));
         sessionStorage.setItem( "sidebarActive", JSON.stringify(sidebarActive));
+        if(isEdit){
+          sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
+        }
+        
         window.location.reload();  
 
       }
@@ -1780,6 +1802,16 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     function setColorSelectedObject():  void {
       (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
     }
+
+
+    function render() {
+
+      renderer.render(scene,camera);
+      requestAnimationFrame(render);
+      animateStars();
+
+    }
+
   }
 
   ngOnInit(): void{

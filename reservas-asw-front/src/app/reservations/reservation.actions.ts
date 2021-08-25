@@ -103,10 +103,6 @@ export const setBlocked1= createAction(
     props<{blocked1: boolean }>()
 )
 
-export const setIsEdit= createAction(
-    '[Reservations Component] setIsEdit',
-    props<{isEdit: boolean }>()
-)
 
 export const setCapacity= createAction(
     '[Reservations Component] setCapacity',
@@ -115,7 +111,11 @@ export const setCapacity= createAction(
 
 export const setIsEditReservation = createAction(
     '[Reservations Component] setIsEditReservation',
-    props<{ isEditReservation: boolean }>()
+    props<{ isEditReservation: boolean }>())
+
+export const setIsEditingReservation = createAction(
+    '[Reservations Component] setIsEditingReservation',
+    props<{ isEditingReservation: boolean }>()
 )
 
 export const setSidebarActive = createAction(
