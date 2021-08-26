@@ -1,0 +1,12 @@
+@media screen and (max-width:530px) {
+    .form{
+        display: flex;
+        transform: scale(0.9);
+        margin: auto;
+        margin-top: -2rem;
+    }
+
+    .description{
+        margin-top: -1rem;
+    }
+}

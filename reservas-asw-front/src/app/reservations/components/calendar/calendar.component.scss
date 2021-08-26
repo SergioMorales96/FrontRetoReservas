@@ -9,6 +9,23 @@
     font-weight: bold;
 }
 
+
+@media screen and (max-width:530px) {
+    :host ::ng-deep .p-calendar .p-datepicker{
+        padding: 0%;
+        border: none;
+        margin-top: 6rem;
+        margin-left: 2rem;
+        transform: scale(0.9);
+        background-color: #97CAFA;
+        width: 100%;
+        backdrop-filter: none;
+        
+    
+    }
+}
+
+
 :host ::ng-deep .p-datepicker .p-datepicker-header {
     background: none;
     border-bottom:none;

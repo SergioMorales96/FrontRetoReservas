@@ -19,6 +19,15 @@
     right: 0;
 }
 
+@media screen and (max-width:530px){
+    .panel{
+        height: 125px;
+        width:102%;
+        position: fixed;
+        font-size: 12px;
+    }
+}
+
 
 .color{
     color: #777777;
