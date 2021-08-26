@@ -4,7 +4,16 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../app.reducer';
 import { ReservationsService } from '../../../services/reservations.service';
 import { DataResponse } from '../../../interfaces/reservations.interface';
+import { EmittedValue } from 'src/app/reservations/interfaces/shared.interfaces';
+import { setEndTime, setStartTime, setTimePeriod, setScheduleValue } from '../../../reservation.actions';
 
+interface workSchedule {
+  index: any;
+  label: string;
+  initialTime: string;
+  endingTime: string;
+  timePeriod: number;
+}
 
 @Component({
   selector: 'app-form-date',
@@ -30,7 +39,9 @@ export class FormDateComponent implements OnInit {
   floor!: number;
   reservationId: number = 1;
   isWorkstation!: boolean;
-
+  workSchedules: workSchedule[] = [];
+  timePeriod!: number;
+  scheduleValue!: number;
 
 
   constructor(
@@ -38,6 +49,36 @@ export class FormDateComponent implements OnInit {
     private store: Store<AppState>,
     private reservationService: ReservationsService,
   ) {
+    this.workSchedules = [
+      {   
+        index: 1,
+        label: "Seleccione",
+        initialTime: "00:00",
+        endingTime: "00:00",
+        timePeriod: 0        
+      },
+      {   
+        index: 2,
+        label: "Mañana",
+        initialTime: "8:00",
+        endingTime: "12:00",
+        timePeriod: 4        
+      },
+      {   
+        index: 3,
+        label: "Tarde",
+        initialTime: "13:00",
+        endingTime: "17:00",
+        timePeriod: 4
+      },
+      {   
+        index: 4,
+        label: "Completa",
+        initialTime: "8:00",
+        endingTime: "17:00",
+        timePeriod: 8
+      }
+    ];
   }
 
   ngOnInit(): void {
@@ -49,6 +90,8 @@ export class FormDateComponent implements OnInit {
       this.startTime = reservation.startTime;
       this.reservationId = reservation.reservationId;
       this.floor = reservation.floorNumber;
+      this.scheduleValue = reservation.scheduleValue;
+
       if (this.endTime && this.form.controls['fecha'].value != "Invalid date") {
         if (!this.isWorkstation) {
           this.responseAviableRoom = (await this.AforoSala())?.data;
@@ -86,6 +129,19 @@ export class FormDateComponent implements OnInit {
     return this.reservationService
       .cantidadSalas(this.reservationId)
       .toPromise();
+  }
+
+  onChangeSchedule( selectedSchedule: EmittedValue ): void {
+  
+    const workSchedule = this.workSchedules.find(x => x.index === selectedSchedule.value);    
+    
+    this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
+    this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
+    this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
+    this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
+    
+    this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
+  
   }
 
 }
