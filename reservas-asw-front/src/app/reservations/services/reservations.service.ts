@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { ToastsService } from 'src/app/services/toasts.service';
 import { environment } from '../../../environments/environment';
 import { catchError } from 'rxjs/operators';
-import { DataResponse, Reservation, ReservationResponse, ReservationsResponse } from '../interfaces/reservations.interface';
+import { DataResponse, Reservation, ReservationResponse, ReservationsResponse, AforoResponse } from '../interfaces/reservations.interface';
 import { RoomsPerFloorResponse } from '../interfaces/rooms-per-floor.interface';
 import { workSpacesPerFloorResponse } from '../interfaces/workspaces-per-floor.interface';
 import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
@@ -109,6 +109,27 @@ export class ReservationsService {
           return throwError(err);
         })
       );
+  }
+  aforoPuestos(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0): Observable<DataResponse> {
+    const urlLink = `${this.apiUrl}/aforoPuestos`;
+    return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}`)
+      .pipe(
+        catchError(err => of({ data: 0 }))
+
+      );
+
+  }
+  aforoSalas(dateReservation: string = '',hourReservationStart: string = '',hourReservationEnd: string = '', floor: number = 0, room:number): Observable<DataResponse> {
+    const urlLink = `${this.apiUrl}/aforoSalas`;
+    return this.http.get<AforoResponse>(`${urlLink}/${dateReservation}/${hourReservationStart}/${hourReservationEnd}/${floor}/${room}`)
+      .pipe(
+        catchError(err => of({ data: 0 }))
+
+      );
+  }
+  cantidadSalas(room :number):Observable<DataResponse>{
+    const urlLink = `${this.apiUrl}/capacidadSalas`;
+    return this.http.get<AforoResponse>(`${urlLink}/${room}`);
   }
 
   /**

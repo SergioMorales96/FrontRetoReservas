@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as moment from 'moment';
 import { AppState } from 'src/app/app.reducer';
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { Store } from '@ngrx/store';
 
 import { setTimePeriod, setStartTime, setEndTime, setStartSlider, setEndSlider } from '../../reservation.actions';
 
@@ -39,7 +39,7 @@ export class TimePeriodSliderComponent implements OnInit{
       this.store.dispatch( setStartTime({ startTime: '08:00 AM'}) );
       this.store.dispatch( setEndTime({ endTime: '08:00 AM'}) );
     }
-    
+  
   }
   ngOnInit(): void {
       this.store
@@ -51,10 +51,12 @@ export class TimePeriodSliderComponent implements OnInit{
       this.minvalue1 = reservation.startSlider;
       this.hour=reservation.endSlider-reservation.startSlider;
     } );
+    
     this.rangeValues = [String(this.minvalue1),String(this.maxvalue1)];
     this.functionHour(this.maxvalue1,this.minvalue1);  
   }
   importValue(hour:number,currentTime:number):void{
+    
     this.initialTime=currentTime;
 
     this.finalTime=this.initialTime+hour;
@@ -101,12 +103,10 @@ export class TimePeriodSliderComponent implements OnInit{
     this.finalTime=18;
     this.rangeValues = [String(this.initialTime),String(this.finalTime)];
     this.rangeValues2 = [this.initialTime,this.finalTime];
-    }
-    
+    }  
     this.onChange();
     
   }
-
   functionHour(maxValue:number,minValue:number): void {
     let range = (maxValue - minValue) / 2;
     if ( !isNaN(range) )  this.store.dispatch( setTimePeriod({ timePeriod: range}) );

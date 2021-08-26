@@ -26,6 +26,7 @@ export interface State {
     step: number;
     dates: DatesReservation[];
     isEdit: boolean;
+    capacity:string;
     isEditReservation: boolean,
 
     sidebar: {
@@ -56,6 +57,7 @@ export const initialState: State = {
    step: 1,
    dates: [],
    isEdit: false,
+   capacity:"",
    isEditReservation: false,
 
    sidebar: {
@@ -87,6 +89,10 @@ const _reservationReducer = createReducer(initialState,
     on(actions.setBlocked1,(state,{blocked1})=>({...state, blocked1: blocked1})),
     on(actions.setSteps , (state, { step }) => ({...state, step:step})),
     on(actions.setDates , (state, { dates }) => ({...state, dates:dates})),
+
+    on(actions.setCapacity , (state, { capacity }) => ({...state, capacity:capacity})),
+
+    on(actions.setIsEditReservation,(state,{ isEditReservation })=>({...state, sidebar: {...state.sidebar, isEditReservation: isEditReservation} })),
     on(actions.setIsEditingReservation,(state,{ isEditingReservation })=>({...state, sidebar: {...state.sidebar, isEditingReservation: isEditingReservation} })),
     on(actions.setSidebarActive,(state,{ sidebarActive })=>({...state, sidebar: {...state.sidebar, sidebarActive: sidebarActive} })),
     on(actions.setIsBlockedReservation,(state,{ isBlockedReservation })=>({...state, sidebar: {...state.sidebar, isBlockedReservation: isBlockedReservation} })),
