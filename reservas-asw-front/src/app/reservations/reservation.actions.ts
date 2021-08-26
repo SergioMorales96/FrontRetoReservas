@@ -128,3 +128,7 @@ export const setIsBlockedReservation = createAction(
     props<{ isBlockedReservation: boolean }>()
 )
 
+export const setScheduleValue = createAction(
+    '[Reservations Component] scheduleValue',
+    props<{ scheduleValue: number }>()
+)

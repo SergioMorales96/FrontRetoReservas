@@ -1,8 +1,30 @@
 <div class="p-fluid">
 
+  <div class="p-mb-4 p-d-flex jc-start-ai-center">
+    <p class="p-my-0 p-mr-4 description font-size-small">Fecha reserva</p>
+    <img 
+      src="assets/images/icons/minus-gray.svg" 
+      alt="step icon" />
+  </div>
+
   <ng-container [formGroup]="form">
     <div class="form p-field">
-      <app-time-period-slider></app-time-period-slider>
+      <div *ngIf="isWorkstation; else workTime">
+        <label class="label font-size-small">Periodo de tiempo para puesto de trabajo</label>
+          <app-data-selector
+          id="workSchedule"
+          [data]="workSchedules"
+          [initialValue]="scheduleValue"
+          label="label"
+          value="index"
+          (onCurrentValue)="onChangeSchedule( $event )">
+          </app-data-selector>
+      </div>
+      
+      <ng-template #workTime>
+        <app-time-period-slider></app-time-period-slider>
+      </ng-template>
+    
       <small
       *ngIf="submitted && form.controls.periodoTiempo.errors"
       class="p-error">
@@ -21,13 +43,13 @@
     </div>
 
     
-
+  <div class="p-field">
     <label class="form label font-size-small">Informacion del Aforo</label>
     <br />
     <p class="description font-size-body">
-      El aforo para este día es <br> bajo <span style="color: #9cf886;">(65 personas)</span>
+      El aforo para este día es <br> bajo <span style="color: #9cf886;">({{capacity}} personas)</span>
     </p>
-
+  </div>
   </ng-container>
 
 </div>
