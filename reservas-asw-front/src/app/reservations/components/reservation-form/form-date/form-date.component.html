@@ -33,7 +33,8 @@
     
     </div>
 
-    <div class="form p-my-5">
+    <div class="form p-my-5" 
+         [ngClass]="{'form-calendar-floor':isWorkstation, 'form-calendar-room':!isWorkstation}">
       <app-calendar></app-calendar>
       <small
       *ngIf="submitted && form.controls.fecha.errors"

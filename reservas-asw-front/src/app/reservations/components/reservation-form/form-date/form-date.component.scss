@@ -9,4 +9,15 @@
     .description{
         margin-top: -1rem;
     }
+    .p-my-5{
+        margin-left: 2rem !important;
+    }
+
+    :host ::ng-deep .form-calendar-room{
+        margin-top: 6.5rem !important;
+    }
+
+    :host ::ng-deep .form-calendar-floor{
+        margin-top: 0 !important;
+    }
 }
