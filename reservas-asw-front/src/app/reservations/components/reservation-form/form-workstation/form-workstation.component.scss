@@ -7,3 +7,9 @@
   color: rgb(196, 25, 25);
   margin-top: 5px;
 }
+
+@media screen and (max-width:530px) {
+  .p-fluid{
+    padding: 0 3rem;
+  }
+}
