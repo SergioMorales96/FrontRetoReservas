@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Component, Input, OnInit, ɵExtraLocaleDataIndex } from '@angular/core';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshStandardMaterial } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
@@ -153,7 +153,6 @@ export class SceneComponent implements OnInit {
     
     renderer.domElement.addEventListener( 'mousemove', onPointerMove );
     scene.background = new THREE.Color( BACKGROUND_COLOR );
-
     scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), SCENE_SIGMA ).texture;
 
     camera.position.set( CAMERA_X_INIT, CAMERA_Y_INIT, CAMERA_Z_INIT);
@@ -180,12 +179,11 @@ export class SceneComponent implements OnInit {
 
           if( selectedObject && selectedObject != intersects[index].object ){
               setColorSelectedObject( );
-              changeToChairCurrentColor()
           }
 
           selectChair(intersects, index);  
           selectedObject = intersects[index].object;
-          
+          console.log('El Selected', selectedObject);   
           let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
           myStore.dispatch(setReservationId({ reservationId: id })); 
           let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;
@@ -573,6 +571,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     loader.load( `${PATH}${PATH_CHAIRS}`, function ( gltf ) {
       
       const model4 = gltf.scene;
+      
+      
       const child = model4.children[0].children[0] as THREE.Mesh;
      
       const childMaterial = child.material as THREE.MeshStandardMaterial;
@@ -590,8 +590,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                 loader.load( `${PATH}${PATH_CHAIRS}`, function ( gltf ) {  
                   let piece = gltf.scene;
                   
-                  piece.children[0].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[0].userData = {"info" : roomWorkPlace[index]};
+                  piece.children[0].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[2].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[3].userData = {"info" : roomWorkPlace[index]};
                   piece.children[0].children[4].userData = {"info" : roomWorkPlace[index]};
@@ -610,6 +610,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[1].userData = {"info" : roomWorkPlace[index]};
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[index]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[index]};
+
+                  piece.userData = { "info": roomWorkPlace[index] };
 
                   index++;
 
@@ -679,6 +681,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[1].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[0]};
+
+                  piece.userData = { "info": roomWorkPlace[index] };
 
                   roomWorkPlace.shift();
                   
@@ -771,6 +775,8 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
                   piece.children[3].children[2].userData = {"info" : roomWorkPlace[0]};
                   piece.children[3].children[3].userData = {"info" : roomWorkPlace[0]};
 
+                  piece.userData = { "info": roomWorkPlace[index] };
+
                   roomWorkPlace.shift();
 
                   let child1 = piece.children[0].children[0] as THREE.Mesh;
@@ -822,13 +828,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
           for (let j = 0; j < filas; j++) {
             
             loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-              let piece = gltf.scene;
-              piece.children[0].userData = {"info" : workPlaces[index]};
-              piece.children[1].userData = {"info" : workPlaces[index]};
-              piece.children[2].userData = {"info" : workPlaces[index]};
-              piece.children[3].userData = {"info" : workPlaces[index]};
-              piece.children[4].userData = {"info" : workPlaces[index]};
-              
+              let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, index ));     
               index++;
               generateTextureModels(piece);
 
@@ -1042,12 +1042,13 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         for (let i = 0; i < columnas; i++) {
           for (let j = 0; j < filas; j++) {
             loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-              let piece = gltf.scene;
-              piece.children[0].userData = {"info" : workPlaces[0]};
+              //let piece = gltf.scene;
+              /* piece.children[0].userData = {"info" : workPlaces[0]};
               piece.children[1].userData = {"info" : workPlaces[0]};
               piece.children[2].userData = {"info" : workPlaces[0]};
               piece.children[3].userData = {"info" : workPlaces[0]};
-              piece.children[4].userData = {"info" : workPlaces[0]};
+              piece.children[4].userData = {"info" : workPlaces[0]}; */
+              let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, 0 ));     
 
               generateTextureModels(piece);
               workPlaces.shift();
@@ -1233,13 +1234,14 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         for (let i = 0; i < columnas; i++) {
           for (let j = 0; j < filas; j++) {
               loader.load( `${PATH}${PATH_ROOMS}`, function ( gltf ) {  
-                let piece = gltf.scene;
+                /* let piece = gltf.scene;
                 
                 piece.children[0].userData = {"info" : workPlaces[0]};
                 piece.children[1].userData = {"info" : workPlaces[0]};
                 piece.children[2].userData = {"info" : workPlaces[0]};
                 piece.children[3].userData = {"info" : workPlaces[0]};
-                piece.children[4].userData = {"info" : workPlaces[0]};
+                piece.children[4].userData = {"info" : workPlaces[0]}; */
+                let piece = ( customizeUserDataWorkSpace( gltf.scene, workPlaces, 0 ));     
                 generateTextureModels(piece);
                 workPlaces.shift();
     
@@ -1689,6 +1691,63 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
     } ); 
   }
 
+  function customizeUserDataWorkSpace( piece: THREE.Group, workPlaces: workSpaceW[], index: number ): THREE.Group{
+    let list: THREE.Mesh[] = [];
+    piece.children[0].userData = {"info" : workPlaces[index], "num": 1};
+    piece.children[1].userData = {"info" : workPlaces[index], "num": 2};
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[2].userData = {"info" : workPlaces[index], "num": 3, list}; //Espacio de abajo de las ruedas
+    list.splice(0, list.length);
+    
+    piece.children[3].userData = { "info": workPlaces[index], "num": 4 }; //Posiblemente es este el espaldar
+
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[0].userData = { "info": workPlaces[index], "num": 41, list }; // espaldar
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[1].userData = { "info": workPlaces[index], "num": 42, list };
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[2].userData = { "info": workPlaces[index], "num": 43, list };
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    list.push( <THREE.Mesh>piece.children[4] );
+    piece.children[3].children[3].userData = { "info": workPlaces[index], "num": 44, list }; // asiento
+    list.splice(0, list.length);
+
+    list.push( <THREE.Mesh>piece.children[3].children[0] );
+    list.push( <THREE.Mesh>piece.children[3].children[1] );
+    list.push( <THREE.Mesh>piece.children[3].children[2] );
+    list.push( <THREE.Mesh>piece.children[3].children[3] );
+    list.push( <THREE.Mesh>piece.children[2] );
+    piece.children[4].userData = { "info": workPlaces[index], "num": 5, list }; //Mesa
+    piece.userData = { "info" : workPlaces[index] };
+    return piece;
+  }
+
     function animate() {
       requestAnimationFrame( animate );
       checkChanges();
@@ -1727,7 +1786,6 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
 
     }
       else{
-
         sessionStorage.setItem( 'flag', 'true' );
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
@@ -1741,9 +1799,7 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         }
         
         window.location.reload();  
-
       }
-
     }
 
     function updateModels(){
@@ -1773,45 +1829,125 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       return idPiso != idPisoActual;
     }
 
-    function changeToChairCurrentColor(): void{
-      for (let ob of scene.children) {
-        if ( ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == selectedObject?.userData.info.idPuestoTrabajo ){
-          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
-          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairCurrentColor;
-        }
-      }
-    }
+
 
     function selectChair(intersects: THREE.Intersection[], index: number){
+
+
       for (let ob of scene.children) {
-                
-        //NO BORRAR ESTA PARTE ES PARA CAMBIAR COLOR DE SILLAS
-        if(  ob.children.length == 5 && ob.children[4].userData.info && ob.children[4].userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo
-          && ob.children[4].userData.info.idPiso == idPiso - 17){
 
-          ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
-          ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+        if (  ob.userData.info && ob.userData.info.idPiso == idPiso - 17){
 
-          ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
-          (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
-          
-        }            
+          if( ob.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo == intersects[index].object.userData.info.idPuestoTrabajo){
+            ob.userData.chairCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+            ob.userData.chairBackCurrentColor = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color;
+            ob.userData.chairTube = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color;
+            ob.userData.chairTable = (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color;
+            
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = selectedObjectColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color = selectedObjectColor ; 
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color = selectedObjectColor;
+
+          }else if( ob.userData.info.idSala && ob.userData.info.idSala == intersects[index].object.userData.info.idSala ){
+            saveAndChangeRoomsColors( ob );
+            
+
+          }
+
+        }
+                    
       }
     }
 
     function setColorSelectedObject():  void {
-      (<THREE.MeshStandardMaterial>(<THREE.Mesh>selectedObject).material).color = selectedObject?.userData.currentColor;
+
+      for (let ob of scene.children) {
+
+        if( ob.userData.info ){
+          if ( selectedObject?.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo && ob.userData.info.idPuestoTrabajo === selectedObject?.userData.info.idPuestoTrabajo ){
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.chairCurrentColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[3]).material).color = ob.userData.chairBackCurrentColor;
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[1]).material).color = ob.userData.chairTube ;           
+            (<THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[4]).material).color = ob.userData.chairTable;
+  
+          }else if ( selectedObject?.userData.info.idSala && ob.userData.info.idSala && ob.userData.info.idSala === selectedObject?.userData.info.idSala ){
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color = ob.userData.roomCurrentColor ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color = ob.userData.roomCurrentColor_1 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color = ob.userData.roomCurrentColor_2 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color = ob.userData.roomCurrentColor_3 ;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color = ob.userData.roomCurrentColor_4 ;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color = ob.userData.roomCurrentColor_1_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color = ob.userData.roomCurrentColor_1_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color = ob.userData.roomCurrentColor_1_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color = ob.userData.roomCurrentColor_1_3;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = ob.userData.roomCurrentColor_2_3;
+
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_0;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_1;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_2;
+            ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = ob.userData.roomCurrentColor_3_3;
+
+
+          }
+        }
+
+        }
+        
     }
 
 
-    function render() {
+    function saveAndChangeRoomsColors( ob: THREE.Object3D ):void{
+      ob.userData.roomCurrentColor = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color;
+      ob.userData.roomCurrentColor_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color;
+      ob.userData.roomCurrentColor_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color;
+      ob.userData.roomCurrentColor_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color;
+      ob.userData.roomCurrentColor_4 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color;
 
-      renderer.render(scene,camera);
-      requestAnimationFrame(render);
-      animateStars();
+      ob.userData.roomCurrentColor_1_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color;
+      ob.userData.roomCurrentColor_1_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color;
+      ob.userData.roomCurrentColor_1_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color;
+      ob.userData.roomCurrentColor_1_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color;
+
+      ob.userData.roomCurrentColor_2_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+      ob.userData.roomCurrentColor_2_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color;
+
+      ob.userData.roomCurrentColor_3_0 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_1 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_2 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+      ob.userData.roomCurrentColor_3_3 = ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[0]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[1]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[2]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[3]).material).color = selectedObjectColor ;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[0].children[4]).material).color = selectedObjectColor ;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[1]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[2]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[1].children[3]).material).color = selectedObjectColor;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[2].children[0]).material).color = selectedObjectColor;
+
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
+      ( <THREE.MeshStandardMaterial> ( <THREE.Mesh> ob.children[3].children[0]).material).color = selectedObjectColor;
 
     }
-
   }
 
   ngOnInit(): void{
