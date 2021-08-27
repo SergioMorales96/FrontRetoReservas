@@ -130,9 +130,14 @@
       </p-inputMask>
     </div>
     <small
-      *ngIf="formControls.placa?.touched && formControls.placa.errors"
+      *ngIf="(formControls.placa?.touched && formControls.placa.errors)"
       class="p-error">
       Placa inválida
+    </small>
+    <small
+      *ngIf="(submitted && (transportModeName == 'Carro' || transportModeName == 'Moto' ) && !formControls.placa?.touched)"
+      class="p-error">
+      Se requiere la placa
     </small>
 
   </ng-container>
