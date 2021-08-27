@@ -132,3 +132,8 @@ export const setScheduleValue = createAction(
     '[Reservations Component] scheduleValue',
     props<{ scheduleValue: number }>()
 )
+
+export const setDisplay = createAction(
+    '[Reservations Component] setDisplay',
+    props<{ display: boolean }>()
+)

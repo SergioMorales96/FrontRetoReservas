@@ -3,4 +3,17 @@
     padding: 0rem;
 }
 
+.models{
+    width: 700px; 
+    height: 500px; 
+    margin-left: 3%
+}
 
+:host ::ng-deep .models {
+
+@media screen and(max-width:530px) {
+     width: 360px;
+    }
+}
+
+ 

@@ -9,6 +9,7 @@ import { AppState } from 'src/app/app.reducer';
 })
 export class AddComponent implements OnInit {
   step!: number;
+  display!: boolean;
 
   constructor(private store: Store<AppState>,
     ) { }
@@ -18,7 +19,10 @@ export class AddComponent implements OnInit {
 
     this.store.select('reservation').subscribe((reservation) => {
       
-      this.step=reservation.step;    
+      this.step=reservation.step;  
+      this.display=reservation.display;
+      console.log(this.display);
+      
        
     });
 

@@ -33,6 +33,10 @@
     justify-content: space-around;
     align-items: center;
   }
+
+  .p-button-rounded {
+    display: none;
+  }
   
   @media screen and(max-width:530px) {
       width: 100%;
@@ -40,6 +44,9 @@
       position: absolute;
       .p-d-flex{
         position: static;
+      }
+      .p-button-rounded {
+        display: flex;
       }
   }
 
@@ -61,6 +68,7 @@
   .container{
     margin-left: 145px ;
   }
+
 }
 
 

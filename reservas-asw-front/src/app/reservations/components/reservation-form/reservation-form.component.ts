@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { DateValidationType, RouteName } from '../../../../utils/enums';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { setFloorNumber, setContinue, setSteps, setReservationId, setPeopleNumber, setIsEditingReservation, setSelectedDate } from '../../reservation.actions';
+import { setFloorNumber, setContinue, setSteps, setReservationId, setPeopleNumber, setIsEditingReservation, setSelectedDate, setDisplay } from '../../reservation.actions';
 import {
   Reservation,
   ReservationResponse,
@@ -49,6 +49,7 @@ export class ReservationFormComponent implements OnInit {
   currentReservation!: DatesReservation | null;
   valueFloor!: number | undefined;
   @Output() view = new EventEmitter<number>();
+  display: boolean = false;
   
 
   constructor(
@@ -369,6 +370,11 @@ getTransportModeNumber(transportDomain: string | undefined): number | null {
       let clearDate = new Date('Invalid date');
       this.store.dispatch(setSelectedDate({ selectedDateSummary: clearDate }));
     }
+  }
+
+  changeFormDisplay(display: boolean): void {
+    this.display = display;
+    this.store.dispatch(setDisplay({ display: this.display }));
   }
 
 }
