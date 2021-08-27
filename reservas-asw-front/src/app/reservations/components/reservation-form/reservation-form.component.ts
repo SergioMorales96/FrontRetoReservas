@@ -49,7 +49,7 @@ export class ReservationFormComponent implements OnInit {
   currentReservation!: DatesReservation | null;
   valueFloor!: number | undefined;
   @Output() view = new EventEmitter<number>();
-  display: boolean = false;
+  display: boolean = true;
   
 
   constructor(

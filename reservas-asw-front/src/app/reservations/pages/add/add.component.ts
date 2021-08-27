@@ -21,7 +21,6 @@ export class AddComponent implements OnInit {
       
       this.step=reservation.step;  
       this.display=reservation.display;
-      console.log(this.display);
       
        
     });
