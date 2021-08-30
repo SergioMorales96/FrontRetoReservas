@@ -49,6 +49,7 @@ export class FormDateComponent implements OnInit {
   horaString!: string;
 
 
+
   constructor(
     private rootFormGroup: FormGroupDirective,
     private store: Store<AppState>,
@@ -59,35 +60,36 @@ export class FormDateComponent implements OnInit {
       {   
         index: 1,
         label: "Seleccione",
-        initialTime: "00:00",
-        endingTime: "00:00",
+        initialTime: "00:00 AM",
+        endingTime: "00:00 AM",
         timePeriod: 0        
       },
       {   
         index: 2,
         label: "Mañana",
-        initialTime: "8:00",
-        endingTime: "12:00",
+        initialTime: "08:00 AM",
+        endingTime: "12:00 PM",
         timePeriod: 4        
       },
       {   
         index: 3,
         label: "Tarde",
-        initialTime: "13:00",
-        endingTime: "17:00",
+        initialTime: "1:00 PM",
+        endingTime: "5:00 PM",
         timePeriod: 4
       },
       {   
         index: 4,
         label: "Completa",
-        initialTime: "8:00",
-        endingTime: "17:00",
+        initialTime: "08:00 AM",
+        endingTime: "5:00 PM",
         timePeriod: 8
       }
     ];
   }
 
   ngOnInit(): void {
+    
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.store.select('reservation').subscribe(async (reservation) => {
       this.isWorkstation = reservation.isWorkstation;
@@ -96,30 +98,14 @@ export class FormDateComponent implements OnInit {
       this.reservationId = reservation.reservationId;
       this.floor = reservation.floorNumber;
       this.scheduleValue = reservation.scheduleValue;
-
+      
       const selectedDate = moment(this.todayDate).format('DD-MM-yyyy');
-      const currentHour = moment().format('hh:mm A');
-      console.log("CURRENT Hour: ",currentHour);
-      console.log("Endtime Hour: ",this.endTime);
-      if(currentHour > moment(this.endTime).format('hh:mm A')) console.log("Actual es mayor que endTime"); else console.log("Actual es menor que endTime");
-      
+      const currentHour = moment().format('HH:mm A');
 
+      if ((selectedDate == String(this.form.controls['fecha'].value))) {
+        if(currentHour > moment(this.endTime, 'hh:mm A').format('HH:mm')) this.form.controls['periodoTiempo'].setValue(0);
+      }
       
-      // if ((selectedDate == String(this.form.controls['fecha'].value)) && (this.endTime < String(this.currentDate.getHours()))) {
-      //   console.log('Paila');
-      // }else {
-      //   console.log('Se puede hacer reserva');
-      // }
-      // this.horaString = `${moment(this.currentDate.getHours()).format('HH')}:`+`${moment(this.currentDate.getMinutes()).format('mm')}`;
-      // console.log('Hora final 1.0: ', this.horaString );
-      
-      // if("10:00">this.horaString){
-      //   console.log("1 + que 2");
-      // }else {
-      //   console.log('paila 2.0');
-        
-      // }
-
       if (this.endTime && this.form.controls['fecha'].value != "Invalid date") {
         if (!this.isWorkstation) {
           this.responseAviableRoom = (await this.AforoSala())?.data;
@@ -134,8 +120,15 @@ export class FormDateComponent implements OnInit {
         }
       }
     });
-    console.log('hoy es: ', this.todayDate);
   }
+
+  get validDate(){
+    if (this.form.controls['fecha'].value != "Invalid date"){
+      return true;
+    }
+    else return false;
+  }
+
   AforoPuesto(): Promise<DataResponse> {
     this.dateAforo = this.form.controls['fecha'].value;
     this.hora_i = "01-01-1970 " + this.startTime.slice(0, 5) + ":00";
@@ -160,15 +153,39 @@ export class FormDateComponent implements OnInit {
   }
 
   onChangeSchedule( selectedSchedule: EmittedValue ): void {
-  
+    const selectedDate = moment(this.todayDate).format('DD-MM-yyyy');
+    const currentHour = moment().format('HH:mm A');  
     const workSchedule = this.workSchedules.find(x => x.index === selectedSchedule.value);
-
-    this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
-    this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
-    this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
-    this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
     
-    this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
+    if (selectedDate == String(this.form.controls['fecha'].value)) {
+
+      if(currentHour > moment(workSchedule?.endingTime, 'hh:mm A').format('HH:mm')) 
+      {        
+        this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
+        this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime)}) );
+        //this.store.dispatch( setTimePeriod({ timePeriod:0 }) );
+       // this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
+        
+       // this.form.controls['periodoTiempo'].setValue( 0 );
+      }else{
+      
+        this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
+        this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
+        this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
+        this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
+        
+        this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
+      }
+
+    }else{
+      this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
+        this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
+        this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
+        this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
+        
+        this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
+    }
+
   
   }
 

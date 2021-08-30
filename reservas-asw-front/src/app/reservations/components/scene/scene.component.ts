@@ -183,7 +183,6 @@ export class SceneComponent implements OnInit {
 
           selectChair(intersects, index);  
           selectedObject = intersects[index].object;
-          console.log('El Selected', selectedObject);   
           let id: number = selectedObject.userData.info.idPuestoTrabajo ? selectedObject.userData.info.idPuestoTrabajo : selectedObject.userData.info.idSala;
           myStore.dispatch(setReservationId({ reservationId: id })); 
           let isWorkstation: boolean = selectedObject.userData.info.idPuestoTrabajo ? true : false;

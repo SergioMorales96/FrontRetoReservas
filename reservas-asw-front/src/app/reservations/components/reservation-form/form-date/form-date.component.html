@@ -8,7 +8,8 @@
   </div>
 
   <ng-container [formGroup]="form">
-    <div class="form p-field">
+    
+    <div class="form p-field" *ngIf="validDate">
       <div *ngIf="isWorkstation; else workTime">
         <label class="label font-size-small">Periodo de tiempo para puesto de trabajo</label>
           <app-data-selector
@@ -28,8 +29,8 @@
       <small
       *ngIf="submitted && form.controls.periodoTiempo.errors"
       class="p-error">
-      Seleccione su tiempo de estadía
-    </small>
+      Seleccione un periodo de tiempo válido
+      </small>
     
     </div>
 
@@ -42,6 +43,8 @@
       Seleccione una fecha
     </small>
     </div>
+
+
 
     
   <div class="p-field">
