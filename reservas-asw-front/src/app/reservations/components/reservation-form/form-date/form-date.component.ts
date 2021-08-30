@@ -6,6 +6,7 @@ import { ReservationsService } from '../../../services/reservations.service';
 import { DataResponse } from '../../../interfaces/reservations.interface';
 import { EmittedValue } from 'src/app/reservations/interfaces/shared.interfaces';
 import { setEndTime, setStartTime, setTimePeriod, setScheduleValue } from '../../../reservation.actions';
+import * as moment from 'moment';
 
 interface workSchedule {
   index: any;
@@ -25,6 +26,8 @@ export class FormDateComponent implements OnInit {
   @Input() submitted!: boolean;
   @Input() formGroupName!: string;
 
+  private todayDate: Date = new Date();
+
   form!: FormGroup;
   capacity: number = 0;
   endTime!: string;
@@ -42,6 +45,8 @@ export class FormDateComponent implements OnInit {
   workSchedules: workSchedule[] = [];
   timePeriod!: number;
   scheduleValue!: number;
+  currentDate: Date;
+  horaString!: string;
 
 
   constructor(
@@ -49,6 +54,7 @@ export class FormDateComponent implements OnInit {
     private store: Store<AppState>,
     private reservationService: ReservationsService,
   ) {
+    this.currentDate = new Date();
     this.workSchedules = [
       {   
         index: 1,
@@ -82,7 +88,6 @@ export class FormDateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     this.store.select('reservation').subscribe(async (reservation) => {
       this.isWorkstation = reservation.isWorkstation;
@@ -91,6 +96,29 @@ export class FormDateComponent implements OnInit {
       this.reservationId = reservation.reservationId;
       this.floor = reservation.floorNumber;
       this.scheduleValue = reservation.scheduleValue;
+
+      const selectedDate = moment(this.todayDate).format('DD-MM-yyyy');
+      const currentHour = moment().format('hh:mm A');
+      console.log("CURRENT Hour: ",currentHour);
+      console.log("Endtime Hour: ",this.endTime);
+      if(currentHour > moment(this.endTime).format('hh:mm A')) console.log("Actual es mayor que endTime"); else console.log("Actual es menor que endTime");
+      
+
+      
+      // if ((selectedDate == String(this.form.controls['fecha'].value)) && (this.endTime < String(this.currentDate.getHours()))) {
+      //   console.log('Paila');
+      // }else {
+      //   console.log('Se puede hacer reserva');
+      // }
+      // this.horaString = `${moment(this.currentDate.getHours()).format('HH')}:`+`${moment(this.currentDate.getMinutes()).format('mm')}`;
+      // console.log('Hora final 1.0: ', this.horaString );
+      
+      // if("10:00">this.horaString){
+      //   console.log("1 + que 2");
+      // }else {
+      //   console.log('paila 2.0');
+        
+      // }
 
       if (this.endTime && this.form.controls['fecha'].value != "Invalid date") {
         if (!this.isWorkstation) {
@@ -106,7 +134,7 @@ export class FormDateComponent implements OnInit {
         }
       }
     });
-
+    console.log('hoy es: ', this.todayDate);
   }
   AforoPuesto(): Promise<DataResponse> {
     this.dateAforo = this.form.controls['fecha'].value;
@@ -133,8 +161,8 @@ export class FormDateComponent implements OnInit {
 
   onChangeSchedule( selectedSchedule: EmittedValue ): void {
   
-    const workSchedule = this.workSchedules.find(x => x.index === selectedSchedule.value);    
-    
+    const workSchedule = this.workSchedules.find(x => x.index === selectedSchedule.value);
+
     this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
     this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
     this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
