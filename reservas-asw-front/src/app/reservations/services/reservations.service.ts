@@ -101,7 +101,6 @@ export class ReservationsService {
    */
   addReservation(reservation: Reservation): Observable<ReservationResponse> {
     const urlLink = `${this.apiUrl}/crearreserva`;
-    console.log(reservation);
     return this.http.post<ReservationResponse>(urlLink, reservation)
       .pipe(
         catchError(err => {
@@ -137,7 +136,6 @@ export class ReservationsService {
    */
    editReservation(reservation: Reservation): Observable<ReservationResponse> {
     const urlLink = `${this.apiUrl}/editarreserva`;
-    console.log(reservation);
     return this.http.post<ReservationResponse>(urlLink, reservation)
       .pipe(
         catchError(err => {

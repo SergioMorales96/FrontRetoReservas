@@ -153,6 +153,7 @@ export class FormDateComponent implements OnInit {
   }
 
   onChangeSchedule( selectedSchedule: EmittedValue ): void {
+    
     const selectedDate = moment(this.todayDate).format('DD-MM-yyyy');
     const currentHour = moment().format('HH:mm A');  
     const workSchedule = this.workSchedules.find(x => x.index === selectedSchedule.value);
@@ -163,17 +164,13 @@ export class FormDateComponent implements OnInit {
       {        
         this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
         this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime)}) );
-        //this.store.dispatch( setTimePeriod({ timePeriod:0 }) );
-       // this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
-        
-       // this.form.controls['periodoTiempo'].setValue( 0 );
       }else{
       
         this.store.dispatch( setEndTime({ endTime: String(workSchedule?.endingTime) }) );
         this.store.dispatch( setStartTime({ startTime: String(workSchedule?.initialTime) }) );
         this.store.dispatch( setTimePeriod({ timePeriod: Number(workSchedule?.timePeriod) }) );
         this.store.dispatch( setScheduleValue({ scheduleValue: Number(workSchedule?.index)}) );
-        
+  
         this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
       }
 
@@ -186,7 +183,6 @@ export class FormDateComponent implements OnInit {
         this.form.controls['periodoTiempo'].setValue( Number(workSchedule?.timePeriod) );
     }
 
-  
   }
 
 }
