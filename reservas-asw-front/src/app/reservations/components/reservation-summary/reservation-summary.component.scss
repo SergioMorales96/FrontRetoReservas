@@ -19,16 +19,20 @@
     right: 0;
 }
 
+@media screen and (max-width: 900px){
+    .asesoftware {
+        display: none;
+        }
+}
+
 @media screen and (max-width:530px){
     .panel{
-        height: 125px;
-        width:102%;
+        height: 75px;
+        width: 102%;
         position: fixed;
         font-size: 12px;
     }
-    .asesoftware {
-        display: none;
-    }
+    
     .p-col-3 {
         width: 25%;
     }

@@ -76,9 +76,9 @@ export class ReservationSummaryComponent implements OnInit {
   setInfo() {
     if (this.step >= 2) {
       if (this.isWorkstation) {
-        this.info = `Piso ${this.piso} , puesto ${this.workstation} , ${this.peopleNumber} persona , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso}, puesto ${this.workstation}, ${this.peopleNumber} persona, ${this.nameOfTransport}`;
       } else {
-        this.info = `Piso ${this.piso} , sala ${this.workstation} , ${this.peopleNumber} personas , ${this.nameOfTransport}`;
+        this.info = `Piso ${this.piso}, sala ${this.workstation}, ${this.peopleNumber} personas, ${this.nameOfTransport}`;
       }
     }
     else{
