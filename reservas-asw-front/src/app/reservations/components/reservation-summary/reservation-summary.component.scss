@@ -26,8 +26,13 @@
         position: fixed;
         font-size: 12px;
     }
+    .asesoftware {
+        display: none;
+    }
+    .p-col-3 {
+        width: 25%;
+    }
 }
-
 
 .color{
     color: #777777;
@@ -41,6 +46,12 @@
 .postcolor{
     margin-bottom: 0;
 }
-span{
-    color: #98ee83;
+
+.asesoftware {
+    width: 4.5rem;
+    margin-bottom: 28%;
+}
+
+.p-col-3 {
+    width: 22%;
 }
