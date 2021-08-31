@@ -28,28 +28,13 @@ export class ReservationSummaryComponent implements OnInit {
   startTime:string="";
   endTime:string="";
   isWorkstation!: boolean;
- /* meses = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];*/
-
+ 
   constructor(
     private store: Store<AppState>
   ) {
     this.store
       .select('reservation')
       .subscribe(({ floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime, isWorkstation }) => {
-        //console.log('data from store ngrx', { floorNumber, peopleNumber, meanOfTransport, reservationId, selectedDateSummary, symptoms, step, timePeriod, startTime, endTime });
         this.isWorkstation = isWorkstation;
         this.setSteps( step );this.setFloorNumber(floorNumber);
         this.setPeopleNumber(peopleNumber);
@@ -128,11 +113,8 @@ export class ReservationSummaryComponent implements OnInit {
   }
 
   setFecha(){
-    //const selectedDate = moment(this.selectedDateSummary).format('DD-MM-yyyy');
-    //console.log(selectedDate);
+
     if (this.step >= 3) {
-      
-        //this.fecha = `${this.meses[this.selectedDateSummary.getMonth()]} ${this.selectedDateSummary.getDate()}, ${this.selectedDateSummary.getFullYear()}`;
           this.fecha= ` ${this.startTime.toLowerCase()} - ${this.endTime.toLowerCase()} `;
           this.timeMinutes=`( ${this.timePeriod*60} )`;
           if(this.selectedDateSummary===''){

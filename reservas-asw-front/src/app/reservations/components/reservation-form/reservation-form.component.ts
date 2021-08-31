@@ -119,8 +119,6 @@ export class ReservationFormComponent implements OnInit {
       asistenteInfo: this.fb.group({
         nombres: ['JUAN JOSE ARANGO', Validators.required],
         identificacion: [1098123456, [Validators.required, Validators.min(1), Validators.minLength(8), Validators.maxLength(8)]],
-        //grupoRiesgo: ['No Aplica', Validators.required],
-        //convivenciaRiesgo: ['No', Validators.required],
         sintomas: ['No', Validators.required],
         descripcion: [,],
       }),
@@ -151,7 +149,6 @@ export class ReservationFormComponent implements OnInit {
     });
 
     this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
-    //this.store.dispatch(setPeopleNumber({ peopleNumber : this.workstationGroup.controls['personasReserva'].value }));
   } 
 
   ngOnDestroy(): void{
@@ -164,7 +161,6 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['piso'].setValue(currentReservation?.numeroPiso);
       this.workstationGroup.controls['reserva'].setValue(currentReservation?.idPuestoTrabajo ? currentReservation?.idPuestoTrabajo : currentReservation?.idSala);
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
-      //this.workstationGroup.controls['datosAcompanante'].setValue(currentReservation?.);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
       this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
       this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  

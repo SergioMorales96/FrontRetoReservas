@@ -317,7 +317,6 @@ export class SceneComponent implements OnInit {
       loadPathFound( path, floorNumber, answ );
       
     }else{
-     // console.log('No cargado ningun piso'); 
     }
   }
 
