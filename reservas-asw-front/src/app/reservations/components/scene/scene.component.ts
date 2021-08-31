@@ -82,9 +82,7 @@ export class SceneComponent implements OnInit {
     let isEdit : boolean;
     let isEditingReservation : boolean;
     let sidebarActive: boolean;
-    let isWorkstation: boolean;
     let peopleNumber: number;
-
 
     this.store.select('reservation').subscribe((reservation) => {
       idPiso = reservation.floorNumber;
@@ -93,8 +91,7 @@ export class SceneComponent implements OnInit {
       currentReservation = reservation?.reservation;      
       isEditingReservation = reservation.sidebar.isEditingReservation;
       sidebarActive = reservation.sidebar.sidebarActive;
-      currentReservation = reservation?.reservation;    
-      isWorkstation = reservation.isWorkstation;
+      currentReservation = reservation?.reservation;         
       
     });
 
@@ -1774,10 +1771,10 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
       myStore.dispatch( setReservation({reservation: JSON.parse(sessionStorage.getItem( "res" ) || '{}' ) }) );
       myStore.dispatch( setIsEditingReservation({isEditingReservation: JSON.parse(sessionStorage.getItem( 'isEditingReservation' ) || '{}' ) }) ); 
       myStore.dispatch( setSidebarActive({sidebarActive: JSON.parse(sessionStorage.getItem( 'sidebarActive' ) || '{}' ) }) ); 
-      //myStore.dispatch( setIsWorkstation({isWorkstation: currentReservation?.idPuestoTrabajo ? true : false}) );
       myStore.dispatch( setIsEdit({isEdit: JSON.parse(sessionStorage.getItem( 'edit' ) || '{}' ) }) );    
+      myStore.dispatch( setIsWorkstation({isWorkstation: JSON.parse(sessionStorage.getItem( 'isWorkstation' ) || '{}' ) }) );    
       myStore.dispatch( setPeopleNumber({ peopleNumber: Number(  JSON.parse(sessionStorage.getItem( 'peopleNumber' ) || '{}' ) ) }) );    
-      myStore.dispatch( setIsWorkstation({ isWorkstation: JSON.parse(sessionStorage.getItem( 'isWorkstation' ) || '{}' )}) );    
+      
       
       
       sessionStorage.clear(); 
@@ -1788,14 +1785,13 @@ function textures(models: THREE.Mesh[], chair: string[][], map: any){
         sessionStorage.setItem( "step", JSON.stringify(step) );
         if (currentReservation != null) sessionStorage.setItem( "res", JSON.stringify(currentReservation));
         peopleNumber = currentReservation?.idSala ?  Number(currentReservation?.numeroAsistentes) : 1;
+        let isWorkstation = currentReservation?.idSala ? false : true;
         sessionStorage.setItem( "peopleNumber", JSON.stringify(peopleNumber) );
         sessionStorage.setItem( "edit", JSON.stringify(isEdit));
         sessionStorage.setItem( "isEditingReservation", JSON.stringify(isEditingReservation));
         sessionStorage.setItem( "sidebarActive", JSON.stringify(sidebarActive));
-        if(isEdit){
-          sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
-        }
-        
+        if(isEdit) sessionStorage.setItem( "isWorkstation", JSON.stringify(isWorkstation));
+
         window.location.reload();  
       }
     }

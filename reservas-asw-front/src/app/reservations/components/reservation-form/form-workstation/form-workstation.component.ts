@@ -84,12 +84,20 @@ export class FormWorkstationComponent implements OnInit {
     this.floorNumber = this.form.controls['piso'].value;
     this.meanOfTransport = this.form.controls['medioTransporte'].value;
     this.reservationId = this.form.controls['reserva'].value;
+    this.peopleNumber = this.form.controls['personasReserva'].value;
+    for(let i = 1; i< Number(this.peopleNumber); i++){
+      this.addPeople();
+      
+    }
     
     this.meanOfTransport && this.meanOfTransport !== DateValidationType.ParkingAvailabilityPerBicycle
       ? (this.showLicensePlate = true)
       : (this.showLicensePlate = false);
 
+    
+
     this.store.select('reservation').subscribe((reservation) => {
+        
         this.peopleNumber = reservation.peopleNumber;
         this.isWorkstation = reservation.isWorkstation;    
         this.workplaceLabel = this.isWorkstation ? "Puesto" : "Sala";
