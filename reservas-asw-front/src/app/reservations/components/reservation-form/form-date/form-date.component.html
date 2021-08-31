@@ -9,7 +9,7 @@
 
   <ng-container [formGroup]="form">
     
-    <div class="form p-field" *ngIf="validDate">
+    <div class="form p-field p-mb-4 p-d-flex jc-start-ai-center" *ngIf="validDate">
       <div *ngIf="isWorkstation; else workTime">
         <label class="label font-size-small">Periodo de tiempo para puesto de trabajo</label>
           <app-data-selector
@@ -34,7 +34,7 @@
     
     </div>
 
-    <div class="form p-my-5" 
+    <div class="form p-mb-4 p-d-flex jc-start-ai-center" 
          [ngClass]="{'form-calendar-floor':isWorkstation, 'form-calendar-room':!isWorkstation}">
       <app-calendar></app-calendar>
       <small
