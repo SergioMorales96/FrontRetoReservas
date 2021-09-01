@@ -240,12 +240,12 @@ const routes: Routes = [
         component: AddComponent,
       },
       {
-        path:'viewReservation',
+        path:'homeReservation',
         component: HomeComponent,
       },
       {
         path: '**',
-        redirectTo: 'admins'
+        redirectTo: 'homeReservation'
       }
 
     ]

@@ -9,7 +9,7 @@ import { ErrorPageComponent } from './shared/error-page/error-page.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'reservations',
+    redirectTo: 'admin',
     pathMatch: 'full'
   },
   {
