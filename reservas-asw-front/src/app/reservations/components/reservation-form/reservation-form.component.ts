@@ -148,7 +148,7 @@ export class ReservationFormComponent implements OnInit {
        
     });
 
-    this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
+    //this.store.dispatch(setFloorNumber({ floorNumber: this.workstationGroup.controls['piso'].value }));
   } 
 
   ngOnDestroy(): void{
@@ -163,8 +163,8 @@ export class ReservationFormComponent implements OnInit {
       this.workstationGroup.controls['personasReserva'].setValue(currentReservation?.numeroAsistentes == 0 ? 1 : currentReservation?.numeroAsistentes);
       this.workstationGroup.controls['medioTransporte'].setValue(this.getTransportModeNumber(currentReservation?.dominioTipoVehiculo));
       this.workstationGroup.controls['placa'].setValue(currentReservation?.placa);  
-      this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
-      this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
+      // this.dateGroup.controls['periodoTiempo'].setValue(currentReservation?.totalHoras);  
+      // this.dateGroup.controls['fecha'].setValue(currentReservation?.dia); 
     } 
 
 }

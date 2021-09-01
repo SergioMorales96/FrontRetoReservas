@@ -4,7 +4,7 @@ import { Component} from '@angular/core';
 import { DatesReservation, ReservationResponse, DatesReservationClass } from '../../../../admin/interfaces/reservation';
 import { ReservationsService } from '../../../../admin/services/reservation.service';
 import { RouteName } from '../../../../../utils/enums';
-import { setEditReservation, setReservation, setReservationList, setSteps, setIsEditingReservation } from '../../../reservation.actions';
+import { setEditReservation, setReservation, setReservationList, setSteps, setIsEditingReservation, setIsWorkstation } from '../../../reservation.actions';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { ToastsService } from '../../../../services/toasts.service';
@@ -169,6 +169,7 @@ export class EditReservationComponent {
     this.store.dispatch(setEditReservation({isEditReservation: false}));
     this.store.dispatch(setIsEditingReservation({isEditingReservation: true}));
     this.store.dispatch(setIsEdit({isEdit: true}));
+    this.store.dispatch(setIsWorkstation({isWorkstation: this.currentReservation.idPuestoTrabajo ? true : false}));
   }
    
 }
