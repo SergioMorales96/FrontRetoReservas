@@ -6,12 +6,16 @@ import { RouteFloor, RouteName } from '../../../utils/enums';
 import { setSidebarActive, setIsEditingReservation } from '../../reservations/reservation.actions';
 import { setSteps } from '../../reservations/reservation.actions';
 import { setIsEdit } from '../../reservations/editReservation.actions';
+import { AdminsService } from '../../admin/services/admins.service';
+import { Administrador, AdminsResponse } from '../../admin/interfaces/admins.interfaces';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html'
 })
 export class SidebarComponent {
+
+  admins: Administrador[] = [];
 
   isEditingReservation!: boolean;
   isBlockedReservation!: boolean;
@@ -32,6 +36,7 @@ export class SidebarComponent {
   }
 
   constructor(
+    private adminsService: AdminsService,
     private store: Store<AppState>
   ) {
     this.items = [
@@ -81,6 +86,7 @@ export class SidebarComponent {
   }
 
   ngOnInit(): void {
+    this.getAdmins();
     this.store.select('reservation').subscribe(
       (reservation) => {
         
@@ -96,6 +102,22 @@ export class SidebarComponent {
         }
       }
     );
+  }
+
+  getAdmins() {
+    this.adminsService.getAdmins()
+      .subscribe(
+        (adminsResponse: AdminsResponse) => {
+          this.admins = adminsResponse.data;
+        }
+      );
+  }
+
+  validateAdmins (email: string): boolean {
+    const admin = this.admins.find(x => x.email == email)
+    let isAdmin = false;
+    admin != null ? isAdmin=true : isAdmin=false;
+    return isAdmin;
   }
 
   changeEditReservation(isEditingReservation: boolean): void {

@@ -40,6 +40,7 @@
 
     
     <p-button 
+        *ngIf = "validateAdmins('spinilla@asesoftware.com')"
         class="p-menuButton p-administration"
         (click)="menu.toggle($event)">
         <p class="text">Administración</p>
