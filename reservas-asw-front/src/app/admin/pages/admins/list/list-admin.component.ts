@@ -8,7 +8,7 @@ import { AlertsService } from '../../../../services/alerts.service';
 @Component({
   selector: 'app-list-admin',
   templateUrl: './list-admin.component.html',
-  styleUrls: ['./list-admin.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListAdminComponent implements OnInit {
 

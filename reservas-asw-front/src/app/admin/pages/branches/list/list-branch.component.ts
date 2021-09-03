@@ -8,7 +8,7 @@ import { AlertsService } from '../../../../services/alerts.service';
 @Component({
   selector: 'app-list-branch',
   templateUrl: './list-branch.component.html',
-  styleUrls: ['./list-branch.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListBranchComponent implements OnInit {
 

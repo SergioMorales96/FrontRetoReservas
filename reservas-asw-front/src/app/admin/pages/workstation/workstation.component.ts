@@ -4,8 +4,7 @@ import { RouteName } from 'src/utils/enums';
 @Component({
   selector: 'app-workstation',
   templateUrl: './workstation.component.html',
-  styles: [
-  ]
+  styleUrls: ['../../adminTitle.scss']
 })
 export class WorkstationComponent {
 

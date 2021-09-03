@@ -13,7 +13,7 @@ import { ToastsService } from 'src/app/services/toasts.service';
 @Component({
   selector: 'app-list',
   templateUrl: './list-schedule.component.html',
-  styleUrls: ['./list-schedule.component.scss'],
+  styleUrls: ['../../../adminList.scss'],
   providers: [MessageService, ConfirmationService]
 })
 export class ListScheduleComponent {

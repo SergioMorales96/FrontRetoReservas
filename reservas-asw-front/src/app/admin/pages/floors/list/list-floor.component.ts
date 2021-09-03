@@ -8,7 +8,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 @Component({
   selector: 'app-list-floor',
   templateUrl: './list-floor.component.html',
-  styleUrls: ['./list-floor.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListfloorComponent implements OnInit {
   routeFloor = RouteFloor;
