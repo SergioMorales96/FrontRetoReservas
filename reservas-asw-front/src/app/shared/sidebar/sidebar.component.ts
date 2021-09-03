@@ -22,6 +22,7 @@ export class SidebarComponent {
   items: MenuItem[];
   routeName = RouteName;
   routeNameFloors = RouteFloor;
+  adminMenuActive: boolean = false;
 
   get generateReservationIcon(): string {
     return `assets/images/icons/${this.isBlockedReservation ? 'minus-gray' : this.isEditingReservation ? 'close-red' : 'plus-blue'}.svg`;
@@ -36,11 +37,11 @@ export class SidebarComponent {
   }
 
   get myAdminIcon(): string {
-    return `assets/images/icons/grid.svg`;
+    return `assets/images/icons/${this.adminMenuActive ? 'grid-blue' : 'grid-white'}.svg`;
   }
-
+  
   get myAdminArrowIcon(): string {
-    return `assets/images/icons/arrow-right-white.svg`;
+    return `assets/images/icons/${this.adminMenuActive ? 'arrow-right-blue' : 'arrow-right-white'}.svg`;
   }
 
   constructor(
@@ -49,47 +50,43 @@ export class SidebarComponent {
   ) {
     this.items = [
       {
-        label: 'Lista de administración',
-        routerLink: 'admin/admins/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de dominios',
-        routerLink: 'admin/domains/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de pisos',
-        routerLink: 'admin/floors/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de salas',
-        routerLink: 'admin/rooms/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de sucursales',
-        routerLink: 'admin/branches/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de puestos de trabajo',
-        routerLink: '/admin/workstations/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
-      {
-        label: 'Lista de horarios',
-        routerLink: 'admin/schedules/list',
-        command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
-        icon: 'pi pi-check'
-      },
+       label: "Administración",
+       items:[
+        {
+          label: 'Lista de administración',
+          routerLink: 'admin/admins/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+        {
+          label: 'Lista de pisos',
+          routerLink: 'admin/floors/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+        {
+          label: 'Lista de salas',
+          routerLink: 'admin/rooms/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+        {
+          label: 'Lista de sucursales',
+          routerLink: 'admin/branches/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+        {
+          label: 'Lista de puestos de trabajo',
+          routerLink: '/admin/workstations/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+        {
+          label: 'Lista de horarios',
+          routerLink: 'admin/schedules/list',
+          command: () => this.store.dispatch(setSidebarActive({ sidebarActive : false })),
+        },
+       ]
+            
+        
+      }
+      
     ];
   }
 
@@ -136,6 +133,12 @@ export class SidebarComponent {
       this.store.dispatch(setSteps({ step : 1 }));
       this.store.dispatch(setIsEdit({ isEdit : false }));
     }
+  }
+
+  log(adminMenuActive : boolean):void{
+    
+    this.adminMenuActive = adminMenuActive ? true : false ;
+    
   }
 
 }

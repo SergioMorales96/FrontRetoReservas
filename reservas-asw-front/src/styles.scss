@@ -142,6 +142,11 @@ body {
   padding-bottom: 0% !important;
 }
 
+.p-administration .p-button:hover{
+background-color: #d2ccc4 !important;
+color: #0666fb !important;
+}
+
 .p-sidebar-content{
   margin: 0 !important;
   padding: 0 !important;
@@ -153,8 +158,62 @@ body {
   margin: 0;
   padding: 0 !important;
 }
+
 .p-sidebar-left{
   border: 0 !important;
+}
+
+.p-menu.p-component.p-menu-overlay{
+  left: 15rem !important;
+  top: 0 !important;
+  max-width: max-content !important;
+  height: -webkit-fill-available !important;
+  padding-top: 0;
+  padding-left: 0;
+  border-radius: 0;
+  border: 0;
+  
+}
+
+.p-button:focus {
+  box-shadow: none !important;
+}
+
+.p-menu .p-submenu-header{
+  margin: 15px 43px 36.5px 29px !important;
+  font-weight: 500 !important;
+  font-stretch: normal !important;
+  font-style: normal !important;
+  line-height: 1.31 !important;
+  letter-spacing: normal !important;
+  text-align: left !important;
+  color: #b2b2b3 !important;
+
+}
+
+.p-menu .p-menuitem-link .p-menuitem-text{
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #212529 !important;
+  font-stretch: normal !important;
+  font-style: normal !important;
+  line-height: 1.31 !important;
+  letter-spacing: normal !important;
+  text-align: left !important;
+}
+
+.p-menu .p-menuitem-link:hover{
+  .p-menuitem-text{
+    
+    color: #0666fb !important;
+    text-decoration: underline !important;
+    text-decoration-color: #0666fb !important;
+
+  }
+}
+
+.p-menu ul{
+  text-align: center !important;
 }
 
 #line_shade{
