@@ -12,16 +12,11 @@
 }
 
 
-// @media screen and (max-width:530px) {
-//     :host ::ng-deep .p-calendar .p-datepicker{
-//         padding: 0%;
-//         border: none;
-//         transform: scale(0.9);
-//         background-color: #97CAFA;
-//         width: 100%;
-//         backdrop-filter: none;
-//     }
-// }
+@media screen and (max-width:530px) {
+    :host ::ng-deep .p-calendar .p-datepicker{
+        width: 100vw;
+    }
+}
 
 
 :host ::ng-deep .p-datepicker .p-datepicker-header {

@@ -4,8 +4,7 @@ import { RouteName } from '../../../../utils/enums';
 @Component({
   selector: 'app-admins',
   templateUrl: './admins.component.html',
-  styles: [
-  ]
+  styleUrls: ['./admins.component.scss']
 })
 export class AdminsComponent {
 

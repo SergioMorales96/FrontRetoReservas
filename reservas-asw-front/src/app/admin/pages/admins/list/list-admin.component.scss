@@ -2,6 +2,45 @@
     .p-datatable-responsive-demo .p-datatable-tbody > tr > td .p-column-title {
       display: none;
     }
+    .listado{
+        margin: 10px 21px 10px 73px;
+        font-family: Roboto;
+        font-size: 18px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.39;
+        letter-spacing: normal;
+        text-align: left;
+        color: #707071;
+    }
+    .p-button.p-button-success, .p-buttonset.p-button-success > .p-button, .p-splitbutton.p-button-success > .p-button {
+      color: #ffffff;
+      background: #0666fb;
+      border: 1px solid #0666fb;
+      border-radius: 100%;
+      border-left-width: 0px;
+      border-top-width: 0px;
+      border-right-width: 1px;
+      border-bottom-width: 0px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      padding-left: 1px;
+      width: 22px;
+      height: 22px;
+    }
+    .agregar {
+      margin: 1px 5px 1px 0;
+      font-family: Roboto;
+      font-size: 12px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.25;
+      letter-spacing: normal;
+      text-align: left;
+      color: #0666fb;
+    }
   }
   
   @media screen and (max-width: 48rem) {
