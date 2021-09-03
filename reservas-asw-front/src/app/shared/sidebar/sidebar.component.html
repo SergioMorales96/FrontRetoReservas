@@ -36,18 +36,28 @@
             class="imageArrow"
             [src]="myReservationIconArrow">
     </p-button>
-    <hr class="white__line" id="line_shade">
 
     
     <p-button 
         *ngIf = "validateAdmins('spinilla@asesoftware.com')"
         class="p-menuButton p-administration"
-        (click)="menu.toggle($event)">
-        <p class="text">Administración</p>
+        (click)="menu.toggle($event)" 
+        >   
+        <img 
+            class="imageCalendar" 
+            [src]= "myAdminIcon">    
+        <p>Administración</p> 
+        <img 
+            class="imageArrow"
+            [src]="myAdminArrowIcon">
     </p-button>
-    <p-menu
+
+    <hr class="white__line" id="line_shade">
+
+    <p-tieredMenu 
         #menu 
         [popup]="true" 
-        [model]="items">
-    </p-menu>
+        [model]="items"
+        >
+    </p-tieredMenu >
 </div>

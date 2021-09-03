@@ -35,6 +35,14 @@ export class SidebarComponent {
     return `assets/images/icons/${this.isEditingReservation ? 'arrow-right-white' : 'arrow-right-blue'}.svg`;
   }
 
+  get myAdminIcon(): string {
+    return `assets/images/icons/grid.svg`;
+  }
+
+  get myAdminArrowIcon(): string {
+    return `assets/images/icons/arrow-right-white.svg`;
+  }
+
   constructor(
     private adminsService: AdminsService,
     private store: Store<AppState>
