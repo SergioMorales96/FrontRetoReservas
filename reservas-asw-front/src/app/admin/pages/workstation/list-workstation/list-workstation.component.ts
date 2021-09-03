@@ -8,7 +8,7 @@ import { WorkstationsService } from '../../../services/workstations.service';
 @Component({
   selector: 'app-list-workstation',
   templateUrl: './list-workstation.component.html',
-  styleUrls: ['./list-workstation.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListWorkstationComponent implements OnInit {
 

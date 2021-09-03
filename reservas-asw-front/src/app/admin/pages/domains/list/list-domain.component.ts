@@ -9,7 +9,7 @@ import { AlertsService } from '../../../../services/alerts.service';
 @Component({
   selector: 'app-list-domain',
   templateUrl: './list-domain.component.html',
-  styleUrls: ['./list-domain.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListDomainComponent implements OnInit {
   routeName = RouteName;

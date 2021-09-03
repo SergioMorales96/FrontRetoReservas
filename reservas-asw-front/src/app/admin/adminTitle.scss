@@ -1,0 +1,36 @@
+:host ::ng-deep .p-card .p-card-body {
+    padding: 1.5rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+:host ::ng-deep .p-card .p-card-title {
+    margin: 0rem 4rem 0.5rem 0rem;
+    font-family: Roboto;
+    font-size: 22px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.36;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--dark-navy-blue);
+  }
+
+:host ::ng-deep .p-card .p-card-subtitle {
+    margin: 0.5rem 0rem 0rem 0rem;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.39;
+    letter-spacing: normal;
+    text-align: left;
+    color: #b2b2b3;
+  }
+
+:host ::ng-deep .linea {
+    height: 1px;
+    border: 0;
+    background-image: linear-gradient(to left, rgba(255, 255, 255), rgba(96, 96, 96), rgba(255, 255, 255));
+}

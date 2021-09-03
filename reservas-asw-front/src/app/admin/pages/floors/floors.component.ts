@@ -4,8 +4,7 @@ import { RouteFloor } from '../../../../utils/enums';
 @Component({
   selector: 'app-floors',
   templateUrl: './floors.component.html',
-  styles: [
-  ]
+  styleUrls: ['../../adminTitle.scss']
 })
 export class FloorsComponent {
   routeFloor = RouteFloor;

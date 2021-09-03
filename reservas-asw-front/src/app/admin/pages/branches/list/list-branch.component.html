@@ -1,90 +1,71 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-
-    <h3>Listado Sucursales</h3>
-    <a 
-        pButton 
-        class="button-link p-button-success" 
-        [routerLink]="routeName.BranchAdd"
-        icon="pi pi-plus"
-        pTooltip="Agregar" 
-        tooltipPosition="top">
-    </a>
+    <div class="p-d-flex p-ai-center">
+        <div class="p-d-flex p-ai-center">
+            <h3 class="listado align-items-center justify-content-center">Listado Sucursales</h3>
+            <h5 class="agregar">Agregar</h5>
+        </div>
+        <a pButton class="button-link p-button-success" [routerLink]="routeName.BranchAdd" icon="pi pi-plus"
+            pTooltip="Agregar" tooltipPosition="top">
+        </a>
+    </div>
 </div>
 
-<p-table
-    #dt
-    [value]="branches | sort:'idSucursal'" 
-    [resizableColumns]="true" 
+<p-table #dt [value]="branches | sort:'idSucursal'" [resizableColumns]="true"
     styleClass="p-datatable-striped p-datatable-responsive-demo">
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idSucursal">
-                <strong> No. </strong> <p-sortIcon field="code"></p-sortIcon> 
+                <strong> No. </strong>
+                <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombreEmpresa"> 
-                Nombre Empresa<p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="nombreEmpresa">
+                Nombre Empresa<p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombre"> 
-                Nombre Sucursal <p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="nombre">
+                Nombre Sucursal <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="direccion"> 
-                Dirección <p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="direccion">
+                Dirección <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="aforoMaximo"> 
-                Aforo Maximo <p-sortIcon field="code"></p-sortIcon> 
+            <th pSortableColumn="aforoMaximo">
+                Aforo Maximo <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th></th>
+            <th pSortableColumn="acciones">Acciones</th>
         </tr>
     </ng-template>
-    
+
     <ng-template pTemplate="body" let-branch>
         <tr [pSelectableRow]="branch">
-            <td> 
-                <span class="p-column-title"><strong> No. </strong></span>
-                <strong> {{branch.idSucursal}} </strong> 
-            </td>
-            <td> 
-                <span class="p-column-title"><strong> Nombre Empresa </strong></span>
-                <strong> {{branch.nombreEmpresa | titlecase}} </strong> 
-            </td>
-            <td> 
-                <span class="p-column-title"><strong> Nombre Sucursal </strong></span>
-                {{branch.nombre | titlecase}} 
-            </td>
-            <td> 
-                <span class="p-column-title"><strong> Dirección </strong></span>
-                {{branch.direccion}} 
-            </td>
-            <td> 
-                <span class="p-column-title"><strong> Aforo Maximo </strong></span>
-                {{branch.aforoMaximo}} 
-            </td>
-            
             <td>
-                <a 
-                    pButton 
-                    [routerLink]="[routeName.BranchView, branch.idSucursal]" 
-                    class="button-link p-button-help p-mr-1" 
-                    icon="pi pi-eye" 
-                    pTooltip="Ver" 
-                    tooltipPosition="top">
+                <span class="p-column-title"><strong> No. </strong></span>
+                <strong> {{branch.idSucursal}} </strong>
+            </td>
+            <td>
+                <span class="p-column-title"><strong> Nombre Empresa </strong></span>
+                <strong> {{branch.nombreEmpresa | titlecase}} </strong>
+            </td>
+            <td>
+                <span class="p-column-title"><strong> Nombre Sucursal </strong></span>
+                {{branch.nombre | titlecase}}
+            </td>
+            <td>
+                <span class="p-column-title"><strong> Dirección </strong></span>
+                {{branch.direccion}}
+            </td>
+            <td>
+                <span class="p-column-title"><strong> Aforo Maximo </strong></span>
+                {{branch.aforoMaximo}}
+            </td>
+
+            <td>
+                <!-- <a pButton [routerLink]="[routeName.BranchView, branch.idSucursal]"
+                    class="button-link p-button-help p-mr-1" icon="pi pi-eye" pTooltip="Ver" tooltipPosition="top">
+                </a> -->
+                <a pButton [routerLink]="[routeName.BranchEdit, branch.idSucursal]"
+                    class="p-button-rounded p-button-text" icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top">
                 </a>
-                <a 
-                    pButton 
-                    [routerLink]="[routeName.BranchEdit, branch.idSucursal]" 
-                    class="button-link p-button-info p-mr-1" 
-                    icon="pi pi-pencil" 
-                    pTooltip="Editar" 
-                    tooltipPosition="top">
-                </a>
-                <button 
-                    pButton 
-                    class="button-link p-button-danger" 
-                    type="button" 
-                    icon="pi pi-times" 
-                    pTooltip="Eliminar" 
-                    tooltipPosition="top" 
-                    (click)="deleteBranch( branch.idSucursal )">
+                <button pButton class="p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times"
+                    pTooltip="Eliminar" tooltipPosition="top" (click)="deleteBranch( branch.idSucursal )">
                 </button>
             </td>
         </tr>

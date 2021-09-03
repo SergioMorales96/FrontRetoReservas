@@ -8,7 +8,7 @@ import { ToastsService } from 'src/app/services/toasts.service';
 @Component({
   selector: 'app-list-room',
   templateUrl: './list-room.component.html',
-  styleUrls: ['./list-room.component.scss']
+  styleUrls: ['../../../adminList.scss']
 })
 export class ListRoomComponent {
   
