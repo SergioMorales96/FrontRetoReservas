@@ -10,8 +10,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 @Component({
   selector: 'app-floor-form',
   templateUrl: './form.floor.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form.floor.component.scss']
 })
 export class FormFloorComponent implements OnInit {
 

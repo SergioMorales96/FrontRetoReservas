@@ -11,8 +11,7 @@ import { BranchesService } from '../../../services/branches.service';
 @Component({
   selector: 'app-form',
   templateUrl: './form-schedule.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-schedule.component.scss']
 })
 export class FormScheduleComponent implements OnInit {
 

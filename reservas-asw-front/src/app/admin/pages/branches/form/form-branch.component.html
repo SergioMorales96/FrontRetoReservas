@@ -1,6 +1,14 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
-    <h3> {{ formTitle }} </h3>
-    <a
+    <div class="p-d-flex p-ai-center">
+        <div class="p-d-flex p-ai-center">
+            <h3 class="title "> {{ formTitle }} </h3>
+            <h5 class="agregar">Volver</h5>
+        </div>
+        <a pButton [routerLink]="routeName.BranchView" class="p-button-rounded p-button-text" icon="pi pi-arrow-left"
+            pTooltip="Volver" tooltipPosition="top">
+        </a>
+    </div>
+    <!-- <a
         pButton
         [routerLink]="[routeName.BranchView, branch?.idSucursal]"
         class="button-link p-button-help p-m-1"
@@ -8,7 +16,7 @@
         pTooltip="Ver"
         tooltipPosition="top"
         *ngIf="isEditing">
-    </a>
+    </a> -->
 </div>
 
 <form 
@@ -17,7 +25,7 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre Sucursal</label>
+            <label class="label" for="name">Nombre Sucursal</label>
             <input 
                 id="name" 
                 type="text" 
@@ -29,14 +37,14 @@
                 maxlength="100">
         </div>
         <div class="p-field p-col">
-            <label for="maxCapacity">Aforo máximo</label>
+            <label class="label" for="maxCapacity">Aforo máximo</label>
             <p-inputNumber 
                 id="maxCapacity" 
                 [showButtons]="true" 
                 buttonLayout="horizontal" 
                 spinnerMode="horizontal"
-                decrementButtonClass="p-button-danger" 
-                incrementButtonClass="p-button-success" 
+                decrementButtonClass="p-button-outlined p-button-danger" 
+                incrementButtonClass="p-button-outlined p-button-success" 
                 incrementButtonIcon="pi pi-plus" 
                 decrementButtonIcon="pi pi-minus"
                 formControlName="maxCapacity"
@@ -50,7 +58,7 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="direccion">Dirección</label>
+            <label class="label" for="direccion">Dirección</label>
             <input 
                 id="direccion" 
                 type="text" 
@@ -60,7 +68,7 @@
                 required>
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Empresa</label>
+            <label class="label" for="floorId">Empresa</label>
                 <p-dropdown 
                 [options]="enterprises" 
                 formControlName="nit" 
@@ -72,11 +80,11 @@
 
     </div>
 
-    <div class="p-d-flex p-jc-end p-mt-4">
+    <div class="p-d-flex p-jc-end p-mt-4 p-grid p-jc-end">
         <button 
             pButton 
             type="submit" 
-            class="p-button-success" 
+            class="p-button-success success" 
             [label]="buttonLabel"
             [disabled]="!branchForm.valid">
         </button>

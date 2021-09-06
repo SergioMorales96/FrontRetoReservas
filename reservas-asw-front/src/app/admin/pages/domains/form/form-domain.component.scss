@@ -1,0 +1,54 @@
+:host ::ng-deep {
+        font-family: 'Roboto', sans-serif;
+    .title {
+        color: #707071;
+    }
+    .label {
+        font-size: 16px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.31;
+        letter-spacing: normal;
+        text-align: center;
+        color: var(--dark-navy-blue);
+    }
+    .p-formgrid.p-grid .p-col{
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 1rem 1rem 1rem 1rem;
+    }
+    .success {
+        background-color: #5ebc00;
+        border-radius: 0%;
+        width: 9rem;
+        margin-right: 1rem;
+    }
+    .agregar {
+        margin: 1rem 0.5rem 1rem 2rem;
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.25;
+        letter-spacing: normal;
+        text-align: left;
+        color: #0666fb;
+      }
+      .p-button-rounded .p-button-text{
+        color: #ffffff;
+        background: #0666fb;
+        border: 1px solid #0666fb;
+        border-radius: 100%;
+        border-right-width: 1px;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        padding-left: 1px;
+        width: 22px;
+        height: 22px;
+      }
+      .background {
+          background-color: #b2b2b3;
+      }
+}

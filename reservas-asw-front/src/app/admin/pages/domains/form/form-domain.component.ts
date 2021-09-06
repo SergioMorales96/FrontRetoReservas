@@ -9,8 +9,7 @@ import { ToastsService } from '../../../../services/toasts.service';
 @Component({
   selector: 'app-form-domain',
   templateUrl: './form-domain.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-domain.component.scss']
 })
 export class FormDomainComponent implements OnInit {
   domainForm = this.fb.group({
