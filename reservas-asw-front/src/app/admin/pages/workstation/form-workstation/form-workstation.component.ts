@@ -16,8 +16,7 @@ import { FloorsResponse } from 'src/app/admin/interfaces/floors.interfaces';
 @Component({
   selector: 'app-form-workstation',
   templateUrl: './form-workstation.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-workstation.component.scss']
 })
 export class FormWorkstationComponent implements OnInit {
 

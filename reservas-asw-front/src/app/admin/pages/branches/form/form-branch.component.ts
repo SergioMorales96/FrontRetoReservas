@@ -12,8 +12,7 @@ import { EnterprisesService } from '../../../services/enterprises.service';
 @Component({
   selector: 'app-form-branch',
   templateUrl: './form-branch.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-branch.component.scss']
 })
 export class FormBranchComponent implements OnInit {
 

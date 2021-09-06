@@ -10,8 +10,7 @@ import { BranchesResponse, Branch } from 'src/app/admin/interfaces/branches.inte
 @Component({
   selector: 'form-add-admin',
   templateUrl: './form-admin.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-admin.component.scss']
 })
 
 export class FormAdminComponent implements OnInit {

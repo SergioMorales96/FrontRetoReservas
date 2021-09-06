@@ -11,8 +11,7 @@ import { Domain, DomainResponse, DomainsResponse } from '../../../interfaces/dom
 @Component({
   selector: 'app-form',
   templateUrl: './form-room.component.html',
-  styles: [
-  ]
+  styleUrls: ['./form-room.component.scss']
 })
 export class FormRoomComponent implements OnInit {
   roomForm = this.fb.group({

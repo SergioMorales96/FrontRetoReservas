@@ -1,7 +1,17 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
-    <h3> {{ formTitle }} </h3>
-    <a 
+    <div class="p-d-flex p-ai-center">
+        <div class="p-d-flex p-ai-center">
+            <h3 class="PISO-18"> {{ formTitle }} </h3>
+            <h5 class="agregar">Volver</h5>
+        </div>
+        <a pButton [routerLink]="routeName.FloorView" class="p-button-rounded p-button-text" icon="pi pi-arrow-left"
+            pTooltip="Volver" tooltipPosition="top">
+        </a>
+    </div>
+
+    
+    <!-- <a 
         pButton 
         [routerLink]="[routeName.FloorView, floor?.idPiso]" 
         class="button-link p-button-help p-m-1" 
@@ -9,7 +19,7 @@
         pTooltip="Ver" 
         tooltipPosition="top"
         *ngIf="isEditing">
-    </a>
+    </a> -->
 
 </div>
 <form 
@@ -17,7 +27,7 @@
 (ngSubmit)="save()">
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
-        <label for="nombre">Nombre</label>
+        <label class="label" for="nombre">Nombre</label>
         <input 
             id="nombre" 
             type="text" 
@@ -29,14 +39,14 @@
             maxlength="100">
     </div>
     <div class="p-field p-col">
-        <label for="aforoMaximo">Aforo máximo</label>
+        <label class="label" for="aforoMaximo">Aforo máximo</label>
         <p-inputNumber 
             id="aforoMaximo" 
             [showButtons]="true" 
             buttonLayout="horizontal" 
             spinnerMode="horizontal"
-            decrementButtonClass="p-button-danger" 
-            incrementButtonClass="p-button-success" 
+            decrementButtonClass="p-button-outlined p-button-danger" 
+            incrementButtonClass="p-button-outlined p-button-success" 
             incrementButtonIcon="pi pi-plus" 
             decrementButtonIcon="pi pi-minus"
             formControlName="maximunCapacity"
@@ -50,7 +60,7 @@
 
 <div class="p-fluid p-formgrid p-grid">
     <div class="p-field p-col">
-        <label for="numeroPiso">Numero de Piso</label>
+        <label class="label" for="numeroPiso">Numero de Piso</label>
         <p-inputNumber
         optionLabel="numeroPiso"
         optionValue="numeroPiso"
@@ -61,8 +71,8 @@
         </p-inputNumber>
     </div>
     <div class="p-field p-col">
-        <label for="idSucursal">Nombre Sucursal</label>
-        <p-dropdown 
+        <label class="label" for="idSucursal">Nombre Sucursal</label>
+        <p-dropdown
             [options]="branches"
             optionLabel="nombre"
             optionValue="idSucursal"
@@ -75,11 +85,11 @@
     </div>
 </div>
 <div class="p-d-flex p-jc-end p-mt-4">
-    <div class="p-field p-col" >
+    <div class="p-field p-col p-grid p-jc-end" >
         <button 
             pButton 
             type="submit" 
-            class="p-button-success" 
+            class="p-button-success success" 
             [label]="buttonLabel"
             [disabled]="!floorForm.valid">
         </button>

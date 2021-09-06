@@ -1,7 +1,16 @@
 <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between p-ai-center p-mb-4">
 
-    <h3> {{ formTitle }} </h3>
-    <a  
+    <div class="p-d-flex p-ai-center">
+        <div class="p-d-flex p-ai-center">
+            <h3 class="title"> {{ formTitle }} </h3>
+            <h5 class="agregar">Volver</h5>
+        </div>
+        <a pButton [routerLink]="routeName.RoomView" class="p-button-rounded p-button-text" icon="pi pi-arrow-left"
+            pTooltip="Volver" tooltipPosition="top">
+        </a>
+    </div>
+
+    <!-- <a  
         pButton
         [routerLink]="[routeName.RoomView, room?.idSala]"
         class="button-link p-button-help p-m-1"
@@ -9,7 +18,7 @@
         pTooltip="Ver" 
         tooltipPosition="top"
         *ngIf="isEditing">
-    </a>
+    </a> -->
 
 </div>
 
@@ -19,7 +28,7 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="name">Nombre Sala</label>
+            <label class="label" for="name">Nombre Sala</label>
             <input 
                 id="name" 
                 type="text" 
@@ -31,14 +40,14 @@
                 maxlength="100">
         </div>
         <div class="p-field p-col">
-            <label for="maxCapacity">Aforo máximo</label>
+            <label class="label" for="maxCapacity">Aforo máximo</label>
             <p-inputNumber 
                 id="maxCapacity" 
                 [showButtons]="true" 
                 buttonLayout="horizontal" 
                 spinnerMode="horizontal"
-                decrementButtonClass="p-button-danger" 
-                incrementButtonClass="p-button-success" 
+                decrementButtonClass="p-button-outlined p-button-danger" 
+                incrementButtonClass="p-button-outlined p-button-success" 
                 incrementButtonIcon="pi pi-plus" 
                 decrementButtonIcon="pi pi-minus"
                 formControlName="maxCapacity"
@@ -51,7 +60,7 @@
 
     <div class="p-fluid p-formgrid p-grid">
         <div class="p-field p-col">
-            <label for="domainState">Estado dominio</label>
+            <label class="label" for="domainState">Estado dominio</label>
             <p-dropdown 
                 id="domainState" 
                 [options] = "domains"
@@ -64,7 +73,7 @@
             </p-dropdown>
         </div>
         <div class="p-field p-col">
-            <label for="floorId">Piso relacionado</label>
+            <label class="label" for="floorId">Piso relacionado</label>
             <p-dropdown 
                 [options]="floors"
                 optionLabel="nombre"
@@ -77,11 +86,11 @@
         </div>
     </div>
 
-    <div class="p-d-flex p-jc-end p-mt-4">
+    <div class="p-d-flex p-jc-end p-mt-4 p-grid p-jc-end">
         <button 
             pButton 
             type="submit" 
-            class="p-button-success" 
+            class="p-button-success success" 
             [label]="buttonLabel"
             [disabled]="!roomForm.valid">
         </button>
