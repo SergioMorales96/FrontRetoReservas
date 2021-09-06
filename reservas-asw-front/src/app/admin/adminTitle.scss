@@ -1,7 +1,15 @@
 :host ::ng-deep .p-card .p-card-body {
-    padding: 1.5rem;
-    margin-left: 4rem;
-    margin-right: 4rem;
+  padding: 1.5rem;
+margin-left: 2rem;
+margin-right: 2rem;
+
+  @media screen and (max-width: 48rem) {
+      padding: 0.8rem;
+      margin-left: 0.8rem;
+      margin-right: 0.8rem;
+}
+
+
 }
 :host ::ng-deep .p-card .p-card-title {
     margin: 0rem 4rem 0.5rem 0rem;

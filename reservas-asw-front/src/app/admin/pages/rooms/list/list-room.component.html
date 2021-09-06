@@ -12,6 +12,19 @@
 
 <p-table #dt [value]="rooms | sort:'idSala'" [resizableColumns]="true"
     styleClass="p-datatable-striped p-datatable-responsive-demo">
+
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <span class="p-input-icon-left p-ml-auto">
+                    <p-columnFilter 
+                    placeholder="Filtrar por sala" type="text" 
+                    matchMode="contains" field="nombre"
+                    [showMenu]=false   
+                    ></p-columnFilter>
+            </span>
+        </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idSala">
@@ -30,10 +43,11 @@
             <th pSortableColumn="acciones">Acciones</th>
         </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-room>
         <tr [pSelectableRow]="room">
             <td>
-                <span class="p-column-title"><strong> No. </strong></span>
+                <span class="p-column-title"> No. </span>
                 <strong> {{room.idSala}} </strong>
             </td>
             <td>

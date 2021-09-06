@@ -9,11 +9,24 @@
         </a>
     </div>
 </div>
+
 <p-table #dt [value]="floors | sort: 'idPiso'" [resizableColumns]="true"
     styleClass="p-datatable-striped p-datatable-responsive-demo">
+    
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <span class="p-input-icon-left p-ml-auto">
+                    <p-columnFilter 
+                    placeholder="Filtrar por piso" type="text" 
+                    matchMode="contains" field="nombre"
+                    [showMenu]=false   
+                    ></p-columnFilter>
+            </span>
+        </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
         <tr>
-
             <th pSortableColumn="idPiso">
                 <strong>#</strong>
                 <p-sortIcon field="code"></p-sortIcon>
@@ -33,37 +46,30 @@
             <th pSortableColumn="acciones">Acciones</th>
         </tr>
     </ng-template>
+
     <ng-template pTemplate="body" let-floor>
         <tr [pSelectableRow]="floor">
             <td>
-                <span class="p-column-title"><strong> No. </strong></span>
+                <span class="p-column-title"> No. </span>
                 <strong> {{floor.idPiso}} </strong>
             </td>
             <td>
-                <span class="p-column-title"><strong> Nombre </strong></span>
-                <strong> {{floor.nombre | titlecase}} </strong>
-            </td>
-            <td class="p-text-center">
-                <span class="p-column-title"><strong> Numero de piso </strong></span>
-                <strong> {{floor.numeroPiso}} </strong>
-            </td>
-            <td class="p-text-center">
-                <span class="p-column-title"><strong> Aforo Maximo </strong></span>
-                <strong> {{floor.aforoMaximo}} </strong>
-            </td>
-            <td class="p-text-center">
-                <span class="p-column-title"><strong> Nombre Sucursal </strong></span>
-                <strong> {{floor.nombreSucursal}} </strong>
+                <span class="p-column-title"> Nombre </span>
+                 {{floor.nombre | titlecase}} 
             </td>
             <td>
-                <!-- <a 
-                    pButton 
-                    [routerLink]="[routeFloor.FloorView, floor.idPiso]" 
-                    class="button-link p-button-help p-mr-1" 
-                    icon="pi pi-eye" 
-                    pTooltip="Ver" 
-                    tooltipPosition="top">
-                </a> -->
+                <span class="p-column-title"> Numero de piso </span>
+                 {{floor.numeroPiso}} 
+            </td>
+            <td>
+                <span class="p-column-title"> Aforo Maximo </span>
+                 {{floor.aforoMaximo}} 
+            </td>
+            <td>
+                <span class="p-column-title"> Nombre Sucursal </span>
+                 {{floor.nombreSucursal}} 
+            </td>
+            <td>
                 <a pButton [routerLink]="[routeFloor.FloorEdit, floor.idPiso]" class="p-button-rounded p-button-text"
                     icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top">
                 </a>
@@ -73,4 +79,5 @@
             </td>
         </tr>
     </ng-template>
+
 </p-table>

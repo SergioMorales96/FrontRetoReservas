@@ -12,6 +12,19 @@
 
 <p-table #dt [value]="workstations | sort:'idPuestoTrabajo'" [resizableColumns]="true"
     styleClass="p-datatable-striped p-datatable-responsive-demo">
+
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <span class="p-input-icon-left p-ml-auto">
+                    <p-columnFilter 
+                    placeholder="Filtrar por puesto" type="text" 
+                    matchMode="contains" field="nombre"
+                    [showMenu]=false   
+                    ></p-columnFilter>
+            </span>
+        </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idPuestoTrabajo">
@@ -24,9 +37,6 @@
             <th pSortableColumn="dominioTipo">
                 Tipo <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <!-- <th pSortableColumn="idPiso"> 
-                No.Piso <p-sortIcon field="code"></p-sortIcon> 
-            </th> -->
             <th pSortableColumn="nombre">
                 Nombre <p-sortIcon field="code"></p-sortIcon>
             </th>
@@ -39,32 +49,25 @@
     <ng-template pTemplate="body" let-workstations>
         <tr [pSelectableRow]="workstations">
             <td>
-                <span class="p-column-title"><strong> </strong></span>
+                <span class="p-column-title">No.</span>
                 <strong> {{ workstations.idPuestoTrabajo }} </strong>
             </td>
             <td>
-                <span class="p-column-title"><strong> </strong></span>
+                <span class="p-column-title">Estado </span>
                 <strong> {{ workstations.dominioEstado }} </strong>
             </td>
             <td>
-                <span class="p-column-title"><strong> </strong></span>
+                <span class="p-column-title"> Tipo</span>
                 <strong> {{ workstations.dominioTipo }} </strong>
             </td>
-            <!-- <td> 
-                <span class="p-column-title"><strong>  </strong></span>
-                <strong> {{ workstations.idPiso }} </strong> 
-            </td> -->
             <td>
-                <span class="p-column-title"><strong> </strong></span>
+                <span class="p-column-title"> Nombre</span>
                 {{ workstations.nombre | titlecase }}
-
             </td>
             <td>
-                <span class="p-column-title"><strong> </strong></span>
+                <span class="p-column-title"> Piso</span>
                 {{ workstations.nombrePiso }}
-
             </td>
-
             <td>
                 <!-- <a pButton [routerLink]="[routeName.WorkstationView, workstations.idPuestoTrabajo]"
                     class="button-link p-button-help p-mr-1" icon="pi pi-eye" pTooltip="Ver" tooltipPosition="top">

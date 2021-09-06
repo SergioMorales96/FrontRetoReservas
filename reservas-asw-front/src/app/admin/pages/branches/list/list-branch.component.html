@@ -12,6 +12,19 @@
 
 <p-table #dt [value]="branches | sort:'idSucursal'" [resizableColumns]="true"
     styleClass="p-datatable-striped p-datatable-responsive-demo">
+
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex">
+            <span class="p-input-icon-left p-ml-auto">
+                    <p-columnFilter 
+                    placeholder="Filtrar por sucursal" type="text" 
+                    matchMode="contains" field="nombre"
+                    [showMenu]=false   
+                    ></p-columnFilter>
+            </span>
+        </div>
+    </ng-template>
+
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idSucursal">
