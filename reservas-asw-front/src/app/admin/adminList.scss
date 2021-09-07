@@ -43,6 +43,13 @@
     .p-datatable-striped {
       font-family: Roboto;
     }
+    .p-datatable .p-datatable-tbody > tr > td {
+      text-align: center;
+      color: #707071;
+    }
+    .p-datatable .p-sortable-column {
+      text-align: center;
+    }
   }
   
   @media screen and (max-width: 48rem) {

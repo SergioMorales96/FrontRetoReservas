@@ -50,5 +50,12 @@
       }
       .background {
           background-color: #b2b2b3;
+        }
+      @media screen and (max-width:576px) {
+        .p-formgrid.p-grid .p-col{
+            padding-top: 0;
+            padding-bottom: 0;
+            margin: 1rem 4rem 0rem 4rem;
+        }
       }
 }

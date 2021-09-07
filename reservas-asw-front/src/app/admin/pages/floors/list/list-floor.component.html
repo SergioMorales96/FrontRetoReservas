@@ -27,19 +27,20 @@
 
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="idPiso">
+            <!-- <th pSortableColumn="idPiso">
                 <strong>#</strong>
                 <p-sortIcon field="code"></p-sortIcon>
-            </th>
+            </th> -->
             <th pSortableColumn="nombre">
                 Nombre<p-sortIcon field="code"></p-sortIcon>
-            </th>
-            <th pSortableColumn="numeroPiso">
-                Numero de piso<p-sortIcon field="code"></p-sortIcon>
             </th>
             <th pSortableColumn="aforomaximo">
                 Aforo Maximo<p-sortIcon field="code"></p-sortIcon>
             </th>
+            <th pSortableColumn="numeroPiso">
+                Numero de piso<p-sortIcon field="code"></p-sortIcon>
+            </th>
+           
             <th pSortableColumn="nombreSucursal">
                 Nombre Sucursal <p-sortIcon field="price"></p-sortIcon>
             </th>
@@ -49,21 +50,21 @@
 
     <ng-template pTemplate="body" let-floor>
         <tr [pSelectableRow]="floor">
-            <td>
+            <!-- <td>
                 <span class="p-column-title"> No. </span>
                 <strong> {{floor.idPiso}} </strong>
-            </td>
+            </td> -->
             <td>
                 <span class="p-column-title"> Nombre </span>
                  {{floor.nombre | titlecase}} 
             </td>
             <td>
-                <span class="p-column-title"> Numero de piso </span>
-                 {{floor.numeroPiso}} 
-            </td>
-            <td>
                 <span class="p-column-title"> Aforo Maximo </span>
                  {{floor.aforoMaximo}} 
+            </td>
+            <td>
+                <span class="p-column-title"> Numero de piso </span>
+                 {{floor.numeroPiso}} 
             </td>
             <td>
                 <span class="p-column-title"> Nombre Sucursal </span>
@@ -73,9 +74,9 @@
                 <a pButton [routerLink]="[routeFloor.FloorEdit, floor.idPiso]" class="p-button-rounded p-button-text"
                     icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top">
                 </a>
-                <buttom pButton class="p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times"
+                <!-- <buttom pButton class="p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times"
                     pTooltip="Eliminar" tooltipPosition="top" (click)="deleteFloor( floor.idPiso)">
-                </buttom>
+                </buttom> -->
             </td>
         </tr>
     </ng-template>

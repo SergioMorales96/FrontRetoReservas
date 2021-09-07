@@ -28,7 +28,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idSucursal">
-                <strong> No. </strong>
+                <strong> Número ID </strong>
                 <p-sortIcon field="code"></p-sortIcon>
             </th>
             <th pSortableColumn="nombreEmpresa">
@@ -77,9 +77,9 @@
                 <a pButton [routerLink]="[routeName.BranchEdit, branch.idSucursal]"
                     class="p-button-rounded p-button-text" icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top">
                 </a>
-                <button pButton class="p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times"
+                <!-- <button pButton class="p-button-rounded p-button-danger p-button-text" type="button" icon="pi pi-times"
                     pTooltip="Eliminar" tooltipPosition="top" (click)="deleteBranch( branch.idSucursal )">
-                </button>
+                </button> -->
             </td>
         </tr>
     </ng-template>

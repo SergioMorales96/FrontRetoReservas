@@ -28,11 +28,11 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="idPuestoTrabajo">
-                <strong> No. </strong>
+                <strong> Número ID </strong>
                 <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="dominioEstado">
-                Estado <p-sortIcon field="code"></p-sortIcon>
+            <th pSortableColumn="nombrePiso">
+                Piso <p-sortIcon field="code"></p-sortIcon>
             </th>
             <th pSortableColumn="dominioTipo">
                 Tipo <p-sortIcon field="code"></p-sortIcon>
@@ -40,8 +40,8 @@
             <th pSortableColumn="nombre">
                 Nombre <p-sortIcon field="code"></p-sortIcon>
             </th>
-            <th pSortableColumn="nombrePiso">
-                Piso <p-sortIcon field="code"></p-sortIcon>
+            <th pSortableColumn="dominioEstado">
+                Estado <p-sortIcon field="code"></p-sortIcon>
             </th>
             <th pSortableColumn="acciones">Acciones</th>
         </tr>
@@ -53,8 +53,8 @@
                 <strong> {{ workstations.idPuestoTrabajo }} </strong>
             </td>
             <td>
-                <span class="p-column-title">Estado </span>
-                <strong> {{ workstations.dominioEstado }} </strong>
+                <span class="p-column-title"> Piso</span>
+                {{ workstations.nombrePiso }}
             </td>
             <td>
                 <span class="p-column-title"> Tipo</span>
@@ -65,8 +65,8 @@
                 {{ workstations.nombre | titlecase }}
             </td>
             <td>
-                <span class="p-column-title"> Piso</span>
-                {{ workstations.nombrePiso }}
+                <span class="p-column-title">Estado </span>
+                <strong> {{ workstations.dominioEstado }} </strong>
             </td>
             <td>
                 <!-- <a pButton [routerLink]="[routeName.WorkstationView, workstations.idPuestoTrabajo]"
