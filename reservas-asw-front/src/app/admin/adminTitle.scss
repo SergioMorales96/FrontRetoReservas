@@ -1,14 +1,27 @@
+:host ::ng-deep .p-col .margin-reservation {
+  @media screen and (max-width: 28rem) {
+    padding: 0 !important;
+    margin: 0;
+  }
+}
+
+:host ::ng-deep .p-card .p-card-body {
+  @media screen and (max-width: 28rem) {
+  .card{
+    margin-left: 3%;
+  }
+  }
+}
+
 :host ::ng-deep .p-card .p-card-body {
   padding: 1.5rem;
   margin-left: 2rem;
   margin-right: 2rem;
 
-  @media screen and (max-width: 48rem) {
-      padding: 0.8rem;
-      margin-left: 0.8rem;
-      margin-right: 0.8rem;
-}
-
+  @media screen and (max-width: 28rem) {
+      padding: 0.8rem 0 0.8rem 0;
+      margin: 0;
+  }
 }
 :host ::ng-deep .p-card .p-card-title {
     margin: 0rem 4rem 0.5rem 0rem;
