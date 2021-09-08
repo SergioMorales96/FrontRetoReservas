@@ -240,7 +240,7 @@ export class SceneComponent implements OnInit {
 
     }
     }else if ( INTERSECTED ){
-      ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColro;
+      ( <THREE.MeshStandardMaterial> (<THREE.Mesh>INTERSECTED).material).color = INTERSECTED.userData.currentColor;
     }
   }
 
