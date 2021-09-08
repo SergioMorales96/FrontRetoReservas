@@ -34,7 +34,6 @@ body {
   .margin-reservation.p-d-flex.p-flex-column.p-flex-md-row{
     margin-top: 20px;
     padding-top: 20px;
-    margin-left: 5%;
   }
 }
 
@@ -123,6 +122,11 @@ body {
   padding-right: 15% !important;
   padding-top: 0% !important;
   padding-bottom: 0% !important;
+
+  @media screen and (max-width:48rem) {
+    padding-left: 15% !important;
+  }
+  
 }
 
 .position-relative {
@@ -140,6 +144,10 @@ body {
   padding-right: 15% !important;
   padding-top: 0% !important;
   padding-bottom: 0% !important;
+  @media screen and (max-width:48rem) {
+    padding-left: 15% !important;
+
+  }
 }
 
 .p-administration .p-button:hover{
@@ -171,7 +179,13 @@ background-color: rgb(210 204 196 / 36%) !important;
   padding-left: 0;
   border-radius: 0;
   border: 0;
-  
+  @media screen and (max-width: 48rem) {
+    left: 0rem !important; 
+    top: 293px !important;
+    height: auto !important;
+    min-width: 260px;
+    margin: 0 !important;
+  }
 }
 
 .p-button:focus {
@@ -187,7 +201,9 @@ background-color: rgb(210 204 196 / 36%) !important;
   letter-spacing: normal !important;
   text-align: left !important;
   color: #b2b2b3 !important;
-
+  @media screen and (max-width: 48rem) {
+    display: none !important;
+  }
 }
 
 .p-menu .p-menuitem-link .p-menuitem-text{
