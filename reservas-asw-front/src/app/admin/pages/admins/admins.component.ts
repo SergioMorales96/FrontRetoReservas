@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouteName } from '../../../../utils/enums';
+import { RouteFloor, RouteName } from '../../../../utils/enums';
 
 @Component({
   selector: 'app-admins',
@@ -9,4 +9,5 @@ import { RouteName } from '../../../../utils/enums';
 export class AdminsComponent {
 
   routeName = RouteName;
+  routeFloor = RouteFloor;
 }

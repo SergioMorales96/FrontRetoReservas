@@ -23,6 +23,7 @@
       margin: 0;
   }
 }
+
   .title {
     margin: 0rem 4rem 0.5rem 0rem;
     font-family: Roboto;
@@ -47,6 +48,10 @@
     text-align: left;
     color: #b2b2b3;
   }
+  .flechas {
+    height: 6px !important;
+  }
+
 :host ::ng-deep .linea {
     height: 1px;
     border: 0;

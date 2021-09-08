@@ -1,5 +1,23 @@
 <div class="p-col margin-reservation">
-    <p-card header="Puestos de Trabajo" subheader="Administración">
+    <p-card>
+        <div class="card" style="display: inline-flex">
+            <div class="block">
+                <div class="title">Puestos de Trabajo</div>
+                <div class="subtitle">Administración</div>
+            </div>
+            <div class="block">
+                <div>
+                    <a pButton [routerLink]="routeName.BranchView" class="button-link p-button-rounded p-button-text flechas"
+                        icon="pi pi-angle-up" pTooltip="Lista anterior" tooltipPosition="top">
+                    </a>
+                </div>
+                <div>
+                    <a pButton [routerLink]="routeName.ScheduleView" class="button-link p-button-rounded p-button-text flechas"
+                        icon="pi pi-angle-down" pTooltip="Lista siguiente" tooltipPosition="bottom">
+                    </a>
+                </div>
+            </div>
+        </div>
         <hr class="linea">
         <!-- <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-start p-ai-center">
         <a 
