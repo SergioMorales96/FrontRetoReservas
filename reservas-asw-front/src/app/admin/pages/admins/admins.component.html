@@ -1,5 +1,39 @@
 <div class="p-col margin-reservation">
-    <p-card header="Administradores" subheader="Administración">
+    <p-card>
+        <div class="card py-6">
+            <div class="card-container green-container p-0">
+                <div class="inline">
+                    <div class="flex flex-colum">
+                        <div class="flex">
+                            <span class="title">Administradores</span>
+                        </div>
+                        <div class="flex">
+                            <span class="subtitle">Administración</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="inline">
+                    <div class="card">
+                        <div class="card-container">
+                            <div class="block">
+                                <a pButton [routerLink]="routeName.AdminAdd"
+                                    class="button-link p-button-rounded p-button-text" icon="pi pi-angle-up"
+                                    pTooltip="Subir" tooltipPosition="top">
+                                </a>
+                            </div>
+                            <div class="block">
+                                <a pButton [routerLink]="routeName.AdminAdd"
+                                    class="button-link p-button-rounded p-button-text" icon="pi pi-angle-down"
+                                    pTooltip="Bajar" tooltipPosition="bottom">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <hr class="linea">
         <!-- 
         <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-start p-ai-center">
